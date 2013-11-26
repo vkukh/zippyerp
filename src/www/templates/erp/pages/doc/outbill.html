@@ -1,0 +1,71 @@
+<html>
+
+<body>
+<div class="row">
+  <div class="span12">    
+<strong> Гарантийный талон</strong>
+<form zippy="docform">
+
+<table  border="0" cellpadding="1">
+  <tr>
+    <td >Номер документа</td>
+    <td >  <input type="text" zippy="document_number" required="required" ></td>
+    <td >Дата</td>
+    <td >    <input type="text" zippy="created" required="required"  ></td>
+  </tr>
+    <tr>
+
+        <td  >Со склада</td>
+    <td colspan="3"><select zippy="store" >
+    </select></td>
+  </tr>
+
+</table>
+
+<table  border="0" cellpadding="1"  width="500px">
+  <tr >
+    <th >Наименование </th>
+    <th width="50">Ед.изм.</th>
+    <th width="100">S/N, RFID</th>
+    <th width="31">Кол.</th>
+    <th width="52">Цена</th>
+    <th width="67">Сумма</th>
+    <th width="20"> </th>
+  </tr>
+  <tr zippy="detail">
+    <td zippy="tovar"></td>
+    <td zippy="measure"></td>
+    <td zippy="serial_number"></td>
+    <td zippy="quantity" align="right"></td>
+    <td zippy="price" align="right"> </td>
+    <td zippy="amount" align="right"> </td>
+    <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+  </tr>
+</table>
+<a zippy="addrow">Добавить товар</a>
+<table  border="0" cellpadding="1" width="500px">
+<tr><td align="right">НДС:</td><td ><input type="text" zippy="nds" value="0" style="width: 40px;" pattern= "[0-9\.]+" ></td></tr>
+<tr><td align="right">Итого:</td><td zippy="total" align="right" width="50px"  style="font-weight: bolder;"></td></tr>
+</table>
+
+<p>&nbsp;</p>
+<p>
+  <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-small"> <input type="button" value="Отменить" zippy="backtolist" class="btn btn-small">
+</p>
+
+</form>
+<form zippy="editdetail">
+<strong>Ввод  товара  </strong>
+<table  border="0" >
+<tr><td>Наименование</td><td><select zippy="edittovar" > <option value="0">Выбрать</option></select>  Наличие <span zippy="qtystock"></span>  </td></tr>
+<tr><td>S/N, RFID</td><td><input type="text" zippy="editserial_number"   ></input></td></tr>
+<tr><td>Количество</td><td><input type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input></td></tr>
+<tr><td>Цена</td><td><input type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 40px;"></td></tr>
+<tr><td><input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-small"></td><td><input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-small"></td></tr>
+</table>
+</form>
+   </div>   </div>   
+
+</body>
+</html>
+  

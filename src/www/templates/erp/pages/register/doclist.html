@@ -1,0 +1,38 @@
+<html>
+<body>
+<div class="row">
+  <div class="col-md-10">    
+    
+
+<h3>Журнал  документов </h3>
+
+<form zippy="filter" >
+     С <input type="text" zippy="from"  style="width:100px"> по <input type="text"  style="width:100px" zippy="to"  >
+      Группа <select zippy="docgroup"><option value="0">Все</option>   </select>       <input type="submit" class="btn btn-sm btn-default" style="margin:-10px 0 0 10px" value="Ввод">
+</form>
+  <table class="table table-striped ">
+  <tr>
+    <th >Наименование</th>
+    <th >Номер</th>
+    <th >Дата</th>
+    <th >Сумма</th>
+    <th >Автор</th>
+    <th >Создан</th>
+    <th > </th>
+  </tr>
+  <tr zippy="doclist">
+    <td zippy="name"></td>
+    <td zippy="number" ></td>
+    <td zippy="date" ></td>
+    <td zippy="amount" align="right"></td>
+    <td zippy="user"></td>
+    <td zippy="created"></td>
+    <td><a zippy="show"  title="Просмотр"><img class="icon20" src="/templates/images/loupe.png"></a> <a zippy="edit"  title="Редактировать"><img class="icon20" src="/templates/images/edit.png"></a> <a zippy="save" title="Выполнить"><img class="icon20" src="/templates/images/save.png"></a><a zippy="delete" title="Удалить"><img class="icon20" src="/templates/images/delete.png"></a><a zippy="cancel" title="Отменить"><img style="width:20px;height:20px;" src="/templates/images/revert.png"></a></td>
+  </tr>
+</table>
+<br>
+<div zippy="docview"></div>
+
+ </div>   </div>   
+</body>
+</html>

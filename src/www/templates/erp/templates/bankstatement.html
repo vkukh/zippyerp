@@ -1,0 +1,28 @@
+<html>
+<body>
+  <table width="500px" border="0" cellpadding="2">
+     <tr >
+
+        <td >
+           Дата: {date}
+        </td>
+     </tr>
+
+     <tr style="font-weight: bolder;">
+        <td   align="center" >
+        Банковская   выписка  № {document_number}
+        </td>
+     </tr>
+      
+
+  </table>
+   <br>
+     <table width="500px"  cellspacing="0" cellpadding="1" border="1">
+     <tr style="font-weight: bolder;">
+     <th width="70px" >Тип</th><th  width="40px">Счет</th><th width="50px">Сумма</th><th > </th></tr>
+     <tr band="detail_row"><td>{type}</td><td>{acc_code}</td><td  align="right">{amount}</td><td>{comment}</td></tr>
+     </table>     
+  
+ <br>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<html>
+<body>
+  <table width="500px" border="0" cellpadding="2">
+     <tr >
+
+        <td >
+         Период  c: {datefrom} по {dateto}
+        </td>
+     </tr>
+     <tr >
+       
+        <td>
+          Склад: <strong>{store}</strong> &nbsp;&nbsp;&nbsp;&nbsp;  Товар: <strong>{item}</strong>,{measure}  
+        </td>
+     </tr>
+     <tr style="font-weight: bolder;">
+        <td  align="center" >
+       Движение  по  складу
+        </td>
+     </tr>
+
+  </table>
+   <br>
+     <table width="600px"  cellspacing="0" cellpadding="1" border="1">
+     <tr style="font-weight: bolder;"><th width="20px">№</th><th width="70px" >Дата</th><th  width="60px">Цена</th><th >Начало</th><th >Приход</th><th >Расход</th><th >Конец</th><th >Документы</th></tr>
+     <tr band="detail_row"><td>{no}<td>{date}</td><td align="right">{price}</td><td align="right">{in}</td><td align="right">{obin}</td><td align="right">{obout}</td><td align="right">{out}</td><td>{documents}</td></tr>
+     </table>     
+  
+
+   <br> <br>
+</body>
+</html>

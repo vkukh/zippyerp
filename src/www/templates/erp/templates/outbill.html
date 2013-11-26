@@ -1,0 +1,42 @@
+<html>
+<body>
+  <table width="500px" border="0" cellpadding="2">
+     <tr >
+
+        <td>
+           Дата: {date}
+        </td>
+     </tr>
+
+     <tr style="font-weight: bolder;">
+        <td colspan="3" align="center" >
+        Гарантийный талон № {document_number}
+        </td>
+     </tr>
+
+  </table>
+   <br>
+     <table width="500px"  cellspacing="0" cellpadding="1" border="1">
+     <tr style="font-weight: bolder;"><th width="20px">№</th><th width="180px" >Наименование</th><th  width="50px">Ед.изм</th><th width="100px">S/N, RFID</th><th width="50px">Кол.</th><th width="50px">Цена</th><th width="50px">Сумма</th></tr>
+     <tr band="detail_row"><td>{no}<td>{tovar_name}</td><td>{measure}</td><td>{serial_number}</td><td align="right">{quantity}</td><td align="right">{price}</td><td align="right">{amount}</td></tr>
+     </table>     
+     <table width="500"  cellspacing="0" cellpadding="1" border="0">
+     <tr style="font-weight: bolder;" ><td  align="right" width="450px">НДС:</td><td align="right" width="50px">{nds}</td></tr>
+     <tr style="font-weight: bolder;" ><td  align="right" width="450px">Итого:</td><td align="right" width="50px">{total}</td></tr>
+     </table>
+  
+  <br>
+  
+  <table width="500px">
+     <tr >
+        <td width="50%">
+           
+        </td>
+        <td>
+           Выдал
+        </td>
+     </tr>
+  </table>
+   <br> <br>
+</body>
+</html>

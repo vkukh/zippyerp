@@ -1,0 +1,68 @@
+<html>
+<head>
+</head>
+<body>
+ <ul class="nav nav-tabs">
+  <li class="active"><a href="#printtab" data-toggle="tab">Печатная форма</a></li>
+  <li><a href="#messagetab" data-toggle="tab">Описание, коментарии</a></li>
+  <li><a href="#doctab" data-toggle="tab">Файлы, документы</a></li>
+</ul>
+
+  <div class="tab-content">
+  <div  id="printtab" class="tab-pane  active" >
+  <a zippy="print" target="_blank"  title="Печать"><img class="icon20" src="/templates/images/print_32.png"></a> 
+  <a zippy="pdf" target="_blank"   title="Экспорт в PDF"><img class="icon20" src="/templates/images/pdf_32.png"></a> 
+  <a zippy="word" target="_blank"   title="Экспорт в Word"><img class="icon20" src="/templates/images/word_32.png"></a> 
+  <a zippy="excel" target="_blank"   title="Экспорт в Excel"><img class="icon20" src="/templates/images/excel_32.png"></a> 
+ 
+   <div zippy="preview" style="padding: 2px;width:800px; overflow:auto; border: 1px solid #ccc"></div>
+ 
+  </div>  
+   
+   
+  <div id="messagetab" class="tab-pane">
+ <table>   <tr><td  valign="top">
+ <form >
+     <span>Описание:</span>
+     <p ></p>
+     <span>Заметка:</span>
+     <p ></p>
+  </form> 
+  </td><td valign="top">
+     <form >
+    Комментарии<br>
+    
+      </form>  
+   </td></tr></table>
+  </div>   
+  <div id="doctab" class="tab-pane">
+    
+  
+   <form >
+   <div style="float:left">Прикрепленные файлы</div> 
+   <div style="float:left;padding-left:20px">Связанные документы</div>
+  </form>  
+  </div> 
+  
+  
+<script>
+   
+$(function() { 
+    
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+      $.cookie('tab_doc', $(e.target).attr('href'));  
+  });
+    
+  var lastTab = $.cookie('tab_doc');
+  
+  if (lastTab) { 
+      $('ul.nav-tabs').children().removeClass('active');
+      $('a[href='+ lastTab +']').parents('li:first').addClass('active');
+      $('div.tab-content').children().removeClass('active');
+      $(lastTab).addClass('active');
+  }
+});
+
+</script> 
+</body>
+</html>

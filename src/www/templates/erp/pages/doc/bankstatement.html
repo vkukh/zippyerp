@@ -1,0 +1,58 @@
+<html>
+<body>
+<div class="row">
+  <div class="col-md-12">  
+    <strong>Банковская выписка</strong>
+<form zippy="docform">
+
+<table  border="0" cellpadding="1">
+  <tr>
+    <td >Номер документа</td>
+    <td >  <input type="text" zippy="document_number" required="required" ></td>
+    <td >Дата</td>
+    <td >    <input type="text" zippy="created" required="required"  ></td>
+  </tr>
+
+
+</table>
+
+<table  border="0" cellpadding="1"  width="500px">
+  <tr >
+    <th width="50">Тип</th>
+    <th width="100">Сумма</th>
+    <th width="31" style="width: 50px;">Счет</th>
+    <th width="52">Коментарий</th>
+
+  </tr>
+  <tr zippy="detail">
+    <td zippy="type"></td>
+    <td zippy="amount" align="right"></td>
+    <td zippy="account"></td>
+    <td zippy="comment" align="right"></td>
+    <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+  </tr>
+</table>
+<a zippy="addrow">Добавить строку</a>
+
+
+<p>&nbsp;</p>
+<p>
+  <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-sm"> <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-sm">
+</p>
+
+</form>
+<form zippy="editdetail">
+<strong>Новая  строка</strong>
+<table  border="0" >
+<tr><td>Тип</td><td><select zippy="edittype" > <option value="1">Приход</option><option value="2">Расход</option></select> 
+<tr><td>Сумма</td><td><input type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  style="width: 40px;" ></input></td></tr>
+<tr><td>Счет</td><td><select zippy="editaccount" ><option value="0">Выбрать</option></select> </td></tr>
+<tr><td>Комментарий</td><td><input type="text" zippy="editcomment"    ></td></tr>
+<tr><td><input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default btn-sm"></td><td><input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default btn-sm"></td></tr>
+</table>
+</form>
+ </div>   </div>   
+
+</body>
+</html>
+  

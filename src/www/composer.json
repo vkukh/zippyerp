@@ -1,0 +1,13 @@
+{
+        "require": {
+                "duvanmonsa/php-query": "dev-master",
+                "adodb/adodb-php": "dev-master",
+                "tecnick.com/tcpdf": "dev-master",
+                "swiftmailer/swiftmailer": "v5.0.1",
+                "monolog/monolog": "1.6.0" ,
+                "ircmaxell/password-compat": "dev-master"
+        },
+        "config": {
+
+        }
+}

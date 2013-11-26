@@ -1,0 +1,48 @@
+<html>
+<head>
+<script>
+    $(function() {
+        $( "#from" ).datepicker( {dateFormat : "d.m.yy" });
+        $( "#to" ).datepicker( {dateFormat : "d.m.yy" });
+    });
+    </script>
+</head>
+               
+    <body>
+<div class="row">
+  <div class="col-md-10">    
+   <h3>Журнал  проводок </h3>
+   
+   <form zippy="filter" >
+          С <input style="margin-left: 90px;" type="text" zippy="from"> по <input style="margin-left: 94px;" type="text" zippy="to"  >  <br>
+      Счет по  дебету  <select zippy="dt"><option value="0">Выбрать</option>   </select> Счет по кредиту  <select zippy="ct"><option value="0">Выбрать</option>   </select>  <br>   
+   <input class="btn btn-default btn-sm" type="submit" value="Ввод"> 
+   </form>
+  <table class="table table-bordered  table-condensed" style="width:600px;">
+    <tr>
+      <th style="width:90px;">Дата</th>
+      <th style="width:30px;">Дт</th>
+      <th style="width:30px;">Кт</th>
+      <th style="width:40px;">Сумма</th>      
+      <th style="width:240px;">Документ</th>
+      <th > </th>
+    </tr>
+    <tr zippy="entrylist">
+      <td zippy="created" ></td>
+      <td zippy="acc_d_code" ></td>
+      <td zippy="acc_c_code" ></td>
+      <td zippy="amount" align="right"></td>      
+      <td ><a zippy="show"></a></td>
+      <td zippy="comment"></td>
+
+    </tr>
+  </table>
+  <div zippy="paginator"></div>
+   <br>
+<div zippy="docview"></div>
+  
+   </div>   </div>   
+ </body>
+                 
+</html>
+

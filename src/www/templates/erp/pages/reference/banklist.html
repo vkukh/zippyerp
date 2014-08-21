@@ -1,0 +1,46 @@
+<html>
+    <head>
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="col-md-12">    
+                <div zippy="banktable">
+                    <h3>Справочник банков </h3>
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th >Название</th>
+                            <th > </th>
+                        </tr>
+                        <tr zippy="banklist">
+                            <td zippy="bankname"></td>
+
+                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table>
+                    <a zippy="add" class="btn btn-default btn-xs">Добавить</a> 
+                </div>
+
+                <form zippy="bankdetail" method="post" >
+                    <table width="200" border="0" cellpadding="2">
+                        <tr>
+                            <td>Имя</td>
+                            <td><input type="text" zippy="editbankname" required="required"></td>
+                        </tr>
+
+
+                        <tr>
+                            <td valign="top" >МФО</td>
+                            <td><input type="number" zippy="editmfo" required="required"></td>
+                        </tr>
+                        <tr>
+                            <td><input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-xs"></td>
+                            <td><input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
+                        </tr>
+                    </table>
+                </form>
+
+            </div>   </div>   
+
+    </body>
+</html>

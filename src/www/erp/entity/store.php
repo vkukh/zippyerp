@@ -11,10 +11,9 @@ namespace ZippyERP\ERP\Entity;
 class Store extends \ZCL\DB\Entity
 {
 
-        protected function beforeDelete()
-        {
-                return false;
-        }
+    protected function beforeDelete()
+    {
+        return false;
+    }
 
 }
-

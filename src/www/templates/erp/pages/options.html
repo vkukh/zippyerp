@@ -1,0 +1,101 @@
+<html >
+    <body >
+
+        <div class="row">
+            <div class="col-md-12">  
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#commontab" data-toggle="tab">Общие</a></li>
+                    <li ><a href="#attrtab" data-toggle="tab">Реквизиты  предприятия</a></li>
+                </ul>
+                 <div class="tab-content">
+                    <div  id="commontab" class="tab-pane  active" >
+                       <form  class=" col-sm-4" role="form" zippy="common" method="post" >
+                         <div class="form-group">
+                            <label for="closeddate" class=" control-label ">Дата  закрытия периода</label>
+                            <input type="text" class="form-control " zippy="closeddate" >
+                          </div>  
+                             <input zippy="commonsave" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
+                                
+                       </form>
+                      </div> 
+
+
+                    <div  id="attrtab" class="tab-pane  " >
+
+                        <form zippy="detail" method="post" >
+                            <table><tr><td  valign="top">
+                                        <table  border="0" cellpadding="2">
+                                            <tr>
+                                                <td>Наименование</td>
+                                                <td><input type="text" zippy="name" required="required"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" >Город</td>
+                                                <td><input type="text" zippy="city" required="required"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" >Улица, дом</td>
+                                                <td><input type="text" zippy="street" required="required"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" >Телефон</td>
+                                                <td><input type="tel" zippy="рhone" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" >Email</td>
+                                                <td><input type="email" zippy="email" ></td>
+                                            </tr> 
+                                            <tr>
+                                                <td valign="top" >Директор</td>
+                                                <td><input type="text" zippy="manager" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" >Бухгалтер</td>
+                                                <td><input type="text" zippy="accounter" ></td>
+                                            </tr>
+                                        </table>
+
+                                    </td><td valign="top">
+                                        <table  border="0" cellpadding="2">
+
+                                            <tr>
+                                                <td >ЕДРПОУ</td>
+                                                <td><input type="number" zippy="code" ></td>
+                                            </tr>
+                                            <tr>
+                                            <tr>
+                                                <td >ИНН</td>
+                                                <td><input type="number" zippy="inn" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top">Основной счет</td>
+                                                <td>Банк<br>
+                                                    <select zippy="bank">
+                                                    </select><br>Номер счета<br>
+                                                    <input type="number" zippy="bankaccount" >
+                                                </td>
+                                            </tr>
+
+                                        </table>
+
+                                    </td> 
+                                </tr>
+                                <tr>
+                                    <td colspan=2><input zippy="detailsave" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
+                                        
+                                </tr>
+
+                            </table>
+                        </form>
+
+
+
+                    </div> 
+
+                </div>
+            </div>
+
+
+    </body>
+</html>

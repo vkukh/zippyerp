@@ -8,10 +8,9 @@ use \ZippyERP\System\Application as App;
 class Main extends Base
 {
 
-        public function __construct()
-        {
-                parent::__construct();
-        }
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
 }
-

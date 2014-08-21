@@ -1,46 +1,94 @@
 <html>
-<head>
-</head>
+    <head>
+    </head>
 
-<body>
-<div class="row">
-  <div class="col-md-12">    
-<div zippy="customertable">
-    <h3>Справочник контрагентов </h3>
-  <table class="table table-bordered   table-condensed" style="width:400px">
-    <tr>
-      <th >Имя</th>
-      <th > </th>
-    </tr>
-    <tr zippy="customerlist">
-      <td zippy="customername"></td>
+    <body>
+        <div class="row">
+            <div class="col-md-12">    
+                <div zippy="customertable">
+                    <h3>Справочник контрагентов </h3>
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th >Имя</th>
+                            <th > </th>
+                        </tr>
+                        <tr zippy="customerlist">
+                            <td zippy="customername"></td>
 
-      <td style="width:52px"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
-    </tr>
-  </table>
-  <a zippy="add" class="btn btn-default btn-sm">Добавить</a> 
-  </div>
+                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table>
+                    <a zippy="add" class="btn btn-default btn-xs">Добавить</a> 
+                </div>
 
-  <form zippy="customerdetail" method="post" >
-    <table width="200" border="0" cellpadding="2">
-      <tr>
-        <td>Имя</td>
-        <td><input type="text" zippy="editcustomername" required="required"></td>
-      </tr>
+                <form zippy="customerdetail" method="post" >
+                    <table><tr><td  valign="top">
+                                <table  border="0" cellpadding="2">
+                                    <tr>
+                                        <td>Наименование</td>
+                                        <td><input type="text" zippy="editcustomername" required="required"></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" >Город</td>
+                                        <td><input type="text" zippy="editcity" required="required"></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" >Улица, дом</td>
+                                        <td><input type="text" zippy="editstreet" required="required"></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" >Телефон</td>
+                                        <td><input type="tel" zippy="editphone" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" >Email</td>
+                                        <td><input type="email" zippy="editemail" ></td>
+                                    </tr>  
+                                 <tr>
+                                        <td valign="top" >Примечание</td>
+                                        <td><input type="text" zippy="editnotes" ></td>
+                                    </tr>  
 
+                                </table>
 
-      <tr>
-        <td valign="top" >Адрес</td>
-        <td><textarea  zippy="editaddress" cols="40" rows="3"></textarea></td>
-      </tr>
-      <tr>
-        <td> </td>
-        <td><input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-sm"> &nbsp;<input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-sm"></td>
-      </tr>
-    </table>
-  </form>
+                            </td><td valign="top">
+                                <table  border="0" cellpadding="2">
 
-    </div>   </div>   
+                                    <tr>
+                                        <td >ЕДРПОУ</td>
+                                        <td><input type="number" zippy="editcode" ></td>
+                                    </tr>
+                                    <tr>
+                                    <tr>
+                                        <td >ИНН</td>
+                                        <td><input type="number" zippy="editinn" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top">Счет</td>
+                                        <td>Банк<br>
+                                            <select zippy="editbank">
+                                            </select><br>Номер  счета<br>
+                                            <input type="number" zippy="editbankaccount" >
+                                        </td>
+                                    </tr>
 
-</body>
+                                </table>
+
+                            </td>
+                            <td>
+
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
+                                <input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
+                        </tr>
+
+                    </table>
+                </form>
+
+            </div>  
+        </div>   
+
+    </body>
 </html>

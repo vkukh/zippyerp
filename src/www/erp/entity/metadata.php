@@ -11,9 +11,9 @@ namespace ZippyERP\ERP\Entity;
 class MetaData extends \ZCL\DB\Entity
 {
 
-        protected function beforeDelete()
-        {
-                return true;
-        }
+    protected function beforeDelete()
+    {
+        return true;
+    }
 
 }

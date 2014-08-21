@@ -1,28 +1,33 @@
 <html>
-<body>
-  <table width="500px" border="0" cellpadding="2">
-     <tr >
+    <body>
+        <table width="500"  cellspacing="0" cellpadding="1"  >
+            <tr >
 
-        <td >
-           Дата: {date}
-        </td>
-     </tr>
+                <td colspan="3" width="160">
+                    Дата: <b>{date} </b>
+                </td>
+                <td width="340" align="right">
+                    Счет:<b> {bankaccount}</b>
+                </td>         
+            </tr>
 
-     <tr style="font-weight: bolder;">
-        <td   align="center" >
-        Банковская   выписка  № {document_number}
-        </td>
-     </tr>
-      
+            <tr >
+                <td style="font-weight: bolder;font-size: larger;"  align="center" colspan="4" >
+                    Банковская выписка  № {document_number}
+                    <br><br> </td>
+            </tr>
 
-  </table>
-   <br>
-     <table width="500px"  cellspacing="0" cellpadding="1" border="1">
-     <tr style="font-weight: bolder;">
-     <th width="70px" >Тип</th><th  width="40px">Счет</th><th width="50px">Сумма</th><th > </th></tr>
-     <tr band="detail_row"><td>{type}</td><td>{acc_code}</td><td  align="right">{amount}</td><td>{comment}</td></tr>
-     </table>     
-  
- <br>
-</body>
+
+            <tr style="font-weight: bolder;">
+                <td width="70" style="border-bottom: 1px solid #000000" >Тип</td>
+                <td width="40" style="border-bottom: 1px solid #000000">Счет</td>
+                <td width="50" style="border-bottom: 1px solid #000000">Сумма</td>
+                <td style="border-bottom: 1px solid #000000">Примечание </td>
+            </tr>
+            <tr band="detail_row"><td>{type}</td><td>{acc_code}</td><td  align="right">{amount}</td><td>{comment} </td></tr>
+            <tr ><td > </td><td align="right"><b>Итого</b></td><td  align="right"><b>{total}</b></td><td> </td></tr>
+        </table>     
+
+        <br>
+    </body>
 </html>

@@ -11,44 +11,44 @@ use \Zippy\Html\Label;
 class Base extends \Zippy\Html\WebPage
 {
 
-        public $_errormsg;
+    public $_errormsg;
 
-        public function __construct()
-        {
+    public function __construct()
+    {
 
-                $this->add(new \ZippyERP\System\Blocks\Header("header"));
-                $this->add(new Label("errormessage", new \Zippy\Binding\PropertyBinding($this, '_errormsg'), false, true))->setVisible(false);
-                $this->add(new Label("menudoc", Helper::generateMenu(1), true));
-                $this->add(new Label("menurep", Helper::generateMenu(2), true));
-                $this->add(new Label("menureg", Helper::generateMenu(3), true));
-                $this->add(new Label("menuref", Helper::generateMenu(4), true));
+        $this->add(new \ZippyERP\System\Blocks\Header("header"));
+        $this->add(new Label("errormessage", new \Zippy\Binding\PropertyBinding($this, '_errormsg'), false, true))->setVisible(false);
+        $this->add(new Label("menudoc", Helper::generateMenu(1), true));
+        $this->add(new Label("menurep", Helper::generateMenu(2), true));
+        $this->add(new Label("menureg", Helper::generateMenu(3), true));
+        $this->add(new Label("menuref", Helper::generateMenu(4), true));
+        $this->add(new Label("menupage", Helper::generateMenu(5), true));
 
-                $user = System::getUser();
-                if ($user->user_id == 0) {
-                        App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
-                }
+        $user = System::getUser();
+        if ($user->user_id == 0) {
+            App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
         }
+    }
 
-        public function setError($msg)
-        {
-                $this->_errormsg = $msg;
-                $this->errormessage->setVisible(true);
-        }
+    public function setError($msg)
+    {
+        $this->_errormsg = $msg;
+        $this->errormessage->setVisible(true);
+    }
 
-        protected function beforeRender()
-        {
-                $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
-        }
+    protected function beforeRender()
+    {
+        $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
+    }
 
-        protected function afterRender()
-        {
-                $this->setError('');
-        }
+    protected function afterRender()
+    {
+        $this->setError('');
+    }
 
-        protected function isError()
-        {
-                return strlen($this->_errormsg) > 0 ? true : false;
-        }
+    protected function isError()
+    {
+        return strlen($this->_errormsg) > 0 ? true : false;
+    }
 
 }
-

@@ -1,57 +1,55 @@
 <html>
-<body>
-  <table width="500px" border="0" cellpadding="2">
-     <tr >
-        <td width="100px">
-           Отправитель:
-        </td>
-        <td >
-           {customer}
-        </td>
-        <td>
-           Дата: {date}
-        </td>
-     </tr>
-     <tr >
-        <td style="width: 100px;">
-          Получатель:
-        </td>
-        <td >
-           Эта  фирма
-        </td>
-        <td>
-          
-        </td>
-     </tr>
-     <tr style="font-weight: bolder;">
-        <td colspan="3" align="center" >
-        Приходная  накладная  № {document_number}
-        </td>
-     </tr>
+    <body>
+        <table width="500" border="0" cellpadding="2" cellspacing="0">
+            <tr >
+                <td width="100">
+                    Отправитель:
+                </td>
+                <td >
+                    {customer}
+                </td>
+                <td>
+                    Дата: {date}
+                </td>
+            </tr>
+            <tr >
+                <td style="width: 100;">
+                    Получатель:
+                </td>
+                <td >
+                    Эта  фирма
+                </td>
+                <td>
 
-  </table>
-   <br>
-     <table width="500px"  cellspacing="0" cellpadding="1" border="0">
-     <tr style="font-weight: bolder;"><th width="20px" style="border: 1px solid black;">№</th><th width="180px" >Наименование</th><th  width="50px">Ед.изм</th><th width="100px">S/N, RFID</th><th width="50px">Кол.</th><th width="50px">Цена</th><th width="50px">Сумма</th></tr>
-     <tr band="detail_row"><td style="border: 1px solid black;">{no}<td>{tovar_name}</td><td>{measure}</td><td>{serial_number}</td><td align="right">{quantity}</td><td align="right">{price}</td><td align="right">{amount}</td></tr>
-     </table>     
-     <table width="500px"  cellspacing="0" cellpadding="1" border="0">
-       <tr style="font-weight: bolder;"><th width="20px">&nbsp;</th><th width="180px" >&nbsp;</th><th  width="50px"> </th><th width="100px"> </th><th width="50px"> </th><th width="50px"  align="right">НДС:</th><th width="50px"  align="right">{nds} </th></tr>
-       <tr style="font-weight: bolder;"><th width="20px">&nbsp;</th><th width="180px" >&nbsp;</th><th  width="50px"> </th><th width="100px"> </th><th width="50px"> </th><th width="50px"  align="right">Итого:</th><th width="50px"  align="right">{total} </th></tr>
-     </table>
-  
-  <br>
-  
-  <table width="500px">
-     <tr >
-        <td width="250px">
-           Отправил
-        </td>
-        <td>
-           Получил
-        </td>
-     </tr>
-  </table>
-   <br> <br>
-</body>
+                </td>
+            </tr>
+            <tr style="font-weight: bolder;">
+                <td colspan="3" align="center" >
+                    Приходная  накладная  № {document_number}
+                </td>
+            </tr>
+
+        </table>
+        <br>
+        <table width="500"  cellspacing="0" cellpadding="1" border="0">
+            <tr style="font-weight: bolder;"><th width="20" style="border: 1px solid black;">№</th><th style="border: 1px solid black;" width="180" >Наименование</th><th style="border: 1px solid black;"  width="50">Ед.изм</th><th style="border: 1px solid black;" width="100">S/N, RFID</th><th style="border: 1px solid black;" width="50">Кол.</th><th style="border: 1px solid black;" width="50">Цена</th><th style="border: 1px solid black;" width="50">Сумма</th></tr>
+            <tr band="detail_row"><td>{no}<td>{tovar_name}</td><td>{measure}</td><td>{serial_number}</td><td align="right">{quantity}</td><td align="right">{price}</td><td align="right">{amount}</td></tr>
+            <tr style="font-weight: bolder;"><td colspan="6" style="border-top: 1px solid black;" align="right">НДС:</td><td  style="border-top: 1px solid black;"width="50"  align="right">{nds} </td></tr>
+            <tr style="font-weight: bolder;"><td  colspan="6"    align="right">Итого:</td><td width="50"  align="right">{total} </td></tr>
+        </table>
+
+        <br>
+
+        <table width="500px">
+            <tr >
+                <td width="250px">
+                    Отправил
+                </td>
+                <td>
+                    Получил
+                </td>
+            </tr>
+        </table>
+        <br> <br>
+    </body>
 </html>

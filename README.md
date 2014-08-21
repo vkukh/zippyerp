@@ -4,6 +4,7 @@ Zippy ERP
 ERP  система  на   фреймворке Zippy.
 
 Домашняя страница:  [http://zippy.com.ua/](http://zippy.com.ua/)
+Дистрибутив  в  сборе  можно скачать  с  [Sourceforge](https://sourceforge.net/projects/zippyerp/)
 
 Требования: PHP5.3.3+
 

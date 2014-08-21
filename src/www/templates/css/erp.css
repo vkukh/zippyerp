@@ -1,3 +1,17 @@
+body {
+    background-color:#FAFFFF ;      
+}
+html, body {height: 100%;}
+a, h4 {
+    outline: none !important;
+}
+.btn:hover,
+.btn:focus {
+  background-color: #fff;
+  background-position: 0 0;
+  color: #177cdc;
+}
+
 .footer{
 height:50px;
 background: #eee;
@@ -50,3 +64,6 @@ img.icon20 {
    width:20px;height:20px;
 }
 
+.navbar {
+  z-index :0;
+}

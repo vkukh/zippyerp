@@ -1,60 +1,38 @@
 <html>
-<head>
-</head>
+    <head>
+    </head>
 
-<body>
-<div class="row">
-  <div class="col-md-10">    
-<div zippy="itemtable">
-    <h3>Справочник ТМЦ </h3>
-  <table  class="table table-bordered  table-condensed table-striped">
-    <tr>
-      <th >Наименование</th>
-      <th >Ед. изм.</th>
-      <th >Тип</th>
-      <th style="width:56px" > </th>
-    </tr>
-    <tr zippy="itemlist">
-      <td zippy="itemname"></td>
-      <td zippy="measure"></td>
-      <td zippy="typename"></td>
-      <td aling="center"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
-    </tr>
-  </table>
-  <a zippy="add" class="btn btn-default btn-sm">Добавить</a> 
-  </div>
+    <body>
+        <div class="row">
+            <div class="col-md-10">    
+                <div zippy="itemtable">
+                    <h3>Справочник ТМЦ </h3>
+                    <table  class="table table-bordered  table-condensed table-striped">
+                        <tr>
+                            <th >Наименование</th>
+                            <th >Ед. изм.</th>
+                            <th >Тип</th>
+                            <th >Группа</th>
+                            <th style="width:56px" > </th>
+                        </tr>
+                        <tr zippy="itemlist">
+                            <td zippy="itemname"></td>
+                            <td zippy="measure"></td>
+                            <td zippy="typename"></td>
+                            <td zippy="group_name"></td>
+                            <td aling="center"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table>
+                    <a zippy="add" class="btn btn-default btn-xs">Добавить</a> 
+                </div>
 
-  <form zippy="itemdetail" method="post" >
-    <table width="200" border="0" cellpadding="2">
-      <tr>
-        <td>Наименование</td>
-        <td><input type="text" zippy="editname"></td>
-      </tr>
 
-      <tr>
-        <td>Тип</td>
-        <td><select  zippy="edittype">
-            
-          </select></td>
-      </tr>
-      <tr>
-        <td>Ед. изм.</td>
-        <td><select  zippy="editmeasure">
-            
-          </select></td>
-      </tr>
-      <tr>
-        <td valign="top" >Описание</td>
-        <td><textarea  zippy="editdescription" cols="40" rows="3"></textarea></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-sm"> &nbsp;&nbsp;&nbsp;&nbsp;<input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-sm"></td>
-      </tr>
-    </table>
-  </form>
+                <div zippy="itemdetail"></div>
 
-    </div>   </div>   
 
-</body>
+
+            </div> 
+        </div>   
+
+    </body>
 </html>

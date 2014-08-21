@@ -10,7 +10,7 @@ input.autocomplete-loading
 }
 ul.autocomplete 
 {
-    position: absolute;
+    
     overflow: hidden;
     background-color: #fff;
     border: 1px solid ButtonShadow;
@@ -18,7 +18,7 @@ ul.autocomplete
     padding: 0px;
     list-style: none;
     color: #000;
-    display:none;
+    display:block;
     z-index:1000;
 }
 ul.autocomplete li 

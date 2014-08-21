@@ -1,64 +1,67 @@
 <html>
-<body>
-<div class="row">
-  <div class="col-md-12">    
-<strong>Ручная хоз. операция</strong>
-<form zippy="docform">
+    <body>
+        <div class="row">
+            <div class="col-md-12">    
+                <strong>Ручная хоз. операция</strong>
+                <form zippy="docform">
 
-<table   >
-  <tr>
-    
-    <td >Дата</td>
-    <td >    <input type="text" zippy="created" required="required"  ></td>
-  </tr>
+                    <table   >
+                        <tr>
 
-    <tr>
-    <td >Описание</td>
-    <td ><input type="text" zippy="description" style="width: 400px;" ></td>
-  </tr>
-</table>
+                            <td >Дата</td>
+                            <td >    <input type="text" zippy="created" required="required"  ></td>
+                        </tr>
 
-<table  class="table   table-condensed" style="width:480px;">
-  <tr >
+                        <tr>
+                            <td >Описание</td>
+                            <td ><input type="text" zippy="description" style="width: 400px;" ></td>
+                        </tr>
+                    </table>
 
-    <th style="width:40px;">Дт</th>
-    <th style="width:40px;">Кт</th>
-    <th style="width:60px;">Сумма</th>
-    <th style="width:300px;">Описание</th>
-    <th style="width:20px;"> </th>
-  </tr>
-  <tr zippy="detail">
-    <td zippy="dt"></td>
-    <td zippy="ct"></td>
-    <td zippy="amount" align="right"></td>
-    <td zippy="comment" ></td>
+                    <table  class="table   table-condensed" style="width:480px;">
+                        <tr >
 
-    <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
-  </tr>
-</table>
-<table  class="table   table-condensed"   style="width:140px;">
-<tr><td align="right" style="width:80px;font-weight: bolder">Итого:</td><td zippy="total" align="right" style="width:60px;" style="font-weight: bolder;"></td></tr>
-</table>
-<a zippy="addrow">Добавить проводку</a>
-<p>&nbsp;</p>
-<p>
-  <input zippy="savedoc" type="submit"  value="Сохранить"  class="btn btn-default btn-sm"> <input type="button" value="Отменить" zippy="backtolist"   class="btn btn-default btn-sm">
-</p>
+                            <th style="width:40px;">Дт</th>
+                            <th style="width:40px;">Кт</th>
+                            <th style="width:60px;">Сумма</th>
+                            <th style="width:300px;">Описание</th>
+                            <th style="width:20px;"> </th>
+                        </tr>
+                        <tr zippy="detail">
+                            <td zippy="dt"></td>
+                            <td zippy="ct"></td>
+                            <td zippy="amount" align="right"></td>
+                            <td zippy="comment" ></td>
 
-</form>
-<form zippy="editdetail">
-<strong>Ввод проводки</strong>
-<table  border="0" >
-<tr><td>Счет дебет</td><td><select zippy="editdt" > <option value="0">Выбрать счет</option></select></td></tr>
-<tr><td>Счет кредит</td><td><select zippy="editct" > <option value="0">Выбрать счет</option></select></td></tr>
-<tr><td>Сумма</td><td><input type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  size="8" ></input></td></tr>
-<tr><td>Коментарий</td><td><input type="text" zippy="editcomment" size="50"  ></input></td></tr>
+                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+                        </tr>
+                    </table>
+                    <table  class="table   table-condensed"   style="width:140px;">
+                        <tr><td align="right" style="width:80px;font-weight: bolder">Итого:</td><td zippy="total" align="right" style="width:60px;" style="font-weight: bolder;"></td></tr>
+                    </table>
+                    <a zippy="addrow">Добавить проводку</a>
+                    <p>&nbsp;</p>
+                    <p>
+                        <input type="button" value="Отменить" zippy="backtolist"   class="btn btn-default btn-xs"> 
+                        &nbsp;<input zippy="savedoc" type="submit"  value="Сохранить"  class="btn btn-default btn-xs"> 
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default btn-xs"> 
+                        
+                    </p>
 
-<tr><td><input type="submit"  value="Сохранить"   class="btn btn-default btn-sm"></td><td><input type="button" zippy="cancelrow" value="Отменить"   class="btn btn-default btn-sm"></td></tr>
-</table>
-</form>
+                </form>
+                <form zippy="editdetail">
+                    <strong>Ввод проводки</strong>
+                    <table  border="0" >
+                        <tr><td>Счет дебет</td><td><select zippy="editdt" > <option value="0">Выбрать счет</option></select></td></tr>
+                        <tr><td>Счет кредит</td><td><select zippy="editct" > <option value="0">Выбрать счет</option></select></td></tr>
+                        <tr><td>Сумма</td><td><input type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  size="8" ></input></td></tr>
+                        <tr><td>Коментарий</td><td><input type="text" zippy="editcomment" size="50"  ></input></td></tr>
 
-  </div>   </div>   
-</body>
+                        <tr><td><input type="submit"  value="Сохранить"   class="btn btn-default btn-xs"></td><td><input type="button" zippy="cancelrow" value="Отменить"   class="btn btn-default btn-xs"></td></tr>
+                    </table>
+                </form>
+
+            </div>  
+        </div>   
+    </body>
 </html>
-  

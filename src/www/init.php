@@ -1,22 +1,23 @@
 <?php
+
 define('_ROOT', __DIR__ . '/');
-$http = $_SERVER["HTTP_HOST"] == 'on'? 'https' : 'http';
+$http = $_SERVER["HTTPS"] == 'on' ? 'https' : 'http';
 define('_BASEURL', $http . "://" . $_SERVER["HTTP_HOST"] . '/');
 define('_ZIPPY', _ROOT . 'zippy/');
-//define('_ZIPPY',  'z:/home/local.zippy/www/zippy/');
+
 
 define('UPLOAD_USERS', 'uploads/users/');
 
 error_reporting(E_ALL ^ E_NOTICE);
+date_default_timezone_set('Europe/Kiev');
 
 require_once _ROOT . 'vendor/autoload.php';
 include_once _ROOT . "vendor/adodb/adodb-php/adodb-exceptions.inc.php";
 
 //чтение  конфигурации
-$_config = parse_ini_file(_ROOT . 'config/config.ini',true); 
+$_config = parse_ini_file(_ROOT . 'config/config.ini', true);
 
 //  phpQuery::$debug = true;
-
 // Подключение  фреймворка
 require_once _ZIPPY . 'zippy.inc.php';
 
@@ -25,7 +26,7 @@ require_once _ZIPPY . 'zippy.inc.php';
 \ZCL\DB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
 
 //Настройка   сессии   в  БД
-if($_config["common"]["sessiondb"] == "1"){
+if ($_config["common"]["sessiondb"] == "1") {
     include_once _ROOT . "vendor/adodb/adodb-php/session/adodb-session2.php";
     \ADODB_Session::config('mysqli', $_config['db']['host'], $_config['db']['user'], $_config['db']['pass'], $_config['db']['name'], array('table' => 'system_session'));
     \ADODB_Session::Persist($connectMode = false);
@@ -40,46 +41,44 @@ require_once _ROOT . 'erp/start.inc.php';
 //загружаем  модули                  
 $modules = array();
 /*
-$modulespath = _ROOT . 'modules/';
-if ($handle = @opendir($modulespath)) {
-        while (false !== ($file = readdir($handle))) {
-                if (is_dir($modulespath . $file) && strlen($file) > 2) {
-                        $startfile = $modulespath . $file . '/start.inc.php';
-                        if(file_exists($startfile)){
-                           $modules[] = $file;
-                           require_once $startfile;
-                        }
-                        
-                }
-        }
-        closedir($handle);
-}
+  $modulespath = _ROOT . 'modules/';
+  if ($handle = @opendir($modulespath)) {
+  while (false !== ($file = readdir($handle))) {
+  if (is_dir($modulespath . $file) && strlen($file) > 2) {
+  $startfile = $modulespath . $file . '/start.inc.php';
+  if(file_exists($startfile)){
+  $modules[] = $file;
+  require_once $startfile;
+  }
+
+  }
+  }
+  closedir($handle);
+  }
  */
 
- session_start();
+session_start();
 
- //подключаем  локализацию
- //$lang = \ZippyERP\System\System::getLang();
- 
- //require_once _ZIPPY ."lang/{$lang}.php";
- 
- /*
- foreach ($modules as $module) {
-      $file = $modulespath .$module  ."/lang/{$lang}.php";
-      if(file_exists($file)){
-          require_once $file;
-      }
-      
- }
+//подключаем  локализацию
+//$lang = \ZippyERP\System\System::getLang();
+//require_once _ZIPPY ."lang/{$lang}.php";
+
+/*
+  foreach ($modules as $module) {
+  $file = $modulespath .$module  ."/lang/{$lang}.php";
+  if(file_exists($file)){
+  require_once $file;
+  }
+
+  }
  */
- 
- // логгер
- $logger = new \Monolog\Logger("main");
- $logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(_ROOT ."logs/app.log",10,$_config['common']['loglevel']));
- $logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(_ROOT ."logs/error.log",10,400));
- $logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor());
- 
- 
- 
- 
- 
+
+// логгер
+$logger = new \Monolog\Logger("main");
+$logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(_ROOT . "logs/app.log", 10, $_config['common']['loglevel']));
+$logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(_ROOT . "logs/error.log", 10, 400));
+$logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor());
+
+
+
+

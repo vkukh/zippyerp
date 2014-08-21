@@ -5,12 +5,11 @@ namespace ZippyERP\System\Pages;
 class Error extends Base
 {
 
-        public function __construct($error = '')
-        {
-                parent::__construct();
+    public function __construct($error = '')
+    {
+        parent::__construct();
 
-                $this->add(new \Zippy\Html\Label('msg', $error));
-        }
+        $this->add(new \Zippy\Html\Label('msg', $error));
+    }
 
 }
-

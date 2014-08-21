@@ -1,5 +1,4 @@
 <?php
-  
 
 namespace ZippyERP\ERP\Entity;
 
@@ -11,5 +10,5 @@ namespace ZippyERP\ERP\Entity;
  */
 class GroupItem extends \ZCL\DB\Entity
 {
-        
-}  
+    
+}

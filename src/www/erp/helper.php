@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace ZippyERP\ERP;
 
@@ -11,130 +11,269 @@ use \ZCL\DB\DB;
 class Helper
 {
 
-        /**
-         * Возвращает  роли  с  парвами  доступа   к  
-         */
-        public static function getRoleAccess($meta_id)
-        {
-                $conn = \ZCL\DB\DB::getConnect();
-                $roles = \ZippyERP\System\Role::find();
+    private static $meta = array(); //кеширует метаданные
 
-                foreach (array_keys($roles) as $role_id) {
+    /**
+     * Возвращает  роли  с  парвами  доступа   к  
+     */
 
-                        $row = $conn->GetRow("select * from erp_metadata_access where metadata_id ={$meta_id} and role_id={$role_id}");
-                        if (is_array($row)) {
-                                $roles[$role_id]->viewacc = $row['viewacc'];
-                                $roles[$role_id]->editacc = $row['editacc'];
-                                $roles[$role_id]->deleteacc = $row['deleteacc'];
-                                $roles[$role_id]->execacc = $row['execacc'];
-                        }
-                }
+    public static function getRoleAccess($meta_id)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $roles = \ZippyERP\System\Role::find();
 
-                return $roles;
+        foreach (array_keys($roles) as $role_id) {
+
+            $row = $conn->GetRow("select * from erp_metadata_access where metadata_id ={$meta_id} and role_id={$role_id}");
+            if (is_array($row)) {
+                $roles[$role_id]->viewacc = $row['viewacc'];
+                $roles[$role_id]->editacc = $row['editacc'];
+                $roles[$role_id]->deleteacc = $row['deleteacc'];
+                $roles[$role_id]->execacc = $row['execacc'];
+            }
         }
 
-        public static function updateRoleAccess($meta_id, $rows)
-        {
-                $conn = \ZCL\DB\DB::getConnect();
-                $conn->Execute("delete from erp_metadata_access where metadata_id ={$meta_id} ");
+        return $roles;
+    }
 
-                foreach ($rows as $row) {
-                        $item = $row->getDataItem();
-                        $conn->Execute("insert  into erp_metadata_access (metadata_id,role_id,viewacc,editacc,deleteacc,execacc) values ({$meta_id},{$item->role_id}," . ($item->viewacc ? 1 : 0) . "," . ($item->editacc ? 1 : 0) . "," . ($item->deleteacc ? 1 : 0) . "," . ($item->execacc ? 1 : 0) . ") ");
+    public static function updateRoleAccess($meta_id, $rows)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->Execute("delete from erp_metadata_access where metadata_id ={$meta_id} ");
+
+        foreach ($rows as $row) {
+            $item = $row->getDataItem();
+            $conn->Execute("insert  into erp_metadata_access (metadata_id,role_id,viewacc,editacc,deleteacc,execacc) values ({$meta_id},{$item->role_id}," . ($item->viewacc ? 1 : 0) . "," . ($item->editacc ? 1 : 0) . "," . ($item->deleteacc ? 1 : 0) . "," . ($item->execacc ? 1 : 0) . ") ");
+        }
+    }
+
+    /**
+     * Генерация  иеню  для  типа  метаданных
+     * 
+     * @param mixed $meta_type
+     */
+    public static function generateMenu($meta_type)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $rows = $conn->Execute("select *  from erp_metadata where meta_type= {$meta_type} order  by  description ");
+        $menu = array();
+        $groups = array();
+
+        foreach ($rows as $meta_id => $meta_object) {
+            if (strlen($meta_object['menugroup']) == 0) {
+                $menu[$meta_id] = $meta_object;
+            } else {
+                if (!isset($groups[$meta_object['menugroup']])) {
+                    $groups[$meta_object['menugroup']] = array();
                 }
+                $groups[$meta_object['menugroup']][$meta_id] = $meta_object;
+            }
+        }
+        switch ($meta_type) {
+            case 1 : $dir = "Pages/Doc";
+                break;
+            case 2 : $dir = "Pages/Report";
+                break;
+            case 3 : $dir = "Pages/Register";
+                break;
+            case 4 : $dir = "Pages/Reference";
+                break;
+            case 5 : $dir = "Pages/UserPage";
+                break;
+        }
+        $textmenu = "";
+        foreach ($menu as $item) {
+            $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+        }
+        foreach ($groups as $gname => $group) {
+            $textmenu .= "<li class=\"dropdown-submenu\"><a tabindex=\"-1\" href=\"#\">$gname</a><ul class=\"dropdown-menu\">";
+
+            foreach ($group as $item) {
+                $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+            }
+            $textmenu .= "</ul></li>";
         }
 
-        /**
-         * Генерация  иеню  для  типа  метаданных
-         * 
-         * @param mixed $meta_type
-         */
-        public static function generateMenu($meta_type)
-        {
-                $conn = \ZCL\DB\DB::getConnect();
-                $rows = $conn->Execute("select *  from erp_metadata where meta_type= {$meta_type} order  by  description ");
-                $menu = array();
-                $groups = array();
+        return $textmenu;
+    }
 
-                foreach ($rows as $meta_id => $meta_object) {
-                        if (strlen($meta_object['menugroup']) == 0) {
-                                $menu[$meta_id] = $meta_object;
-                        } else {
-                                if (!isset($groups[$meta_object['menugroup']])) {
-                                        $groups[$meta_object['menugroup']] = array();
-                                }
-                                $groups[$meta_object['menugroup']][$meta_id] = $meta_object;
-                        }
-                }
-                switch ($meta_type) {
-                        case 1 : $dir = "Doc";
-                                break;
-                        case 2 : $dir = "Report";
-                                break;
-                        case 3 : $dir = "Register";
-                                break;
-                        case 4 : $dir = "Reference";
-                                break;
-                }
-                $textmenu = "";
-                foreach ($menu as $item) {
-                        $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/Pages/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
-                }
-                foreach ($groups as $gname => $group) {
-                        $textmenu .= "<li class=\"dropdown-submenu\"><a tabindex=\"-1\" href=\"#\">$gname</a><ul class=\"dropdown-menu\">";
+    /**
+     * список  групп документов
+     * 
+     */
+    public static function getDocGroups()
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $groups = array();
 
-                        foreach ($group as $item) {
-                                $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/Pages/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
-                        }
-                        $textmenu .= "</ul></li>";
-                }
+        $rs = $conn->Execute('SELECT distinct menugroup FROM  erp_metadata where meta_type =' . 1);
+        foreach ($rs as $row) {
+            if (strlen($row['menugroup']) > 0) {
+                $groups[$row['menugroup']] = $row['menugroup'];
+            }
+        }
+        return $groups;
+    }
 
-                return $textmenu;
+    /**
+     * список единиц измерения
+     * 
+     */
+    public static function getMeasureList()
+    {
+        $list = array();
+        $conn = DB::getConnect();
+        $sql = "select measure_id,measure_name from  erp_item_measures ";
+        $rs = $conn->Execute($sql);
+        foreach ($rs as $row) {
+            $list[$row["measure_id"]] = $row["measure_name"];
         }
 
-        public static function getDocGroups()
-        {
-                $conn = \ZCL\DB\DB::getConnect();
-                $groups = array();
+        return $list;
+    }
 
-                $rs = $conn->Execute('SELECT distinct menugroup FROM  erp_metadata');
-                foreach ($rs as $row) {
-                        if (strlen($row['menugroup']) > 0) {
-                                $groups[$row['menugroup']] = $row['menugroup'];
-                        }
-                }
-                return $groups;
+    /**
+     * список  групп товаров
+     * 
+     */
+    public static function getItemGroupList()
+    {
+        $list = array();
+        $conn = DB::getConnect();
+        $sql = "select group_id,group_name from  erp_item_group ";
+        $rs = $conn->Execute($sql);
+        foreach ($rs as $row) {
+            $list[$row["group_id"]] = $row["group_name"];
         }
 
-        public static function getMeasureList()
-        {
-                $list = array();
-                $conn = DB::getConnect();
-                $sql = "select measure_id,measure_name from  erp_item_measures ";
-                $rs = $conn->Execute($sql);
-                foreach ($rs as $row) {
-                        $list[$row["measure_id"]] = $row["measure_name"];
-                }
+        return $list;
+    }
 
-                return $list;
-        }
-        
-        public static function getTypeList()
-        {
-                $list = array();
-                $list[Consts::ITEM_TYPE_GOODS] = 'Товар';
-                $list[Consts::ITEM_TYPE_MBP] = 'МБП';
-                $list[Consts::ITEM_TYPE_SERVICE] = 'Услуги';
-                
-                return $list;
+// типы  ТМЦ
+    public static function getTypeList()
+    {
+        $list = array();
+        $list[Consts::ITEM_TYPE_GOODS] = 'Товар';
+        $list[Consts::ITEM_TYPE_MBP] = 'МБП';
+        $list[Consts::ITEM_TYPE_SERVICE] = 'Услуги';
+        $list[Consts::ITEM_TYPE_STUFF] = 'Материал';
+        $list[Consts::ITEM_TYPE_PRODUCTION] = 'Готовая продукция';
+
+        return $list;
+    }
+
+    /**
+     * возварщает запись  метаданных
+     * 
+     * @param mixed $id
+     */
+    public static function getMetaType($id)
+    {
+        if (is_array(self::$meta[$id]) == false) {
+            $conn = DB::getConnect();
+            $sql = "select * from  erp_metadata where meta_id = " . $id;
+            self::$meta[$id] = $conn->GetRow($sql);
         }
 
-        public static function getMetaType($id)
-        {
+        return self::$meta[$id];
+    }
 
-                $conn = DB::getConnect();
-                $sql = "select * from  erp_metadata where meta_id = " . $id;
-                return $conn->GetRow($sql);
+    /**
+     * Возвращает  ссписок  денежных счетов
+     * 
+     * @param mixed $bank  true  если  банк иначе  касса
+     */
+    public static function getMoneyFundsList($bank)
+    {
+        $list = array();
+        $conn = DB::getConnect();
+        $sql = "select id, title from  erp_moneyfunds ";
+        if ($bank)
+            $sql .= " where bank > 0";
+        else
+            $sql .= " where coalesce(bank,0) == 0";
+        $rs = $conn->Execute($sql);
+        foreach ($rs as $row) {
+            $list[$row["id"]] = $row["title"];
         }
+
+        return $list;
+    }
+
+    /**
+     * Запись  файла   в БД
+     * 
+     * @param mixed $file
+     * @param mixed $itemid   ID  объекта
+     * @param mixed $itemtype  тип  объекта (документ - 0 )
+     */
+    public static function addFile($file, $itemid, $comment, $itemtype = 0)
+    {
+        $conn = DB::getConnect();
+        $filename = $file['name'];
+
+        $comment = $conn->qstr($comment);
+        $filename = $conn->qstr($filename);
+        $sql = "insert  into erp_files (item_id,filename,description,item_type) values ({$itemid},{$filename},{$comment},{$itemtype}) ";
+        $conn->Execute($sql);
+        $id = $conn->Insert_ID();
+
+        $data = file_get_contents($file['tmp_name']);
+        $data = $conn->qstr($data);
+        $sql = "insert  into erp_filesdata (file_id,filedata) values ({$id},{$data}) ";
+        $conn->Execute($sql);
+    }
+
+    /**
+     * список  файдов  пррепленных  к  объекту
+     * 
+     * @param mixed $item_id
+     * @param mixed $item_type
+     */
+    public static function getFileList($item_id, $item_type = 0)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $rs = $conn->Execute("select * from erp_files where item_id={$item_id} and item_type={$item_type} ");
+        $list = array();
+        foreach ($rs as $row) {
+            $item = new \ZippyERP\ERP\DataItem();
+            $item->file_id = $row['file_id'];
+            $item->filename = $row['filename'];
+            $item->description = $row['description'];
+
+
+            $list[] = $item;
+        }
+
+        return $list;
+    }
+
+    /**
+     * удаление  файла
+     * 
+     * @param mixed $file_id
+     */
+    public static function deleteFile($file_id)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->Execute("delete  from  erp_files  where  file_id={$file_id}");
+        $conn->Execute("delete  from  erp_filesdata  where  file_id={$file_id}");
+    }
+
+    /**
+     * Возвращает  файл  и  его  содержимое
+     * 
+     * @param mixed $file_id
+     */
+    public static function loadFile($file_id)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $rs = $conn->Execute("select filename,filedata from erp_files join erp_filesdata on erp_files.file_id = erp_filesdata.file_id  where erp_files.file_id={$file_id}  ");
+        foreach ($rs as $row) {
+            return $row;
+        }
+
+        return null;
+    }
 
 }

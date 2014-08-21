@@ -15,71 +15,70 @@ use \Zippy\Html\Link\RedirectLink;
 class UserProfile extends UserBase
 {
 
-        public $_userlogin, $_userpass, $_confirm;
+    public $_userlogin, $_userpass, $_confirm;
 
-        public function __construct()
-        {
-                parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-                $user = System::getUser();
+        $user = System::getUser();
 
-                $this->_userlogin = $user->userlogin;
-                //форма   профиля
-                $form = new \Zippy\Html\Form\Form('profileform');
-                $form->add(new Label('userlogin', new Bind($this, '_userlogin')));
-                $form->add(new TextInput('userpassword', new Bind($this, '_userpass')));
-                $form->add(new TextInput('confirmpassword', new Bind($this, '_confirm')));
-                $form->add(new \Zippy\Html\Form\SubmitButton('submitpass'))->setClickHandler($this, 'onsubmitpass');
+        $this->_userlogin = $user->userlogin;
+        //форма   профиля
+        $form = new \Zippy\Html\Form\Form('profileform');
+        $form->add(new Label('userlogin', new Bind($this, '_userlogin')));
+        $form->add(new TextInput('userpassword', new Bind($this, '_userpass')));
+        $form->add(new TextInput('confirmpassword', new Bind($this, '_confirm')));
+        $form->add(new \Zippy\Html\Form\SubmitButton('submitpass'))->setClickHandler($this, 'onsubmitpass');
 
-                $form->setSubmitHandler($this, 'onsubmit');
-                $this->add($form);
+        $form->setSubmitHandler($this, 'onsubmit');
+        $this->add($form);
+    }
+
+    //записать  пароль
+    public function onsubmitpass($sender)
+    {
+        $this->setError('');
+
+        if ($this->_userpass == '') {
+            $this->setError('Введите пароль');
+        } else
+        if ($this->_confirm == '') {
+            $this->setError('Подтвердите пароль');
+        } else
+        if ($this->_confirm != $this->_userpass) {
+            $this->setError('Неверное подтверждение');
         }
 
-        //записать  пароль
-        public function onsubmitpass($sender)
-        {
-                $this->setError('');
 
-                if ($this->_userpass == '') {
-                        $this->setError('Введите пароль');
-                } else
-                if ($this->_confirm == '') {
-                        $this->setError('Подтвердите пароль');
-                } else
-                if ($this->_confirm != $this->_userpass) {
-                        $this->setError('Неверное подтверждение');
-                }
+        if (!$this->isError()) {
+            $user = System::getUser();
+            $user->userpass = (\password_hash($this->_userpass, PASSWORD_DEFAULT));
 
-
-                if (!$this->isError()) {
-                        $user = System::getUser();
-                        $user->userpass = (\password_hash($this->_userpass, PASSWORD_DEFAULT));
-
-                        $user->save();
-                }
-                $this->_confirm = '';
-                $this->_userpass = '';
+            $user->save();
         }
+        $this->_confirm = '';
+        $this->_userpass = '';
+    }
 
-        //запись  профиля
-        public function onsubmit($sender)
-        {
+    //запись  профиля
+    public function onsubmit($sender)
+    {
 
-                if (!$this->isError()) {
-                        $user = System::getUser();
-                        $uploaddir = UPLOAD_USERS;
-                        // @mkdir($uploaddir) ;
+        if (!$this->isError()) {
+            $user = System::getUser();
+            $uploaddir = UPLOAD_USERS;
+            // @mkdir($uploaddir) ;
 
-                        $user->save();
-                }
+            $user->save();
         }
+    }
 
-        public function beforeRender()
-        {
-                parent::beforeRender();
+    public function beforeRender()
+    {
+        parent::beforeRender();
 
-                $user = System::getUser();
-        }
+        $user = System::getUser();
+    }
 
 }
-

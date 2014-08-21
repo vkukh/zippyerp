@@ -8,15 +8,14 @@ namespace ZippyERP\System;
 class Role extends \ZCL\DB\Entity
 {
 
-        protected function init()
-        {
-                $this->role_id = 0;
-        }
+    protected function init()
+    {
+        $this->role_id = 0;
+    }
 
-        protected static function getMetadata()
-        {
-                return array('table' => 'system_roles', 'keyfield' => 'role_id');
-        }
+    protected static function getMetadata()
+    {
+        return array('table' => 'system_roles', 'keyfield' => 'role_id');
+    }
 
 }
-

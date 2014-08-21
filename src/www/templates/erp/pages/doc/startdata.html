@@ -1,0 +1,142 @@
+<html>
+    <body> 
+
+        <form zippy="docform">   
+            <div class="row">
+                <div class="col-md-12">  
+                    <h3>Начальные остатки</h3>
+                    Номер документа <input type="text" zippy="document_number" required="required" style="width:100px"> 
+                    Дата  <input type="text" zippy="created" required="required"  >  
+
+                </div>  
+            </div>  
+            <div class="row">
+                <div class="col-md-8">  
+                    <h4>Бухгалтерские  счета</h4>
+                    <table  class="table table-condensed">
+                        <tr>
+                            <th style="width:60px;">Номер</th>
+                            <th>Наименование</th>
+                            <th style="width:100px;">Сумма</th>
+                            <th style="width:32px;"> </th>
+                        </tr>
+                        <tr zippy="acctable">
+                            <td zippy="acccode"> </td>
+                            <td zippy="accname"> </td>
+                            <td zippy="accvalue" align="right"></td>
+                            <td><a zippy="delacc"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table> <a name="a1"></a> 
+                    Счет <select zippy="e_acclist"></select> 
+                    Дебет <input type="radio"  zippy="e_saldod" >
+                    Кредит <input type="radio"   zippy="e_saldok" >
+                    Сумма  <input  pattern= "[0-9\.]+"  style="width:40px;" type="text" zippy="e_accsumma">
+                    &nbsp;<input zippy="addaccbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                    <hr>
+                </div>  
+            </div>   
+            <div class="row">
+                <div class="col-md-8">  
+                    <h4>ТМЦ</h4>
+                    <table  class="table table-condensed">
+                        <tr>
+                            <th style="width:60px;">Код</th>
+                            <th>Склад</th>
+                            <th>Наименование</th>
+                            <th style="width:50px;">Кол.</th>
+                            <th style="width:100px;">Цена</th>
+                            <th style="width:32px;"> </th>
+                        </tr>
+                        <tr zippy="itemtable">
+                            <td zippy="itemcode"></td>
+                            <td zippy="store"></td>
+                            <td zippy="itemname"></td>
+                            <td zippy="itemcnt" align="right"></td>
+                            <td zippy="itemprice" align="right"></td>
+                            <td><a zippy="delitem"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table> <a name="a2"></a> 
+                    Склад <select zippy="e_storelist"></select> 
+                    Тип <select zippy="e_itemtypelist">
+                        <option value="1">Товар</option>
+                        <option value="2">МБП</option> 
+                        <option value="4">Материалы</option></select> 
+                    ТМЦ <select zippy="e_itemlist"></select>  <br>
+                    Кол. <input  zippy="e_quantity" type="text"  pattern= "[0-9]+"  style="width:60px;"> 
+                    Цена <input zippy="e_price" pattern= "[0-9\.]+"  type="text"  style="width:60px;" > 
+                    &nbsp;<input zippy="additembtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                </div>  
+            </div>   
+            <div class="row">
+                <div class="col-md-8">  
+                    <h4>Сотрудники (лицевые счета)</h4> 
+                    <table  class="table table-condensed">
+                        <tr>
+                            <th>ФИО</th>
+                            <th style="width:100px;"  align="right">Сумма</th>
+                            <th style="width:32px;"> </th>
+                        </tr>
+                        <tr zippy="emptable">
+                            <td zippy="empname"></td>
+                            <td zippy="empamount"></td>
+                            <td><a zippy="delemp"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table>  <a name="a3"></a>        
+                    ФИО <select zippy="e_emplist"></select> 
+                    Сумма <input zippy="e_empamount" type="text"  style="width:100px;" > 
+                    &nbsp;<input zippy="addempbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+
+                </div>  
+            </div>                      
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>Контрагенты (взаиморасчеты)</h4> 
+                    <table  class="table table-condensed">
+                        <tr>
+                            <th>Наименование</th>
+                            <th style="width:100px;"  align="right">Сумма</th>
+                            <th style="width:32px;"> </th>
+                        </tr>
+                        <tr zippy="ctable">
+                            <td zippy="сname"></td>
+                            <td zippy="сamount"></td>
+                            <td><a zippy="delс"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table>  <a name="a4"></a>        
+                    Наименование <select zippy="e_сlist"></select> 
+                    Сумма <input zippy="e_сamount" type="text"  style="width:100px;" > 
+                    &nbsp;<input zippy="addсbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+
+                </div>  
+            </div> 
+            <div class="row">
+                <div class="col-md-8">    
+                    <h4>Денежные счета</h4> 
+                    <table  class="table table-condensed">
+                        <tr>
+                            <th>Счет</th>
+                            <th style="width:100px;"  align="right">Сумма</th>
+                            <th style="width:32px;"> </th>
+                        </tr>
+                        <tr zippy="ftable">
+                            <td zippy="fсname"></td>
+                            <td zippy="famount"></td>
+                            <td><a zippy="delf"><img src="/templates/images/delete.png"></a></td>
+                        </tr>
+                    </table>   <a name="a5"></a>       
+                    Счет <select zippy="e_flist"></select> 
+                    Сумма <input zippy="e_famount" type="text"  style="width:100px;" > 
+                    &nbsp;<input zippy="addfbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                </div>  
+            </div>                      
+
+            <div class="row">
+                <div class="col-md-12" style="padding-top: 10px;">              
+                    <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">  &nbsp;<input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs">              
+                      &nbsp;<input zippy="execdoc" type="submit"  value="Провести" class="btn btn-default btn-xs">                             </div> 
+                     </div>
+            </div>   
+        </form>
+
+    </body>
+</html>

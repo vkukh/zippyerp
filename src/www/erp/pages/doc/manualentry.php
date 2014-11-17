@@ -17,6 +17,7 @@ use ZippyERP\System\Application as App;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Entry;
 use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Ручная хоз. операция  
@@ -39,8 +40,8 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('editdt', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_id not in (select acc_pid  from erp_account_plan)")));
-        $this->editdetail->add(new DropDownChoice('editct', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_id not in (select acc_pid  from erp_account_plan)")));
+        $this->editdetail->add(new DropDownChoice('editdt', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_code not in (select acc_pid  from erp_account_plan)")));
+        $this->editdetail->add(new DropDownChoice('editct', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_code not in (select acc_pid  from erp_account_plan)")));
         $this->editdetail->add(new TextInput('editamount'))->setText("1");
         $this->editdetail->add(new TextInput('editcomment'));
         $this->editdetail->setSubmitHandler($this, 'saverowOnClick');
@@ -68,9 +69,9 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     {
         $item = $row->getDataItem();
 
-        $row->add(new Label('dt', $item->acc_d_code));
-        $row->add(new Label('ct', $item->acc_c_code));
-        $row->add(new Label('amount', number_format($item->amount / 100, 2)));
+        $row->add(new Label('dt', $item->acc_d));
+        $row->add(new Label('ct', $item->acc_c));
+        $row->add(new Label('amount', H::fm($item->amount)));
         $row->add(new Label('comment', $item->comment));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -106,10 +107,10 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $entry = new Entry();
         $entry->acc_c = $ct;
         $acc = Account::load($ct);
-        $entry->acc_c_code = $acc->acc_code;  // код  счета  по  дебету
+        $entry->acc_c = $acc->acc_code;  // код  счета  по  дебету
         $entry->acc_d = $dt;
         $acc = Account::load($dt);
-        $entry->acc_d_code = $acc->acc_code; // код  счета  по  кредиту
+        $entry->acc_d = $acc->acc_code; // код  счета  по  кредиту
 
         $entry->amount = $this->editdetail->editamount->getText() * 100;
         $entry->comment = $this->editdetail->editcomment->getText();
@@ -152,18 +153,18 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->created->getText());
         $isEdited = $this->_doc->document_id > 0;
         $this->_doc->save();
-        if(strlen($this->_doc->document_number) == 0) {
-           $this->_doc->document_number = $this->_doc->document_id;
-           $this->_doc->save();
+        if (strlen($this->_doc->document_number) == 0) {
+            $this->_doc->document_number = $this->_doc->document_id;
+            $this->_doc->save();
         }
-        
-        if($sender->id == 'execdoc'){
+
+        if ($sender->id == 'execdoc') {
             $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        }else {
-            $this->_doc->updateStatus( $isEdited ? Document::STATE_EDITED : Document::STATE_NEW);   
+        } else {
+            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
         }
-        
-       
+
+
         App::$app->getResponse()->toBack();
     }
 
@@ -177,7 +178,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         foreach ($this->_entrylist as $entry) {
             $total = $total + $entry->amount / 100;
         }
-        $this->docform->total->setText(number_format($total, 2));
+        $this->docform->total->setText(H::fm($total));
     }
 
     /**

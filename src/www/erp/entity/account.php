@@ -8,7 +8,7 @@ use ZCL\DB\DB;
  * Класс-сущность  бухгалтерский счет
  * 
  * @table=erp_account_plan
- * @keyfield=acc_id
+ * @keyfield=acc_code
  */
 class Account extends \ZCL\DB\Entity
 {
@@ -24,7 +24,7 @@ class Account extends \ZCL\DB\Entity
 
         $ret = array('startdt' => 0, 'startct' => 0, 'obdt' => 0, 'obct' => 0, 'enddt' => 0, 'endct' => 0);
 
-        $children = Account::find("acc_pid=" . $this->acc_id);
+        $children = Account::find("acc_pid=" . $this->acc_code);
         if (count($children) > 0) { // если   есть  субсчета
             foreach ($children as $child) {
                 $data = $child->getSaldoAndOb($from, $to);
@@ -43,18 +43,18 @@ class Account extends \ZCL\DB\Entity
         $conn = DB::getConnect();
 
         //  начальное  сальдо  по  дебету
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry_view where  acc_d={$this->acc_id} and date(created) < " . $conn->DBDate($from);
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry_view where  acc_d={$this->acc_code} and date(created) < " . $conn->DBDate($from);
         $ret['startdt'] = $conn->GetOne($sql);
         //  начальное  сальдо  по  кредиту
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry_view where  acc_c={$this->acc_id} and date(created) < " . $conn->DBDate($from);
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry_view where  acc_c={$this->acc_code} and date(created) < " . $conn->DBDate($from);
         $ret['startct'] = $conn->GetOne($sql);
 
 
         //оборот  по  дебету
-        $sql = "select coalesce(sum(amount),0)  from  erp_account_entry_view where  acc_d= {$this->acc_id}  and date(created) >= " . $conn->DBDate($from) . " and date(created) <= " . $conn->DBDate($to);
+        $sql = "select coalesce(sum(amount),0)  from  erp_account_entry_view where  acc_d= {$this->acc_code}  and date(created) >= " . $conn->DBDate($from) . " and date(created) <= " . $conn->DBDate($to);
         $ret['obdt'] = $conn->GetOne($sql);
         //оборот  по  кредиту
-        $sql = "select coalesce(sum(amount),0)  from  erp_account_entry_view where  acc_c= {$this->acc_id}  and date(created) >= " . $conn->DBDate($from) . " and date(created) <= " . $conn->DBDate($to);
+        $sql = "select coalesce(sum(amount),0)  from  erp_account_entry_view where  acc_c= {$this->acc_code}  and date(created) >= " . $conn->DBDate($from) . " and date(created) <= " . $conn->DBDate($to);
         $ret['obct'] = $conn->GetOne($sql);
 
         // остаток  на   конец
@@ -73,7 +73,7 @@ class Account extends \ZCL\DB\Entity
     public function getSaldo()
     {
         $saldo = 0;
-        $children = Account::find("acc_pid=" . $this->acc_id);
+        $children = Account::find("acc_pid=" . $this->acc_code);
         if (count($children) > 0) { // если   есть  субсчета
             foreach ($children as $child) {
                 $saldo += $child->getSaldo();
@@ -83,10 +83,10 @@ class Account extends \ZCL\DB\Entity
 
 
         $conn = DB::getConnect();
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_d=" . $this->acc_id;
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_d=" . $this->acc_code;
         ;
         $deb = $conn->GetOne($sql);
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_c=" . $this->acc_id;
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_c=" . $this->acc_code;
 
         $cr = $conn->GetOne($sql);
 
@@ -104,7 +104,7 @@ class Account extends \ZCL\DB\Entity
     public static function getObBetweenAccount($acc_d, $acc_c, $from, $to)
     {
         $conn = DB::getConnect();
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry_view where  (acc_d= {$acc_d} or acc_d in(select acc_id from erp_account_plan p1 where  p1.acc_pid= {$acc_d}))  and (acc_c={$acc_c} or acc_c in(select acc_id from erp_account_plan p2 where  p2.acc_pid= {$acc_c})) and date(created) >= " . $conn->DBDate($from) . " and date(created) <= " . $conn->DBDate($to);
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry_view where  (acc_d= {$acc_d} or acc_d in(select acc_code from erp_account_plan p1 where  p1.acc_pid= {$acc_d}))  and (acc_c={$acc_c} or acc_c in(select acc_code from erp_account_plan p2 where  p2.acc_pid= {$acc_c})) and date(created) >= " . $conn->DBDate($from) . " and date(created) <= " . $conn->DBDate($to);
         return $conn->GetOne($sql);
     }
 

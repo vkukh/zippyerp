@@ -1,0 +1,46 @@
+<html>
+
+    <body>
+        <div class="row">
+            <div class="span12">    
+                <h4>Расходный кассовый ордер</h4>
+                <form zippy="docform">
+                    <table  border="0" cellpadding="1">
+                        <tr>
+                            <td >Номер документа</td>
+                            <td >  <input type="text" zippy="document_number" required="required" ></td>
+                            <td >Дата</td>
+                            <td >    <input type="text" zippy="created" required="required"  ></td>
+                        </tr>
+                        <tr><td  >Тип  операции</td>
+                            <td ><select zippy="optype" >
+                                </select></td>
+                            <td zippy="lblopdetail" ></td>
+                            <td ><select zippy="opdetail" ></select></td>
+                        </tr>
+                        <tr>
+                            <td >Сумма</td>
+                            <td >  <input type="text" zippy="amount" required="required" pattern= "[0-9\.]+"  style="width: 60px;" ></td>
+                            <td >НДС</td>
+                            <td >    <input type="text" zippy="nds"  pattern= "[0-9\.]+"  style="width: 60px;" ></td>
+                        </tr>                        
+                        <tr><td  >Документ - основание</td>
+                            <td > <input type="text" zippy="basedoc"></td>
+                            <td >Примечание</td>
+                            <td ><input type="text" zippy="notes"></td>
+                        </tr>
+
+                    </table>
+                    <p>&nbsp;</p>
+                    <p>
+                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
+                        <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> 
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default btn-xs">  
+
+                    </p>                        
+                </form>
+            </div>   
+        </div>   
+
+    </body>
+</html>    

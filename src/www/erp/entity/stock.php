@@ -20,14 +20,14 @@ class Stock extends \ZCL\DB\Entity
      * @return []
      * @static
      */
-    public static function findArrayEx($criteria = "")
+    public static function findArrayEx($criteria = "", $orderbyfield = null, $orderbydir = null, $count = -1, $offset = -1)
     {
-        $entitylist = self::find($criteria);
+        $entitylist = self::find($criteria, $orderbyfield, $orderbydir, $count, $offset);
 
         $list = array();
         foreach ($entitylist as $key => $value) {
 
-            $list[$key] = $value->itemname . ', ' . number_format($value->price / 100, 2);
+            $list[$key] = $value->itemname . ', ' . number_format($value->price / 100, 2, '.', '');
         }
 
         return $list;
@@ -43,8 +43,8 @@ class Stock extends \ZCL\DB\Entity
      */
     public static function getStock($store_id, $item_id, $partion, $create = false)
     {
-        $stock = self::findOne("store_id = {$store_id} and item_id = {$item_id} and partion = {$partion} ");
 
+        $stock = self::findOne("store_id = {$store_id} and item_id = {$item_id} and partion = {$partion} ");
         if ($stock == null && $create == true) {
             $stock = new Stock();
             $stock->store_id = $store_id;
@@ -52,6 +52,13 @@ class Stock extends \ZCL\DB\Entity
             //  партия  товара  определяется  себестоимостью
             $stock->price = $partion;
             $stock->partion = $partion;
+
+            if ($item_id == 0) {  // товар  для  суммового  учета
+                $stock->price = 1;
+                $stock->partion = 1;
+                $stock->item_id = 0;
+            }
+
             $stock->Save();
         }
 
@@ -66,7 +73,7 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $document Документ 
      * @param mixed $serials  Серийные  номера, RFID 
      */
-    public function updateStock($qty,  $document_id, $serials = array())
+    public function updateStock($qty, $document_id, $serials = array())
     {
         $conn = \ZCL\DB\DB::getConnect();
         $sql = "insert  into erp_stock_activity (stock_id,document_id,qty) values ( {$this->stock_id},{$document_id},{$qty} )";
@@ -79,6 +86,35 @@ class Stock extends \ZCL\DB\Entity
                 $sql = "delete from erp_store_stock_serials where stock_id={$this->stock_id},serial_number= " . $this->qstr($serial);
             $conn->Execute($sql);
         }
+    }
+
+    /**
+     * Количество на складе на  дату
+     * 
+     * @param mixed $stock_id
+     * @param mixed $date
+     * 
+     */
+    public static function getQuantity($stock_id, $date)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_stock_activity_view  where    stock_id = {$stock_id} and date(document_date) <= " . $conn->DBDate($date);
+        return $conn->GetOne($sql);
+    }
+
+    /**
+     * Количество зарезервинование  и  ожидаемое после  даты
+     * 
+     * @param mixed $stock_id
+     * @param mixed $date
+     * 
+     * @return Массив с  двумя  значениями 'r'  и 'p'
+     */
+    public static function getQuantityFuture($stock_id, $date)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $sql = " select coalesce(sum(case  when  quantity > 0 then quantity else 0 end ),0) as  w,  coalesce(sum(case  when  quantity < 0 then 0-quantity else 0 end ),0) as  r  from erp_stock_activity_view  where    stock_id = {$stock_id} and date(document_date) > " . $conn->DBDate($date);
+        return $conn->GetRow($sql);
     }
 
 }

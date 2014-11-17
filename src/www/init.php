@@ -5,7 +5,6 @@ $http = $_SERVER["HTTPS"] == 'on' ? 'https' : 'http';
 define('_BASEURL', $http . "://" . $_SERVER["HTTP_HOST"] . '/');
 define('_ZIPPY', _ROOT . 'zippy/');
 
-
 define('UPLOAD_USERS', 'uploads/users/');
 
 error_reporting(E_ALL ^ E_NOTICE);

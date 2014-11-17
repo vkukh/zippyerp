@@ -9,10 +9,11 @@ use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Form\Form;
 use \Zippy\Html\Form\TextInput;
 use \Zippy\Html\Form\TextArea;
+use \Zippy\Html\Form\DropDownChoice;
 use \Zippy\Html\Form\SubmitButton;
 use \Zippy\Html\Form\Button;
- use\ZippyERP\ERP\Entity\Store;
- use\ZippyERP\ERP\Entity\Stock;
+use \ZippyERP\ERP\Entity\Store;
+use \ZippyERP\ERP\Entity\Stock;
 use \Zippy\Html\DataList\Paginator;
 
 class StoreList extends \ZippyERP\ERP\Pages\Base
@@ -30,6 +31,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('storeform'))->setVisible(false);
         $this->storeform->add(new TextInput('storeeditname'));
         $this->storeform->add(new TextArea('storeeditdesc'));
+        $this->storeform->add(new DropDownChoice('storeedittype'));
         $this->storeform->add(new SubmitButton('storesave'))->setClickHandler($this, 'storesaveOnClick');
         $this->storeform->add(new Button('storecancel'))->setClickHandler($this, 'storecancelOnClick');
         $itempanel = $this->add(new Panel('itemtable'));
@@ -59,6 +61,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->storeform->setVisible(true);
         $this->storeform->storeeditname->setText($this->_store->storename);
         $this->storeform->storeeditdesc->setText($this->_store->description);
+        $this->storeform->storeedittype->setValue($this->_store->store_type);
     }
 
     public function storedeleteOnClick($sender)
@@ -86,6 +89,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
 
         $this->_store->storename = $this->storeform->storeeditname->getText();
         $this->_store->description = $this->storeform->storeeditdesc->getText();
+        $this->_store->store_type = $this->storeform->storeedittype->getValue();
         if ($this->_store->storename == '') {
             $this->setError("Введите имя");
             return;
@@ -105,10 +109,10 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
 
     public function showitemOnClick($sender)
     {
-        $item = $sender->owner->getDataItem();
+        $store = $sender->owner->getDataItem();
         $this->storetable->storelist->setSelectedRow($item->store_id);
         $this->storetable->storelist->Reload();
-        $this->_store = $item;
+        $this->_store = $store;
         $this->itemtable->setVisible(true);
         $this->itemtable->itemlist->Reload();
     }
@@ -120,8 +124,11 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('itemname', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('price', $item->price > 0 ? number_format($item->price / 100, 2) : ''));
-
-        $row->add(new Label('quantity', $item->quantity));
+        $qty = Stock::getQuantity($item->stock_id, time());
+        $f = Stock::getQuantityFuture($item->stock_id, time());
+        $row->add(new Label('quantity', $qty));
+        $row->add(new Label('quantityw', $f['w']));
+        $row->add(new Label('quantityr', $f['r']));
     }
 
 }

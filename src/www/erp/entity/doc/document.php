@@ -44,7 +44,9 @@ class Document extends \ZCL\DB\Entity
         $this->basedoc = '';
         $this->document_number = '';
         $this->created = time();
+        $this->document_date = time();
         $this->user_id = \ZippyERP\System\System::getUser()->user_id;
+        $this->headerdata = array();
     }
 
     protected static function getMetadata()
@@ -64,6 +66,8 @@ class Document extends \ZCL\DB\Entity
     {
 
         $this->packData();
+
+        //todo  отслеживание  изменений
     }
 
     /**
@@ -88,6 +92,8 @@ class Document extends \ZCL\DB\Entity
                 if (strlen($value) > 10) {
                     $value = "<![CDATA[" . $value . "]]>";
                 }
+                $value = $value === true ? 'true' : $value;
+                $value = $value === false ? 'false' : $value;
                 $this->content .= "<{$key}>{$value}</{$key}>";
             }
 
@@ -130,7 +136,7 @@ class Document extends \ZCL\DB\Entity
      * Выполнение документа - обновление склада, бухгалтерские проводки и  т.д.
      * 
      */
-    protected function Execute()
+    public function Execute()
     {
 
         if (trim(get_class($this), "\\") == 'ZippyERP\ERP\Entity\Doc\Document') {
@@ -202,13 +208,13 @@ class Document extends \ZCL\DB\Entity
     protected function afterSave($update)
     {
 
-      //  if ($update == false) {   //новый  документ             
+        //  if ($update == false) {   //новый  документ             
         //    $this->updateStatus(self::STATE_NEW);
-       // }
+        // }
         // else {
         //    if ($this->state == self::STATE_NEW)
-            //    $this->updateStatus(self::STATE_EDITED);
-      //  }
+        //    $this->updateStatus(self::STATE_EDITED);
+        //  }
     }
 
     /**
@@ -337,25 +343,16 @@ class Document extends \ZCL\DB\Entity
     }
 
     /**
-     *  Загружает данные  на  основании  другого  документа
-     * 
-     */
-    protected function loadBasedOn($id)
-    {
-        
-    }
-
-    /**
      *  Возвращает  списки  документов которые  могут быть  созданы  на  основании
      * 
      */
-    protected function getRelationBased()
+    public function getRelationBased()
     {
         $list = array();
 
         return $list;
     }
- 
+
     //дефолтный список состояний  для   выпадающих списков
     public static function getStatesList()
     {
@@ -366,4 +363,5 @@ class Document extends \ZCL\DB\Entity
 
         return $list;
     }
+
 }

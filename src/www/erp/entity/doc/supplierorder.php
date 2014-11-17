@@ -8,12 +8,19 @@ namespace ZippyERP\ERP\Entity\Doc;
 class SupplierOrder extends Document
 {
 
-    public function generateReport()
+    protected function init()
     {
-        return ' ';
+        parent::init();
+        $this->intattr1 = 0; //поставщик
+        $this->intattr2 = 0; // оплата
     }
 
-    protected function Execute()
+    public function generateReport()
+    {
+        return '';
+    }
+
+    public function Execute()
     {
 
 
@@ -31,6 +38,13 @@ class SupplierOrder extends Document
         $list[Document::STATE_WORK] = 'В работе';
         $list[Document::STATE_CLOSED] = 'Закрыт';
 
+        return $list;
+    }
+
+    public function getRelationBased()
+    {
+        $list = array();
+        $list['PurchaseInvoice'] = 'Счет входящий';
         return $list;
     }
 

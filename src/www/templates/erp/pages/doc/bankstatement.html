@@ -13,27 +13,29 @@
                             <td >    <input type="text" zippy="created" required="required"  ></td>
                         </tr>
                         <tr>
-                            <td >Банковский счет</td>
-                            <td > <select zippy="bankaccount">
-                                </select> </td>
-                            <td >Основание</td>
-                            <td ><input zippy="basedoc" style="width:200px"></td>
+                            <td >Расчетный счет</td>
+                            <td colspan="3"> <select zippy="bankaccount">
+                                </select> </td>  </tr>
+                        <tr>  <td >Коментарий</td>
+                            <td  colspan="3"><input zippy="notes" style="width:200px"></td>
                         </tr>
 
                     </table>
 
                     <table  border="0" cellpadding="1"  width="500px">
                         <tr >
-                            <th width="50">Тип</th>
-                            <th width="100">Сумма</th>
-                            <th width="31" style="width: 50px;">Счет</th>
-                            <th width="52">Коментарий</th>
+                            <th >Тип</th>
+                            <th width="60">Сумма</th>
+                            <th >Документ</th>
+                            <th >Контрагент</th>
+                            <th >Коментарий</th>
 
                         </tr>
                         <tr zippy="detail">
-                            <td zippy="type"></td>
+                            <td zippy="optype"></td>
                             <td zippy="amount" align="right"></td>
-                            <td zippy="account" align="right"></td>
+                            <td zippy="document" ></td>
+                            <td zippy="customer" ></td>
                             <td zippy="comment" ></td>
                             <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
                         </tr>
@@ -43,17 +45,21 @@
 
                     <p>&nbsp;</p>
                     <p>
-                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">  <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs">   <input zippy="execdoc" type="submit"  value="Выполнить" class="btn btn-default btn-xs"> 
+                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">&nbsp;  <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs">&nbsp;   <input zippy="execdoc" type="submit"  value="Выполнить" class="btn btn-default btn-xs"> 
                     </p>
 
                 </form>
                 <form zippy="editdetail">
                     <strong>Новая  строка</strong>
                     <table  border="0" >
-                        <tr><td>Тип</td><td><select zippy="edittype" > <option value="1">Приход</option><option value="2">Расход</option></select> 
-                        <tr><td>Сумма</td><td><input type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  style="width: 40px;" ></input></td></tr>
-                        <tr><td>Счет</td><td><select zippy="editaccount" ><option value="0">Выбрать</option></select> </td></tr>
+                        <tr><td>Тип операции</td><td><select zippy="editoptype" > <option value="0">Выбрать</option></select> 
+                        <tr><td><span data-label="editcustomer">Контрагент</span></td><td><select zippy="editcustomer" ><option value="0">Выбрать</option></select> </td></tr>
+                        <tr><td><span data-label="editdoc">Документ</span></td><td><input zippy="editdoc" ></td></tr>
+                        <tr><td><span data-label="editpayment">Тип  платежа</span></td><td><select zippy="editpayment" ><option value="0">Выбрать</option></select></td></tr>
+                        <tr><td>Сумма</td><td><input type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  style="width: 75px;" ></input></td></tr>
+                        <tr><td><span data-label="editnds">Ндс</span></td><td><input type="text" zippy="editnds"  pattern= "[0-9\.]+"  style="width: 75px;" ></input></td></tr>
                         <tr><td>Комментарий</td><td><input type="text" zippy="editcomment"    ></td></tr>
+                        <tr><td>Не выполнять проводки</td><td><input type="checkbox" zippy="editnoentry"></td></tr>
                         <tr><td><input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default btn-xs"> </td><td><input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default btn-xs"> </td></tr>
                     </table>
                 </form>

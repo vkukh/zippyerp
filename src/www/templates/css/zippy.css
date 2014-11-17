@@ -18,8 +18,9 @@ ul.autocomplete
     padding: 0px;
     list-style: none;
     color: #000;
-    display:block;
+    display:none;
     z-index:1000;
+    
 }
 ul.autocomplete li 
 {

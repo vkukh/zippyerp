@@ -17,9 +17,9 @@
                             <td ><select zippy="supplier" >
                                     <option id="0">Выбрать</option>
                                 </select></td>
-                                 <td >Состояние</td>
+                            <td >Состояние</td>
                             <td ><select zippy="orderstate" >
-                                    
+
                                 </select></td>                       
                         </tr>
                         <tr>
@@ -45,13 +45,10 @@
                             <td zippy="amount" align="right"> </td>
                             <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
                         </tr>
+
+                        <tr  style="font-weight: bolder;"><td colspan="4" align="right">Итого:</td><td zippy="total" align="right" ></td><td> </td></tr>
                     </table>
                     <a zippy="addrow">Добавить позицию</a>
-                    <table  border="0" cellpadding="1" width="500px">
-                        <tr><td align="right">НДС:</td><td align="right" width><input type="text" zippy="nds" value="0" style="width: 60px;" pattern= "[0-9\.]+" ></td></tr>
-                        <tr><td align="right">Итого:</td><td zippy="total" align="right" width="100px"  style="font-weight: bolder;"></td></tr>
-                    </table>
-
                     <p>&nbsp;</p>
                     <p>
                         <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
@@ -79,7 +76,7 @@
                     </div> 
                 </div>   
 
-                
+
             </div> 
         </div>   
 

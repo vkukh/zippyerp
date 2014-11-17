@@ -27,7 +27,7 @@ class AdminBase extends \Zippy\Html\WebPage
         }
     }
 
-     function setError($msg)
+    function setError($msg)
     {
         $this->_errormsg = $msg;
         $this->errormessage->setVisible(true);
@@ -42,9 +42,10 @@ class AdminBase extends \Zippy\Html\WebPage
     {
         $this->errormessage->setVisible(false);
     }
-  
+
     final protected function isError()
     {
         return strlen($this->_errormsg) > 0;
     }
+
 }

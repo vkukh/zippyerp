@@ -5,48 +5,72 @@
     <body>
         <div class="row">
             <div class="col-md-8">    
-                <div zippy="employeetable">
-                    <h3>Справочник сотрудников </h3>
-                    <a zippy="add" class="btn btn-default btn-xs">Добавить</a> 
-                    <table class="table table-bordered   table-condensed" style="width:400px">
-                        <tr>
-                            <th >Наименование</th>
 
-                            <th > </th>
-                        </tr>
-                        <tr zippy="employeelist">
-                            <td zippy="firstname"></td>
+                <div class="row">
+                    <div zippy="employeetable">
+                        <h3>Справочник сотрудников </h3>
+                        <a zippy="add" class="btn btn-default btn-xs">Добавить</a> 
+                        <table class="table table-bordered   table-condensed" class="col-md-10">
+                            <tr>
+                                <th >Имя</th>
+                                <th >Отдел</th>
+                                <th >Должность</th>
+                                <th >Логин</th>
+
+                                <th > </th>
+                            </tr>
+                            <tr zippy="employeelist">
+                                <td zippy="name"></td>
+                                <td zippy="department"></td>
+                                <td zippy="position"></td>
+                                <td zippy="login"></td>
 
 
-                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
-                        </tr>
-                    </table>
+                                <td style="width:52px"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                            </tr>
+                        </table>
 
+
+                    </div>
+
+                    <form zippy="employeedetail" method="post" class="col-md-6">                  
+                        <div class="form-group">
+                            <label for="editfirstname">Имя контакта</label>
+                            <a zippy="opencontact" title="Редактировать данные   контакта"><img src="/templates/images/edit.png"></a> 
+                            <a zippy="showcontact" title="Просмотр  контакта"><img src="/templates/images/loupe.png"></a>
+                            <a zippy="addcontact" title="Создать  контакт"><i class="fa fa-plus-circle"></i></a>
+                            <input class="form-control" zippy="editcontact" />
+
+                        </div>
+                        <div class="form-group">
+                            <label for="editdepartment">Отдел</label>
+                            <select zippy="editdepartment" class="form-control">
+                                <option>Не выбран</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editposition">Должность</label>
+                            <select zippy="editposition" class="form-control">
+                                <option>Не выбран</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editlogin">Логин</label>
+                            <input  pattern= "[a-zA-Z0-9]+" zippy="editlogin" class="form-control">
+
+                        </div>
+
+                        <input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
+                        <input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
+
+                    </form>
 
                 </div>
+                <div zippy="contactdetail">
 
-                <form zippy="employeedetail" method="post" class="col-md-6">                  
-                    <div class="form-group">
-                        <label for="editfirstname">Имя</label>
-                        <input class="form-control" zippy="editfirstname" />
-                    </div>
-                     <div class="form-group">
-                        <label for="editdepartment">Отдел</label>
-                        <select id="editdepartment" class="form-control">
-                        <option>Не выбран</option>
-                        </select>
-                    </div>
-                     <div class="form-group">
-                        <label for="editposition">Должность</label>
-                        <select id="editposition" class="form-control">
-                        <option>Не выбран</option>
-                        </select>
-                    </div>
-
-                    <input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
-                    <input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
-
-                </form>
+                </div>
+                <div zippy="contactview">
+                </div>                
             </div> 
         </div>   
 

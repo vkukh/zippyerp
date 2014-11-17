@@ -5,34 +5,33 @@
     <body>
         <div class="row">
             <div class="col-md-10"> 
-              
+
                 <div zippy="contacttable">
                     <h3>Справочник контактов </h3>
                     <form zippy="filter" class="navbar-form" role="search">
-                    Фамилия,  тэг <input type="text"> 
-              &nbsp;<button type="submit" class="btn  btn-default btn-xs navbar-btn">Ввод</button>
-              </form>
+                        Поиск <input type="search" zippy="search" > 
+                        &nbsp;<button type="submit"  class="btn  btn-default btn-xs navbar-btn">Искать</button>
+                    </form>
                     <a zippy="add" >Добавить</a> 
                     <table class="table table-striped  table-condensed" >
                         <tr>
                             <th >Фамилия</th>
                             <th >Имя</th>
-         
                             <th >Email</th>
-                            <th >Должность</th>
-                            <th >Описание, тэги</th>
+                            <th >Тип</th>
+
                             <th > </th>
                         </tr>
                         <tr zippy="contactlist">
                             <td zippy="lastname"></td>
                             <td zippy="firstname"></td>
-                          
+
                             <td zippy="email"></td>
-                            <td zippy="position"></td>
-                            <td zippy="notes"></td>
+                            <td zippy="type"></td>
+
 
                             <td style="width:75px"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="show"  title="Работа  с контентом"><img src="/templates/images/loupe.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
-                            
+
                         </tr>
                     </table>
                     <div zippy="pag">
@@ -45,66 +44,10 @@
                 <div zippy="contactdetail">
 
                 </div>
-                <div zippy="content">
-                <a zippy="backlist">К списку</a>
-                  <h4 zippy="contentname"></h4>
-                  <h5 zippy="contentnotes" style="font-style: italic;"></h5>
-                  <div class="row">
-                    <div class="col-md-4"> 
-                    <h5><b>Коментарии</b></h5>
-                            <table cellpadding="4">
-                                <tr zippy="msglist"><td><span zippy="msgdate"></span>, <span style="color:navy" zippy="msguser"></span>:
-                                        <p  zippy="msgdata"></p>
-                                    </td><td valign="top" style="width: 30px;"><a zippy="delmsg"><img src="/templates/images/delete.png"></a></td></tr>
-                            </table>
-                            <hr>
-                            <form zippy="addmsgform">
-                                <div class="form-group">
-                                    <label for="addmsg">Коментарий</label>
-                                    <textarea required="required" class="form-control"  zippy="addmsg" style="width:200px;height:120px;"></textarea>
-                                </div>                             
-                                <input class="btn btn-default btn-xsall" type="submit" value="Добавить">
-                            </form>                    
-                          </div>
-                    <div class="col-md-4"> 
-                    <h5><b>Прикрепленные файлы</b></h5>
-                            <table cellpadding="4">
-                                <tr zippy="files" style="font-size: smaller ">
-                                <td ><a zippy="filename" target="_blank" ></a></td>
-                                <td  style="width: 30px;"><a zippy="delfile"><img src="/templates/images/delete.png"></a></td></tr>
-                            </table>
-                            <hr>
-                            <form zippy="addfileform"  enctype="multipart/form-data" >
-                                <div class="form-group">
-                                    <label for="addfile">Выбрать файл</label>
-                                    <input type="file" class="form-control" required="required" zippy="addfile">
-
-                                </div> 
-
-                                <div class="form-group">
-                                    <label for="adddescfile">Описание</label>
-                                    <input class="form-control" zippy="adddescfile"  class="form-control">  
-                                </div> 
-
-
-                                <input class="btn btn-default btn-xs" type="submit" value="Добавить">
-
-                            </form>                     
-                          </div>
-                    <div class="col-md-3"> 
-                    <h5><b>Расписание</b></h5>
-                            <table cellpadding="4">
-                                <tr zippy="eventlist" style="font-size: smaller ">
-                                <td zippy="eventdate"></td>
-                                <td zippy="eventtype"></td>
-                                <td zippy="eventstate"></td>
-                                <td  style="width: 30px;"><a zippy="deletevent"><img src="/templates/images/delete.png"></a></td>
-                                </tr>
-                            </table>                  
-                    <a>Добавить  событие</a>
-                          </div>
-                  </div>
+                <div zippy="contactview">
                 </div>
+
+
             </div>   
         </div>   
 

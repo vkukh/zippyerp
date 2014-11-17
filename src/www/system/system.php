@@ -84,28 +84,37 @@ class System
         return Session::getSession()->lang;
     }
 
-    public static function getOptions($module = "system",$option ='')
+    /**
+     * Возвращает набор  параметром  по  имени набора
+     * 
+     * @param mixed $group
+     */
+    public static function getOptions($group)
     {
         $options = array();
         $conn = \ZCL\DB\DB::getConnect();
 
-        $rs = $conn->Execute("select optname,optvalue from system_options where module='{$module}' ");
-        foreach ($rs as $row) {
-            $options[$row['optname']] = $row['optvalue'];
+        $rs = $conn->GetOne("select optvalue from system_options where optname='{$group}' ");
+        if (strlen($rs) > 0) {
+            $options = @unserialize($rs);
         }
-        if(strlen($option) ==0) return $options;
-        else  $options[$option];
+
+        return $options;
     }
 
-    public static function setOptions($options, $module = "system")
+    /**
+     * Записывает набор  параметров  по имени набора
+     * 
+     * @param mixed $group
+     * @param mixed $options
+     */
+    public static function setOptions($group, $options)
     {
-
+        $options = serialize($options);
         $conn = \ZCL\DB\DB::getConnect();
 
-        foreach ($options as $key => $option) {
-            $conn->Execute(" delete from system_options where module='{$module}' and optname='{$key}' ");
-            $conn->Execute(" insert into system_options (module,optname,optvalue) values ('{$module}','{$key}'," . $conn->qstr($option) . " ) ");
-        }
+        $conn->Execute(" delete from system_options where  optname='{$group}' ");
+        $conn->Execute(" insert into system_options (optname,optvalue) values ('{$group}'," . $conn->qstr($options) . " ) ");
     }
 
 }

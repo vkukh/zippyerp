@@ -10,6 +10,7 @@ use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Panel;
 use \ZippyERP\ERP\Entity\Account;
 use \Zippy\Html\Link\RedirectLink;
+use \ZippyERP\ERP\Helper as H;
 
 class Shahmatka extends \ZippyERP\ERP\Pages\Base
 {
@@ -57,9 +58,9 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
 
         $detail = array();
         $left = array();
-        $top = array();
+        $top = array('');
         $right = array();
-        $bottom = array();
+        $bottom = array('Кредит');
 
 
         $from = strtotime($this->filter->from->getValue());
@@ -70,23 +71,36 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
             $data = $acc->getSaldoAndOb($from, $to);  //получаем остатки  и  обороты  на  период
             $left[] = $acc->acc_code;
             $top[] = $acc->acc_code;
-            $right[] = number_format($data['obdt'] / 100, 2);
-            $bottom[] = number_format($data['obct'] / 100, 2);
+            $right[] = H::fm($data['obdt']);
+            $bottom[] = H::fm($data['obct']);
+        }
+        $top[] = 'Дебет';
+        $bottom[] = '';
+
+        $detail[] = $top;
+        foreach ($acclist as $acc) {
             $arr = array();
+            $data = $acc->getSaldoAndOb($from, $to);  //получаем остатки  и  обороты  на  период
+            $arr[] = $acc->acc_code;
+
             foreach ($acclist as $acc2) {
-                $arr[] = number_format(Account::getObBetweenAccount($acc->acc_id, $acc2->acc_id, $from, $to) / 100, 2);
+                $arr[] = H::fm(Account::getObBetweenAccount($acc->acc_code, $acc2->acc_code, $from, $to));
             }
+            $arr[] = H::fm($data['obdt']);
             $detail[] = $arr;
         }
+        $detail[] = $bottom;
 
         $header = array(
             'from' => date('d.m.Y', $from),
-            'to' => date('d.m.Y', $to)
+            'to' => date('d.m.Y', $to),
+            'size' => count($top) - 1
         );
 
-        $reportgen = new \ZCL\RepGen\RepGen(_ROOT . 'templates/erp/templates/shahmatka.html', $header);
+        $report = new \ZippyERP\ERP\Report('shahmatka.tpl');
 
-        $html = $reportgen->generatePivot($detail, $left, $top, $right, $bottom);
+        $html = $report->generate($header, $detail);
+
         return $html;
     }
 

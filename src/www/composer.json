@@ -5,7 +5,10 @@
         "tecnick.com/tcpdf": "dev-master",
         "swiftmailer/swiftmailer": "v5.0.1",
         "monolog/monolog": "1.6.0",
-        "ircmaxell/password-compat": "dev-master"
+        "ircmaxell/password-compat": "dev-master",
+        "nesbot/Carbon": "*",
+         "fenom/fenom": "dev-master"
+
     },
     "config": {
     }

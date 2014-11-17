@@ -1,0 +1,37 @@
+<html>
+
+    <body>
+        <div class="row">
+            <div class="col-md-12">    
+                <h4>Договор</h4>
+                <form zippy="docform">
+
+                    <table  border="0" cellpadding="4">
+                        <tr>
+                            <td >Номер документа</td>
+                            <td >  <input type="text" zippy="document_number" required="required" ></td>
+                            <td >Дата</td>
+                            <td >    <input type="text" zippy="created" required="required"  style="width:100px;"  ></td>
+                        </tr>
+
+                        <tr>
+
+                            <td  >Контрагент</td>
+                            <td ><select zippy="customer" >
+                                </select></td>
+                            <td>Период</td>
+                            <td >С <input zippy="startdate" style="width:100px;" > по <input zippy="enddate" style="width:100px;" > </td>
+                        </tr>
+                        <tr><td valign="top" >Сумма</td><td colspan="3"><input zippy="amount" value="0" style="width: 60px;" pattern= "[0-9\.]+" ></td></tr>
+                        <tr><td valign="top" >Описание</td><td colspan="3"><textarea zippy="description" rows="8" cols="50"></textarea></td></tr>
+                        <tr><td> </td><td><input type="submit"  value="Сохранить"   class="btn btn-default btn-xs"  zippy="submit">&nbsp;<input type="button" zippy="cancel" value="Отменить"   class="btn btn-default btn-xs"></td></tr>
+
+                    </table>
+
+                </form>
+
+            </div>   
+        </div>   
+
+    </body>
+</html>                                  

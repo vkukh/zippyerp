@@ -3,9 +3,11 @@
 namespace ZippyERP\ERP\Entity\Doc;
 
 use \ZippyERP\System\System;
+use \ZippyERP\ERP\Util;
+use \ZippyERP\ERP\Helper as H;
 
 /**
- * Класс-сущность  локумент приходная  накладая
+ * Класс-сущность  документ счета   входящего
  * 
  */
 class PurchaseInvoice extends Document
@@ -14,55 +16,66 @@ class PurchaseInvoice extends Document
     public function generateReport()
     {
 
-        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
 
         $i = 1;
-        $total = 0;
         $detail = array();
+        $total = 0;
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,
-                "tovar_name" => $value['tovarname'],
+                "tovar_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "serial_number" => $value['serial_number'],
                 "quantity" => $value['quantity'],
-                "price" => number_format($value['price'] / 100, 2),
-                "amount" => number_format($value['quantity'] * $value['price'] / 100, 2)
+                "price" => H::fm($value['price']),
+                "amount" => H::fm($value['quantity'] * $value['price'])
             );
             $total += $value['quantity'] * $value['price'] / 100;
         }
 
+        $bank = \ZippyERP\ERP\Entity\Bank::load($f->bank);
+        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
-            "customer" => $customer->customer_name,
+            "account" => $f->bankaccount,
+            "bank" => $bank->bank_name,
+            "mfo" => $bank->mfo,
+            "address" => $firm['city'] . ', ' . $firm['street'],
+            "customername" => $customer->customer_name,
             "document_number" => $this->document_number,
-            "nds" => number_format($this->headerdata["nds"] / 100, 2),
-            "total" => number_format($total + $this->headerdata["nds"] / 100, 2)
-        );
+            "base" => $this->base,
+            "paydate" => date('d.m.Y', $this->headerdata["payment_date"]),
+            "nds" => H::fm($this->headerdata["nds"]),
+            "total" => H::fm($this->headerdata["total"]));
 
+        $report = new \ZippyERP\ERP\Report('purchaseinvoice.tpl');
 
-        $reportgen = new \ZCL\RepGen\RepGen(_ROOT . 'templates/erp/templates/purchaseinvoice.html', $header);
+        $html = $report->generate($header, $detail);
 
-
-
-        $html = $reportgen->generateSimple($detail);
         return $html;
     }
 
-    protected function Execute()
+    public function Execute()
     {
-        $amount = 0;
-        foreach ($this->detaildata as $value) {
-            //поиск  записи  о  товаре   на складе
-
-            $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $value['item_id'], $value['price'], true);
-            $stock->updateStock($value['quantity'],  $this->document_id, strlen($value['serial_number']) > 0 ? array($value['serial_number']) : array());
-            $amount += $value['price'];
-        }
-
-        \ZippyERP\ERP\Entity\Entry::AddEntry("281", "63", $amount, $this->document_id);
-        $customer_id = $this->headerdata["customer"];
-        \ZippyERP\ERP\Entity\Customer::AddActivity($customer_id, $amount, $this->document_id);
 
         return true;
+    }
+
+    public function nextNumber()
+    {
+        $doc = Document::getFirst("meta_name='PurchaseInvoice'", "document_id ", 'desc');
+        if ($doc == null)
+            return '';
+        $prevnumber = $doc->document_number;
+        if (strlen($prevnumber) == 0)
+            return '';
+        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
+
+        return "СВ-" . sprintf("%05d", ++$prevnumber);
+    }
+
+    public function getRelationBased()
+    {
+        $list = array();
+        $list['GoodsReceipt'] = 'Приходная накладная';
+        return $list;
     }
 
 }

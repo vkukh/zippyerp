@@ -54,7 +54,8 @@ class Task extends \ZCL\DB\Entity
     public static function getAssignedList()
     {
 
-        return \ZippyERP\System\User::findArray('userlogin');
+        // return \ZippyERP\System\User::findArray('userlogin');
+        return \ZippyERP\ERP\Entity\Employee::findArray('shortname');
     }
 
 }

@@ -35,6 +35,7 @@ class StartData extends \ZippyERP\ERP\Pages\Base
     public $_farr = array();
     public $_saldo = 1;
     private $_doc;
+    private $_edited = false;
 
     public function __construct($docid = 0)
     {
@@ -74,6 +75,7 @@ class StartData extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа на страницу
+            $this->_edited = true;
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
             $this->docform->created->setText(date('Y-m-d', $this->_doc->document_date));
@@ -107,7 +109,7 @@ class StartData extends \ZippyERP\ERP\Pages\Base
     public function delaccOnClick($sender)
     {
         $item = $sender->owner->getDataItem();
-        $this->_accarr = array_diff_key($this->_accarr, array($item->acc_id => $this->_accarr[$item->acc_id]));
+        $this->_accarr = array_diff_key($this->_accarr, array($item->acc_code => $this->_accarr[$item->acc_code]));
         $this->docform->acctable->Reload();
         $this->goAnkor('a1');
     }
@@ -276,7 +278,9 @@ class StartData extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        if ($this->_edited) {
+            App::$app->getResponse()->toBack();
+        }
     }
 
     public function savedocOnClick($sender)
@@ -290,15 +294,15 @@ class StartData extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['item'] = base64_encode(serialize($this->_itemarr));
         $this->_doc->headerdata['c'] = base64_encode(serialize($this->_carr));
         $this->_doc->headerdata['f'] = base64_encode(serialize($this->_farr));
-        $isEdited = $this->_doc->document_id > 0;
 
         $this->_doc->save();
-        if($sender->id == 'execdoc'){
+
+        if ($sender->id == 'execdoc') {
             $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        }else {
-            $this->_doc->updateStatus( $isEdited ? Document::STATE_EDITED : Document::STATE_NEW);   
-        }        
-        App::Redirect('\ZippyERP\ERP\Pages\Register\DocList', $this->_doc->document_id);
+        } else {
+            $this->_doc->updateStatus($this->_edited ? Document::STATE_EDITED : Document::STATE_NEW);
+        }
+        $this->backtolistOnClick(null);
     }
 
 }

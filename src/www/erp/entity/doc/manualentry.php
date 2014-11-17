@@ -2,6 +2,8 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
+use \ZippyERP\ERP\Helper as H;
+
 /**
  * Класс-сущность  документ ручная хоз. операция
  * 
@@ -28,15 +30,16 @@ class ManualEntry extends Document
 
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,
-                "dt" => $value['acc_d_code'],
-                "ct" => $value['acc_c_code'],
-                "amount" => number_format($value['amount'] / 100, 2),
+                "dt" => $value['acc_d'],
+                "ct" => $value['acc_c'],
+                "amount" => H::fm($value['amount']),
                 "comment" => $value['comment']);
         }
 
-        $reportgen = new \ZCL\RepGen\RepGen(_ROOT . 'templates/erp/templates/manualentry.html', $header);
+        $report = new \ZippyERP\ERP\Report('manualentry.tpl');
 
-        $html = $reportgen->generateSimple($detail);
+        $html = $report->generate($header, $detail);
+
         return $html;
     }
 

@@ -30,6 +30,14 @@
                             <td><input type="text" zippy="storeeditname" required="required"></td>
                         </tr>
                         <tr>
+                            <td>Тип  склада</td>
+                            <td><select zippy="storeedittype">
+                                    <option value="1">Оптовый склад</option>
+                                    <option  value="2">Розничный склад (магазин)</option>
+                                    <option  value="3">Торговая  точка  с  суммовым  учетом</option>
+                                </select></td>
+                        </tr>
+                        <tr>
                             <td valign="top" >Описание</td>
                             <td><textarea  zippy="storeeditdesc" cols="40" rows="3"></textarea></td>
                         </tr>
@@ -47,13 +55,15 @@
                             <th>Наименование</th>
                             <th width="50">Ед.</th>
                             <th>Цена</th>
-                            <th>Кол.</th>
+                            <th colspan="3">Количество <i title="Текущее,  зарезервированное, ожидаемое"  class="fa fa-info-circle"></i> </th>
                         </tr>
                         <tr zippy="itemlist">
                             <td zippy="itemname"></td>
                             <td zippy="measure"></td>
                             <td zippy="price" align="right"></td>
                             <td zippy="quantity" align="right"></td>
+                            <td zippy="quantityr" align="right"></td>
+                            <td zippy="quantityw" align="right"></td>
                         </tr>
                     </table>
                     <div zippy="pag"></div>

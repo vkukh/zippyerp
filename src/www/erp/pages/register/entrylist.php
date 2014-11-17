@@ -32,8 +32,8 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
         $this->filter->add(new Date('from', strlen($filter->from) > 0 ? $filter->from : time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', strlen($filter->to) > 0 ? $filter->to : time()));
-        $this->filter->add(new DropDownChoice('dt', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_id not in (select acc_pid  from erp_account_plan)")));
-        $this->filter->add(new DropDownChoice('ct', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_id not in (select acc_pid  from erp_account_plan)")));
+        $this->filter->add(new DropDownChoice('dt', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_code not in (select acc_pid  from erp_account_plan)")));
+        $this->filter->add(new DropDownChoice('ct', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_code not in (select acc_pid  from erp_account_plan)")));
         if (strlen($filter->dt) > 0)
             $this->filter->dt->setValue($filter->dt);
         if (strlen($filter->ct) > 0)
@@ -60,8 +60,8 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
     public function entrylistOnRow($row)
     {
         $item = $row->getDataItem();
-        $row->add(new Label('acc_d_code', $item->acc_d_code));
-        $row->add(new Label('acc_c_code', $item->acc_c_code));
+        $row->add(new Label('acc_d', $item->acc_d));
+        $row->add(new Label('acc_c', $item->acc_c));
         $row->add(new Label('amount', ($item->amount > 0) ? number_format($item->amount / 100.0, 2) : ""));
 
         $row->add(new Label('comment', $item->comment));

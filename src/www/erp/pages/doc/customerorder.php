@@ -39,12 +39,13 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DropDownChoice('orderstate', \ZippyERP\ERP\Entity\Doc\CustomerOrder::getStatesList()));
         $this->docform->add(new TextInput('reference'));
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
-        $this->docform->add(new TextInput('nds'));
+
         $this->docform->add(new Label('total'));
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new AutocompleteTextInput('edititem'))->setAutocompleteHandler($this, 'OnAutocomplete');
+        $this->editdetail->edititem->setChangeHandler($this, 'on');
         $this->editdetail->add(new TextInput('editquantity'));
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
@@ -54,7 +55,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
             $this->docform->reference->setText($this->_doc->headerdata['reference']);
-            $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
+
             $this->docform->created->setDate($this->_doc->document_date);
             $this->docform->customer->setValue($this->_doc->headerdata['customer']);
             $this->docform->orderstate->setValue($this->_doc->headerdata['orderstate']);
@@ -70,6 +71,11 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
     }
 
+    public function on($sender)
+    {
+        $s = $sender;
+    }
+
     public function detailOnRow($row)
     {
         $item = $row->getDataItem();
@@ -77,8 +83,8 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('item', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('quantity', $item->quantity));
-        $row->add(new Label('price', number_format($item->price / 100, 2)));
-        $row->add(new Label('amount', number_format($item->quantity * $item->price / 100, 2)));
+        $row->add(new Label('price', number_format($item->price / 100, 2, '.', '')));
+        $row->add(new Label('amount', number_format($item->quantity * $item->price / 100, 2, '.', '')));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
 
@@ -110,8 +116,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata = array(
             'customer' => $this->docform->customer->getValue(),
             'orderstate' => $new_state,
-            'reference' => $this->docform->reference->getValue(),
-            'nds' => $this->docform->nds->getValue() * 100
+            'reference' => $this->docform->reference->getValue()
         );
         $this->_doc->detaildata = array();
         foreach ($this->_itemlist as $item) {
@@ -123,7 +128,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = $this->docform->created->getDate();
         $old_state = $this->_doc->order_state;
         $this->_doc->order_state = $this->docform->orderstate->getValue();
-        $this->_doc->tag = $this->docform->customer->getValue();
+        $this->_doc->intattr1 = $this->docform->customer->getValue();
         $this->_doc->save();
         if ($new_state != $old_state) {
             $this->_doc->updateStatus($new_state);
@@ -133,8 +138,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-              App::$app->getResponse()->toBack();
- 
+        App::$app->getResponse()->toBack();
     }
 
     public function saverowOnClick($sender)
@@ -199,21 +203,15 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         foreach ($this->_itemlist as $item) {
             $total = $total + $item->price / 100 * $item->quantity;
         }
-        $this->docform->total->setText(number_format($total + $this->docform->nds->getText(), 2,',',''));
+        $this->docform->total->setText(number_format($total, 2, '.', ''));
     }
 
     // автолоад списка  товаров
     public function OnAutocomplete($sender)
     {
         $text = $sender->getValue();
-        $answer = array();
-        $conn = \ZCL\DB\DB::getConnect();
-        $sql = "select item_id,itemname from erp_item where itemname  like '%{$text}%' order  by itemname   limit 0,20";
-        $rs = $conn->Execute($sql);
-        foreach ($rs as $row) {
-            $answer[$row['item_id']] = $row['itemname'];
-        }
-        return $answer;
+
+        return Item::findArray("itemname", " itemname  like '%{$text}%' ", "itemname", null, 20);
     }
 
 }

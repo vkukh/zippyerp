@@ -44,20 +44,19 @@ class Registration extends AdminBase
         } else
         if ($user = Helper::login($this->_login) != false) {
             $this->setError('Логин уже существует');
-        } 
+        }
 
         if (!$this->isError()) {
             $user = new User();
             $user->userlogin = $this->_login;
 
-           $user->userpass = (\password_hash($this->_password, PASSWORD_DEFAULT));
+            $user->userpass = (\password_hash($this->_password, PASSWORD_DEFAULT));
             $user->Save();
 
-            App::Redirect('\\ZippyERP\\System\\Pages\\UserInfo',$user->user_id);
+            App::Redirect('\\ZippyERP\\System\\Pages\\UserInfo', $user->user_id);
         }
         $this->_confirm = '';
         $this->_password = '';
-
     }
 
 }

@@ -48,7 +48,7 @@ class UserLogin extends Base
                 //App::$app->getResponse()->toBack();
                 if ($this->loginform->remember->isChecked()) {
                     $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
-                    setcookie("remember", $user->user_id . '_' . md5($_SERVER['REMOTE_ADDR'] . $_config['common']['salt']), time() + 60 * 60 * 24 * 30);
+                    setcookie("remember", $user->user_id . '_' . md5($user->user_id . $_config['common']['salt']), time() + 60 * 60 * 24 * 30);
                 }
 
                 @mkdir(_ROOT . UPLOAD_USERS . $user->user_id);

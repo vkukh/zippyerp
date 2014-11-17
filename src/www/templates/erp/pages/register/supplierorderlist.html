@@ -8,8 +8,8 @@
 
                 <form zippy="filter" >
                     Статус <select zippy="statelist"><option value="0">Все</option>   </select> 
-                      Поставщик <select zippy="supplierlist"><option value="0">Все</option>   </select>  
-                           <input type="submit" class="btn btn-xs btn-default" style="margin:-10px 0 0 10px" value="Ввод">
+                    Поставщик <select zippy="supplierlist"><option value="0">Все</option>   </select>  
+                    Неоплаченные <input type="checkbox" zippy="notpayed">        <input type="submit" class="btn btn-xs btn-default" style="margin:-10px 0 0 10px" value="Ввод">
                 </form>
                 <table class="table table-striped  table-condensed ">
                     <tr>
@@ -19,19 +19,21 @@
                         <th >Дата</th>
                         <th >Сумма</th>
                         <th >Статус</th>
-         
+                        <th >Оплата</th>
+
                         <th > </th>
-                        
+
                     </tr>
                     <tr zippy="doclist">
-       
+
                         <td zippy="number" ></td>
                         <td zippy="supplier" ></td>
                         <td zippy="date" ></td>
                         <td zippy="amount" align="right"></td>
                         <td zippy="state"></td>
+                        <td zippy="payment" align="right"></td>                        
                         <td><a zippy="show"  title="Просмотр"><img class="icon20" src="/templates/images/loupe.png"></a> <a zippy="edit"  title="Редактировать"><img class="icon20" src="/templates/images/edit.png"></a> </td>
-                        
+
                     </tr>
                 </table>
                 <div zippy="pag"></div>

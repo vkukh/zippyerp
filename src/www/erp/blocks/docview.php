@@ -79,8 +79,13 @@ class DocView extends \Zippy\Html\PageFragment
         // генерация  печатной   формы                
         $html = $item->generateReport();
         if (strlen($html) == 0) {
-            $this->owner->setError("Не найден шаблон печатной формы");
-            return;
+            //  $this->owner->setError("Не найден шаблон печатной формы");
+            // return;
+            $html = "<h4>Печатная форма  не  задана</h4>";
+            $this->print->setVisible(false);
+            $this->pdf->setVisible(false);
+            $this->word->setVisible(false);
+            $this->excel->setVisible(false);
         }
 
         $this->preview->setText($html, true);
@@ -149,9 +154,9 @@ class DocView extends \Zippy\Html\PageFragment
     public function entryListOnRow($row)
     {
         $item = $row->getDataItem();
-        $row->add(new Label('dt', $item->acc_d_code));
-        $row->add(new Label('ct', $item->acc_c_code));
-        $row->add(new Label('entryamount', number_format($item->amount / 100, 2)));
+        $row->add(new Label('dt', $item->acc_d));
+        $row->add(new Label('ct', $item->acc_c));
+        $row->add(new Label('entryamount', number_format($item->amount / 100, 2, '.', '')));
         $row->add(new Label('entrycomment', $item->comment));
     }
 

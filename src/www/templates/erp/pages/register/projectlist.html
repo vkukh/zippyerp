@@ -1,9 +1,9 @@
 <html>
-<head>
+    <head>
         <link rel="stylesheet" type="text/css" href="http://local.zippy/zippy/zcl/gantt/jquery.ganttView.css" />
         <script type="text/javascript" src="http://local.zippy/zippy/zcl/gantt/date.js"></script>
         <script type="text/javascript" src="http://local.zippy/zippy/zcl/gantt/jquery.ganttView.js"></script>
-</head>
+    </head>
     <body>
         <div class="row">
             <div class="col-md-10" zippy="listtab">    
@@ -119,41 +119,41 @@
                 <a zippy="tolist2">К списку проектов</a> 
                 <h3 zippy="showname2"></h3>
 
-                          
-              
-                    <div zippy="tasklisttab" >  
-                        <a zippy="taskaddnew" >Создать задание </a>  <a zippy="togantt" >Диаграмма  Ганта </a>
-                        <table class="table table-striped table-condensed ">
-                            <tr>
-                                <th >Код</th>
-                                <th >Наименование</th>
-                                <th >Дата нач.</th>
-                                <th >Кол. часов</th>
-                                <th >Статус</th>
-                                <th >Исполнитель</th>
-                                <th > </th>
 
-                            </tr>
-                            <tr zippy="tasklist">
-                                <td zippy="taskcode" align="right"></td>
-                                <td zippy="taskname"></td>
-                                <td zippy="taskstartdate" ></td>
-                                <td zippy="taskhours"  align="center"></td>
-                                <td zippy="taskstatus"></td>
-                                <td zippy="taskassignedtoname"></td>
-                                <td>
-                                    <a zippy="taskedit"  title="Редактирование"><img class="icon20" src="/templates/images/edit.png"></a>
-                                    <a zippy="taskdelete"  title="Удалить"><img class="icon20" src="/templates/images/delete.png"></a>
-                                </td>
 
-                            </tr>
-                        </table>    
-                    </div> 
-                    <div zippy="ganttab" >
-                       <a zippy="fromgantt" >К  списку  задач </a>
-                       <div zippy="gantt" data-slidew="600"></div>
-                    </div> 
-                
+                <div zippy="tasklisttab" >  
+                    <a zippy="taskaddnew" >Создать задание </a>  <a zippy="togantt" >Диаграмма  Ганта </a>
+                    <table class="table table-striped table-condensed ">
+                        <tr>
+                            <th >Код</th>
+                            <th >Наименование</th>
+                            <th >Дата нач.</th>
+                            <th >Кол. часов</th>
+                            <th >Статус</th>
+                            <th >Исполнитель</th>
+                            <th > </th>
+
+                        </tr>
+                        <tr zippy="tasklist">
+                            <td zippy="taskcode" align="right"></td>
+                            <td zippy="taskname"></td>
+                            <td zippy="taskstartdate" ></td>
+                            <td zippy="taskhours"  align="center"></td>
+                            <td zippy="taskstatus"></td>
+                            <td zippy="taskassignedtoname"></td>
+                            <td>
+                                <a zippy="taskedit"  title="Редактирование"><img class="icon20" src="/templates/images/edit.png"></a>
+                                <a zippy="taskdelete"  title="Удалить"><img class="icon20" src="/templates/images/delete.png"></a>
+                            </td>
+
+                        </tr>
+                    </table>    
+                </div> 
+                <div zippy="ganttab" >
+                    <a zippy="fromgantt" >К  списку  задач </a>
+                    <div zippy="gantt" data-slidew="600"></div>
+                </div> 
+
             </div> 
             <div class="col-md-4" zippy="edittasktab">   
                 <form zippy="edittaskform" >

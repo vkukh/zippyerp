@@ -17,8 +17,11 @@ use Zippy\Html\Link\SubmitLink;
 use Zippy\Html\Panel;
 use ZippyERP\System\Application as App;
 use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Entity\Doc\BankStatement as BS;
 use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Банковская   выписка 
@@ -29,14 +32,14 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     public $_list = array();
     private $_doc;
 
-    public function __construct($docid = 0, $basedon = 0)
+    public function __construct($docid = 0)
     {
         parent::__construct();
         $this->add(new Form('docform'));
-        $this->docform->add(new Date('created'));
+        $this->docform->add(new Date('created', time()));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new TextInput('basedoc'));
-        $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "bank > 0")));
+        $this->docform->add(new TextInput('notes'));
+        $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "ftype=1")));
 
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
@@ -44,58 +47,51 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
 
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('edittype'));
-        $this->editdetail->add(new DropDownChoice('editaccount', Account::findArray("acc_name", "acc_id not in (select acc_pid  from erp_account_plan)")));
+        $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes()))->setChangeHandler($this, 'typeOnClick');
+        $this->editdetail->add(new DropDownChoice('editcustomer'));
+        $this->editdetail->add(new DropDownChoice('editpayment'))->setOptionList(\ZippyERP\ERP\Consts::getTaxesList());
+        $this->editdetail->editpayment->setVisible(false);
+        $docinput = $this->editdetail->add(new AutocompleteTextInput('editdoc'));
+        $docinput->setAutocompleteHandler($this, 'OnDocAutocomplete');
+        $docinput->setAjaxChangeHandler($this, 'OnDocChange');
         $this->editdetail->add(new TextInput('editamount'))->setText("1");
+        $this->editdetail->add(new TextInput('editnds'))->setText("0");
         $this->editdetail->add(new TextInput('editcomment'));
-        $this->editdetail->setSubmitHandler($this, 'saverowOnClick');
+        $this->editdetail->add(new CheckBox('editnoentry'));
         $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
+        $this->editdetail->add(new SubmitButton('submitrow'))->setClickHandler($this, 'saverowOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа на страницу
             $this->_doc = Document::load($docid);
+
+            $this->docform->document_number->setText($this->_doc->document_number);
+            $this->docform->notes->setText($this->_doc->notes);
+            $this->docform->bankaccount->setValue($this->_doc->headerdata['bankaccount']);
+            $this->docform->created->setText(date('Y-m-d', $this->_doc->document_date));
+
+
+            foreach ($this->_doc->detaildata as $item) {
+                $entry = new Entry($item);
+                $this->_list[$entry->entry_id] = $entry;
+            }
+            $this->docform->created->setText(date('Y-m-d', $this->_doc->document_date));
         } else {
             $this->_doc = Document::create('BankStatement');
         }
-        if ($docid == 0 && $basedon > 0) {
-            $this->_doc->loadBasedOn($basedon);
-        }
+
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_list')), $this, 'detailOnRow'));
-        $this->fillPage();
-        $this->docform->detail->Reload() ;
-        
-    }
 
-    private function fillPage()
-    {
-        $this->docform->document_number->setText($this->_doc->document_number);
-        $this->docform->bankaccount->setValue($this->_doc->headerdata['bankaccount']);
-        $this->docform->created->setText(date('Y-m-d', $this->_doc->document_date));
-
-        /*
-        if ($this->_doc->headerdata['basedoc'] > 0) {  // документ-основание
-            $bdoc = Document::load($this->_doc->headerdata['basedoc']);
-            if ($bdoc != null) {
-                $this->docform->basedoc->setValue($bdoc->document_number);
-                $this->docform->basedoc->setKey($bdoc->document_id);
-            }
-        }
-        
-        */
-        foreach ($this->_doc->detaildata as $item) {
-            $entry = new Entry($item);
-            $this->_list[$entry->entry_id] = $entry;
-        }
-        $this->docform->created->setText(date('Y-m-d', $this->_doc->document_date));
         $this->docform->detail->Reload();
     }
 
     public function detailOnRow($row)
     {
         $item = $row->getDataItem();
-
-        $row->add(new Label('type', $item->type == 1 ? "Приход" : "Расход"));
-        $row->add(new Label('account', $item->acc_code));
-        $row->add(new Label('amount', number_format($item->amount / 100, 2)));
+        $types = BS::getTypes();
+        $row->add(new Label('optype', $types[$item->optype]));
+        $row->add(new Label('customer', $item->customername));
+        $row->add(new Label('amount', H::fm($item->amount)));
+        $row->add(new Label('document', $item->docnumber));
         $row->add(new Label('comment', $item->comment));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -117,21 +113,30 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $acc = $this->editdetail->editaccount->getValue();
-        if ($acc == 0) {
-            $this->setError("Не выбран счет");
+
+        $doc = $this->editdetail->editdoc->getKey();
+        if ($doc == 0) {
+            $this->setError("Не выбран документ  или счет");
             return;
         }
 
 
         $entry = new Entry();   //используем   класс  проводки  для   строки
-        $entry->acc = $acc;
-        $acc = Account::load($acc);
-        $entry->acc_code = $acc->acc_code;  // код  счета  по  дебету
-        $entry->type = $this->editdetail->edittype->getValue();
-        ;
+        $entry->optype = $this->editdetail->editoptype->getValue();
+
+
+        $entry->doc = $this->editdetail->editdoc->getKey();
+        $entry->docnumber = $this->editdetail->editdoc->getValue();
+        $entry->customer = $this->editdetail->editcustomer->getValue();
+        if ($entry->customer > 0) {
+            $list = $this->editdetail->editcustomer->getOptionList();
+            $entry->customername = $list[$entry->customer];
+        }
         $entry->amount = $this->editdetail->editamount->getText() * 100;
+        $entry->nds = $this->editdetail->editnds->getText() * 100;
+        $entry->tax = $this->editdetail->editpayment->getValue();
         $entry->comment = $this->editdetail->editcomment->getText();
+        $entry->noentry = $this->editdetail->editnoentry->isChecked();
         $entry->entry_id = time();
         $this->_list[$entry->entry_id] = $entry;
         $this->editdetail->setVisible(false);
@@ -139,9 +144,13 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->editaccount->setValue(0);
-        //  $this->editdetail->editct->setValue(0);
+        $this->editdetail->editoptype->setValue(0);
+        $this->editdetail->editpayment->setValue(0);
+        $this->editdetail->editdoc->setKey(0);
+        $this->editdetail->editdoc->setText('');
+        $this->editdetail->editcustomer->setOptionList(array());
         $this->editdetail->editamount->setText("0");
+        $this->editdetail->editnds->setText("0");
         $this->editdetail->editcomment->setText("");
     }
 
@@ -158,10 +167,6 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
-        //   $this->_doc->headerdata = array(
-        //       'description' => $this->docform->description->getValue()
-        //  );
         $this->_doc->detaildata = array();
         $total = 0;
         foreach ($this->_list as $entry) {
@@ -172,23 +177,18 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->_doc->amount = $total;
         $this->_doc->document_date = strtotime($this->docform->created->getText());
         $this->_doc->document_number = $this->docform->document_number->getText();
+        $this->_doc->notes = $this->docform->notes->getText();
         $this->_doc->headerdata['bankaccount'] = $this->docform->bankaccount->getValue();
-        $this->_doc->headerdata['basedoc'] = $this->docform->basedoc->getValue();
         $isEdited = $this->_doc->document_id > 0;
 
         $this->_doc->save();
 
-
-       // if ($this->_doc->headerdata['basedoc'] > 0) {
-       //     $this->_doc->AddConnectedDoc($this->_doc->headerdata['basedoc']);
-      //  }
-
-        if($sender->id == 'execdoc'){
+        if ($sender->id == 'execdoc') {
             $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        }else {
-            $this->_doc->updateStatus( $isEdited ? Document::STATE_EDITED : Document::STATE_NEW);   
-        }       
-        
+        } else {
+            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+        }
+
         App::Redirect('\ZippyERP\ERP\Pages\Register\DocList', $this->_doc->document_id);
     }
 
@@ -203,25 +203,74 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не введена ни одна строка");
             return false;
         }
-      /*  if (strlen($this->docform->basedoc->getValue()) > 0) {
-            if ($this->docform->basedoc->getKey() > 0) {
-                
-            } else {
-                $this->setError("Неверно введен документ-основание");
-                return false;
-            }
-        } */
-        return true;
-    }
+        /*  if (strlen($this->docform->basedoc->getValue()) > 0) {
+          if ($this->docform->basedoc->getKey() > 0) {
 
-    public function beforeRender()
-    {
-        parent::beforeRender();
+          } else {
+          $this->setError("Неверно введен документ-основание");
+          return false;
+          }
+          } */
+        return true;
     }
 
     public function backtolistOnClick($sender)
     {
         App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+    }
+
+    public function typeOnClick($sender)
+    {
+        $this->editdetail->editnds->setVisible(true);
+        $this->editdetail->editdoc->setVisible(true);
+        $list = array();
+        if ($sender->getValue() == BS::IN) {
+            $list = Customer::getBuyers();  //если  приход то  продавцы
+        }
+        if ($sender->getValue() == BS::OUT) {
+            $list = Customer::getSellers();  //если  расход  то  покупатели
+        }
+        if ($sender->getValue() == BS::TAX) {
+            $list = Customer::getGov();  // оплата  налогов  и  сборов
+            $this->editdetail->editnds->setVisible(false);
+            $this->editdetail->editdoc->setVisible(false);
+            $this->editdetail->editpayment->setVisible(true);
+        } else {
+            $this->editdetail->editpayment->setVisible(false);
+        }
+        if ($sender->getValue() == BS::CASHIN || $sender->getValue() == BS::CASHOUT) {
+            $this->editdetail->editnds->setVisible(false);
+            $this->editdetail->editdoc->setVisible(false);
+            $this->editdetail->editcustomer->setVisible(false);
+        } else {
+            $this->editdetail->editcustomer->setVisible(true);
+        }
+        $this->editdetail->editcustomer->setOptionList($list);
+    }
+
+    public function OnDocAutocomplete($sender)
+    {
+        $text = $sender->getValue();
+        $answer = array();
+        $conn = \ZCL\DB\DB::getConnect();
+        $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%' and document_id <> {$this->_doc->document_id} and state <> " . Document::STATE_EXECUTED . "  order  by document_id desc  limit 0,20";
+        $rs = $conn->Execute($sql);
+        foreach ($rs as $row) {
+            $answer[$row['document_id']] = $row['document_number'];
+        }
+        return $answer;
+    }
+
+    //выбран документ
+    public function OnDocChange($sender)
+    {
+        $id = $sender->getKey();
+        $doc = Document::load($id);
+        if ($doc instanceof Document) {
+            $this->editdetail->editamount->setText(H::fm($doc->amount));
+            $this->editdetail->editnds->setText(H::fm($doc->headerdata['nds']));
+        }
+        $this->updateAjax(array('editnds', 'editamount'));
     }
 
 }

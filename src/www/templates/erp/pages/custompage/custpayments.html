@@ -1,0 +1,77 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-md-12">    
+                <h3>Взаиморасчеты с контрагентами</h3>
+                <div zippy="clistpanel">
+                    <form zippy="clistfilter">
+                        Сортировать <select zippy="clistsort">
+                            <option value="0">Наименованию</option>
+                            <option value="1">Возрастанию долга</option>
+                            <option value="2">Уменьшению долга</option>
+                        </select>&nbsp;<input type="checkbox" zippy="clistshowall"> Показать всех
+                        <input type="submit" class="btn btn-default btn-xs" value="Ввод">
+                    </form><br>
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th >Наименование</th>
+                            <th >Долг наш</th>
+                            <th >Долг нам</th>
+                            <th > </th>
+                            <th > </th>
+                        </tr>
+                        <tr zippy="clist">
+                            <td zippy="customername"></td>
+                            <td zippy="debet" style="text-align: right;"></td>
+                            <td zippy="credit" style="text-align: right;"></td>
+
+                            <td ><a zippy="edit"  title="Движение по счету"><img class="icon20" src="/templates/images/list.png"></a></td>
+                            <td ><a zippy="invoice"  title="Счета  к  оплате"><img class="icon20" src="/templates/images/invoice.png"></a></td>
+                        </tr>
+                    </table>
+
+                </div>  
+
+                <div zippy="doclist">
+                    <a zippy="backtolist">К списку</a>
+                    <h3>Движение  по  аналитическому счету</h3>
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th >Начисление</th>
+                            <th >Списание</th>
+                            <th >Дата</th>
+                            <th >Документ </th>
+                        </tr>
+                        <tr zippy="dlist">
+                            <td zippy="amountto"></td>
+                            <td zippy="amountfrom"></td>
+                            <td zippy="ddate"></td>
+                            <td ><a zippy="ddoc"  title="Документ"></a></td>
+                        </tr>
+                    </table> 
+                </div>
+                <div zippy="invoicelist">
+                    <a zippy="backtolist2">К списку</a>
+                    <h3>Счета  к  оплате</h3>
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th >Документ</th>
+                            <th >Сумма</th>
+                            <th >Дата оплаты</th>
+
+                        </tr>
+                        <tr zippy="ilist">
+                            <td ><a zippy="idoc"  title="Документ"></a></td>
+                            <td zippy="iamount" align="right"></td>
+                            <td zippy="idate"></td>
+
+                        </tr>
+                    </table> 
+                </div>
+                <div zippy="docview"></div>
+
+            </div>   </div>   
+    </body></html>

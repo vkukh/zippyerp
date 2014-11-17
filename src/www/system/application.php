@@ -74,8 +74,9 @@ class Application extends \Zippy\WebApplication
             new \Zippy\Exception('Invalid URI: ' . $uri);
         }
 
+
         //Системный  роутер
-        $route = '\ZippyERP\\Route';
+        $route = '\ZippyERP\\System\\Route';
         if (function_exists($route)) {
 
             $route($uri);

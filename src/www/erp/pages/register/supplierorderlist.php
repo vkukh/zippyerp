@@ -4,6 +4,7 @@ namespace ZippyERP\ERP\Pages\Register;
 
 use \Zippy\Html\Form\Form;
 use \Zippy\Html\Form\DropDownChoice;
+use \Zippy\Html\Form\CheckBox;
 use \Zippy\Html\DataList\DataView;
 use \ZCL\DB\EntityDataSource;
 use \Zippy\Html\Label;
@@ -37,11 +38,13 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
         $this->filter->add(new DropDownChoice('statelist', SupplierOrder::getStatesList()));
         $this->filter->add(new DropDownChoice('supplierlist', Customer::findArray('customer_name')));
+        $this->filter->add(new CheckBox('notpayed'));
 
         if (strlen($filter->state) > 0)
             $this->filter->statelist->setValue($filter->state);
         if (strlen($filter->supplier) > 0)
             $this->filter->supplierlist->setValue($filter->supplier);
+        $this->filter->notpayed->setChecked($filter->notpayed);
 
         $doclist = $this->add(new DataView('doclist', new DocSODataSource(), $this, 'doclistOnRow'));
         $doclist->setSelectedClass('success');
@@ -59,12 +62,13 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
     public function doclistOnRow($row)
     {
         $item = $row->getDataItem();
-        $supplier = Customer::load($item->tag);
+        $supplier = Customer::load($item->intattr1);
         $item = $item->cast();
         $row->add(new Label('number', $item->document_number));
         $row->add(new Label('date', date('d-m-Y', $item->document_date)));
         $row->add(new Label('supplier', ($supplier) ? $supplier->customer_name : ""));
         $row->add(new Label('amount', ($item->amount > 0) ? number_format($item->amount / 100.0, 2) : ""));
+        $row->add(new Label('payment', ($item->intattr2 > 0) ? number_format($item->intattr2 / 100.0, 2) : ""));
 
         $row->add(new Label('state', Document::getStateName($item->state)));
         $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
@@ -83,7 +87,7 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
         $filter = Filter::getFilter("SupplierOrderList");
         $filter->state = $this->filter->statelist->getValue();
         $filter->supplier = $this->filter->supplierlist->getValue();
-
+        $filter->notpayed = $this->filter->notpayed->isChecked();
         $this->doclist->Reload();
     }
 
@@ -117,16 +121,18 @@ class DocSODataSource implements \Zippy\Interfaces\DataSource
     {
 
         $conn = \ZCL\DB\DB::getConnect();
-        $filter = Filter::getFilter("doclist");
+        $filter = Filter::getFilter("SupplierOrderList");
         $where = " meta_name ='SupplierOrder' ";
 
-        if (strlen($filter->state) > 0) {
+        if ($filter->state > 0) {
             $where .= " and state =  " . $filter->state;
         }
-        if (strlen($filter->supplier) > 0) {
-            $where .= " and tag =  " . $filter->supplier;
+        if ($filter->supplier > 0) {
+            $where .= " and intattr1 =  " . $filter->supplier;
         }
-
+        if ($filter->notpayed == true) {
+            $where .= " and intattr2 = 0 ";
+        }
         return $where;
     }
 

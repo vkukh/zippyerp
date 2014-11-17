@@ -10,6 +10,7 @@ use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Panel;
 use \ZippyERP\ERP\Entity\Account;
 use \Zippy\Html\Link\RedirectLink;
+use \ZippyERP\ERP\Helper as H;
 
 class ObSaldo extends \ZippyERP\ERP\Pages\Base
 {
@@ -72,12 +73,12 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
 
             $detail[] = array(
                 "acc_code" => $acc->acc_code,
-                'startdt' => number_format($data['startdt'] / 100, 2),
-                'startct' => number_format($data['startct'] / 100, 2),
-                'obdt' => number_format($data['obdt'] / 100, 2),
-                'obct' => number_format($data['obct'] / 100, 2),
-                'enddt' => number_format($data['enddt'] / 100, 2),
-                'endct' => number_format($data['endct'] / 100, 2)
+                'startdt' => H::fm($data['startdt']),
+                'startct' => H::fm($data['startct']),
+                'obdt' => H::fm($data['obdt']),
+                'obct' => H::fm($data['obct']),
+                'enddt' => H::fm($data['enddt']),
+                'endct' => H::fm($data['endct'])
             );
             if ($data['parent'] != true) {  //только  для счетов а не  для   субсчетов
                 $totstartdt += $data['startdt'];
@@ -92,21 +93,18 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
         $header = array(
             'from' => date('d.m.Y', $from),
             'to' => date('d.m.Y', $to),
-            'totstartdt' => number_format($totstartdt / 100, 2),
-            'totstartct' => number_format($totstartct / 100, 2),
-            'totobdt' => number_format($totobdt / 100, 2),
-            'totobct' => number_format($totobct / 100, 2),
-            'totenddt' => number_format($totenddt / 100, 2),
-            'totendct' => number_format($totendct / 100, 2)
+            'totstartdt' => H::fm($totstartdt),
+            'totstartct' => H::fm($totstartct),
+            'totobdt' => H::fm($totobdt),
+            'totobct' => H::fm($totobct),
+            'totenddt' => H::fm($totenddt),
+            'totendct' => H::fm($totendct)
         );
 
-        $reportgen = new \ZCL\RepGen\RepGen(_ROOT . 'templates/erp/templates/obsaldo.html', $header);
+        $report = new \ZippyERP\ERP\Report('obsaldo.tpl');
 
-        $html = $reportgen->generateSimple($detail);
-        if (strlen($html) == 0) {
-            $this->setError("Не найден шаблон печатной формы");
-            return "";
-        }
+        $html = $report->generate($header, $detail);
+
         return $html;
     }
 

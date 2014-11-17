@@ -1,0 +1,86 @@
+<html>
+
+    <body>
+        <div class="row">
+            <div class="col-md-12">    
+                <h4>Расходная накладная</h4>
+                <form zippy="docform">
+
+                    <table  border="0" cellpadding="1">
+                        <tr>
+                            <td >Номер документа</td>
+                            <td >  <input type="text" zippy="document_number" required="required" ></td>
+                            <td >Дата</td>
+                            <td >    <input type="text" zippy="created" required="required"  ></td>
+                        </tr>
+                        <tr>
+
+                            <td  >Со склада</td>
+                            <td ><select zippy="store" >
+                                </select></td>
+                            <td  >Тип оплаты</td>
+                            <td ><select zippy="paymenttype" >
+                                    <option value="2">Безнал</option>
+                                    <option value="1">Наличные</option>
+
+                                </select></td>                                
+                        </tr>
+                        <tr>
+
+                            <td  >Получатель</td>
+                            <td ><select zippy="customer" >
+                                </select></td>
+                            <td  >Основание</td>
+                            <td  ><input type="text" zippy="based" ></td>                                
+                        </tr>
+                    </table>
+                    <br>
+                    <table  border="0" cellpadding="1"  width="500px">
+                        <tr >
+                            <th >Наименование </th>
+                            <th width="50">Партия</th>
+                            <th width="50">Ед.изм.</th>
+                            <th width="40">Кол.</th>
+                            <th width="60">Цена</th>
+                            <th width="60">Сумма</th>
+                            <th width="20"> </th>
+                        </tr>
+                        <tr zippy="detail">
+                            <td zippy="tovar"></td>
+                            <td zippy="partion"></td>
+                            <td zippy="measure"></td>
+                            <td zippy="quantity" align="right" style="padding-right:4px;"></td>
+                            <td zippy="price" align="right"> </td>
+                            <td zippy="amount" align="right"> </td>
+                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+                        </tr>
+                    </table>
+                    <a zippy="addrow">Добавить товар</a>
+                    <table  border="0" cellpadding="1" width="480px">
+                        <tr><td align="right">НДС:</td><td zippy="nds"  align="right"></td></tr>
+                        <tr><td align="right">Итого:</td><td zippy="total" align="right" width="60px"  style="font-weight: bolder;"></td></tr>
+                    </table>
+
+                    <p>&nbsp;</p>
+                    <p>
+                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
+                        <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> 
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default btn-xs">  
+
+                    </p>
+
+                </form>
+                <form zippy="editdetail">
+                    <strong>Ввод  товара  </strong>
+                    <table  border="0" >
+                        <tr><td>Наименование</td><td><select zippy="edittovar" > <option value="0">Выбрать</option></select>  Наличие <span zippy="qtystock"></span>  </td></tr>
+                        <tr><td>Количество</td><td><input type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input></td></tr>
+                        <tr><td>Цена</td><td><input type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;"></td></tr>
+                        <tr><td><input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default btn-xs"></td><td><input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-default btn-xs"></td></tr>
+                    </table>
+                </form>
+            </div>   
+        </div>   
+
+    </body>
+</html>

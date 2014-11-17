@@ -19,6 +19,7 @@ use \ZippyERP\ERP\Entity\Doc\Document;
 use \ZippyERP\System\Application as App;
 use \ZippyERP\System\System;
 use \ZippyERP\System\Session;
+use \Zippy\Html\DataList\Paginator;
 
 /**
  * журнал  докуметов
@@ -35,15 +36,23 @@ class DocList extends \ZippyERP\ERP\Pages\Base
     {
         parent::__construct();
         $filter = Filter::getFilter("doclist");
+        if ($filter->to == null) {
+            $filter->to = time();
+            $filter->from = time() - (7 * 24 * 3600);
+        }
         $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
-        $this->filter->add(new Date('from', strlen($filter->from) > 0 ? $filter->from : time() - (7 * 24 * 3600)));
-        $this->filter->add(new Date('to', strlen($filter->to) > 0 ? $filter->to : time()));
+        $this->filter->add(new Date('from', $filter->from));
+        $this->filter->add(new Date('to', $filter->to));
         $this->filter->add(new DropDownChoice('docgroup', Helper::getDocGroups()));
         $this->filter->add(new CheckBox('onlymy'))->setChecked($filter->onlymy == true);
+        $this->filter->add(new TextInput('searchnumber'));
         if (strlen($filter->docgroup) > 0)
             $this->filter->docgroup->setValue($filter->docgroup);
         $doclist = $this->add(new DataView('doclist', new DocDataSource(), $this, 'doclistOnRow'));
         $doclist->setSelectedClass('success');
+        $this->add(new Paginator('pag', $doclist));
+        $doclist->setPageSize(10);
+
         $doclist->Reload();
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
         if ($docid > 0) {
@@ -63,6 +72,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $filter->to = $this->filter->to->getDate(true);
         $filter->docgroup = $this->filter->docgroup->getValue();
         $filter->onlymy = $this->filter->onlymy->isChecked();
+        $filter->searchnumber = $this->filter->searchnumber->getText();
 
         $this->doclist->Reload();
     }
@@ -77,29 +87,38 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('amount', ($item->amount > 0) ? number_format($item->amount / 100.0, 2) : ""));
 
         $row->add(new Label('state', Document::getStateName($item->state)));
-        $row->add(new Label('created', date('d-m-Y', $item->created)));
+        // $row->add(new Label('created', date('d-m-Y', $item->created)));
         $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');
 
-        if ( $item->state == Document::STATE_EXECUTED)  {
-             $row->edit->setVisible(false);
-             $row->cancel->setVisible(true);
+        if ($item->state == Document::STATE_EXECUTED) {
+            $row->edit->setVisible(false);
+            $row->cancel->setVisible(true);
         } else {
-             $row->edit->setVisible(true);
-             $row->cancel->setVisible(false);
+            $row->edit->setVisible(true);
+            $row->cancel->setVisible(false);
         }
-           
 
-        
-
+        //спписок документов   которые   могут  быть созданы  на  основании  текущего
+        $basedon = $row->add(new Label('basedon'));
+        $basedonlist = $item->getRelationBased();
+        if (count($basedonlist) == 0) {
+            $basedon->setVisible(false);
+        } else {
+            $list = "";
+            foreach ($basedonlist as $doctype => $docname) {
+                $list = "<li><a href=\"/?p=ZippyERP/ERP/Pages/Doc/" . $doctype . "&arg=/0/{$item->document_id}\">{$docname}</a></li>";
+            }
+            ;
+            $basedon = $row->add(new Label('basedlist'))->setText($list, true);
+        }
 
 
         //закрытый период
         if ($item->updated < strtotime("2013-01-01")) {
             $row->edit->setVisible(false);
             $row->cancel->setVisible(false);
-
         }
     }
 
@@ -123,8 +142,6 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         App::Redirect($class, $item->document_id);
     }
 
-
-
     public function deleteOnClick($sender)
     {
         $this->docview->setVisible(false);
@@ -133,8 +150,6 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         Document::delete($item->document_id);
         $this->doclist->Reload();
     }
-
-
 
     public function cancelOnClick($sender)
     {
@@ -163,6 +178,9 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
         if (strlen($filter->docgroup) > 1) {
             $where .= " and type_id in (select meta_id from  erp_metadata where  menugroup ='{$filter->docgroup}' )";
         }
+        if (strlen($filter->searchnumber) > 1) {
+            $where .= " and document_number like '%{$filter->searchnumber}%' ";
+        }
         if ($filter->onlymy == true) {
             $where .= " and user_id  = " . System::getUser()->user_id;
         }
@@ -176,7 +194,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Document::find($this->getWhere(), "created ", "desc");
+        return Document::find($this->getWhere(), "created ", "desc", $count, $start);
     }
 
     public function getItem($id)

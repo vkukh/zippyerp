@@ -33,7 +33,7 @@ class Header extends \Zippy\Html\PageFragment
         if ($_COOKIE['remember'] && System::getUser()->user_id == 0) {
             $arr = explode('_', $_COOKIE['remember']);
             $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
-            if ($arr[0] > 0 && $arr[1] === md5($_SERVER['REMOTE_ADDR'] . $_config['common']['salt'])) {
+            if ($arr[0] > 0 && $arr[1] === md5($arr[0] . $_config['common']['salt'])) {
                 $user = User::load($arr[0]);
             }
 

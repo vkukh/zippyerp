@@ -15,6 +15,7 @@ use \Zippy\Html\Form\TextArea;
 use \Zippy\Html\Form\CheckBox;
 use \Zippy\Html\Form\DropDownChoice;
 use \ZippyERP\ERP\Helper;
+use \ZippyERP\ERP\ACL;
 use \Zippy\Binding\PropertyBinding as Bind;
 
 class MetaData extends \ZippyERP\System\Pages\AdminBase
@@ -47,6 +48,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $this->editpan->editform->add(new TextInput('edit_meta_name'));
         $this->editpan->editform->add(new TextInput('edit_menugroup'));
         $this->editpan->editform->add(new TextArea('edit_notes'));
+        $this->editpan->editform->add(new CheckBox('edit_disabled'));
         $this->editpan->editform->add(new DropDownChoice('edit_meta_type'));
         $this->editpan->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');
         $this->editpan->editform->add(new DataView('rolerow', $this->roleaccessds, $this, 'rolerowOnRow'));
@@ -83,7 +85,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $this->editpan->setVisible(true);
         $this->editpan->editform->meta_id->setText(0);
 
-        $this->roleaccessds->setArray(Helper::getRoleAccess(0));
+        $this->roleaccessds->setArray(ACL::getRoleAccess(0));
         $this->editpan->editform->rolerow->Reload();
     }
 
@@ -96,6 +98,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
     public function metarowOnRow($row)
     {
         $item = $row->getDataItem();
+        $row->setAttribute('style', $item->disabled == 1 ? 'color: #aaa' : null);
         switch ($item->meta_type) {
             case 1: $icon = "document.png";
                 $title = "Документ";
@@ -134,11 +137,12 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $form->edit_meta_name->setText($item->meta_name);
         $form->edit_menugroup->setText($item->menugroup);
         $form->edit_meta_type->setValue($item->meta_type);
+        $form->edit_disabled->setChecked($item->disabled == 1);
 
         $this->listpan->setVisible(false);
         $this->editpan->setVisible(true);
 
-        $this->roleaccessds->setArray(Helper::getRoleAccess($item->meta_id));
+        $this->roleaccessds->setArray(ACL::getRoleAccess($item->meta_id));
         $this->editpan->editform->rolerow->Reload();
     }
 
@@ -165,9 +169,10 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $item->meta_name = ucfirst($this->editpan->editform->edit_meta_name->getText());
         $item->meta_type = $this->editpan->editform->edit_meta_type->getValue();
         $item->notes = $this->editpan->editform->edit_notes->getText();
+        $item->disabled = $this->editpan->editform->edit_disabled->isChecked() ? 1 : 0;
 
         $item->save();
-        Helper::updateRoleAccess($item->meta_id, $this->getComponent('rolerow')->getDataRows());
+        ACL::updateRoleAccess($item->meta_id, $this->getComponent('rolerow')->getDataRows());
         $this->listpan->setVisible(true);
         $this->editpan->setVisible(false);
         $this->listpan->metarow->Reload();
@@ -175,6 +180,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $this->editpan->editform->edit_description->setText('');
         $this->editpan->editform->edit_meta_name->setText('');
         $this->editpan->editform->edit_menugroup->setText('');
+        $this->editpan->editform->edit_notes->setText('');
     }
 
     public function rolerowOnRow($row)

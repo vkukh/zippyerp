@@ -21,10 +21,20 @@ class Employee extends \ZCL\DB\Entity
             $this->firedate = null;
     }
 
-    //Возвращает  фамилию  и  инициалы
+    //Возвращает  фамилию  и  имя
     public function getShortName()
     {
-        return $this->firstname;
+        return $this->lastname . " " . $this->firstname;
+    }
+
+    //Возвращает  фамилию  и  инициалы
+    public function getInitName()
+    {
+        $name = $this->lastname . " " . mb_substr($this->firstname, 0, 1, "UTF-8") . '.';
+        if (strlen($this->middlename) > 0) {
+            $name = $name . " " . mb_substr($this->middlename, 0, 1, "UTF-8") . '.';
+        }
+        return $name;
     }
 
     public static function AddActivity($employee_id, $amount, $document_id)

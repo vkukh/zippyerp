@@ -4,6 +4,7 @@ namespace ZippyERP\ERP\Blocks;
 
 use \Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\TextArea;
 use \Zippy\Html\Label;
 use \Zippy\Html\Form\SubmitButton;
 use \Zippy\Html\Form\Button;
@@ -36,8 +37,7 @@ class Contact extends \Zippy\Html\PageFragment
         $this->contactdetail->add(new TextInput('editfirstname'));
         $this->contactdetail->add(new TextInput('editmiddlename'));
         $this->contactdetail->add(new TextInput('editemail'));
-        $this->contactdetail->add(new TextInput('editposition'));
-        $this->contactdetail->add(new TextInput('editnotes'));
+        $this->contactdetail->add(new TextArea('editdescription'));
         $this->contactdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
         $this->contactdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
     }
@@ -45,22 +45,21 @@ class Contact extends \Zippy\Html\PageFragment
     public function saveOnClick($sender)
     {
         $this->setVisible(false);
-        $this->item->lastname = $this->contactdetail->editlastname->getText();
-        $this->item->firstname = $this->contactdetail->editfirstname->getText();
-        $this->item->middlename = $this->contactdetail->editmiddlename->getText();
-        $this->item->email = $this->contactdetail->editemail->getText();
-        $this->item->position = $this->contactdetail->editposition->getText();
-        $this->item->notes = $this->contactdetail->editnotes->getText();
-
+        $this->item->lastname = trim($this->contactdetail->editlastname->getText());
+        $this->item->firstname = trim($this->contactdetail->editfirstname->getText());
+        $this->item->middlename = trim($this->contactdetail->editmiddlename->getText());
+        $this->item->email = trim($this->contactdetail->editemail->getText());
+        $this->item->description = $this->contactdetail->editdescription->getText();
+        $isnew = $this->item->contact_id == 0;
         $this->item->Save();
 
-        $this->caller->{$this->callback}();
+        $this->caller->{$this->callback}(true, $isnew ? $this->item->contact_id : 0 );
     }
 
     public function cancelOnClick($sender)
     {
         $this->setVisible(false);
-        $this->caller->{$this->callback}(true);
+        $this->caller->{$this->callback}(false);
     }
 
     /**
@@ -77,19 +76,17 @@ class Contact extends \Zippy\Html\PageFragment
         $this->contactdetail->editfirstname->setText($item->firstname);
         $this->contactdetail->editmiddlename->setText($item->middlename);
         $this->contactdetail->editemail->setText($item->email);
-        $this->contactdetail->editposition->setText($item->position);
-        $this->contactdetail->editnotes->setText($item->notes);
+        $this->contactdetail->editdescription->setText($item->description);
 
         $this->setVisible(true);
     }
 
     /**
-     * возвращает отредактированные  данные
-     * 
+     * Возвращает  отредактированный  обьект
      */
-    public function getData()
+    public function getItem()
     {
-        
+        return $this->item;
     }
 
 }

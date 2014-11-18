@@ -280,6 +280,9 @@ class StartData extends \ZippyERP\ERP\Pages\Base
     {
         if ($this->_edited) {
             App::$app->getResponse()->toBack();
+        }  else {
+            App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+ 
         }
     }
 

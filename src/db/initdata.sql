@@ -82,4 +82,5 @@ INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, 
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(52, 1, 'Оказанные  услуги', 'ServiceIncome', 'Закупки', 'Акт о  выполнении  услуг  сторонней  организацией', 0);
 
 -- служебный  товар для  суммового  учета
-INSERT INTO  `erp_item` (`item_id` ,`itemname` ,`description` ,`measure_id` ,`item_type` ,group_id` ,`price`)VALUES (NULL ,  'Суммовой учет', NULL ,  '1',  '6', NULL ,  '1');
+INSERT INTO `erp_item` (`item_id`, `itemname`, `description`, `measure_id`, `item_type`, `group_id`, `detail`) VALUES(11, 'Суммовой учет', NULL, '1', 6, NULL, '1');
+

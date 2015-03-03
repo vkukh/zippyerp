@@ -193,8 +193,5 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 -- служебный  товар для  суммового  учета
 INSERT INTO `erp_item` (`item_id`, `itemname`, `description`, `measure_id`, `item_type`, `group_id`, `detail`) VALUES(11, 'Суммовой учет', NULL, '1', 6, NULL, '1');
 
-<<<<<<< HEAD
 INSERT INTO erp_store(store_id, storename, description, store_type) VALUES
 (12, 'Основной склад', '', 1);
-=======
->>>>>>> origin/master

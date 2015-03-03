@@ -88,7 +88,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     public function savedocOnClick($sender)
@@ -119,7 +119,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
             $this->_doc->AddConnectedDoc($this->_basedocid);
             $this->_basedocid = 0;
         }
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     // автолоад документов-оснований

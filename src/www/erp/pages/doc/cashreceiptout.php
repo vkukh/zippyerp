@@ -37,7 +37,6 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Label('lblopdetail'));
         $this->docform->add(new DropDownChoice('opdetail'));
         $this->docform->add(new TextInput('amount'));
-        $this->docform->add(new TextInput('nds'));
         $this->docform->add(new AutocompleteTextInput('basedoc'))->setAutocompleteHandler($this, 'basedocOnAutocomplete');
         $this->docform->add(new TextInput('notes'));
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
@@ -52,7 +51,6 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
             $this->docform->optype->setValue($this->_doc->headerdata['optype']);
             $this->optypeOnChange(null);
             $this->docform->opdetail->setValue($this->_doc->headerdata['opdetail']);
-            $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
             $this->docform->notes->setText($this->_doc->headerdata['notes']);
             $basedocid = $this->_doc->headerdata['basedoc'];
             if ($basedocid > 0) {
@@ -107,7 +105,6 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
             'optype' => $this->docform->optype->getValue(),
             'opdetail' => $this->docform->opdetail->getValue(),
             'amount' => $this->docform->amount->getValue() * 100,
-            'nds' => $this->docform->nds->getValue() * 100,
             'basedoc' => $basedocid,
             'notes' => $this->docform->notes->getText()
         );

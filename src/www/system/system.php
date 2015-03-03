@@ -8,7 +8,7 @@ namespace ZippyERP\System;
  */
 class System
 {
-
+     private  static $_options = array();   //  для кеширования отчета
     /**
      * Возвращает  текущего  юзера
      * @return  User
@@ -43,46 +43,7 @@ class System
         return Session::getSession();
     }
 
-    /**
-     * Возвращает  имя  текущей  темы (шаблона)
-     * @return  string
-     */
-    public static function getTheme()
-    {
-        if (Session::getSession()->theme == null) {
-            $options = System::getOptions();
-            if (strlen($options['theme']) > 0) {
-                Session::getSession()->theme = $options['theme'];
-            } else {
-                Session::getSession()->theme = $GLOBALS['_config']['common']['theme'];
-            }
-        }
-        Session::getSession()->theme = $GLOBALS['_config']['common']['theme'];
-
-        return Session::getSession()->theme;
-    }
-
-    /**
-     * устанавливает  текущую  тему
-     *  
-     * @param mixed $theme
-     */
-    public static function setTheme($theme)
-    {
-        Session::getSession()->theme = $theme;
-    }
-
-    /**
-     * Возвращает текущий  язык
-     * @return  string
-     */
-    public static function getLang()
-    {
-        if (Session::getSession()->lang == null) {
-            Session::getSession()->lang = $GLOBALS['_config']['common']['lang'];
-        }
-        return Session::getSession()->lang;
-    }
+ 
 
     /**
      * Возвращает набор  параметром  по  имени набора
@@ -91,15 +52,18 @@ class System
      */
     public static function getOptions($group)
     {
-        $options = array();
+        
+        if(isset(self::$_options[$group])){
+            return self::$_options[$group]; 
+        }
         $conn = \ZCL\DB\DB::getConnect();
 
         $rs = $conn->GetOne("select optvalue from system_options where optname='{$group}' ");
         if (strlen($rs) > 0) {
-            $options = @unserialize($rs);
+            self::$_options[$group] = @unserialize($rs);
         }
 
-        return $options;
+        return self::$_options[$group];
     }
 
     /**
@@ -115,6 +79,7 @@ class System
 
         $conn->Execute(" delete from system_options where  optname='{$group}' ");
         $conn->Execute(" insert into system_options (optname,optvalue) values ('{$group}'," . $conn->qstr($options) . " ) ");
+        self::$_options[$group] =  $options;
     }
 
 }

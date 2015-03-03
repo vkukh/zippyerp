@@ -13,7 +13,7 @@ class Report
     private $_template;
 
     /**
-     * Путь к  файлу  шаблогна
+     * Путь к  файлу  шаблона
      * 
      * @param mixed $template
      */
@@ -27,7 +27,7 @@ class Report
      * 
      * @param mixed $header    Массив  с даннымы  шапки
      * @param mixed $detail    Двумерный массив  табличной  части
-     * @param mixed $summary   Список  полей  по  которым  высисляются  итоговые  данные табличной части
+     * @param mixed $summary   Список  полей  по  которым  вычисляются  итоговые  данные табличной части
      */
     public function generate(array $header, array $detail = array(), array $summary = array())
     {

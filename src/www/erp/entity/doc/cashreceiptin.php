@@ -4,6 +4,8 @@ namespace ZippyERP\ERP\Entity\Doc;
 
 use \ZippyERP\ERP\Entity\MoneyFund;
 use \ZippyERP\ERP\Entity\Entry;
+use \ZippyERP\ERP\Entity\Customer;
+use \ZippyERP\ERP\Entity\Employee;
 
 /**
  * Класс-сущность  документ  приходный кассовый  ордер
@@ -19,27 +21,63 @@ class CashReceiptIn extends Document
 
     public function generateReport()
     {
-        return "";
+        $header = array('date' => date('d.m.Y', $this->document_date),
+            "document_number" => $this->document_number,
+            "notes" => $this->headerdata['notes'],
+            "amount" => \ZippyERP\ERP\Helper::fm($this->headerdata["amount"])
+        );
+         $optype = $this->headerdata['optype'];
+         
+        if ($optype == self::TYPEOP_CUSTOMER) {
+            $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["opdetail"]);
+            $header['opdetail']  =  $customer->customer_name;
+            $header['optype']  =  "Оплата от покупателя";
+        }
+        if ($optype == self::TYPEOP_CASH) {
+            $emp = \ZippyERP\ERP\Entity\Employee::load($this->headerdata["opdetail"]);
+            $header['opdetail']  =  $emp->shortname;
+            $header['optype']  =  "Возврат из подотчета";
+        }
+        if ($optype == self::TYPEOP_BANK) {
+            $mf = \ZippyERP\ERP\Entity\MoneyFund::load($this->headerdata["opdetail"]);
+            $header['opdetail']  =  $mf->title;
+            $header['optype']  =  "Снятие с банковского счета";
+          
+        }
+        if ($optype == self::TYPEOP_RET) {
+             $store = \ZippyERP\ERP\Entity\Store::load($this->headerdata["opdetail"]);
+            $header['opdetail']  =  $store->store_name;
+            $header['optype']  =  "Выручка   с розницы";
+           
+        }         
+        $report = new \ZippyERP\ERP\Report('cashreceiptin.tpl');
+
+        $html = $report->generate($header);
+
+        return $html;
     }
 
     public function Execute()
     {
 
-        $mf = MoneyFund::getFirst('ftype=0');
-        MoneyFund::AddActivity($mf->id, $this->headerdata['amount'], $this->document_id);
+        $mf = MoneyFund::getCash();
+        //MoneyFund::AddActivity($mf->id, $this->headerdata['amount'], $this->document_id);
         $ret = "";
         $optype = $this->headerdata['optype'];
         if ($optype == self::TYPEOP_CUSTOMER) {
-            $ret = Entry::AddEntry(30, 36, $this->headerdata['amount'], $this->document_id, 'Наличный расчет');
+            
+            //Customer::AddActivity($this->headerdata['opdetail'],$this->headerdata['amount'], $this->document_id);
+            $ret = Entry::AddEntry(30, 36, $this->headerdata['amount'], $this->document_id,$mf->id,$this->headerdata['opdetail']);
         }
         if ($optype == self::TYPEOP_CASH) {
-            
+          $ret = Entry::AddEntry(30, 372, $this->headerdata['amount'], $this->document_id,$mf->id,$this->headerdata['opdetail']);
         }
         if ($optype == self::TYPEOP_BANK) {
-            $ret = Entry::AddEntry(30, 31, $this->headerdata['amount'], $this->document_id, 'Оприходование с  банка');
+            $ret = Entry::AddEntry(30, 31, $this->headerdata['amount'], $this->document_id,$mf->id,$this->headerdata['opdetail']);
         }
         if ($optype == self::TYPEOP_RET) {
-            $ret = Entry::AddEntry(30, 702, $this->headerdata['amount'], $this->document_id, 'Оприходование выручки');
+            $store_id = $this->headerdata['opdetail']; // магазин
+            $ret = Entry::AddEntry(30, 702, $this->headerdata['amount'], $this->document_id,$mf->id,$store_id);
         }
         if (strlen($ret) > 0)
             throw new \Exception($ret);

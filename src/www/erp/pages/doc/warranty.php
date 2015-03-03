@@ -17,8 +17,9 @@ use ZippyERP\System\Application as App;
 use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
-use Zippy\Html\Form\AutocompleteTextInput;
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Страница  ввода  гарантийного талона
@@ -29,6 +30,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
     public $_tovarlist = array();
     private $_doc;
     private $_basedocid = 0;
+    private $_rowid = 0;
 
     public function __construct($docid = 0, $basedocid = 0)
     {
@@ -52,7 +54,9 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editsn'));
         $this->editdetail->add(new TextInput('editwarranty'));
 
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->setAutocompleteHandler($this, 'OnAutocomplete');
+        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
+        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
+        $this->editdetail->add(new DropDownChoice('edittovar'));
 
         $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->setClickHandler($this, 'saverowOnClick');
@@ -103,8 +107,8 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('sn', $item->sn));
         $row->add(new Label('warranty', $item->warranty));
         $row->add(new Label('quantity', $item->quantity));
-        $row->add(new Label('price', number_format($item->price / 100, 2)));
-        $row->add(new Label('amount', number_format($item->quantity * $item->price / 100, 2)));
+        $row->add(new Label('price', H::fm($item->price )));
+        $row->add(new Label('amount', H::fm($item->quantity * $item->price )));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
     }
@@ -124,25 +128,29 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $tovar = $this->_tovarlist[$item->item_id];
 
 
-        $this->editdetail->editprice->setText(number_format($item->price / 100, 2, '.', ''));
-        $this->editdetail->edittovar->setText($item->itemname);
-        $this->editdetail->edittovar->setKey($item->item_id);
+        $this->editdetail->editprice->setText(H::fm($item->price ));
+        $this->editdetail->editgroup->setValue($item->group_id);
+        $list = Item::findArray('itemname', 'group_id=' . $item->group_id);
+        $this->editdetail->edittovar->setOptionList($list);
+        $this->editdetail->edittovar->setValue($item->item_id);
         $this->editdetail->editquantity->setText($item->quantity);
         $this->editdetail->editwarranty->setText($item->warranty);
         $this->editdetail->editsn->setText($item->sn);
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
+        $this->_rowid = $item->item_id;
     }
 
     public function addrowOnClick($sender)
     {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
+        $this->_rowid = 0;
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -153,14 +161,14 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $item->sn = $this->editdetail->editsn->getText();
         $item->warranty = $this->editdetail->editwarranty->getText();
 
-
+        unset($this->_tovarlist[$this->_rowid]);
         $this->_tovarlist[$item->item_id] = $item;
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -207,7 +215,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
             $this->_basedocid = 0;
         }
 
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
     /**
@@ -226,15 +234,16 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
-    // автолоад списка  товаров
-    public function OnAutocomplete($sender)
+    public function OnGroup(DropDownChoice $sender)
     {
-        $text = $sender->getValue();
-
-        return Item::findArray("itemname", " itemname  like '%{$text}%' ", "itemname", null, 20);
+        $id = $sender->getValue();
+        $list = Item::findArray('itemname', 'group_id=' . $id);
+        $list = array_replace(array(0 => 'Выбрать'), $list);
+        $this->editdetail->edittovar->setOptionList($list);
+        $this->updateAjax(array('edittovar'));
     }
 
 }

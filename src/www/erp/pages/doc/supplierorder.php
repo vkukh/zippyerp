@@ -9,14 +9,15 @@ use \Zippy\Html\DataList\DataView;
 use \ZCL\DB\EntityDataSource;
 use \Zippy\Html\Label;
 use Zippy\Html\Form\Date;
+use \Zippy\Html\Form\CheckBox;
 use \Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
 use \Zippy\Html\Form\SubmitButton;
 use \Zippy\Html\Form\Button;
 use ZippyERP\ERP\Entity\Doc\Document;
-use Zippy\Html\Form\AutocompleteTextInput;
 use ZippyERP\System\Application as App;
 use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
 use \ZippyERP\ERP\Helper as H;
 
@@ -36,16 +37,20 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('created'))->setDate(time());
+        $this->docform->add(new Date('timeline'))->setDate(time() + 3 * 24 * 3600);
         $this->docform->add(new DropDownChoice('supplier', Customer::getSellers()));
         $this->docform->add(new DropDownChoice('orderstate', \ZippyERP\ERP\Entity\Doc\SupplierOrder::getStatesList()));
         $this->docform->add(new TextInput('reference'));
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
 
+
         $this->docform->add(new Label('total'));
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->setAutocompleteHandler($this, 'OnAutocomplete');
+        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
+        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
+        $this->editdetail->add(new DropDownChoice('edititem'));
         $this->editdetail->add(new TextInput('editquantity'));
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
@@ -56,10 +61,11 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_number->setText($this->_doc->document_number);
             $this->docform->total->setText(H::fm($this->_doc->total));
             $this->docform->reference->setText($this->_doc->headerdata['reference']);
-
+            $this->docform->timeline->setDate($this->_doc->headerdata['timeline']);
             $this->docform->created->setDate($this->_doc->document_date);
             $this->docform->supplier->setValue($this->_doc->headerdata['supplier']);
             $this->docform->orderstate->setValue($this->_doc->headerdata['orderstate']);
+
 
             foreach ($this->_doc->detaildata as $item) {
                 $item = new Item($item);
@@ -111,6 +117,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata = array(
             'supplier' => $this->docform->supplier->getValue(),
             'orderstate' => $new_state,
+            'timeline' => $this->docform->timeline->getDate(),
             'reference' => $this->docform->reference->getValue()
         );
         $this->_doc->detaildata = array();
@@ -127,18 +134,18 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         if ($new_state != $old_state) {
             $this->_doc->updateStatus($new_state);
         }
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     public function backtolistOnClick($sender)
     {
         // App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -154,8 +161,8 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edititem->setText('');
-        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setValue(0);
+
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -201,18 +208,15 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->total->setText(H::fm($total));
     }
 
-    // автолоад списка  товаров
-    public function OnAutocomplete($sender)
+    public function OnGroup(DropDownChoice $sender)
     {
-        $text = $sender->getValue();
-        $answer = array();
-        $conn = \ZCL\DB\DB::getConnect();
-        $sql = "select item_id,itemname from erp_item where itemname  like '%{$text}%' order  by itemname   limit 0,20";
-        $rs = $conn->Execute($sql);
-        foreach ($rs as $row) {
-            $answer[$row['item_id']] = $row['itemname'];
-        }
-        return $answer;
+        $id = $sender->getValue();
+
+        //$list[0] ="Выбрать";
+        $list = Item::findArray('itemname', 'group_id=' . $id);
+        $list = array_replace(array(0 => 'Выбрать'), $list);
+        $this->editdetail->edititem->setOptionList($list);
+        $this->updateAjax(array('edititem'));
     }
 
 }

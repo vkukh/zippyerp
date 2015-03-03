@@ -12,6 +12,7 @@ use \Zippy\Html\Form\Button;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\System\Application as App;
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Страница документа Договор
@@ -42,7 +43,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
             $this->docform->startdate->setDate($this->_doc->headerdata['startdate']);
             $this->docform->enddate->setDate($this->_doc->headerdata['enddate']);
             $this->docform->description->setText($this->_doc->headerdata['description']);
-            $this->docform->amount->setText(number_format($this->_doc->headerdata['amount'], 2, '.', ' '));
+            $this->docform->amount->setText(H::fm($this->_doc->headerdata['amount']));
             $this->docform->customer->setValue($this->_doc->headerdata['customer']);
         } else {
             $this->_doc = Document::create('Contract');
@@ -52,7 +53,10 @@ class Contract extends \ZippyERP\ERP\Pages\Base
 
     public function submitOnClick($sender)
     {
-
+        if ($this->docform->customer->getValue() == 0) {
+            $this->setError("Не выюран контрагент");
+            return false;
+        }
         $this->_doc->amount = 100 * $this->docform->amount->getText();
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->created->getDate();
@@ -74,12 +78,12 @@ class Contract extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
         }
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     public function cancelOnClick($sender)
     {
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
 }

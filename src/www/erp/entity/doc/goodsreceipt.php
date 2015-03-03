@@ -19,25 +19,26 @@ class GoodsReceipt extends Document
         $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
 
         $i = 1;
-        $total = 0;
+
         $detail = array();
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,
-                "tovar_name" => $value['tovarname'],
+                "itemname" => $value['itemname'],
                 "measure" => $value['measure_name'],
                 "quantity" => $value['quantity'],
                 "price" => H::fm($value['price']),
-                "amount" => H::fm($value['quantity'] * $value['price'])
+                "pricends" => H::fm($value['pricends']),
+                "amount" => H::fm($value['amount'])
             );
-            $total += $value['quantity'] * $value['price'];
         }
 
         $header = array('date' => date('d.m.Y', $this->document_date),
             "customer" => $customer->customer_name,
             "document_number" => $this->document_number,
-            "nds" => H::fm($this->headerdata["nds"]),
+            "totalnds" => H::fm($this->headerdata["totalnds"]),
             "total" => H::fm($this->headerdata["total"])
         );
+
 
 
         $report = new \ZippyERP\ERP\Report('goodsreceipt.tpl');
@@ -49,6 +50,8 @@ class GoodsReceipt extends Document
 
     public function Execute()
     {
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->StartTrans();
 
         foreach ($this->detaildata as $value) {
             //поиск  записи  о  товаре   на складе
@@ -59,15 +62,18 @@ class GoodsReceipt extends Document
         $total = $this->headerdata['total'];
         $customer_id = $this->headerdata["customer"];
 
-        \ZippyERP\ERP\Entity\Customer::AddActivity($customer_id, 0 - $total, $this->document_id);
+       // \ZippyERP\ERP\Entity\Customer::AddActivity($customer_id,  $total, $this->document_id);
 
         if ($this->headerdata['cash'] == true) {
-            \ZippyERP\ERP\Entity\Entry::AddEntry("63", "30", $total, $this->document_id, "Оплата  поставщику  наличныыми");
+            
+            $cash = MoneyFund::getCash();
+            \ZippyERP\ERP\Entity\Entry::AddEntry("63", "30", $total, $this->document_id,$customer_id,$cash->id);
+          //  MoneyFund::AddActivity($cash->id, 0 - $this->headerdata['total'], $this->document_id);
         }
 
-        if ($this->headerdata['nds'] > 0) {
-            $total = $total - $this->headerdata['nds'];
-            \ZippyERP\ERP\Entity\Entry::AddEntry("644", "63", $this->headerdata['nds'], $this->document_id, "Налоговый кредит");
+        //налоговый кредит
+        if ($this->headerdata['totalnds'] > 0) {
+            \ZippyERP\ERP\Entity\Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id);
         }
 
         $a281 = 0;
@@ -82,13 +88,13 @@ class GoodsReceipt extends Document
             }
         }
         if ($a281 > 0) {
-            \ZippyERP\ERP\Entity\Entry::AddEntry("281", "63", $a281, $this->document_id);
+            \ZippyERP\ERP\Entity\Entry::AddEntry("281", "63", $a281, $this->document_id,0,$customer_id);
         }
         if ($a201 > 0) {
-            \ZippyERP\ERP\Entity\Entry::AddEntry("201", "63", $a201, $this->document_id);
+            \ZippyERP\ERP\Entity\Entry::AddEntry("201", "63", $a201, $this->document_id,0,$customer_id);
         }
 
-
+        $conn->CompleteTrans();
 
 
 

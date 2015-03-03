@@ -53,11 +53,11 @@ class Application extends \Zippy\WebApplication
           }
           } */
 
-
-        $template = @file_get_contents(strtolower($path));
-        if ($template == false) {
-            throw new \ZippyERP\System\Exception('Invalid template path: ' . $name);
+        if (file_exists(strtolower($path))== false) {
+            throw new \ZippyERP\System\Exception('Invalid template path: ' . strtolower($path));
         }
+        $template = @file_get_contents(strtolower($path));
+
         return $template;
     }
 
@@ -132,6 +132,14 @@ class Application extends \Zippy\WebApplication
     public static function Redirect404()
     {
         self::$app->getResponse()->to404Page();
+    }
+  /**
+     * Редирект на  предыдущую страницу
+     * 
+     */
+    public static function RedirectBack()
+    {
+        self::$app->getResponse()->toBack();
     }
 
 }

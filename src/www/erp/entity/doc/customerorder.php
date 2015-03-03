@@ -2,6 +2,8 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
+use \ZippyERP\ERP\Helper as H;
+
 /**
  * документ - заказ  клиента
  */
@@ -17,7 +19,32 @@ class CustomerOrder extends Document
 
     public function generateReport()
     {
-        return ' ';
+        $i = 1;
+        $detail = array();
+        $total = 0;
+        foreach ($this->detaildata as $value) {
+            $detail[] = array("no" => $i++,
+                "tovar_name" => $value['itemname'],
+                "measure" => $value['measure_name'],
+                "quantity" => $value['quantity'],
+                "price" => H::fm($value['price']),
+                "amount" => H::fm($value['quantity'] * $value['price'])
+            );
+            $total += $value['quantity'] * $value['price'];
+        }
+
+        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
+        $header = array('date' => date('d.m.Y', $this->document_date),
+            "customername" => $customer->customer_name,
+            "document_number" => $this->document_number,
+            "base" => $this->base,
+            "total" => H::fm($total));
+
+        $report = new \ZippyERP\ERP\Report('customerorder.tpl');
+
+        $html = $report->generate($header, $detail);
+
+        return $html;
     }
 
     public function Execute()

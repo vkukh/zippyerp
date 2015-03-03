@@ -28,6 +28,7 @@ class TaxInvoice extends Document
                 "measure" => $value['measure_name'],
                 "quantity" => $value['quantity'],
                 "price" => H::fm($value['price']),
+                "pricends" => H::fm($value['pricends']),
                 "amount" => H::fm($value['quantity'] * $value['price'])
             );
             $total += $value['quantity'] * $value['price'];
@@ -40,10 +41,8 @@ class TaxInvoice extends Document
             "firmcode" => $firm['code'],
             "customername" => $customer->customer_name,
             "document_number" => $this->document_number,
-            "nds" => H::fm($this->headerdata["nds"]),
-            "total" => H::fm($total),
-            "totalnds" => H::fm($total + $this->headerdata["nds"]),
-            "summa" => Util::ucfirst(Util::money2str($total + $this->headerdata["nds"] / 100, '.', ''))
+            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "total" => H::fm($this->headerdata["total"])
         );
 
         $report = new \ZippyERP\ERP\Report('taxinvoice.tpl');
@@ -55,33 +54,16 @@ class TaxInvoice extends Document
 
     public function Execute()
     {
-        foreach ($this->detaildata as $value) {
-            $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $value['item_id'], $value['partion'], true);
-            $stock->updateStock(0 - $value['quantity'], $this->document_id);
-        }
-
-        if ($this->headerdata['paymenttype'] == 1) {  //наличные
-            //поступление  в кассу
-            $cash = MoneyFund::getCash();
-            MoneyFund::AddActivity($cash->id, $this->headerdata['total'], $this->document_id);
-        }
-        if ($this->headerdata['paymenttype'] == 2) {  //безнал
-        }
-
-        return true;
+        
     }
-
-    public function nextNumber()
+    
+    public function export($type)
     {
-        $doc = Document::getFirst("meta_name='GoodsIssue'", "document_id desc");
-        if ($doc == null)
-            return '';
-        $prevnumber = $doc->document_number;
-        if (strlen($prevnumber) == 0)
-            return '';
-        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
-
-        return "РН-" . sprintf("%05d", ++$prevnumber);
+     if($type==self::EX_XML_GNAU)
+        return array("filename"=>"test.xml","content"=>"<test/>");
     }
-
+    
+ public  function supportedExport(){
+        return array(self::EX_EXCEL,self::EX_WORD,self::EX_XML_GNAU);
+    }    
 }

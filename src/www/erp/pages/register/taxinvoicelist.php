@@ -12,7 +12,7 @@ use \Zippy\Html\Label;
 use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Panel;
 use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper;
+use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Filter;
 use \Zippy\Interfaces\Binding\PropertyBinding as Bund;
 use \ZippyERP\ERP\Entity\Doc\Document;
@@ -65,9 +65,9 @@ class TaxInvoiceList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('name', $item->meta_desc));
         $row->add(new Label('number', $item->document_number));
         $row->add(new Label('date', date('d-m-Y', $item->document_date)));
-        $row->add(new Label('amount', ($item->amount > 0) ? number_format($item->amount / 100.0, 2) : ""));
+        $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
 
-        $row->add(new Label('ernn', $item->ernn));
+        $row->add(new Label('ernn', $item->headerdata['ernn'] > 0 ? date('d-m-Y', $item->headerdata['ernn']) :""));
         $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');
@@ -103,7 +103,7 @@ class TaxInvoiceList extends \ZippyERP\ERP\Pages\Base
     public function editOnClick($sender)
     {
         $item = $sender->owner->getDataItem();
-        $type = Helper::getMetaType($item->type_id);
+        $type = H::getMetaType($item->type_id);
         $class = "\\ZippyERP\\ERP\\Pages\\Doc\\" . $type['meta_name'];
         //   $item = $class::load($item->document_id);
         App::Redirect($class, $item->document_id);

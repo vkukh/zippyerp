@@ -4,18 +4,19 @@
     <body>
         <div style="background-color: #fff;">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#printtab" data-toggle="tab">Печатная форма</a></li>
-                <li><a href="#messagetab" data-toggle="tab">Комментарии, детализация</a></li>
+                <li class="active"><a href="#printtab" data-toggle="tab">Документ</a></li>
+                <li><a href="#messagetab" data-toggle="tab">Комментарии</a></li>
                 <li><a href="#datatab" data-toggle="tab">Прикрепленные файлы,  документы</a></li>
                 <li><a href="#stattab" data-toggle="tab">Статистика</a></li>
             </ul>
 
             <div class="tab-content">
                 <div  id="printtab" class="tab-pane  active" >
-                    <a zippy="print" target="_blank"  title="Печать"><img class="icon20" src="/templates/images/print_32.png"></a> 
-                    <a zippy="pdf" target="_blank"   title="Экспорт в PDF"><img class="icon20" src="/templates/images/pdf_32.png"></a> 
-                    <a zippy="word" target="_blank"   title="Экспорт в Word"><img class="icon20" src="/templates/images/word_32.png"></a> 
-                    <a zippy="excel" target="_blank"   title="Экспорт в Excel"><img class="icon20" src="/templates/images/excel_32.png"></a> 
+                    &nbsp;<span style="font-size: smaller;font-weight: bolder;">Экспорт:</span> <a zippy="print" target="_blank"  title="Печать"><img class="icon20" src="/templates/images/print_32.png"></a> 
+                    <a zippy="html" target="_blank"   title="HTML"><img class="icon20" src="/templates/images/html.png"></a> 
+                    <a zippy="word" target="_blank"   title="Word"><img class="icon20" src="/templates/images/word_32.png"></a> 
+                    <a zippy="excel" target="_blank"   title="Excel"><img class="icon20" src="/templates/images/excel_32.png"></a> 
+                    <a zippy="xml" target="_blank"   title="XML (ГНАУ)"><img class="icon20" src="/templates/images/xml.png"></a> 
 
                     <div zippy="preview" style="padding: 2px;width:800px; overflow:auto; border: 1px solid #ccc"></div>
 
@@ -36,14 +37,7 @@
                                     <br> <input class="btn btn-default btn-xs" type="submit" value="Добавить">
                                 </form>      
                             </td>
-                            <td valign="top">
-                                <table>
-                                    <tr><td>Автор</td><td zippy="detuser"></td></tr>
-                                    <tr><td>Создан</td><td zippy="detcreated"></td></tr>
-                                    <tr><td>Изменен</td><td zippy="detupdated"></td></tr>
-                                    <tr><td>Описание</td><td zippy="detnotes"></td></tr>
-                                </table>
-                            </td>
+                            
 
                         </tr>
                     </table>  
@@ -72,7 +66,7 @@
                                     <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
                                     Выбрать файл:<br>
                                     <input type="file" required="required" zippy="addfile">
-                                    <br>Описание <br>
+                                    <br>Коментарий <br>
                                     <input  type="text" zippy="adddescfile" style="width:200px" >
                                     <br> <input class="btn btn-default btn-xs" type="submit" value="Добавить">
 
@@ -88,16 +82,27 @@
                 </div>   
                 <div id="stattab" class="tab-pane">
                     <table style="width:100%">
-                        <tr><td valign="top" >
+                        <tr>
+                          <td valign="top">
+                                <h4>Основное</h4>
+                                <table cellpadding="2" style="width:200px;">
+                                    <tr><td>Автор</td><td zippy="detuser"></td></tr>
+                                    <tr><td>Создан</td><td zippy="detcreated"></td></tr>
+                                    <tr><td>Изменен</td><td zippy="detupdated"></td></tr>
+                                    <tr><td colspan="2">Коментарий:</td></tr>
+                                    <tr><td colspan="2" zippy="detnotes"></td></tr>
+                                </table>
+                            </td>                        
+                        <td valign="top" >
                                 <h4>Проводки</h4>
-                                <table cellpadding="4">
-                                    <tr><th >Дт</th><th>Кт</th><th>Сумма</th><th style="width: 250px">Комментарий</th></tr>
-                                    <tr  zippy="dw_entrylist"><td  zippy="dt"></td><td  zippy="ct"></td><td zippy="entryamount" style="text-align:right"></td><td style="font-size: smaller;" zippy="entrycomment"></td></tr>
+                                <table cellpadding="2">
+                                    <tr><th >Дт</th><th>Кт</th><th>Сумма</th></tr>
+                                    <tr  zippy="dw_entrylist"><td  zippy="dt"></td><td  zippy="ct"></td><td zippy="entryamount" style="text-align:right"></td></tr>
                                 </table>                    
                             </td>
                             <td valign="top" >
                                 <h4>История изменений</h4>
-                                <table cellpadding="4">
+                                <table cellpadding="2">
                                     <tr><th >Статус</th><th>Дата</th><th>Автор</th><th>Хост</th></tr>
                                     <tr zippy="dw_statelist" style="font-size: smaller "><td zippy="statename"></td><td zippy="statedate"></td><td zippy="stateuser"></td><td zippy="statehost"></td></tr>
                                 </table>        

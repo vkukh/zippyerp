@@ -41,7 +41,7 @@ class TransferOrder extends Document
 
         $report = new \ZippyERP\ERP\Report('transferorder.tpl');
 
-        $html = $report->generate($header, $detail);
+        $html = $report->generate($header, array());
 
         return $html;
     }
@@ -50,19 +50,6 @@ class TransferOrder extends Document
     {
 
         return true;
-    }
-
-    public function nextNumber()
-    {
-        $doc = Document::getFirst("meta_name='TransferOrder'", "document_id ", 'desc');
-        if ($doc == null)
-            return '';
-        $prevnumber = $doc->document_number;
-        if (strlen($prevnumber) == 0)
-            return '';
-        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
-
-        return "СВ-" . sprintf("%05d", ++$prevnumber);
     }
 
 }

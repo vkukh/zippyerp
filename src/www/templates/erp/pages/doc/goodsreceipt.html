@@ -1,4 +1,21 @@
 <html>
+<head>
+      <script>
+    $(document).ready(function()
+    {
+        $( "#editprice" ).change(function() {
+          var s = $( "#editprice" ).val()
+          s = parseFloat(s) + s * _nds;
+
+          $( "#editpricends" ).val(s.toFixed(2));
+        });     
+        $( "#editpricends" ).change(function() {
+          var s = $( "#editpricends" ).val() - $( "#editpricends" ).val() * nds_  ;
+          $( "#editprice" ).val(s.toFixed(2));
+        });     
+    } )   
+      </script>
+</head>
     <body>
         <div class="row">
             <div class="col-md-12">    
@@ -29,34 +46,39 @@
                         </tr>
                         <tr>
                             <td >Основание</td>
-                            <td ><input type="text" zippy="reference" style="width: 200px;" ></td>
+                            <td ><input type="text" zippy="reference" ></td>
                             <td> </td>
                             <td></td>
                         </tr>
                     </table>
                     <br>
-                    <table   class="table  table-condensed" style="width:500px;" >
+                    <table   class="table  table-condensed" style="width:600px;" >
                         <tr >
                             <th >Наименование </th>
                             <th width="50">Ед.изм.</th>
-                            <th width="31">Кол.</th>
-                            <th width="52">Цена</th>
-                            <th width="67">Сумма</th>
-                            <th width="20"> </th>
+                            <th width="40">Кол.</th>
+                            <th width="100" style="text-align: center;" >Цена-</th>
+                            <th width="100" style="text-align: center;" >Цена+</th>
+                            <th width="67" style="text-align: center;" >Сумма</th>
+                            
+                            <th width="50"> </th>
                         </tr>
                         <tr zippy="detail">
                             <td zippy="item"></td>
                             <td zippy="measure"></td>
                             <td zippy="quantity" align="right"></td>
                             <td zippy="price" align="right"> </td>
+                            <td zippy="pricends" align="right"> </td>
                             <td zippy="amount" align="right"> </td>
-                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+                            
+                            <td><a  zippy="edit"><img src="/templates/images/edit.png"></a> <a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
                         </tr>
-                        <tr style="font-weight: bolder;"><td colspan="4" align="right">Всего:</td><td zippy="total" align="right"   ></td> <td> </td></tr>
-                        <tr style="font-weight: bolder;"><td colspan="4" align="right"><span data-label="nds">В т.ч. НДС:</span></td><td zippy="nds" align="right"></td> <td> </td></tr>
+                        <tr style="font-weight: bolder;"><td colspan="5" align="right">Всего:</td><td zippy="total" align="right"   ></td> <td> </td></tr>
+                        <tr style="font-weight: bolder;"><td colspan="5" align="right"><span data-label="totalnds">В т.ч. НДС:</span></td><td zippy="totalnds" align="right"></td> <td> </td></tr>
+       
 
                     </table>
-                    <a zippy="addrow">Добавить товар</a>
+                    <a zippy="addrow">Добавить позицию</a>
                     <p>&nbsp;</p>
                     <p>
                         <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
@@ -67,25 +89,36 @@
 
                 </form>
                 <div class="row">
-                    <div class="col-md-4">  
-                        <form zippy="editdetail" >
+                     
+                        <form zippy="editdetail"  class="col-md-4">
                             <h3>Ввод  товара  </h3>  
                             <div class="form-group">
-                                <label for="editname">Наименование </label>  <a  title="Создать и  добавить  в справлчник" zippy="additem"><span class="fa fa-plus-square"></span> </a>
-                                <input  class="form-control"  zippytype="text" zippy="edititem" required="required" > 
+                                <label for="editgroup">Группа </label>
+                                <select   class="form-control"  zippy="editgroup" > <option value="0">Выбрать</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editname">Наименование </label>
+                                <select   class="form-control"  zippy="edititem" > <option value="0">Выбрать</option></select>
+                            
+                            <!-- <a  title="Создать и  добавить  в справлчник" zippy="additem"><span class="fa fa-plus-square"></span> </a> -->
+                            
                             </div>
 
                             <div class="form-group">
                                 <label for="editquantity">Количество</label>
-                                <input class="form-control"  zippytype="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input>
+                                <input class="form-control"  type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input>
                             </div>
                             <div class="form-group">
-                                <label for="editprice">Цена</label>
-                                <input class="form-control" zippytype="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;">
+                                <label for="editprice">Цена без НДС</label>
+                                <input class="form-control" type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;">
+                            </div>
+                           <div class="form-group">
+                                <label for="editpricends">Цена с НДС</label>
+                                <input class="form-control" type="text" zippy="editpricends" required="required" pattern= "[0-9\.]+"   style="width: 100px;">
                             </div>
                             <input zippy="saverow" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> <input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-default btn-xs">                        
                         </form>
-                    </div> 
+                    
                 </div>   
 
                 <div zippy="itemdetail"></div>

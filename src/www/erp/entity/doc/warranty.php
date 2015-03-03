@@ -54,17 +54,4 @@ class Warranty extends Document
         return true;
     }
 
-    public function nextNumber()
-    {
-        $doc = Document::getFirst("meta_name='Invoice'", "document_id ", 'desc');
-        if ($doc == null)
-            return '';
-        $prevnumber = $doc->document_number;
-        if (strlen($prevnumber) == 0)
-            return '';
-        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
-
-        return "ГТ-" . sprintf("%05d", ++$prevnumber);
-    }
-
 }

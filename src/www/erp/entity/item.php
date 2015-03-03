@@ -43,6 +43,7 @@ class Item extends \ZCL\DB\Entity
         $this->priceopt = (string) ($xml->priceopt[0]);
         $this->priceret = (string) ($xml->priceret[0]);
         $this->barcode = (string) ($xml->barcode[0]);
+        $this->code = (string) ($xml->code[0]);
         $this->description = (string) ($xml->description[0]);
 
         parent::afterLoad();
@@ -67,12 +68,26 @@ class Item extends \ZCL\DB\Entity
         //упаковываем  данные в detail
         $this->detail = "<detail><priceopt>{$this->priceopt}</priceopt>";
         $this->detail .= "<priceret>{$this->priceret}</priceret>";
-        $this->detail .= "<priceret>{$this->priceret}</priceret>";
+        $this->detail .= "<code>{$this->code}</code>";
         $this->detail .= "<barcode>{$this->barcode}</barcode>";
         $this->detail .= "<description>{$this->description}</description>";
         $this->detail .= "</detail>";
 
         return true;
+    }
+
+    /**
+     * Количество на складе на  дату
+     * 
+     * @param mixed $item_id
+     * @param mixed $date
+     * 
+     */
+    public static function getQuantity($item_id, $date)
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_stock_activity_view  where    item_id = {$item_id} and date(document_date) <= " . $conn->DBDate($date);
+        return $conn->GetOne($sql);
     }
 
 }

@@ -30,16 +30,16 @@
                         <tr >
                             <th >Наименование </th>
                             <th width="50">Ед.изм.</th>
-                            <th width="31">Кол.</th>
-                            <th width="31">Цена</th>
-                            <th width="20"> </th>
+                            <th width="40">Кол.</th>
+                            <th width="40">Цена</th>
+                            <th width="50"> </th>
                         </tr>
                         <tr zippy="detail">
                             <td zippy="item"></td>
                             <td zippy="measure"></td>
                             <td zippy="quantity" align="right"></td>
                             <td zippy="price" align="right"></td>
-                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+                            <td><a  zippy="edit"><img src="/templates/images/edit.png"> <a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
                         </tr>
                     </table>
                     <a zippy="addrow">Добавить товар</a>
@@ -58,9 +58,9 @@
                     <strong>Ввод  товара  </strong>
 
                     <table  border="0" >
-                        <tr><td>Наименование</td><td><select zippy="edititem" > <option value="0">Выбрать</option></select> Наличие <span zippy="qtystock"></span> </td></tr>
+                        <tr><td>Наименование</td><td><input type="text" zippy="edititem" required="required" >  Наличие <span zippy="qtystock"></span> </td></tr>
                         <tr><td>Количество</td><td><input type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input></td></tr>
-                        <tr><td><span data-label="editprice">Цена</span></td><td><input type="text" zippy="editprice"  pattern= "[0-9\.]+"  ></input></td></tr>
+                        <tr><td><span data-label="editprice" >Цена</span></td><td><input readonly="readonly" type="text" zippy="editprice"  pattern= "[0-9\.]+"  ></input></td></tr>
                         <tr><td><input zippy="saverow" type="submit"  value="Сохранить" class="btn btn-xs btn-default"></td><td><input type="button" zippy="cancelrow" value="Отменить" class="btn btn-xs btn-default"></td></tr>
                     </table>
                 </form>
@@ -68,4 +68,10 @@
         </div>   
 
     </body>
+    <script>
+    $(document).ready(function()
+    {   
+        
+    });    
+    </script>
 </html>

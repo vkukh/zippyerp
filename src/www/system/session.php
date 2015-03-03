@@ -11,7 +11,8 @@ class Session
 
     private $values = array();
     public $filter = array();
-
+    public $printform;
+    
     public function __construct()
     {
         

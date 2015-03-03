@@ -66,23 +66,12 @@ class Invoice extends Document
         return true;
     }
 
-    public function nextNumber()
-    {
-        $doc = Document::getFirst("meta_name='Invoice'", "document_id ", 'desc');
-        if ($doc == null)
-            return '';
-        $prevnumber = $doc->document_number;
-        if (strlen($prevnumber) == 0)
-            return '';
-        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
-
-        return "СФ-" . sprintf("%05d", ++$prevnumber);
-    }
-
     public function getRelationBased()
     {
         $list = array();
         $list['GoodsIssue'] = 'Расходная накладная';
+        $list['ServiceAct'] = 'Акт выполненных работ';
+        $list['TaxInvoice'] = 'Налоговая  накладная';
         return $list;
     }
 

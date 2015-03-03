@@ -46,7 +46,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->common->add(new SubmitButton('commonsave'))->setClickHandler($this, 'saveCommonOnClick');
 
 
-        $detail = \ZippyERP\System\System::getOptions("firmdetail");
+        $detail = @unserialize(\ZippyERP\System\System::getOptions("firmdetail"));
 
         if (!is_array($detail))
             $detail = array();
@@ -68,7 +68,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $this->detail->bankaccount->setText($f->bankaccount);
         }
 
-        $common = \ZippyERP\System\System::getOptions("common");
+        $common = @unserialize(\ZippyERP\System\System::getOptions("common"));
         if (!is_array($common))
             $common = array();
         $this->common->closeddate->setDate($common['closeddate']);
@@ -102,7 +102,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $f->save();
         }
 
-        \ZippyERP\System\System::setOptions(array("firmdetail" => serialize($detail)), "erp");
+        \ZippyERP\System\System::setOptions("firmdetail",serialize($detail)) ;
     }
 
     public function saveCommonOnClick($sender)
@@ -112,7 +112,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $common['nds'] = $this->common->nds->getText();
         $common['hasnds'] = $this->common->hasnds->isChecked();
         $common['simpletax'] = $this->common->simpletax->isChecked();
-        \ZippyERP\System\System::setOptions("common", $common);
+        \ZippyERP\System\System::setOptions("common", serialize($common));
     }
 
 }

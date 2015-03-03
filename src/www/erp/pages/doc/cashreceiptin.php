@@ -85,6 +85,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
             $this->docform->opdetail->setOptionList(Store::findArray('storename', "store_type = " . Store::STORE_TYPE_RET . ' or store_type=' . Store::STORE_TYPE_RET_SUM, 'storename'));
             $this->docform->lblopdetail->setText('Магазины');
         }
+        $this->docform->nds->setVisible($optype == CRIN::TYPEOP_CUSTOMER);
     }
 
     public function basedocOnAutocomplete($sender)
@@ -102,7 +103,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
     public function savedocOnClick($sender)

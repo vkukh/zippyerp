@@ -18,8 +18,10 @@ class Pos
         $error = "";
         $xml = $_POST['data'];
 
-        //  $doc = new  \ZippyERP\ERP\Entity\Doc\RegisterReceipt();
-        //  $doc->save();
+          $doc = new  \ZippyERP\ERP\Entity\Doc\RegisterReceipt();
+          
+          
+          $doc->save();
 
 
         $xml = "<answer>";

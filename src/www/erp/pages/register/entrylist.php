@@ -10,7 +10,6 @@ use \Zippy\Html\Label;
 use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Panel;
 use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper;
 use \Zippy\Interfaces\Binding\PropertyBinding as Bund;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\System\Application as App;
@@ -18,6 +17,7 @@ use \ZippyERP\System\System;
 use \ZippyERP\System\Session;
 use \ZippyERP\ERP\Filter;
 use \Zippy\Html\Form\Date;
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Класс  страницы  журнала  проводок
@@ -62,11 +62,10 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $item = $row->getDataItem();
         $row->add(new Label('acc_d', $item->acc_d));
         $row->add(new Label('acc_c', $item->acc_c));
-        $row->add(new Label('amount', ($item->amount > 0) ? number_format($item->amount / 100.0, 2) : ""));
+        $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
 
-        $row->add(new Label('comment', $item->comment));
         $row->add(new Label('created', date('d-m-Y', $item->created)));
-        $row->add(new ClickLink('show', $this, 'showOnClick'))->setValue($item->meta_desc . ' №' . $item->document_number);
+        $row->add(new ClickLink('show', $this, 'showOnClick'))->setValue($item->meta_desc . ' ' . $item->document_number);
     }
 
     public function showOnClick($sender)

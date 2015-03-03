@@ -1,67 +1,203 @@
 <html>
-    <body>
-        <div class="row">
-            <div class="col-md-12">    
-                <strong>Ручная хоз. операция</strong>
-                <form zippy="docform">
+    <body> 
 
-                    <table   >
-                        <tr>
-
-                            <td >Дата</td>
-                            <td >    <input type="text" zippy="created" required="required"  ></td>
-                        </tr>
-
-                        <tr>
-                            <td >Описание</td>
-                            <td ><input type="text" zippy="description" style="width: 400px;" ></td>
-                        </tr>
-                    </table>
-
-                    <table  class="table   table-condensed" style="width:480px;">
-                        <tr >
-
-                            <th style="width:40px;">Дт</th>
-                            <th style="width:40px;">Кт</th>
-                            <th style="width:60px;">Сумма</th>
-                            <th style="width:300px;">Описание</th>
-                            <th style="width:20px;"> </th>
-                        </tr>
-                        <tr zippy="detail">
-                            <td zippy="dt"></td>
-                            <td zippy="ct"></td>
-                            <td zippy="amount" align="right"></td>
-                            <td zippy="comment" ></td>
-
-                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
-                        </tr>
-                    </table>
-                    <table  class="table   table-condensed"   style="width:140px;">
-                        <tr><td align="right" style="width:80px;font-weight: bolder">Итого:</td><td zippy="total" align="right" style="width:60px;" style="font-weight: bolder;"></td></tr>
-                    </table>
-                    <a zippy="addrow">Добавить проводку</a>
-                    <p>&nbsp;</p>
-                    <p>
-                        <input type="button" value="Отменить" zippy="backtolist"   class="btn btn-default btn-xs"> 
-                        &nbsp;<input zippy="savedoc" type="submit"  value="Сохранить"  class="btn btn-default btn-xs"> 
-                        &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default btn-xs"> 
-
-                    </p>
-
-                </form>
-                <form zippy="editdetail">
-                    <strong>Ввод проводки</strong>
-                    <table  border="0" >
-                        <tr><td>Счет дебет</td><td><select zippy="editdt" > <option value="0">Выбрать счет</option></select></td></tr>
-                        <tr><td>Счет кредит</td><td><select zippy="editct" > <option value="0">Выбрать счет</option></select></td></tr>
-                        <tr><td>Сумма</td><td><input type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  size="8" ></input></td></tr>
-                        <tr><td>Коментарий</td><td><input type="text" zippy="editcomment" size="50"  ></input></td></tr>
-
-                        <tr><td><input type="submit"  value="Сохранить"   class="btn btn-default btn-xs"></td><td><input type="button" zippy="cancelrow" value="Отменить"   class="btn btn-default btn-xs"></td></tr>
-                    </table>
-                </form>
-
+        <form zippy="docform">   
+            <div class="row">
+                <div class="col-md-12">  
+                    <h3>Ручная хоз. операция</h3>
+                    Номер документа <input type="text" zippy="document_number" required="required" style="width:100px"> 
+                    Дата  <input type="text" zippy="created" required="required"  >  
+                    <br>Примечание: <textarea zippy="description"></textarea>
+                </div>  
             </div>  
-        </div>   
+   
+            <div class="row">
+            <div class="col-md-12"> 
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#entrytab" data-toggle="tab">Бух. проводки</a></li>
+                    <li><a href="#itemstab" data-toggle="tab">ТМЦ</a></li>
+                    <li><a href="#employeetab" data-toggle="tab">Сотрудники</a></li>
+                    <li><a href="#contragenttab" data-toggle="tab">Контрагенты</a></li>
+                    <li><a href="#mftab" data-toggle="tab">Денежные счета</a></li>
+                </ul>                
+                    
+                <div class="tab-content">
+                  
+                    <div  id="entrytab" class="tab-pane  active" >
+                       <table style="width:160px;" class="table table-condensed">
+                            <tr>
+
+                                <th >Дебет</th>
+                                <th >Кредит</th>
+                                
+                                <th >Сумма</th>
+                                <th style="width:32px;"> </th>
+                            </tr>
+                            <tr zippy="acctable">
+                                <td zippy="acccoded"> </td>
+                                <td zippy="acccodec"> </td>
+                                <td zippy="accvalue" align="right"></td>
+                                <td><a zippy="delacc"><img src="/templates/images/delete.png"></a></td>
+                            </tr>
+                        </table> <a name="a1"></a> 
+                        Дебет <select zippy="e_acclistd"><option value="-1">--</option></select> 
+                        Кредит <select zippy="e_acclistc"><option value="-1">--</option></select> 
+                        Сумма  <input  pattern= "[0-9\.]+"  style="width:40px;" type="text" zippy="e_accsumma">
+                        &nbsp;<input zippy="addaccbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                 
+                  </div> 
+                
+                
+                    <div  id="itemstab" class="tab-pane " >
+                        <table style="width:600px;" class="table table-condensed">
+                            <tr>       
+                                <th >+/-</th>
+                                <th style="width:60px;">Код</th>
+                                <th>Склад</th>
+                                <th>Наименование</th>
+                                <th style="width:50px;">Кол.</th>
+                                <th style="width:100px;">Цена</th>
+                                <th style="width:32px;"> </th>
+                            </tr>
+                            <tr zippy="itemtable">
+                                <td align="center" zippy="itemop"></td>
+                                <td zippy="itemcode"></td>
+                                <td zippy="store"></td>
+                                <td zippy="itemname"></td>
+                                <td zippy="itemcnt" align="right"></td>
+                                <td zippy="itemprice" align="right"></td>
+                                <td><a zippy="delitem"><img src="/templates/images/delete.png"></a></td>
+                            </tr>
+                        </table> <a name="a2"></a> 
+                        Операция <select zippy="e_oper"><option value="1">Приход</option><option value="2">Списание</option></select> 
+                                         
+                        Склад <select zippy="e_storelist"></select> 
+                        Тип <select zippy="e_itemtypelist">
+                            <option value="1">Товар</option>
+                            <option value="2">МБП</option> 
+                            <option value="4">Материалы</option></select> 
+                        ТМЦ <select zippy="e_itemlist"></select>  <br>
+                        Кол. <input  zippy="e_quantity" type="text"  pattern= "[0-9]+"  style="width:60px;"> 
+                        Цена <input zippy="e_price" pattern= "[0-9\.]+"  type="text"  style="width:60px;" > 
+                        &nbsp;<input zippy="additembtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                    </div> 
+                    
+                    <div  id="employeetab" class="tab-pane" >  
+                   <table style="width:600px;" class="table table-condensed">
+                                <tr>
+                                 <th >+/-</th>
+                                   <th>ФИО</th>
+                                    <th style="width:100px;"  align="right">Сумма</th>
+                                    <th style="width:32px;"> </th>
+                                </tr>
+                                <tr zippy="emptable">
+                                    <td zippy="empop"></td>
+                                    <td zippy="empname"></td>
+                                    <td zippy="empamount"></td>
+                                    <td><a zippy="delemp"><img src="/templates/images/delete.png"></a></td>
+                                </tr>
+                            </table> 
+                            
+                            Операция <select zippy="e_empoper">
+                               <option value="1">Начисление зарплаты</option>
+                               <option value="2">Выплата</option>
+                               <option value="3">Подотчет</option>
+                               <option value="4">Списание подотчета</option>
+                            </select> 
+                            ФИО <select zippy="e_emplist"></select> 
+                            Сумма <input zippy="e_empamount" type="text"  style="width:100px;" > 
+                            &nbsp;<input zippy="addempbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                    
+                    </div>
+                    <div  id="contragenttab" class="tab-pane" >  
+                         <table style="width:600px;" class="table table-condensed">
+                            <tr>
+                                 <th >+/-</th>
+                               <th>Тип</th>
+                               <th>Наименование</th>
+                                <th style="width:100px;"  align="right">Сумма</th>
+                                <th style="width:32px;"> </th>
+                            </tr>
+                            <tr zippy="ctable">
+                                <td align="center" zippy="cop"></td>
+                                <td zippy="ctp"></td>
+                                <td zippy="сname"></td>
+                                <td zippy="сamount"></td>
+                                <td><a zippy="delс"><img src="/templates/images/delete.png"></a></td>
+                            </tr>
+                        </table>  
+                            Операция <select zippy="e_сoper">
+                               <option value="1">Долг нам</option>
+                               <option value="2">Долг наш</option>
+
+                            </select>                         
+                            Тип <select zippy="e_сtype">
+                               <option value="1">Покупатель</option>
+                               <option value="2">Поставщик</option>
+                            </select>                         
+                        Наименование <select zippy="e_сlist"></select> 
+                        Сумма <input zippy="e_сamount" type="text"  style="width:100px;" > 
+                        &nbsp;<input zippy="addсbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                  
+                    </div>
+                    <div  id="mftab" class="tab-pane" >  
+                       <table style="width:600px;" class="table table-condensed">
+                            <tr>
+                                <th style="width:10px;" >+/-</th>
+                                <th>Счет</th>
+                                <th style="width:100px;"  align="right">Сумма</th>
+                                <th style="width:32px;"> </th>
+                            </tr>
+                            <tr zippy="ftable">
+                                <td align="center" zippy="fop"></td>
+                                <td zippy="fname"></td>
+                                <td zippy="famount"></td>
+                                <td><a zippy="delf"><img src="/templates/images/delete.png"></a></td>
+                            </tr>
+                        </table>   
+                        Операция <select zippy="e_foper">
+                               <option value="1">Приход </option>
+                               <option value="2">Расход</option>
+                            </select>                          
+                        Счет <select zippy="e_flist"></select> 
+                        Сумма <input zippy="e_famount" type="text"  style="width:100px;" > 
+                        &nbsp;<input zippy="addfbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs"> 
+                    
+                    </div>
+                
+                    
+                </div>   
+                     
+            </div>         
+            </div>  
+            <div class="row">
+                <div class="col-md-12" style="padding-top: 10px;">              
+                    <hr><input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">&nbsp;
+                    <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs">&nbsp;
+                    <input zippy="execdoc" type="submit"  value="Провести" class="btn btn-default btn-xs">                           
+                </div> 
+
+            </div>   
+        </form>
+                <script>
+
+                $(function() {
+
+                    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                        $.cookie('tab_doc', $(e.target).attr('href'));
+                    });
+
+                    var lastTab = $.cookie('tab_doc');
+
+                    if (lastTab) {
+                        $('ul.nav-tabs').children().removeClass('active');
+                        $('a[href=' + lastTab + ']').parents('li:first').addClass('active');
+                        $('div.tab-content').children().removeClass('active');
+                        $(lastTab).addClass('active');
+                    }
+                });
+
+            </script> 
     </body>
 </html>

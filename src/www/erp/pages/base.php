@@ -6,6 +6,7 @@ use \ZippyERP\ERP\Helper;
 use \ZippyERP\System\System;
 use \ZippyERP\System\Application as App;
 use \Zippy\Html\Label;
+use \Zippy\Html\Link\ClickLink;
 
 //базовая страница  
 class Base extends \Zippy\Html\WebPage
@@ -23,6 +24,7 @@ class Base extends \Zippy\Html\WebPage
         $this->add(new Label("menureg", Helper::generateMenu(3), true));
         $this->add(new Label("menuref", Helper::generateMenu(4), true));
         $this->add(new Label("menupage", Helper::generateMenu(5), true));
+        $this->add(new ClickLink("pageinfo"))->setAttribute("data-content",$this->getPageInfo());;
 
         $user = System::getUser();
         if ($user->user_id == 0) {
@@ -51,4 +53,20 @@ class Base extends \Zippy\Html\WebPage
         return strlen($this->_errormsg) > 0 ? true : false;
     }
 
+    /**
+    * Функция  возвращающая  описание страницы.
+    * Может  перегружатся  дочерними  страницами.
+    * Как  правило  выводится  описание с  обьекта  метадагнных
+    * @return mixed
+    */
+    public function getPageInfo(){
+       $class = explode("\\",get_class($this));
+       $classname = $class[count($class) - 1];
+       $info =   \ZippyERP\ERP\Helper::getMetaNotes($classname);
+       if(strlen($info) == 0){
+           return "Об этой  странице нет информации";    
+       } else {
+          return $info;
+       }
+    }
 }

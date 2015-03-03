@@ -1,5 +1,21 @@
 <html>
+<head>
+      <script>
+    $(document).ready(function()
+    {
+        $( "#editprice" ).change(function() {
+          var s = $( "#editprice" ).val()
+          s = parseFloat(s) + s * _nds;
 
+          $( "#editpricends" ).val(s.toFixed(2));
+        });     
+        $( "#editpricends" ).change(function() {
+          var s = $( "#editpricends" ).val() - $( "#editpricends" ).val() * nds_  ;
+          $( "#editprice" ).val(s.toFixed(2));
+        });     
+    } )   
+      </script>
+</head>
     <body>
         <div class="row">
             <div class="col-md-12">    
@@ -18,49 +34,51 @@
                             <td  >Со склада</td>
                             <td ><select zippy="store" >
                                 </select></td>
-                            <td  >Тип оплаты</td>
-                            <td ><select zippy="paymenttype" >
-                                    <option value="2">Безнал</option>
-                                    <option value="1">Наличные</option>
-
-                                </select></td>                                
+                                <td >Оплата наличными</td>
+                                <td ><input type="checkbox" zippy="cash"></td>
+                                                  
                         </tr>
                         <tr>
 
                             <td  >Получатель</td>
                             <td ><select zippy="customer" >
                                 </select></td>
-                            <td  >Основание</td>
-                            <td  ><input type="text" zippy="based" ></td>                                
-                        </tr>
+                                  <td>НДС</td>
+                            <td><input type="checkbox" zippy="isnds"></td>
+                       
+                          </tr>
+                        <tr>   <td  >Основание</td>
+                            <td colspan="3" ><input type="text" zippy="based" ></td>                                
+                       </tr>
                     </table>
                     <br>
-                    <table  border="0" cellpadding="1"  width="500px">
+                    <table  border="0" cellpadding="1"  width="700px">
                         <tr >
                             <th >Наименование </th>
                             <th width="50">Партия</th>
                             <th width="50">Ед.изм.</th>
                             <th width="40">Кол.</th>
-                            <th width="60">Цена</th>
-                            <th width="60">Сумма</th>
-                            <th width="20"> </th>
+                            <th width="100" style="text-align: center;" >Цена-</th>
+                            <th width="100" style="text-align: center;" >Цена+</th>
+                            <th >Сумма</th>
+                            <th width="50"> </th>
                         </tr>
                         <tr zippy="detail">
                             <td zippy="tovar"></td>
                             <td zippy="partion"></td>
-                            <td zippy="measure"></td>
+                            <td zippy="measure" align="center"></td>
                             <td zippy="quantity" align="right" style="padding-right:4px;"></td>
                             <td zippy="price" align="right"> </td>
+                            <td zippy="pricends" align="right"> </td>
                             <td zippy="amount" align="right"> </td>
-                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+                            <td><a  zippy="edit"><img src="/templates/images/edit.png"> <a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+               
                         </tr>
+                        <tr style="font-weight: bolder;"><td colspan="6" align="right">Всего:</td><td zippy="total" align="right"   ></td> <td> </td></tr>
+                        <tr style="font-weight: bolder;"><td colspan="6" align="right"><span data-label="totalnds">В т.ч. НДС:</span></td><td zippy="totalnds" align="right"></td> <td> </td></tr>
+                        
                     </table>
                     <a zippy="addrow">Добавить товар</a>
-                    <table  border="0" cellpadding="1" width="480px">
-                        <tr><td align="right">НДС:</td><td zippy="nds"  align="right"></td></tr>
-                        <tr><td align="right">Итого:</td><td zippy="total" align="right" width="60px"  style="font-weight: bolder;"></td></tr>
-                    </table>
-
                     <p>&nbsp;</p>
                     <p>
                         <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
@@ -73,9 +91,11 @@
                 <form zippy="editdetail">
                     <strong>Ввод  товара  </strong>
                     <table  border="0" >
-                        <tr><td>Наименование</td><td><select zippy="edittovar" > <option value="0">Выбрать</option></select>  Наличие <span zippy="qtystock"></span>  </td></tr>
+                        <tr><td>Группа</td><td><select     zippy="editgroup" > <option value="0">Выбрать</option></select></td></tr>
+                        <tr><td>Наименование</td><td><select    zippy="edittovar" > <option value="0">Выбрать</option></select> Наличие <span zippy="qtystock"></span>  </td></tr>
                         <tr><td>Количество</td><td><input type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input></td></tr>
-                        <tr><td>Цена</td><td><input type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;"></td></tr>
+                        <tr><td>Цена без НДС</td><td><input type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 70px;"></td></tr>
+                        <tr><td>Цена с НДС</td><td><input type="text" zippy="editpricends" required="required" pattern= "[0-9\.]+"   style="width: 70px;"></td></tr>
                         <tr><td><input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default btn-xs"></td><td><input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-default btn-xs"></td></tr>
                     </table>
                 </form>

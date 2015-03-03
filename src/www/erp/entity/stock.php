@@ -15,7 +15,6 @@ class Stock extends \ZCL\DB\Entity
     /**
      * Метод  для   получения  имени  ТМЦ  с  ценой
      *      
-     * @param mixed $fieldname
      * @param mixed $criteria
      * @return []
      * @static
@@ -27,31 +26,30 @@ class Stock extends \ZCL\DB\Entity
         $list = array();
         foreach ($entitylist as $key => $value) {
 
-            $list[$key] = $value->itemname . ', ' . number_format($value->price / 100, 2, '.', '');
+            $list[$key] = $value->itemname . ', ' . \ZippyERP\ERP\Helper::fm($value->price);
         }
 
         return $list;
     }
 
     /**
-     * Возвращает запись  со  склада
+     * Возвращает запись  со  склада по  цене (партии  для  оптового)  товара.
      * 
      * @param mixed $store_id  Склад
      * @param mixed $tovar_id  Товар
      * @param mixed $price     Цена 
      * @param mixed $create    Создать  если  не   существует
      */
-    public static function getStock($store_id, $item_id, $partion, $create = false)
+    public static function getStock($store_id, $item_id, $price, $create = false)
     {
 
-        $stock = self::findOne("store_id = {$store_id} and item_id = {$item_id} and partion = {$partion} ");
+        $stock = self::findOne("store_id = {$store_id} and item_id = {$item_id} and price = {$price} ");
         if ($stock == null && $create == true) {
             $stock = new Stock();
             $stock->store_id = $store_id;
             $stock->item_id = $item_id;
-            //  партия  товара  определяется  себестоимостью
-            $stock->price = $partion;
-            $stock->partion = $partion;
+            $stock->price = $price;
+            $stock->partion = $price;
 
             if ($item_id == 0) {  // товар  для  суммового  учета
                 $stock->price = 1;
@@ -61,7 +59,10 @@ class Stock extends \ZCL\DB\Entity
 
             $stock->Save();
         }
-
+        if ($stock->closed == 1) {
+            $stock->closed == 0;
+            $stock->Save();     //enable partion
+        }
         return $stock;
     }
 
@@ -89,7 +90,7 @@ class Stock extends \ZCL\DB\Entity
     }
 
     /**
-     * Количество на складе на  дату
+     * Количество в  партии на складе на  дату
      * 
      * @param mixed $stock_id
      * @param mixed $date

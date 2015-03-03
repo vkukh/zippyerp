@@ -21,16 +21,16 @@ class TaxInvoiceIncome extends Document
 
         $i = 1;
         $detail = array();
-        $total = 0;
+
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,
-                "tovar_name" => $value['itemname'],
+                "itemname" => $value['itemname'],
                 "measure" => $value['measure_name'],
                 "quantity" => $value['quantity'],
                 "price" => H::fm($value['price']),
+                "pricends" => H::fm($value['pricends']),
                 "amount" => H::fm($value['quantity'] * $value['price'])
             );
-            $total += $value['quantity'] * $value['price'] / 100;
         }
 
         $firm = \ZippyERP\System\System::getOptions("firmdetail");
@@ -40,10 +40,8 @@ class TaxInvoiceIncome extends Document
             "firmcode" => $firm['code'],
             "customername" => $customer->customer_name,
             "document_number" => $this->document_number,
-            "nds" => H::fm($this->headerdata["nds"]),
-            "total" => H::fm($total),
-            "totalnds" => H::fm($total + $this->headerdata["nds"]),
-            "summa" => Util::ucfirst(Util::money2str($total + $this->headerdata["nds"] / 100, '.', ''))
+            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "total" => H::fm($this->headerdata["total"])
         );
 
         $report = new \ZippyERP\ERP\Report('taxinvoiceincome.tpl');
@@ -57,18 +55,9 @@ class TaxInvoiceIncome extends Document
     {
         
     }
-
-    public function nextNumber()
+    
+    public static function import($data)
     {
-        $doc = Document::getFirst("meta_name='GoodsIssue'", "document_id desc");
-        if ($doc == null)
-            return '';
-        $prevnumber = $doc->document_number;
-        if (strlen($prevnumber) == 0)
-            return '';
-        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
-
-        return "РН-" . sprintf("%05d", ++$prevnumber);
+        return "";
     }
-
 }

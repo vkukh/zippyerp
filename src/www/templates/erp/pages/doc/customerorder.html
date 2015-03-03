@@ -24,7 +24,10 @@
                         </tr>
                         <tr>
                             <td >Основание</td>
-                            <td colspan="3"><input type="text" zippy="reference" style="width: 400px;" ></td>
+                            <td ><input type="text" zippy="reference"  ></td>
+                            <td>Срок</td>
+                            <td><input type="text" zippy="timeline"></td>
+                 
                         </tr>
                     </table>
 
@@ -57,30 +60,35 @@
                     </p>
 
                 </form>
-                <div class="row">
-                    <div class="col-md-4">  
-                        <form zippy="editdetail" >
-                            <h3>Ввод  позиции  </h3>  
-                            <div class="form-group">
-                                <label for="editname">Наименование </label>
-                                <input  class="form-control"  type="text" zippy="edititem" required="required" > 
-                            </div>
-                            <div class="form-group">
-                                <label for="editquantity">Количество</label>
-                                <input class="form-control"  zippytype="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input>
-                            </div>
-                            <div class="form-group">
-                                <label for="editprice">Цена</label>
-                                <input class="form-control" zippytype="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;">
-                            </div>
-                            <input zippy="saverow" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> <input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-default btn-xs">                        
-                        </form>
-                    </div> 
-                </div>   
+                 
 
 
             </div> 
         </div>   
-
+         <div class="row">
+                    <div class="col-md-4">  
+                        <form zippy="editdetail" >
+                            <h3>Ввод  позиции  </h3>  
+                             <div class="form-group">
+                                <label for="editgroup">Группа </label>
+                                <select   class="form-control"  zippy="editgroup" > <option value="0">Выбрать</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editname">Наименование </label>
+                                <select   class="form-control"  zippy="edititem" > <option value="0">Выбрать</option></select>
+                                Наличие на  дату  заказа: <span zippy="qtystore" ></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="editquantity">Количество</label>
+                                <input class="form-control"  type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input>
+                            </div>
+                            <div class="form-group">
+                                <label for="editprice">Цена</label>
+                                <input class="form-control" type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;">
+                            </div>
+                            <input zippy="saverow" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> <input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-default btn-xs">                        
+                        </form>
+                    </div> 
+                </div> 
     </body>
 </html>

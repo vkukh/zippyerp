@@ -20,6 +20,7 @@ use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\TextInput;
 use Zippy\Html\Form\TextArea;
 use Zippy\Html\Form\DropDownChoice;
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Виджет для  просмотра  документов 
@@ -39,9 +40,10 @@ class DocView extends \Zippy\Html\PageFragment
         parent::__construct($id);
 
         $this->add(new RedirectLink('print', ""));
-        $this->add(new RedirectLink('pdf', ""));
+        $this->add(new RedirectLink('html', ""));
         $this->add(new RedirectLink('word', ""));
         $this->add(new RedirectLink('excel', ""));
+        $this->add(new RedirectLink('xml', ""));
         $this->add(new Label('preview'));
 
         $this->add(new DataView('reldocs', new ArrayDataSource(new Prop($this, '_reldocs')), $this, 'relDoclistOnRow'));
@@ -68,22 +70,28 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     // Устанавливаем  документ  для  просмотра
-    public function setDoc(\ZippyERP\ERP\Entity\Doc\Document $item)
+    public function setDoc(\ZippyERP\ERP\Entity\Doc\Document $doc)
     {
-        $this->_doc = $item;
+        $this->_doc = $doc;
         //  получение  екзамеляра  конкретного  документа   с  данными
-        $type = Helper::getMetaType($item->type_id);
+        $type = Helper::getMetaType($doc->type_id);
         $class = "\\ZippyERP\\ERP\\Entity\\Doc\\" . $type['meta_name'];
-        $item = $class::load($item->document_id);
+        $doc = $class::load($doc->document_id);
 
+        // проверяем  поддержку  экспорта
+        $exportlist = $doc->supportedExport();
+        $this->word->setVisible(in_array(Document::EX_WORD,$exportlist));
+        $this->excel->setVisible(in_array(Document::EX_EXCEL,$exportlist));
+        $this->xml->setVisible(in_array(Document::EX_XML_GNAU,$exportlist));
+        
         // генерация  печатной   формы                
-        $html = $item->generateReport();
+        $html = $doc->generateReport();
         if (strlen($html) == 0) {
             //  $this->owner->setError("Не найден шаблон печатной формы");
             // return;
             $html = "<h4>Печатная форма  не  задана</h4>";
             $this->print->setVisible(false);
-            $this->pdf->setVisible(false);
+            $this->html->setVisible(false);
             $this->word->setVisible(false);
             $this->excel->setVisible(false);
         }
@@ -97,12 +105,14 @@ class DocView extends \Zippy\Html\PageFragment
 
         $this->print->pagename = $reportpage;
         $this->print->params = array('print', $filename);
-        $this->pdf->pagename = $reportpage;
-        $this->pdf->params = array('pdf', $filename);
+        $this->html->pagename = $reportpage;
+        $this->html->params = array('html', $filename);
         $this->word->pagename = $reportpage;
         $this->word->params = array('doc', $filename);
         $this->excel->pagename = $reportpage;
         $this->excel->params = array('xls', $filename);
+        $this->xml->pagename = $reportpage;
+        $this->xml->params = array(Document::EX_XML_GNAU, $this->_doc->document_id);
 
         $this->updateDocs();
         $this->_entries = \ZippyERP\ERP\Entity\Entry::find('document_id=' . $this->_doc->document_id);
@@ -154,10 +164,9 @@ class DocView extends \Zippy\Html\PageFragment
     public function entryListOnRow($row)
     {
         $item = $row->getDataItem();
-        $row->add(new Label('dt', $item->acc_d));
-        $row->add(new Label('ct', $item->acc_c));
-        $row->add(new Label('entryamount', number_format($item->amount / 100, 2, '.', '')));
-        $row->add(new Label('entrycomment', $item->comment));
+        $row->add(new Label('dt', $item->acc_d > 0 ? $item->acc_d : ""));
+        $row->add(new Label('ct', $item->acc_c > 0 ? $item->acc_c : ""));
+        $row->add(new Label('entryamount', H::fm($item->amount)));
     }
 
     //вывод строки  лога состояний
@@ -296,5 +305,5 @@ class DocView extends \Zippy\Html\PageFragment
         \ZippyERP\ERP\Entity\Message::delete($msg->message_id);
         $this->updateMessages();
     }
-
+    
 }

@@ -17,9 +17,11 @@ use ZippyERP\System\Application as App;
 use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Страница  ввода  налоговой  накладной
@@ -30,6 +32,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
     public $_tovarlist = array();
     private $_doc;
     private $_basedocid = 0;
+    private $_rowid = 0;
 
     public function __construct($docid = 0, $basedocid = 0)
     {
@@ -44,18 +47,22 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DropDownChoice('customer', Customer::getBuyers()));
 
         $this->docform->add(new TextInput('based'));
+        $this->docform->add(new Date('ernn'));
 
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
 
-        $this->docform->add(new Label('nds'));
+        $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('edittovar'));
+        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
+        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
+
+        $this->editdetail->add(new DropDownChoice('edittovar'))->setAjaxChangeHandler($this, 'OnItem');
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
+        $this->editdetail->add(new TextInput('editpricends'));
 
 
 
@@ -66,8 +73,9 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
 
-            $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
+            $this->docform->totalnds->setText(H::fm($this->_doc->headerdata['totalnds']));
             $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->ernn->setDate($this->_doc->headerdata['ernn']);
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
 
@@ -90,7 +98,16 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
 
                     if ($basedoc->meta_name == 'GoodsIssue') {
-                        //  $this->docform->nds->setText($basedoc->headerdata['nds'] / 100);
+
+                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+
+                        foreach ($basedoc->detaildata as $item) {
+                            $item = new Item($item);
+                            $this->_tovarlist[$stock->item_id] = $item;
+                        }
+                    }
+                    if ($basedoc->meta_name == 'Invoice') {
+
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
 
                         foreach ($basedoc->detaildata as $item) {
@@ -110,11 +127,12 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $item = $row->getDataItem();
 
         $row->add(new Label('tovar', $item->itemname));
-        $row->add(new Label('partion', number_format($item->partion / 100, 2)));
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('quantity', $item->quantity));
-        $row->add(new Label('price', number_format($item->price / 100, 2)));
-        $row->add(new Label('amount', number_format($item->quantity * $item->price / 100, 2)));
+        $row->add(new Label('price', H::fm($item->price)));
+        $row->add(new Label('pricends', H::fm($item->pricends)));
+        $row->add(new Label('amount', H::fm($item->quantity * $item->pricends)));
+        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
 
@@ -132,6 +150,28 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->editdetail->edittovar->setOptionList(Stock::findArrayEx(" store_id=" . $this->docform->store->getValue()));
+        $this->_rowid = 0;
+    }
+
+    public function editOnClick($sender)
+    {
+        $item = $sender->getOwner()->getDataItem();
+        $this->editdetail->setVisible(true);
+        $this->docform->setVisible(false);
+
+        $this->editdetail->editquantity->setText($item->quantity);
+        $this->editdetail->editprice->setText(H::fm($item->price));
+        $this->editdetail->editpricends->setText(H::fm($item->pricends));
+
+        $this->editdetail->editgroup->setValue($item->group_id);
+        $list = Item::findArray('itemname', 'group_id=' . $item->group_id);
+        $list = array_replace(array(0 => 'Выбрать'), $list);
+
+        $this->editdetail->edittovar->setOptionList($list);
+        $this->editdetail->edittovar->setValue($item->item_id);
+        //  $this->editdetail->editid->setText($item->item_id);
+
+        $this->_rowid = $item->item_id;
     }
 
     public function saverowOnClick($sender)
@@ -141,13 +181,14 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не выбран товар");
             return;
         }
-        $stock = Stock::load($id);
-        $stock->quantity = $this->editdetail->editquantity->getText();
+        $item = Item::load($id);
+        $item->quantity = $this->editdetail->editquantity->getText();
         // $stock->partion = $stock->price;
-        $stock->price = $this->editdetail->editprice->getText() * 100;
+        $item->price = $this->editdetail->editprice->getText() * 100;
+        $item->pricends = $this->editdetail->editpricends->getText() * 100;
 
-
-        $this->_tovarlist[$stock->item_id] = $stock;
+        unset($this->_tovarlist[$this->_rowid]);
+        $this->_tovarlist[$item->item_id] = $item;
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
         $this->docform->detail->Reload();
@@ -157,6 +198,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
+        $this->editdetail->editpricends->setText("");
     }
 
     public function cancelrowOnClick($sender)
@@ -177,7 +219,9 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
             'customer' => $this->docform->customer->getValue(),
             'store' => $this->docform->store->getValue(),
             'based' => $this->docform->based->getText(),
-            'nds' => $this->docform->nds->getText() * 100
+            'total' => $this->docform->total->getText() * 100,
+            'ernn' => $this->docform->ernn->getDate() ,
+            'totalnds' => $this->docform->totalnds->getText() * 100
         );
         $this->_doc->detaildata = array();
         foreach ($this->_tovarlist as $tovar) {
@@ -199,7 +243,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
             $this->_doc->AddConnectedDoc($this->_basedocid);
             $this->_basedocid = 0;
         }
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
     /**
@@ -210,12 +254,12 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
     {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
-            $total = $total + $tovar->price / 100 * $tovar->quantity;
+            $total = $total + $tovar->price * $tovar->quantity;
         }
-        $common = \ZippyERP\System\System::getOptions("common");
-        $nds = $common['nds'] * $total / 100;
-        $this->docform->nds->setText(number_format($nds, 2));
-        $this->docform->total->setText(number_format($total + $nds, 2));
+
+        $nds = H::nds() * $total;
+        $this->docform->totalnds->setText(H::fm($nds));
+        $this->docform->total->setText(H::fm($total + $nds));
     }
 
     /**
@@ -241,7 +285,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
     public function OnChangeStore($sender)
@@ -249,6 +293,26 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         //очистка  списка  товаров
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
+    }
+
+    public function OnGroup(DropDownChoice $sender)
+    {
+        $id = $sender->getValue();
+        $list = Item::findArray('itemname', 'group_id=' . $id);
+        $list = array_replace(array(0 => 'Выбрать'), $list);
+        $this->editdetail->edittovar->setOptionList($list);
+        $this->updateAjax(array('edittovar'));
+    }
+
+    public function OnItem(DropDownChoice $sender)
+    {
+        $id = $sender->getValue();
+        $item = Item::load($id);
+        $this->editdetail->editprice->setText(H::fm($item->priceopt));
+
+        $this->editdetail->editpricends->setText(H::fm($item->priceopt + $item->priceopt * H::nds()));
+
+        $this->updateAjax(array('editprice', 'editpricends'));
     }
 
 }

@@ -18,8 +18,8 @@ use ZippyERP\System\Application as App;
 use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
-use Zippy\Html\Form\AutocompleteTextInput;
 use ZippyERP\ERP\Helper as H;
 
 /**
@@ -31,6 +31,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
     public $_tovarlist = array();
     private $_doc;
     private $_basedocid = 0;
+    private $_rowid = 0;
 
     public function __construct($docid = 0, $basedocid = 0)
     {
@@ -41,7 +42,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('created'))->setDate(time());
         $this->docform->add(new Date('paydate'))->setDate(strtotime("+7 day", time()));
         $this->docform->add(new CheckBox('isnds'))->setChangeHandler($this, 'onIsnds');
-
+        $this->docform->isnds->setChecked(true);
 
         $this->docform->add(new DropDownChoice('customer', Customer::getSellers()));
 
@@ -53,13 +54,16 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('base'));
 
         $this->docform->add(new Label('total'));
-        $this->docform->add(new Label('nds'));
+        $this->docform->add(new Label('totalnds'));
+
         $this->add(new Form('editdetail'))->setVisible(false);
 
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->setAutocompleteHandler($this, 'OnAutocomplete');
+        $this->editdetail->add(new TextInput('editpricends'));
+        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
+        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
+        $this->editdetail->add(new DropDownChoice('edittovar'));
 
         $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->setClickHandler($this, 'saverowOnClick');
@@ -69,7 +73,6 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
             if ($this->_doc == null)
                 App::RedirectError('Докумен не найден');
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
             $this->docform->base->setText($this->_doc->headerdata['base']);
             $this->docform->created->setDate($this->_doc->document_date);
@@ -91,19 +94,26 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
                     $this->_basedocid = $basedocid;
                     $this->docform->base->setText($basedoc->meta_desc . " №" . $basedoc->document_number);
 
+                    // Создается на  основании  заказа  поставщику
                     if ($basedoc->meta_name == 'SupplierOrder') {
 
                         $this->docform->customer->setValue($basedoc->headerdata['supplier']);
 
-                        foreach ($basedoc->detaildata as $item) {
-                            $item = new Item($item);
+                        $nds = H::nds(true);  // если  в  заказе   цена  с  НДС  получаем  базовую  цену
+
+
+                        foreach ($basedoc->detaildata as $_item) {
+                            $item = new Item($_item);
+                            $item->pricends = $item->price;
+                            $item->price = $item->price - $item->price * $nds;
+
                             $this->_tovarlist[$item->item_id] = $item;
                         }
                     }
                 }
             }
         }
-
+        //  $this->calcTotal(); 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
     }
 
@@ -114,8 +124,10 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('quantity', $item->quantity));
-        $row->add(new Label('price', number_format($item->price / 100, 2)));
-        $row->add(new Label('amount', number_format($item->quantity * $item->price / 100, 2)));
+        $row->add(new Label('price', H::fm($item->price )));
+        $row->add(new Label('pricends', H::fm($item->pricends )));
+        $row->add(new Label('amount', H::fm($item->quantity * $item->pricends )));
+        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
 
@@ -128,15 +140,34 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
+    public function editOnClick($sender)
+    {
+        $item = $sender->getOwner()->getDataItem();
+        $this->editdetail->setVisible(true);
+        $this->docform->setVisible(false);
+
+        $this->editdetail->editquantity->setText($item->quantity);
+        $this->editdetail->editprice->setText(H::fm($item->price));
+        $this->editdetail->editpricends->setText(H::fm($item->pricends));
+
+        $this->editdetail->editgroup->setValue($item->group_id);
+        $list = Item::findArray('itemname', 'group_id=' . $item->group_id);
+        $this->editdetail->edittovar->setOptionList($list);
+        $this->editdetail->edittovar->setValue($item->item_id);
+        //  $this->editdetail->editid->setText($item->item_id);
+        $this->_rowid = $item->item_id;
+    }
+
     public function addrowOnClick($sender)
     {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
+        $this->_rowid = 0;
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -144,18 +175,20 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $item = Item::load($id);
         $item->quantity = $this->editdetail->editquantity->getText();
         $item->price = $this->editdetail->editprice->getText() * 100;
+        $item->pricends = $this->editdetail->editpricends->getText() * 100;
 
-
+        unset($this->_tovarlist[$this->_rowid]);
         $this->_tovarlist[$item->item_id] = $item;
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
+        $this->editdetail->editpricends->setText("");
     }
 
     public function cancelrowOnClick($sender)
@@ -174,9 +207,10 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
 
         $this->_doc->headerdata = array(
             'customer' => $this->docform->customer->getValue(),
-            'nds' => $this->docform->nds->getText() * 100,
             'isnds' => $this->docform->isnds->isChecked(),
             'payment_date' => strtotime($this->docform->paydate->getText()),
+            'base' => $this->docform->base->getText(),
+            'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
         $this->_doc->detaildata = array();
@@ -184,7 +218,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
             $this->_doc->detaildata[] = $tovar->getData();
         }
 
-        $this->_doc->amount = 100 * $this->docform->total->getText();
+        $this->_doc->amount = $this->_doc->headerdata['totalnds'] + $this->_doc->headerdata['total'];
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = strtotime($this->docform->created->getText());
         $isEdited = $this->_doc->document_id > 0;
@@ -202,7 +236,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
             $this->_basedocid = 0;
         }
 
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     /**
@@ -211,16 +245,17 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
      */
     private function calcTotal()
     {
-        $nds = H::nds();
-        if ($this->docform->isnds->isChecked() == false) {
-            $nds = 0;
-        }
+
         $total = 0;
+        $totalnds = 0;
         foreach ($this->_tovarlist as $item) {
-            $total = $total + $item->price * $item->quantity;
+            $item->amount = $item->pricends * $item->quantity;
+            $item->nds = $item->amount - $item->price * $item->quantity;
+            $total = $total + $item->amount;
+            $totalnds = $totalnds + $item->nds;
         }
-        $this->docform->total->setText(H::fm($total + $total * $nds));
-        $this->docform->nds->setText(H::fm($total * $nds));
+        $this->docform->total->setText(H::fm($total));
+        $this->docform->totalnds->setText(H::fm($totalnds));
     }
 
     /**
@@ -234,32 +269,47 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не введен ни один  товар");
             return false;
         }
+        if ($this->docform->customer->getValue() == 0) {
+            $this->setError("Не выбран поставщик");
+            return false;
+        }
         return true;
     }
 
     public function beforeRender()
     {
         parent::beforeRender();
-        $this->docform->nds->setVisible($this->docform->isnds->isChecked());
+        $this->docform->totalnds->setVisible($this->docform->isnds->isChecked());
+
         $this->calcTotal();
+
+        App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
     }
 
     public function backtolistOnClick($sender)
     {
-        App::$app->getResponse()->toBack();
-    }
-
-    // автолоад списка  товаров
-    public function OnAutocomplete($sender)
-    {
-        $text = $sender->getValue();
-
-        return Item::findArray("itemname", " itemname  like '%{$text}%' ", "itemname", null, 20);
+        App::RedirectBack();
     }
 
     public function onIsnds($sender)
     {
-        
+        foreach ($this->_tovarlist as $item) {
+            if ($sender->isChecked() == false) {
+                $item->price = $item->pricends;
+            } else {
+                $item->price = $item->pricends - $item->pricends * H::nds(true);
+            }
+        }
+        $this->docform->detail->Reload();
+    }
+
+    public function OnGroup(DropDownChoice $sender)
+    {
+        $id = $sender->getValue();
+        $list = Item::findArray('itemname', 'group_id=' . $id);
+        $list = array_replace(array(0 => 'Выбрать'), $list);
+        $this->editdetail->edittovar->setOptionList($list);
+        $this->updateAjax(array('edittovar'));
     }
 
 }

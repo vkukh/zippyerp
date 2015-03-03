@@ -53,17 +53,4 @@ class Contract extends Document
         return $list;
     }
 
-    public function nextNumber()
-    {
-        $doc = Document::getFirst("meta_name='Contract'", "document_id desc");
-        if ($doc == null)
-            return '';
-        $prevnumber = $doc->document_number;
-        if (strlen($prevnumber) == 0)
-            return '';
-        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
-
-        return "ДО-" . sprintf("%05d", ++$prevnumber);
-    }
-
 }

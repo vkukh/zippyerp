@@ -15,50 +15,51 @@
                         </tr>
                         <tr>
 
-                            <td  >Со склада</td>
+                            <td  >Магазин</td>
                             <td ><select zippy="store" >
                                 </select></td>
-                            <td  >Тип оплаты</td>
-                            <td ><select zippy="paymenttype" >
-                                    <option value="1">Наличные</option>
-                                    <option value="2">Безнал</option>
-                                </select></td>
-                        </tr>
-                        <tr>
-
                             <td  >Получатель</td>
                             <td ><select zippy="customer" >
                                 </select></td>
+                            
+                        </tr>
+                        <tr>
+
+                            
                             <td  >Основание</td>
-                            <td  ><input type="text" zippy="based" ></td>
+                            <td colspan="3" ><input type="text" zippy="based" ></td>
+                            <!--<td  >Тип оплаты</td>
+                            <td ><select zippy="paymenttype" >
+                                    <option value="1">Наличные</option>
+                                    <option value="2">Безнал</option>
+                                </select></td> -->
                         </tr>
                     </table>
                     <br>
                     <table  border="0" cellpadding="1"  width="500px">
                         <tr >
                             <th >Наименование </th>
-                            <th width="50">Партия</th>
                             <th width="50">Ед.изм.</th>
                             <th width="40">Кол.</th>
                             <th width="60">Цена</th>
                             <th width="60">Сумма</th>
-                            <th width="20"> </th>
+                            <th width="50"> </th>
                         </tr>
                         <tr zippy="detail">
                             <td zippy="tovar"></td>
-                            <td zippy="partion"></td>
                             <td zippy="measure"></td>
                             <td zippy="quantity" align="right" style="padding-right:4px;"></td>
                             <td zippy="price" align="right"> </td>
                             <td zippy="amount" align="right"> </td>
-                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+                            <td><a  zippy="edit"><img src="/templates/images/edit.png"></a> <a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
                         </tr>
+                        <tr><td colspan="4" align="right">Итого:</td><td zippy="total" align="right" width="60px"  style="font-weight: bolder;"></td></tr>
+                        <tr><td colspan="4" align="right">В т.ч. НДС:</td><td zippy="totalnds"  align="right"></td></tr>
+                        
                     </table>
                     <a zippy="addrow">Добавить товар</a>
-                    <table  border="0" cellpadding="1" width="480px">
-                        <tr><td align="right">НДС:</td><td zippy="nds"  align="right"></td></tr>
-                        <tr><td align="right">Итого:</td><td zippy="total" align="right" width="60px"  style="font-weight: bolder;"></td></tr>
-                    </table>
+                        
+
 
                     <p>&nbsp;</p>
                     <p>
@@ -72,6 +73,7 @@
                 <form zippy="editdetail">
                     <strong>Ввод  товара  </strong>
                     <table  border="0" >
+                        <tr><td>Группа</td><td><select     zippy="editgroup" > <option value="0">Выбрать</option></select></td></tr>                    
                         <tr><td>Наименование</td><td><select zippy="edittovar" > <option value="0">Выбрать</option></select>  Наличие <span zippy="qtystock"></span>  </td></tr>
                         <tr><td>Количество</td><td><input type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input></td></tr>
                         <tr><td>Цена</td><td><input type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;"></td></tr>

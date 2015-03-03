@@ -21,7 +21,7 @@ class RetailIssue extends Document
 
         $i = 1;
         $detail = array();
-        $total = 0;
+
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,
                 "tovar_name" => $value['itemname'],
@@ -30,7 +30,6 @@ class RetailIssue extends Document
                 "price" => H::fm($value['price']),
                 "amount" => H::fm($value['quantity'] * $value['price'])
             );
-            $total += $value['quantity'] * $value['price'];
         }
 
         $firm = \ZippyERP\System\System::getOptions("firmdetail");
@@ -40,9 +39,8 @@ class RetailIssue extends Document
             "firmcode" => $firm['code'],
             "customername" => $customer->customer_name,
             "document_number" => $this->document_number,
-            "nds" => H::fm($this->headerdata["nds"]),
-            "total" => H::fm($total),
-            "totalnds" => H::fm($total + $this->headerdata["nds"]),
+            "total" => H::fm($this->headerdata["total"]),
+            "totalnds" => H::fm($this->headerdata["totalnds"]),
             "summa" => Util::ucfirst(Util::money2str($total + $this->headerdata["nds"] / 100, '.', ''))
         );
 
@@ -55,31 +53,24 @@ class RetailIssue extends Document
 
     public function Execute()
     {
+        $ret = 0;
+        $cost = 0;
         foreach ($this->detaildata as $value) {
-            $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $value['item_id'], $value['partion'], true);
+            $stock = \ZippyERP\ERP\Entity\Stock::load($value['stock_id']);
             $stock->updateStock(0 - $value['quantity'], $this->document_id, strlen($value['serial_number']) > 0 ? array($value['serial_number']) : array());
+            $ret = $ret + $stock->price - $stock->partion;
+            $cost = $cost + $stock->partion;
         }
-        if ($this->headerdata['paymenttype'] == 1) {  //наличные
-            //поступление  в кассу
-            $cash = MoneyFund::getCash();
-            MoneyFund::AddActivity($cash->id, $this->headerdata['total'], $this->document_id);
-        }
-        if ($this->headerdata['paymenttype'] == 2) {  //безнал
+        // списываем  наценку
+        Entry::AddEntry("285", "282", $ret, $this->document_id);
+        // себестоимость реализации
+        Entry::AddEntry("902", "282", $cost, $this->document_id);
+
+        //налоговые  обязательства
+        if ($this->headerdata['totalnds'] > 0) {
+            Entry::AddEntry("702", "643", $this->headerdata['totalnds'], $this->document_id);
         }
         return true;
-    }
-
-    public function nextNumber()
-    {
-        $doc = Document::getFirst("meta_name='RetailIssue'", "document_id desc");
-        if ($doc == null)
-            return '';
-        $prevnumber = $doc->document_number;
-        if (strlen($prevnumber) == 0)
-            return '';
-        $prevnumber = preg_replace('/[^0-9]/', '', $prevnumber);
-
-        return "РН-" . sprintf("%05d", ++$prevnumber);
     }
 
     public function getRelationBased()

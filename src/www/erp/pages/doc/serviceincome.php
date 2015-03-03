@@ -18,6 +18,7 @@ use ZippyERP\System\Application as App;
 use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
 use Zippy\Html\Form\AutocompleteTextInput;
 use ZippyERP\ERP\Helper as H;
@@ -31,6 +32,7 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
 
     public $_itemlist = array();
     private $_doc;
+    private $_rowid = 0;
 
     public function __construct($docid = 0, $basedocid = 0)
     {
@@ -48,22 +50,25 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
 
-        $this->docform->add(new Label('nds'));
+        $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->setAutocompleteHandler($this, 'OnAutocomplete');
+        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
+        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
+        $this->editdetail->add(new DropDownChoice('edititem'));
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
+        $this->editdetail->add(new TextInput('editpricends'));
 
         $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
-        $this->editdetail->add(new SubmitLink('additem'))->setClickHandler($this, 'addItemOnClick');
+        //$this->editdetail->add(new SubmitLink('additem'))->setClickHandler($this, 'addItemOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
             $this->docform->reference->setText($this->_doc->headerdata['reference']);
-            $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
+
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
             $this->docform->cash->setChecked($this->_doc->headerdata['cash']);
             $this->docform->created->setDate($this->_doc->document_date);
@@ -86,8 +91,10 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
                         $this->docform->isnds->setChecked($basedoc->headerdata['isnds']);
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
 
-                        foreach ($basedoc->detaildata as $item) {
-                            $item = new Item($item);
+
+                        foreach ($basedoc->detaildata as $_item) {
+                            $item = new Item($_item);
+                            //$item->price = $item->pricends;
                             $this->_itemlist[$item->item_id] = $item;
                         }
                     }
@@ -108,8 +115,27 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('quantity', $item->quantity));
         $row->add(new Label('price', H::fm($item->price)));
+        $row->add(new Label('pricends', H::fm($item->pricends)));
         $row->add(new Label('amount', H::fm($item->quantity * $item->price)));
+        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+    }
+
+    public function editOnClick($sender)
+    {
+        $item = $sender->getOwner()->getDataItem();
+        $this->editdetail->setVisible(true);
+        $this->docform->setVisible(false);
+
+        $this->editdetail->editquantity->setText($item->quantity);
+        $this->editdetail->editprice->setText(H::fm($item->price));
+        $this->editdetail->editpricends->setText(H::fm($item->pricends));
+        $this->editdetail->editgroup->setValue($item->group_id);
+        $list = Item::findArray('itemname', 'group_id=' . $item->group_id);
+        $this->editdetail->edititem->setOptionList($list);
+        $this->editdetail->edititem->setValue($item->item_id);
+        //  $this->editdetail->editid->setText($item->item_id);
+        $this->_rowid = $item->item_id;
     }
 
     public function deleteOnClick($sender)
@@ -125,11 +151,12 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
     {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
+        $this->_rowid = 0;
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -137,18 +164,18 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         $item = Item::load($id);
         $item->quantity = $this->editdetail->editquantity->getText();
         $item->price = $this->editdetail->editprice->getText() * 100;
+        $item->pricends = $this->editdetail->editpricends->getText() * 100;
 
-
+        unset($this->_itemlist[$this->_rowid]);
         $this->_itemlist[$item->item_id] = $item;
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edititem->setText('');
-        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setValue(0);
         $this->editdetail->editquantity->setText("1");
-
+        $this->editdetail->editpricends->setText("");
         $this->editdetail->editprice->setText("");
     }
 
@@ -169,9 +196,9 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata = array(
             'customer' => $this->docform->customer->getValue(),
             'reference' => $this->docform->reference->getValue(),
-            'nds' => $this->docform->nds->getText() * 100,
             'isnds' => $this->docform->isnds->isChecked(),
             'cash' => $this->docform->cash->isChecked(),
+            'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
         $this->_doc->detaildata = array();
@@ -191,7 +218,7 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
         }
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     /**
@@ -200,16 +227,17 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
      */
     private function calcTotal()
     {
-        $nds = H::nds();
-        if ($this->docform->isnds->isChecked() == false) {
-            $nds = 0;
-        }
+
         $total = 0;
+        $totalnds = 0;
         foreach ($this->_itemlist as $item) {
-            $total = $total + $item->price * $item->quantity;
+            $item->amount = $item->pricends * $item->quantity;
+            $item->nds = $item->amount - $item->price * $item->quantity;
+            $total = $total + $item->amount;
+            $totalnds = $totalnds + $item->nds;
         }
-        $this->docform->total->setText(H::fm($total + $total * $nds));
-        $this->docform->nds->setText(H::fm($total * $nds));
+        $this->docform->total->setText(H::fm($total));
+        $this->docform->totalnds->setText(H::fm($totalnds));
     }
 
     /**
@@ -233,18 +261,27 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
     public function beforeRender()
     {
         parent::beforeRender();
-        $this->docform->nds->setVisible($this->docform->isnds->isChecked());
+        $this->docform->totalnds->setVisible($this->docform->isnds->isChecked());
         $this->calcTotal();
+
+        App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
     }
 
     public function onIsnds($sender)
     {
-        
+        foreach ($this->_itemlist as $item) {
+            if ($sender->isChecked() == false) {
+                $item->price = $item->pricends;
+            } else {
+                $item->price = $item->pricends - $item->pricends * H::nds(true);
+            }
+        }
+        $this->docform->detail->Reload();
     }
 
     public function backtolistOnClick($sender)
     {
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     public function addItemOnClick($sender)
@@ -261,41 +298,19 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
 
         $item = $this->itemdetail->getData();
 
-        $this->editdetail->edititem->setText($item->itemname);
-        $this->editdetail->edititem->setKey($item->item_id);
+        $this->editdetail->editgroup->setValue($item->group_id);
+        $this->editdetail->edititem->setValue($item->item_id);
     }
 
-    // автолоад списка  товаров
-    public function OnAutocomplete($sender)
+    public function OnGroup(DropDownChoice $sender)
     {
-        $text = $sender->getValue();
-        $answer = array();
-        $conn = \ZCL\DB\DB::getConnect();
-        $sql = "select item_id,itemname from erp_item where itemname  like '%{$text}%' and item_type in( " . Item::ITEM_TYPE_GOODS . "," . Item::ITEM_TYPE_STUFF . "," . Item::ITEM_TYPE_MBP . "   ) order  by itemname   limit 0,20";
-        $rs = $conn->Execute($sql);
-        foreach ($rs as $row) {
-            $answer[$row['item_id']] = $row['itemname'];
-        }
-        return $answer;
+        $id = $sender->getValue();
+
+        //$list[0] ="Выбрать";
+        $list = Item::findArray('itemname', 'group_id=' . $id);
+        $list = array_replace(array(0 => 'Выбрать'), $list);
+        $this->editdetail->edititem->setOptionList($list);
+        $this->updateAjax(array('edititem'));
     }
 
-    /*
-      События  жизненного  цикла  страницы, раскоментировать нужное
-      public function beforeRequest(){
-      parent::beforeRequest();
-
-      }
-      public function afterRequest(){
-      parent::afterRequest();
-
-      }
-      public function beforeRender(){
-      parent::beforeRender();
-
-      }
-      public function afterRender(){
-      parent::afterRender();
-
-      }
-     */
 }

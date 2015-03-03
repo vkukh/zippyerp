@@ -15,6 +15,7 @@ use \Zippy\Html\Form\Button;
 use \ZippyERP\ERP\Entity\Store;
 use \ZippyERP\ERP\Entity\Stock;
 use \Zippy\Html\DataList\Paginator;
+use \ZippyERP\ERP\Helper as H;
 
 class StoreList extends \ZippyERP\ERP\Pages\Base
 {
@@ -123,12 +124,27 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('itemname', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('price', $item->price > 0 ? number_format($item->price / 100, 2) : ''));
+        $row->add(new Label('price', $item->price > 0 ? H::fm($item->price ) : ''));
         $qty = Stock::getQuantity($item->stock_id, time());
         $f = Stock::getQuantityFuture($item->stock_id, time());
         $row->add(new Label('quantity', $qty));
         $row->add(new Label('quantityw', $f['w']));
         $row->add(new Label('quantityr', $f['r']));
+        $row->add(new ClickLink('pcancel'))->setClickHandler($this, 'partionOnClick');
+        $row->pcancel->setVisible(false);
+
+        if ($qty == 0 && $f['w'] == 0 && $f['r'] == 0) {
+            $row->pcancel->setVisible(true);
+        }
+    }
+
+    // отключаем  неитспользуемую  партию
+    public function partionOnClick($sender)
+    {
+        $item = $sender->getOwner()->getDataItem();
+        $item->closed = 1;
+        $item->Save();
+        $this->itemtable->itemlist->Reload();
     }
 
 }
@@ -145,12 +161,12 @@ class StockDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItemCount()
     {
-        return Stock::findCnt("store_id=" . $this->page->_store->store_id);
+        return Stock::findCnt("closed  <> 1 and store_id=" . $this->page->_store->store_id);
     }
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
-        return Stock::find("store_id=" . $this->page->_store->store_id, "itemname", "asc", $count, $start);
+    { 
+        return Stock::find("closed  <> 1 and store_id=" . $this->page->_store->store_id, "itemname", "asc", $count, $start);
     }
 
     public function getItem($id)

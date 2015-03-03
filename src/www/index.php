@@ -1,8 +1,7 @@
 <?php
 
+
 require_once 'init.php';
-
-
 
 try {
 
@@ -27,6 +26,11 @@ try {
       \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
      */
 } catch (Exception $e) {
+    if($e  instanceof ADODB_Exception){
+       
+       \ZCL\DB\DB::getConnect()->CompleteTrans(false); // откат транзакции
+    }
+    
     $logger->error($e);
     \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
 }

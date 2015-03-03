@@ -1,16 +1,105 @@
 <html>
     <body >
-        <table width="500" border="0" cellspacing="0" cellpadding="2">
-            <tr><td colspan="5">Дата: {$date}</td></tr>
-            <tr><td colspan="5" align="center"> <b>  Ручная хоз. операция  № {$document_number} </b> </td></tr>
-            <tr><td colspan="5">{$description}</td> </tr>
-            <tr style="font-weight: bolder;">
-                <td style="width:30px;border: 1px solid black;" >№</td><td style="width:40px;border: 1px solid black;" >Дт</td><td  style="width:40px;border: 1px solid black;">Кт</td><td style="width:60px;border: 1px solid black;">Сумма</td><td style="border: 1px solid black;">&nbsp;</td></tr>
-                {foreach $_detail as $item}
-                <tr ><td style="border: 1px solid black;">{$item.no}<td style="border: 1px solid black;">{$item.dt}</td><td style="border: 1px solid black;">{$item.ct}</td><td  align="right"  style="border: 1px solid black;">{$item.amount}</td><td style="border: 1px solid black;">{$item.comment}&nbsp;</td></tr>
-                    {/foreach}
-        </table>     
+    
+<h4> Ручная хоз. операция  № {$document_number}  Дата: {$date} </h4>
+Описание:<br>{$description}
+<br>
 
-        <br>
-    </body>
+            {if count($_detail['entry']) > 0 }
+                <b>Проводки:</b>
+                <table cellpadding="2">
+                <tr >
+                    <th style="width:40px;border-bottom: black solid 1px;" >Дт</th>
+                    <th style="width:40px;border-bottom: black solid 1px;">Кт</th>
+                    <th style="width:60px;border-bottom: black solid 1px;">Сумма</th>
+                </tr>
+                {foreach $_detail['entry'] as $entry}
+                    <tr ><td >{$entry.acc_d}</td>
+                        <td >{$entry.acc_c}</td>
+                        <td  align="right" >{$entry.amount}</td> 
+                     </tr>
+                    {/foreach}
+                </table >
+            {/if} 
+            {if count($_detail['item']) > 0 }   
+                <br><b>ТМЦ:</b> 
+                <table cellpadding="2">                   
+                <tr >
+                    <th style="border-bottom: black solid 1px;">+/-</th>
+                    <th style="width:60px;border-bottom: black solid 1px;">Код</th>                    
+                    <th style="border-bottom: black solid 1px;">Склад</th>
+                    <th style="border-bottom: black solid 1px;">ТМЦ</th>
+                    <th style="border-bottom: black solid 1px;">Кол.</th>
+                    <th style="border-bottom: black solid 1px;">Цена</th>
+                    <th style="border-bottom: black solid 1px;">Сумма</th>
+
+                </tr>
+                {foreach $_detail['item'] as $item}
+                    <tr >
+                        <td >{$item.opname}</td>
+                        <td >{$item.code}</td>
+                        <td >{$item.store_name}</td>
+                        <td >{$item.item_name}</td>
+                        <td  align="right" >{$item.qty}</td>
+                        <td  align="right" >{$item.price}</td>
+                        <td  align="right" >{$item.amount}</td>
+                    </tr>  
+                {/foreach}    </table>        
+            {/if}     
+          {if count($_detail['emp']) > 0 }   
+                <br><b>Сотрудники:</b> 
+                <table cellpadding="2">                   
+                <tr >
+                    <th style="border-bottom: black solid 1px;">+/-</th>
+                    <th style="border-bottom: black solid 1px;">ФИО</th>
+                    <th style="border-bottom: black solid 1px;">Сумма</th>
+
+                </tr>
+                {foreach $_detail['emp'] as $item}
+                    <tr >
+                        <td >{$item.opname}</td>
+                        <td >{$item.name}</td>
+                        <td  align="right" >{$item.amount}</td>
+                    </tr>  
+                {/foreach}  </table>          
+            {/if}     
+        {if count($_detail['c']) > 0 }   
+                <br><b>Контрагенты:</b> 
+                <table cellpadding="2">                   
+                <tr >
+                    <th style="border-bottom: black solid 1px;">+/-</th>
+                    <th style="border-bottom: black solid 1px;">Тип</th>
+                    <th style="border-bottom: black solid 1px;">Наименование</th>
+                    <th style="border-bottom: black solid 1px;">Сумма</th>
+
+                </tr>
+                {foreach $_detail['c'] as $item}
+                    <tr >
+                        <td >{$item.opname}</td>
+                        <td >{$item.optype}</td>
+                        <td >{$item.name}</td>
+                        <td  align="right" >{$item.amount}</td>
+                    </tr>  
+                {/foreach}  </table>          
+            {/if}     
+       {if count($_detail['f']) > 0 }   
+                <br><b>Денежные  счета:</b> 
+                <table cellpadding="2">                   
+                <tr >
+                    <th style="border-bottom: black solid 1px;">+/-</th>
+                    <th style="border-bottom: black solid 1px;">Наименование</th>
+                    <th style="border-bottom: black solid 1px;">Сумма</th>
+
+                </tr>
+                {foreach $_detail['f'] as $item}
+                    <tr >
+                        <td >{$item.opname}</td>
+                        <td >{$item.name}</td>
+                        <td  align="right" >{$item.amount}</td>
+                    </tr>  
+                {/foreach} 
+                </table>           
+            {/if}     
+       
+</body>
 </html>

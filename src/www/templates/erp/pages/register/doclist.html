@@ -1,7 +1,7 @@
 <html>
     <body>
         <div class="row">
-            <div class="col-md-10">    
+            <div class="col-md-13">    
 
 
                 <h3>Журнал  документов </h3>
@@ -22,6 +22,7 @@
                         <th >Статус</th>
                         <th > </th>
                         <th > </th>
+                        <th > </th>
 
                     </tr>
                     <tr zippy="doclist">
@@ -36,6 +37,9 @@
                             <a zippy="edit"  title="Редактировать"><img class="icon20" src="/templates/images/edit.png"></a> 
                             <a zippy="cancel"  title="Отменить"><img class="icon20" src="/templates/images/cancel.png"></a>  
 
+                        </td>
+                        <td>
+                            <a zippy="delete"  title="Удаление"><img class="icon20" src="/templates/images/delete.png"></a>
                         </td>
                         <td>
                             <div class="btn-group" zippy="basedon">
@@ -54,5 +58,11 @@
                 <div zippy="docview"></div>
 
             </div>   </div>   
+    
+    <script>
+       function check_delete() {
+          return  confirm("Удалить  документ?")
+       }
+    </script>
     </body>
 </html>

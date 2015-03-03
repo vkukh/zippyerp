@@ -25,7 +25,7 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('detail'))->setVisible(false);
         $this->detail->add(new RedirectLink('print', ""));
-        $this->detail->add(new RedirectLink('pdf', ""));
+        $this->detail->add(new RedirectLink('html', ""));
         $this->detail->add(new RedirectLink('word', ""));
         $this->detail->add(new RedirectLink('excel', ""));
         $this->detail->add(new Label('preview'));
@@ -41,8 +41,8 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
         $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', "obsaldoreport");
-        $this->detail->pdf->pagename = $reportpage;
-        $this->detail->pdf->params = array('pdf', "obsaldoreport");
+        $this->detail->html->pagename = $reportpage;
+        $this->detail->html->params = array('html', "obsaldoreport");
         $this->detail->word->pagename = $reportpage;
         $this->detail->word->params = array('doc', "obsaldoreport");
         $this->detail->excel->pagename = $reportpage;
@@ -54,7 +54,7 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
     private function generateReport()
     {
 
-        $acclist = Account::find("", "acc_code");
+        $acclist = Account::find("", "cast(acc_code as char)");
 
         $detail = array();
         $totstartdt = 0;

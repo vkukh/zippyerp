@@ -5,6 +5,7 @@ namespace ZippyERP\ERP\Pages\Doc;
 use \Zippy\Html\Form\Form;
 use \Zippy\Html\Form\TextInput;
 use \Zippy\Html\Form\DropDownChoice;
+use \Zippy\Html\Form\CheckBox;
 use \Zippy\Html\DataList\DataView;
 use \ZCL\DB\EntityDataSource;
 use \Zippy\Html\Label;
@@ -16,8 +17,11 @@ use \Zippy\Html\Form\Button;
 use ZippyERP\ERP\Entity\Doc\Document;
 use Zippy\Html\Form\AutocompleteTextInput;
 use ZippyERP\System\Application as App;
+use ZippyERP\ERP\Entity\Stock;
 use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Страница документа заказ  покупателя
@@ -35,21 +39,25 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('created'))->setDate(time());
-        $this->docform->add(new DropDownChoice('customer', Customer::findArray("customer_name", "")));
+        $this->docform->add(new Date('timeline'))->setDate(time() + 3 * 24 * 3600);
+        $this->docform->add(new DropDownChoice('customer', Customer::getBuyers()));
         $this->docform->add(new DropDownChoice('orderstate', \ZippyERP\ERP\Entity\Doc\CustomerOrder::getStatesList()));
         $this->docform->add(new TextInput('reference'));
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
+
 
         $this->docform->add(new Label('total'));
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->setAutocompleteHandler($this, 'OnAutocomplete');
-        $this->editdetail->edititem->setChangeHandler($this, 'on');
+        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
+        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
+        $this->editdetail->add(new DropDownChoice('edititem'))->setAjaxChangeHandler($this, 'OnItem');
         $this->editdetail->add(new TextInput('editquantity'));
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
         $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
+        $this->editdetail->add(new Label('qtystore'));
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
@@ -57,7 +65,9 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
             $this->docform->reference->setText($this->_doc->headerdata['reference']);
 
             $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->timeline->setDate($this->_doc->headerdata['timeline']);
             $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+
             $this->docform->orderstate->setValue($this->_doc->headerdata['orderstate']);
 
             foreach ($this->_doc->detaildata as $item) {
@@ -71,11 +81,6 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
     }
 
-    public function on($sender)
-    {
-        $s = $sender;
-    }
-
     public function detailOnRow($row)
     {
         $item = $row->getDataItem();
@@ -83,8 +88,8 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('item', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('quantity', $item->quantity));
-        $row->add(new Label('price', number_format($item->price / 100, 2, '.', '')));
-        $row->add(new Label('amount', number_format($item->quantity * $item->price / 100, 2, '.', '')));
+        $row->add(new Label('price', H::fm($item->price)));
+        $row->add(new Label('amount', H::fm($item->quantity * $item->price )));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
 
@@ -116,6 +121,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata = array(
             'customer' => $this->docform->customer->getValue(),
             'orderstate' => $new_state,
+            'timeline' => $this->docform->timeline->getDate(),
             'reference' => $this->docform->reference->getValue()
         );
         $this->_doc->detaildata = array();
@@ -126,24 +132,23 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->amount = 100 * $this->docform->total->getText();
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->created->getDate();
-        $old_state = $this->_doc->order_state;
         $this->_doc->order_state = $this->docform->orderstate->getValue();
         $this->_doc->intattr1 = $this->docform->customer->getValue();
         $this->_doc->save();
         if ($new_state != $old_state) {
             $this->_doc->updateStatus($new_state);
         }
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     public function backtolistOnClick($sender)
     {
-        App::$app->getResponse()->toBack();
+        App::RedirectBack();
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -159,11 +164,11 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edititem->setText('');
-        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setValue(0);
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
+        $this->editdetail->qtystore->setText("");
     }
 
     public function cancelrowOnClick($sender)
@@ -203,15 +208,28 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         foreach ($this->_itemlist as $item) {
             $total = $total + $item->price / 100 * $item->quantity;
         }
-        $this->docform->total->setText(number_format($total, 2, '.', ''));
+        $this->docform->total->setText(H::fm($total));
     }
 
-    // автолоад списка  товаров
-    public function OnAutocomplete($sender)
+    public function OnGroup(DropDownChoice $sender)
     {
-        $text = $sender->getValue();
+        $id = $sender->getValue();
 
-        return Item::findArray("itemname", " itemname  like '%{$text}%' ", "itemname", null, 20);
+        $list = Item::findArray('itemname', 'group_id=' . $id);
+        $list = array_replace(array(0 => 'Выбрать'), $list);
+        $this->editdetail->edititem->setOptionList($list);
+        $this->updateAjax(array('edititem'));
+    }
+
+    public function OnItem(DropDownChoice $sender)
+    {
+        $id = $sender->getValue();
+        $item = Item::load($id);
+        $this->editdetail->editprice->setText(H::fm($item->priceopt));
+
+        //временное  решеие 
+        $this->editdetail->qtystore->setText(Item::getQuantity($id, $this->docform->timeline->getDate()));
+        $this->updateAjax(array('editprice', 'qtystore'));
     }
 
 }

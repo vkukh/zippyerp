@@ -18,5 +18,3 @@ class Message extends \ZCL\DB\Entity
     }
 
 }
-
-?>

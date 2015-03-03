@@ -10,7 +10,7 @@ use \ZippyERP\ERP\Helper;
  */
 class Document extends \ZCL\DB\Entity
 {
-
+    // состояния  документа
     const STATE_NEW = 1;     //Новый
     const STATE_EDITED = 2;  //Отредактирован
     const STATE_CANCELED = 3;      //Отменен
@@ -23,6 +23,13 @@ class Document extends \ZCL\DB\Entity
     const STATE_WP = 10; // Ждет оплату
     const STATE_INSHIPMENT = 11; // Отгружен    
 
+    // типы  экспорта
+    const EX_WORD = 1; //  Word
+    const EX_EXCEL = 2;    //  Excel
+    //const EX_PDF = 3;    //  PDF 
+    const EX_XML_GNAU = 4; //  стандарт   ГНАУ 
+     
+    
     /**
      * Ассоциативный массив   с атрибутами заголовка  документа
      * 
@@ -109,6 +116,9 @@ class Document extends \ZCL\DB\Entity
     private function unpackData()
     {
         $this->headerdata = array();
+        if (strlen($this->content) == 0) {
+            return;
+        }
         $xml = new \SimpleXMLElement($this->content);
         foreach ($xml->header->children() as $child) {
             $this->headerdata[(string) $child->getName()] = (string) $child;
@@ -156,8 +166,8 @@ class Document extends \ZCL\DB\Entity
         // если  метод не переопределен  в  наследнике удаляем  документ  со  всех  движений
         $conn->Execute("delete from erp_stock_activity where document_id =" . $this->document_id);
         $conn->Execute("delete from erp_account_entry where document_id =" . $this->document_id);
-        $conn->Execute("delete from erp_moneyfunds_activity  where document_id =" . $this->document_id);
-        $conn->Execute("delete from erp_customer_activity  where document_id =" . $this->document_id);
+     //   $conn->Execute("delete from erp_moneyfunds_activity  where document_id =" . $this->document_id);
+     //   $conn->Execute("delete from erp_customer_activity  where document_id =" . $this->document_id);
         $conn->Execute("delete from erp_staff_employee_activity   where document_id =" . $this->document_id);
         $conn->CompleteTrans();
 
@@ -201,6 +211,7 @@ class Document extends \ZCL\DB\Entity
     {
         $conn = \ZCL\DB\DB::getConnect();
         $conn->Execute("delete from erp_document_update_log  where document_id =" . $this->document_id);
+        $conn->Execute("update erp_document set  state=" . self::STATE_DELETED . " where  document_id =" . $this->document_id);
 
         return true;
     }
@@ -329,6 +340,7 @@ class Document extends \ZCL\DB\Entity
             case Document::STATE_APPROVED: return "Утвержден";
             case Document::STATE_DELETED: return "Удален";
             case Document::STATE_WP: return "Ожидает оплату";
+            case Document::STATE_WA: return "Ждет утверждения";
             default: return "Неизвестный статус";
         }
     }
@@ -339,7 +351,22 @@ class Document extends \ZCL\DB\Entity
      */
     public function nextNumber()
     {
-        return '';
+
+
+        $class = explode("\\", get_called_class());
+        $metaname = $class[count($class) - 1];
+        $doc = Document::getFirst("meta_name='" . $metaname . "'", "document_id desc");
+        if ($doc == null)
+            return '';
+        $prevnumber = $doc->document_number;
+        if (strlen($prevnumber) == 0)
+            return '';
+        $number = preg_replace('/[^0-9]/', '', $prevnumber);
+        if (strlen($number) == 0)
+            $number = 0;
+        $letter = preg_replace('/[0-9]/', '', $prevnumber);
+
+        return $letter . sprintf("%05d", ++$number);
     }
 
     /**
@@ -364,4 +391,51 @@ class Document extends \ZCL\DB\Entity
         return $list;
     }
 
+    /**
+     * Проверяет  может  ли  документ  быть  удален
+     * 
+     */
+    public function checkDeleted()
+    {
+        $conn = \ZCL\DB\DB::getConnect();
+
+        $cnt = $conn->GetOne("select  count(*) from erp_docrel where  doc1 = {$this->document_id}  or  doc2 = {$this->document_id}");
+        if ($cnt > 0)
+            return false;
+
+        return true;
+    }
+
+    /**
+     *   Экспорт  во  внешние  форматы  данных
+     * 
+     * @param mixed $type    тип  экспорта
+     * @return mixed  Возвращает  строку  с данными  или  false
+     */
+    public function export($type)
+    {
+        return null;
+    }
+
+    /**
+     * Импорт докумета   из  внешнего  источника.
+     * 
+     * @param mixed $data  содержание файла
+     * @return mixed   Возвращает  документ  или  строку   с  ошибкой
+     */
+    public static function import($data)
+    {
+        return "";
+    }
+
+    
+    /**
+    * Возвращает  список  типов экспорта
+    * Перегружается  дочерними  для  добавление  специфических  типов
+    * 
+    */
+    public  function supportedExport(){
+        return array(self::EX_EXCEL,self::EX_WORD);
+    }
+    
 }

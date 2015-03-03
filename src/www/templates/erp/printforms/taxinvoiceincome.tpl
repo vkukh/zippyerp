@@ -12,26 +12,21 @@
                     <br><br> Входящая НН № {$document_number}  от  {$date}    <br><br><br>
                 </td>
             </tr>
-
-            <tr style="font-weight: bolder;"><th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="30">№</th><th colspan="2" width="230"  style="border-top:1px #000 solid;border-bottom:1px #000 solid;" >Наименование</th><th  style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Ед.изм</th><th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кол.</th><th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="60">Цена</th><th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">Сумма</th></tr>
-                    {foreach $_detail as $item}
-                <tr ><td align="right" >{$item.no}<td  colspan="2">{$item.tovar_name}</td><td>{$item.measure}</td><td align="right">{$item.quantity}</td><td align="right">{$item.price}</td><td align="right">{$item.amount}</td></tr>
-                    {/foreach}
-            <tr style="font-weight: bolder;" ><td style="border-top:1px #000 solid;"  colspan="6"  align="right" >Всего:</td><td style="border-top:1px #000 solid;" align="right" >{$total}</td></tr>
-            <tr style="font-weight: bolder;" ><td  colspan="6"  align="right" >НДС:</td><td align="right">{$nds}</td></tr>
-            <tr style="font-weight: bolder;" ><td  colspan="6"  align="right" >Всего  с  НДС:</td><td align="right" >{$totalnds}</td></tr>
-            <tr style="font-weight: bolder;" ><td  colspan="7"  valign="middle" ><br><br><span>Всего на сумму:</span> <span>{$summa}</span> <br><br><br></td></tr>
-
-            <tr >  <td> </td>
-                <td colspan="2"  >
-                    Отправил
-                </td>
-                <td  colspan="4">
-                    Получил
-                </td>     
-
-            </tr>
         </table>
-        <br> <br>
+         <br>
+        <table width="500"  cellspacing="0" cellpadding="1" border="0">
+            <tr style="font-weight: bolder;"><th width="20" style="border: 1px solid black;">№</th><th style="border: 1px solid black;" width="180" >Наименование</th><th style="border: 1px solid black;"  width="50">Ед.изм</th><th style="border: 1px solid black;" width="50">Кол.</th><th style="border: 1px solid black;" width="50">Цена-</th><th style="border: 1px solid black;" width="50">Цена+</th><th style="border: 1px solid black;" width="50">Сумма</th></tr>
+                    {foreach $_detail as $item}
+                <tr ><td>{$item.no}</td><td>{$item.itemname}</td><td>{$item.measure}</td><td align="right">{$item.quantity}</td><td align="right">{$item.price}</td><td align="right">{$item.pricends}</td><td align="right">{$item.amount}</td></tr>
+                    {/foreach}
+            <tr style="font-weight: bolder;"><td  colspan="6"  style="border-top: 1px solid black;"  align="right">Всего:</td><td width="50" style="border-top: 1px solid black;" align="right">{$total} </td></tr>
+           {if $totalnds > 0}
+                <tr style="font-weight: bolder;"><td colspan="6"  align="right">В т.ч. НДС:</td><td    align="right">{$totalnds} </td></tr>
+            {/if}
+            
+
+        </table>
+
+        
     </body>
 </html>

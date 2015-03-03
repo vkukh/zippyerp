@@ -3,7 +3,7 @@
     <body>
         <div class="row">
             <div class="col-md-12">    
-                <h4>Счет-фактура</h4>
+                <h4>Гарантийный талон</h4>
                 <form zippy="docform">
 
                     <table  border="0" cellpadding="1">
@@ -58,8 +58,9 @@
                 <form zippy="editdetail">
                     <strong>Ввод  товара  </strong>
                     <table  border="0" >
-                        <tr><td>Наименование</td><td><input type="text" zippy="edittovar" required="required" >   </td></tr>
-                        <tr><td>Количество</td><td><input type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input></td></tr>
+                         <tr><td>Группа</td><td><select     zippy="editgroup" > <option value="0">Выбрать</option></select></td></tr>
+                        <tr><td>Наименование</td><td><select    zippy="edittovar" > <option value="0">Выбрать</option></select>  </td></tr>
+                       <tr><td>Количество</td><td><input type="text" zippy="editquantity" required="required" pattern= "[0-9\.]+"  ></input></td></tr>
                         <tr><td>Цена</td><td><input type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 100px;"></td></tr>
                         <tr><td>Серийный  номер</td><td><input type="text" zippy="editsn"    style="width: 200px;"></td></tr>
                         <tr><td>Гарантия</td><td><input type="text" zippy="editwarranty"  pattern= "[0-9\.]+"   style="width: 100px;"></td></tr>

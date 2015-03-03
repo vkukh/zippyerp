@@ -65,33 +65,32 @@ class BankStatement extends Document
                 if ($value['noentry'] === 'true')
                     continue;
 
-                $sql = "insert  into erp_moneyfunds_activity (document_id,id_moneyfund,amount) values ({$this->document_id},{$this->headerdata['bankaccount']},{$value['amount']})";
-                $conn->Execute($sql);
+               // $sql = "insert  into erp_moneyfunds_activity (document_id,id_moneyfund,amount) values ({$this->document_id},{$this->headerdata['bankaccount']},{$value['amount']})";
+              //  $conn->Execute($sql);
 
                 if ($value['optype'] == self::OUT) {
-                    Entry::AddEntry('63', "31", $value['amount'], $this->document_id, $value['comment']);
-                    Customer::AddActivity($value['customer'], $value['amount'], $this->document_id);
-                    $value['amount'] = 0 - $value['amount'];
+                    Entry::AddEntry('63', "31", $value['amount'], $this->document_id,$value['customer'],$this->headerdata['bankaccount']);
+                   // Customer::AddActivity($value['customer'], 0-$value['amount'], $this->document_id);
+                    
                 }
                 if ($value['optype'] == self::IN) {
-                    Entry::AddEntry('31', "36", $value['amount'], $this->document_id, $value['comment']);
-                    Customer::AddActivity($value['customer'], 0 - $value['amount'], $this->document_id);
+                    Entry::AddEntry('31', "36",  $value['amount'], $this->document_id,$this->headerdata['bankaccount'],$value['customer']);
+                    //Customer::AddActivity($value['customer'],  $value['amount'], $this->document_id);
                 }
                 if ($value['optype'] == self::TAX) {
-                    //Entry::AddEntry('64', "31", $value['amount'], $this->document_id, $value['comment']);
-                    Customer::AddActivity($value['customer'], $value['amount'], $this->document_id);
-                    $value['amount'] = 0 - $value['amount'];
+                    //Entry::AddEntry('64', "31", $value['amount'], $this->document_id);
+                    //Customer::AddActivity($value['customer'], 0-$value['amount'], $this->document_id);
+                    
                 }
                 if ($value['optype'] == self::CASHIN) {
-                    Entry::AddEntry('30', "31", $value['amount'], $this->document_id, $value['comment']);
-                    $sql = "insert  into erp_moneyfunds_activity (document_id,id_moneyfund,amount) values ({$this->document_id},0,{$value['amount']})";
-                    $conn->Execute($sql);
+                    $cash = MoneyFund::getCash();
+                    Entry::AddEntry('30', "31", $value['amount'], $this->document_id,$cash->id,$this->headerdata['bankaccount']);
+
                 }
                 if ($value['optype'] == self::CASHOUT) {
-                    Entry::AddEntry('31', "30", $value['amount'], $this->document_id, $value['comment']);
-                    $value['amount'] = 0 - $value['amount'];
-                    $sql = "insert  into erp_moneyfunds_activity (document_id,id_moneyfund,amount) values ({$this->document_id},0,{$value['amount']})";
-                    $conn->Execute($sql);
+                    $cash = MoneyFund::getCash();
+                    Entry::AddEntry('31', "30", $value['amount'], $this->document_id,$this->headerdata['bankaccount'],$cash->id);
+
                 }
                 // Движение  по  денежным  счетам
 

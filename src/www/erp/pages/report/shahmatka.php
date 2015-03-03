@@ -25,8 +25,7 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('detail'))->setVisible(false);
         $this->detail->add(new RedirectLink('print', ""));
-        $this->detail->add(new RedirectLink('pdf', ""))->setVisible(false);
-        $this->detail->add(new RedirectLink('word', ""));
+        $this->detail->add(new RedirectLink('html', ""));
         $this->detail->add(new RedirectLink('excel', ""));
         $this->detail->add(new Label('preview'));
     }
@@ -37,14 +36,13 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $html = $this->generateReport();
         $this->detail->preview->setText($html, true);
 
-        \ZippyERP\System\Session::getSession()->accountreport = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
+        \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
         $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', "shaxmatkareport");
-        $this->detail->pdf->pagename = $reportpage;
-        $this->detail->pdf->params = array('pdf', "shaxmatkareport");
-        $this->detail->word->pagename = $reportpage;
-        $this->detail->word->params = array('doc', "shaxmatkareport");
+        $this->detail->html->pagename = $reportpage;
+        $this->detail->html->params = array('html', "shaxmatkareport");
+        
         $this->detail->excel->pagename = $reportpage;
         $this->detail->excel->params = array('xls', "shaxmatkareport");
 
@@ -54,7 +52,7 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
     private function generateReport()
     {
 
-        $acclist = Account::find("", "acc_code");
+        $acclist = Account::find("", "cast(acc_code as char)");
 
         $detail = array();
         $left = array();

@@ -8,6 +8,7 @@ use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
@@ -18,6 +19,7 @@ use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Stock;
 use ZippyERP\ERP\Entity\Store;
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Страница  ввода перемещения товаров
@@ -27,6 +29,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
     public $_itemlist = array();
     private $_doc;
+    private $_rowid = 0;
 
     public function __construct($docid = 0)
     {
@@ -47,7 +50,8 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
 
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('edititem'))->setChangeHandler($this, 'OnChangeItem');
+        $this->editdetail->add(new AutocompleteTextInput('edititem'))->setAutocompleteHandler($this, 'OnAutocompleteItem');
+        $this->editdetail->edititem->setChangeHandler($this, 'OnChangeItem');
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'))->setText("0");
 
@@ -82,7 +86,8 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('quantity', $item->quantity));
-        $row->add(new Label('price', number_format($item->price / 100, 2, '.', '')));
+        $row->add(new Label('price', H::fm($item->price)));
+        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
 
@@ -103,12 +108,31 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         }
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
-        $this->editdetail->edititem->setOptionList(Stock::findArrayEx(" store_id=" . $this->docform->storefrom->getValue()));
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->qtystock->setText('');
+        $this->editdetail->edititem->setText('');
+    }
+
+    public function editOnClick($sender)
+    {
+        $stock = $sender->getOwner()->getDataItem();
+        $this->editdetail->setVisible(true);
+        $this->docform->setVisible(false);
+
+        $this->editdetail->editquantity->setText($stock->quantity);
+        $this->editdetail->editprice->setText(H::fm($stock->price));
+
+
+        $this->editdetail->edititem->setKey($stock->stock_id);
+        $this->editdetail->edititem->setText($stock->itemname);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
+
+        $this->_rowid = $stock->stock_id;
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getValue();
+        $id = $this->editdetail->edititem->getKey();
         if ($id == 0) {
             $this->setError("Не выбран ТМЦ");
             return;
@@ -120,8 +144,9 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
-            $stock->price = $stock->partion;  //перемещение на  оптовый  склад
+            // $stock->price = $stock->partion;  //перемещение на  оптовый  склад
         } else {
+            $stock->partion = $stock->price;
             $stock->price = $this->editdetail->editprice->getText() * 100;
         }
         $this->_itemlist[$stock->stock_id] = $stock;
@@ -169,7 +194,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
         }
-        App::Redirect('\ZippyERP\ERP\Pages\Register\DocList');
+        App::RedirectBack();
     }
 
     /**
@@ -194,20 +219,27 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
     public function OnChangeItem($sender)
     {
-        $stock_id = $sender->getValue();
+        $stock_id = $sender->getKey();
         $stock = Stock::load($stock_id);
         $this->editdetail->qtystock->setText(Stock::getQuantity($stock_id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
-            $this->editdetail->editprice->setText(number_format($stock->partion / 100, 2, '.', ''));
+            $this->editdetail->editprice->setText(H::fm($stock->price));
         } else {
             $item = Item::load($stock->item_id);
-            $this->editdetail->editprice->setText(number_format($item->price / 100, 2, '.', ''));
+            $this->editdetail->editprice->setText(H::fm($item->priceret));
+        }
+        if ($store->store_type == Store::STORE_TYPE_RET) {
+            //если  уже   есть  товар  в  магзине  берем  цену  оттуда
+            $stock = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and closed <> 1");
+            if ($stock instanceof Stock) {
+                $this->editdetail->editprice->setText(H::fm($stock->price));
+            }
         }
     }
 
@@ -227,6 +259,14 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
                 $this->editdetail->editprice->setVisible(true);
             }
         }
+    }
+
+    public function OnAutocompleteItem($sender)
+    {
+        $text = $sender->getValue();
+        $store_id = $this->docform->storefrom->getValue();
+
+        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
     }
 
 }

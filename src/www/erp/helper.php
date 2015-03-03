@@ -5,6 +5,7 @@ namespace ZippyERP\ERP;
 use \ZCL\DB\DB;
 use ZippyERP\System\System;
 
+
 /**
  * Класс   со  вспомагательными   функциями
  *   для  работы с  БД 
@@ -134,6 +135,17 @@ class Helper
     }
 
     /**
+    * возвращает описание  мета-обьекта
+    * 
+    * @param mixed $metaname
+    */
+    public static function getMetaNotes($metaname){
+            $conn = DB::getConnect();
+            $sql = "select notes from  erp_metadata where meta_name = '{$metaname}' ";
+            return $conn->GetOne($sql);       
+    }
+    
+    /**
      * Возвращает  ссписок  денежных счетов
      * 
      * @param mixed $bank  true  если  банк иначе  касса
@@ -244,7 +256,7 @@ class Helper
     /**
      * Возвращает  НДС
      * 
-     * @param mixed $revert   возвращает  отбратную  велисину (наприме  если   20% (0.2)  возвращает 16.67% ()0.1667)
+     * @param mixed $revert   возвращает  обратную  величину (наприме  если   20% (0.2)  возвращает 16.67% (0.1667) )
      */
     public static function nds($revert = false)
     {
@@ -256,5 +268,8 @@ class Helper
         }
         return $nds;
     }
+
+    
+    
 
 }

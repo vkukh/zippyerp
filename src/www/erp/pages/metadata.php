@@ -134,6 +134,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $form = $this->editpan->editform;
         $form->meta_id->setText($item->meta_id);
         $form->edit_description->setText($item->description);
+        $form->edit_notes->setText($item->notes);
         $form->edit_meta_name->setText($item->meta_name);
         $form->edit_menugroup->setText($item->menugroup);
         $form->edit_meta_type->setValue($item->meta_type);

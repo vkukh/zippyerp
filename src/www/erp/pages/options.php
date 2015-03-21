@@ -23,11 +23,16 @@ class Options extends \ZippyERP\System\Pages\AdminBase
 
         $this->add(new Form('detail'));
         $this->detail->add(new TextInput('name'));
-        $this->detail->add(new TextInput('code'));
+        $this->detail->add(new TextInput('edrpou'));
+        $this->detail->add(new TextInput('koatuu'));
+        $this->detail->add(new TextInput('kopfg'));
+        $this->detail->add(new TextInput('kodu'));
+        $this->detail->add(new TextInput('kved'));
+        $this->detail->add(new TextInput('gni'));
         $this->detail->add(new TextInput('inn'));
         $this->detail->add(new TextInput('city'));
         $this->detail->add(new TextInput('street'));
-        $this->detail->add(new TextInput('рhone'));
+        $this->detail->add(new TextInput('phone'));
         $this->detail->add(new TextInput('manager'));
         $this->detail->add(new TextInput('accounter'));
         $this->detail->add(new TextInput('email'));
@@ -43,22 +48,28 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->common->add(new TextInput('nds'));
         $this->common->add(new CheckBox('hasnds'));
         $this->common->add(new CheckBox('simpletax'));
+        $this->common->add(new CheckBox('juridical'));
         $this->common->add(new SubmitButton('commonsave'))->setClickHandler($this, 'saveCommonOnClick');
 
 
-        $detail = @unserialize(\ZippyERP\System\System::getOptions("firmdetail"));
+        $detail = \ZippyERP\System\System::getOptions("firmdetail");
 
         if (!is_array($detail))
             $detail = array();
 
         $this->detail->name->setText($detail['name']);
-        $this->detail->code->setText($detail['code']);
+        $this->detail->edrpou->setText($detail['edrpou']);
+        $this->detail->koatuu->setText($detail['koatuu']);
+        $this->detail->kopfg->setText($detail['kopfg']);
+        $this->detail->kodu->setText($detail['kodu']);
+        $this->detail->kved->setText($detail['kved']);
+        $this->detail->gni->setText($detail['gni']);
         $this->detail->inn->setText($detail['inn']);
         $this->detail->city->setText($detail['city']);
         $this->detail->street->setText($detail['street']);
         $this->detail->manager->setText($detail['manager']);
         $this->detail->accounter->setText($detail['accounter']);
-        $this->detail->рhone->setText($detail['рhone']);
+        $this->detail->phone->setText($detail['phone']);
         $this->detail->email->setText($detail['email']);
 
         $f = \ZippyERP\ERP\Entity\MoneyFund::findOne('ftype = 1');
@@ -68,13 +79,14 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $this->detail->bankaccount->setText($f->bankaccount);
         }
 
-        $common = @unserialize(\ZippyERP\System\System::getOptions("common"));
+        $common = \ZippyERP\System\System::getOptions("common");
         if (!is_array($common))
             $common = array();
         $this->common->closeddate->setDate($common['closeddate']);
         $this->common->nds->setText($common['nds']);
         $this->common->hasnds->setChecked($common['hasnds']);
         $this->common->simpletax->setChecked($common['simpletax']);
+        $this->common->juridical->setChecked($common['juridical']);
     }
 
     public function saveDetailOnClick($sender)
@@ -86,13 +98,18 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         }
         $detail = array();
         $detail['name'] = $this->detail->name->getText();
-        $detail['code'] = $this->detail->code->getText();
+        $detail['edrpou'] = $this->detail->edrpou->getText();
+        $detail['koatuu'] = $this->detail->koatuu->getText();
+        $detail['kopfg'] = $this->detail->kopfg->getText();
+        $detail['kodu'] = $this->detail->kodu->getText();
+        $detail['kved'] = $this->detail->kved->getText();
+        $detail['gni'] = $this->detail->gni->getText();
         $detail['inn'] = $this->detail->inn->getText();
         $detail['city'] = $this->detail->city->getText();
         $detail['street'] = $this->detail->street->getText();
         $detail['manager'] = $this->detail->manager->getText();
         $detail['accounter'] = $this->detail->accounter->getText();
-        $detail['рhone'] = $this->detail->рhone->getText();
+        $detail['phone'] = $this->detail->phone->getText();
         $detail['email'] = $this->detail->email->getText();
 
         $f = \ZippyERP\ERP\Entity\MoneyFund::findOne('ftype = 1');
@@ -102,7 +119,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $f->save();
         }
 
-        \ZippyERP\System\System::setOptions("firmdetail",serialize($detail)) ;
+        \ZippyERP\System\System::setOptions("firmdetail",$detail) ;
     }
 
     public function saveCommonOnClick($sender)
@@ -112,7 +129,8 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $common['nds'] = $this->common->nds->getText();
         $common['hasnds'] = $this->common->hasnds->isChecked();
         $common['simpletax'] = $this->common->simpletax->isChecked();
-        \ZippyERP\System\System::setOptions("common", serialize($common));
+        $common['juridical'] = $this->common->juridical->isChecked();
+        \ZippyERP\System\System::setOptions("common", $common);
     }
 
 }

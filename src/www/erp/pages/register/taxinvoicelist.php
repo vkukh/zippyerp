@@ -67,7 +67,7 @@ class TaxInvoiceList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('date', date('d-m-Y', $item->document_date)));
         $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
 
-        $row->add(new Label('ernn', $item->headerdata['ernn'] > 0 ? date('d-m-Y', $item->headerdata['ernn']) :""));
+        $row->add(new Label('ernn'))->setVisible($item->headerdata['ernn'] == true);
         $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');

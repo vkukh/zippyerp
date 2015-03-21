@@ -28,7 +28,7 @@ class Invoice extends Document
                 "price" => H::fm($value['price']),
                 "amount" => H::fm($value['quantity'] * $value['price'])
             );
-            $total += $value['quantity'] * $value['price'] / 100;
+            $total += $value['quantity'] * $value['price'] ;
         }
 
         $firm = \ZippyERP\System\System::getOptions("firmdetail");
@@ -47,9 +47,8 @@ class Invoice extends Document
             "document_number" => $this->document_number,
             "base" => $this->base,
             "paydate" => date('d.m.Y', $this->headerdata["payment_date"]),
-            "nds" => H::fm($this->headerdata["nds"]),
             "total" => H::fm($total),
-            "totalnds" => H::fm($total + $this->headerdata["nds"]),
+            "totalnds" => H::fm($total + $this->headerdata["totalnds"]),
             "summa" => Util::ucfirst(Util::money2str($total + $this->headerdata["nds"] / 100, '.', ''))
         );
 
@@ -74,5 +73,19 @@ class Invoice extends Document
         $list['TaxInvoice'] = 'Налоговая  накладная';
         return $list;
     }
+    /**
+    *@see Document
+    */
+    public function export($type)
+    {
+     if($type==self::EX_XML_GNAU)
+        return array("filename"=>"invoice.xml","content"=>"<test/>");
+    }
 
+    /**
+    *@see Document
+    */
+    public  function supportedExport(){
+        return array(self::EX_EXCEL,self::EX_WORD,self::EX_XML_GNAU);
+    }  
 }

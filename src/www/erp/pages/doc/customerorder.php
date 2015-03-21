@@ -206,7 +206,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
     {
         $total = 0;
         foreach ($this->_itemlist as $item) {
-            $total = $total + $item->price / 100 * $item->quantity;
+            $total = $total + $item->price  * $item->quantity;
         }
         $this->docform->total->setText(H::fm($total));
     }

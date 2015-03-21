@@ -43,6 +43,7 @@ class Item extends \ZCL\DB\Entity
         $this->priceopt = (string) ($xml->priceopt[0]);
         $this->priceret = (string) ($xml->priceret[0]);
         $this->barcode = (string) ($xml->barcode[0]);
+        $this->uktzed = (string) ($xml->uktzed[0]);
         $this->code = (string) ($xml->code[0]);
         $this->description = (string) ($xml->description[0]);
 
@@ -69,6 +70,7 @@ class Item extends \ZCL\DB\Entity
         $this->detail = "<detail><priceopt>{$this->priceopt}</priceopt>";
         $this->detail .= "<priceret>{$this->priceret}</priceret>";
         $this->detail .= "<code>{$this->code}</code>";
+        $this->detail .= "<uktzed>{$this->uktzed}</uktzed>";
         $this->detail .= "<barcode>{$this->barcode}</barcode>";
         $this->detail .= "<description>{$this->description}</description>";
         $this->detail .= "</detail>";
@@ -90,4 +92,14 @@ class Item extends \ZCL\DB\Entity
         return $conn->GetOne($sql);
     }
 
+    /**
+    * возвращает ТМЦ по  коду УКТ ЗЕД
+    * null если  не  найден
+    * 
+    */
+    public static function loadByUktzed($code)
+    {
+      
+        return Item::findOne("detail LIKE '%<uktzed>{$code}</uktzed>%' " );
+    }    
 }

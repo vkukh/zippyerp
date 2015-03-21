@@ -269,7 +269,19 @@ class Helper
         return $nds;
     }
 
-    
+    /**
+    * Вставляет пробелы  между символами строки
+    * 
+    * @param mixed $data
+    */
+    public static function addSpaces($data){
+       $_data ="";
+       for($i = 0;$i < strlen($data);$i++) {
+          $_data .= (" " . $data[$i]);
+       }
+       
+       return trim($_data);
+    }
     
 
 }

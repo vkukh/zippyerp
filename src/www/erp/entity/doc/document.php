@@ -27,8 +27,7 @@ class Document extends \ZCL\DB\Entity
     const EX_WORD = 1; //  Word
     const EX_EXCEL = 2;    //  Excel
     //const EX_PDF = 3;    //  PDF 
-    const EX_XML_GNAU = 4; //  стандарт   ГНАУ 
-     
+    const EX_XML_GNAU   = 4;
     
     /**
      * Ассоциативный массив   с атрибутами заголовка  документа
@@ -425,6 +424,7 @@ class Document extends \ZCL\DB\Entity
      */
     public static function import($data)
     {
+        
         return "";
     }
 
@@ -435,7 +435,7 @@ class Document extends \ZCL\DB\Entity
     * 
     */
     public  function supportedExport(){
-        return array(self::EX_EXCEL,self::EX_WORD);
+        return array(self::EX_EXCEL);
     }
     
 }

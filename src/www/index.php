@@ -22,7 +22,7 @@ try {
       Logger::getLogger("main")->error($e->getMessage(), e);
       \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
       } catch (ADODB_Exception $e) {
-      Logger::getLogger("main")->error($e->getMessage(), e);
+    
       \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
      */
 } catch (Exception $e) {

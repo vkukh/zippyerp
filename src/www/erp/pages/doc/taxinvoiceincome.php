@@ -9,6 +9,8 @@ use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
 use Zippy\Html\Form\Date;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\File;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
@@ -46,12 +48,15 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DropDownChoice('customer', Customer::getSellers()));
 
         $this->docform->add(new TextInput('based'));
-        $this->docform->add(new Date('ernn'));
+        $this->docform->add(new CheckBox('ernn'));
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
+        
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
-
+        $this->docform->add(new File('import'));
+        $this->docform->add(new SubmitButton('importdoc'))->setClickHandler($this, 'importdocOnClick');
+    
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
@@ -80,6 +85,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
                 $item = new Item($item);
                 $this->_tovarlist[$item->item_id] = $item;
             }
+            $this->docform->import->setVisible(false);  
         } else {
             $this->_doc = Document::create('TaxInvoiceIncome');
             $this->docform->document_number->setText($this->_doc->nextNumber());
@@ -89,7 +95,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;
                     $this->docform->based->setText($basedoc->meta_desc . " №" . $basedoc->document_number);
-                    $this->docform->ernn->setDate($this->_doc->headerdata['ernn']);
+                    $this->docform->ernn->setChecked($this->_doc->headerdata['ernn']);
                     // Создатся  на  основании  приходной  накладной
                     if ($basedoc->meta_name == 'GoodsReceipt') {
                         //  $this->docform->nds->setText($basedoc->headerdata['nds'] / 100);
@@ -218,7 +224,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata = array(
             'customer' => $this->docform->customer->getValue(),
             'based' => $this->docform->based->getText(),
-            'ernn' => $this->docform->ernn->getDate() ,            
+            'ernn' => $this->docform->ernn->isChecked() ,            
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
@@ -286,7 +292,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
 
         $this->calcTotal();
 
-        App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
+ //       App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
     }
 
     public function backtolistOnClick($sender)
@@ -302,5 +308,33 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->edittovar->setOptionList($list);
         $this->updateAjax(array('edittovar'));
     }
+     
+    public function importdocOnClick($sender){
+        
+        $file = $this->docform->import->getFile();
+        $data = file_get_contents($file['tmp_name']);
+        $doc =  \ZippyERP\ERP\Entity\Doc\TaxInvoiceIncome::import($data);
+        
+        if($doc  instanceof \ZippyERP\ERP\Entity\Doc\TaxInvoiceIncome){
+            $this->_doc = $doc;
+        } else {
+           // иначе строка  с ошибкой
+           $this->setError($doc);
+        }
+        
+             $this->docform->document_number->setText($this->_doc->document_number);
 
+            //      $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
+            $this->docform->created->setDate($this->_doc->document_date);
+
+           $this->docform->based->setText($this->_doc->headerdata['based']);
+           $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+
+            foreach ($this->_doc->detaildata as $item) {
+                //$item = new Item($item);
+                $this->_tovarlist[$item->item_id] = $item;
+            }
+       
+            $this->docform->detail->Reload();
+    } 
 }

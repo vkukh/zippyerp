@@ -4,6 +4,7 @@ define('_ROOT', __DIR__ . '/');
 $http = $_SERVER["HTTPS"] == 'on' ? 'https' : 'http';
 define('_BASEURL', $http . "://" . $_SERVER["HTTP_HOST"] . '/');
 define('_ZIPPY', _ROOT . 'zippy/');
+//define('_ZIPPY', 'z:/home/local.zippy/www/zippy/');
 
 define('UPLOAD_USERS', 'uploads/users/');
 
@@ -74,10 +75,19 @@ session_start();
 
 // логгер
 $logger = new \Monolog\Logger("main");
-$logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(_ROOT . "logs/app.log", 10, $_config['common']['loglevel']));
-$logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(_ROOT . "logs/error.log", 10, 400));
+$dateFormat = "Y n j, g:i a";
+//$output = "%datetime% > %level_name% > %message% %context% %extra%\n";
+$output = "%datetime%  %level_name% : %message% \n";
+$formatter = new \Monolog\Formatter\LineFormatter($output, $dateFormat);
+$h1 = new \Monolog\Handler\RotatingFileHandler(_ROOT . "logs/app.log", 10, $_config['common']['loglevel']);
+$h2 = new \Monolog\Handler\RotatingFileHandler(_ROOT . "logs/error.log", 10, 400);
+$h1->setFormatter($formatter);
+$h2->setFormatter($formatter);
+$logger->pushHandler($h1);
+$logger->pushHandler($h2);
 $logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor());
 
+@mkdir(_ROOT . "logs");
 
-
+$logger->info("Hi");
 

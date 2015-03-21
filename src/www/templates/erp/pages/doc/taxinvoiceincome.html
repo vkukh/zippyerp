@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-md-12">    
                 <h4>Входящая НН</h4>
-                <form zippy="docform">
+                <form zippy="docform"  enctype="multipart/form-data">
 
                     <table  border="0" cellpadding="1">
                         <tr>
@@ -38,8 +38,8 @@
                             <td  ><input type="text" zippy="based" ></td>                                
                         </tr>
                         <tr>
-                            <td   >Дата  с  ЕРНН</td>
-                            <td colspan="3" ><input type="text" zippy="ernn" ></td>                                
+                            <td   >В  ЕРНН</td>
+                            <td colspan="3" ><input type="checkbox" zippy="ernn" ></td>                                
                         </tr>
                     </table>
                     <br>
@@ -73,13 +73,19 @@
 
 
                     <p>&nbsp;</p>
-                    <p>
+                    <div>
                         <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">&nbsp;
                         <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs">&nbsp; 
                         <input zippy="execdoc" type="submit"  value="Закрыть" class="btn btn-default btn-xs"> 
+                         </div>
+                         <div>
+                         
+                         
+                        Импорт <input zippy="import" type="file"  >
+                         <input zippy="importdoc" type="submit"  value="Загрузить" class="btn btn-default btn-xs"> 
+                        
 
-
-                    </p>
+                    </div>
 
                 </form>
                 <form zippy="editdetail">
@@ -95,6 +101,6 @@
                 </form>
             </div>   
         </div>   
-
+     
     </body>
 </html>

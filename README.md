@@ -1,11 +1,11 @@
 Zippy ERP
 ========
 
-Учетная  система (складской учет,  бухучет)  с  открытым  кодом.
+Учетная  система (складской учет,  бухучет)  с  открытым  кодом для автоматизации малого бизнеса.
 
 Домашняя страница:  [http://zippy.com.ua/](http://zippy.com.ua/)
 
-Дистрибутив  в  сборе  можно скачать  с  [Sourceforge](https://sourceforge.net/projects/zippyerp/)
+Дистрибутив  в  сборе  можно скачать  с  [Release](https://github.com/leon-mbs/zippyerp/releases/download/v0.9.0beta/erp-full.zip)
 
 Требования: PHP5.3.3+
 

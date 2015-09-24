@@ -6,6 +6,7 @@ use \Zippy\Html\Form\Form;
 use \Zippy\Html\Form\TextInput;
 use \Zippy\Html\Form\Date;
 use \Zippy\Html\Form\DropDownChoice;
+use \Zippy\Html\Form\AutocompleteTextInput;
 use \Zippy\Html\Label;
 use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Panel;
@@ -25,7 +26,8 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', time()));
         $this->filter->add(new DropDownChoice('store', Store::findArray("storename", "")));
-        $this->filter->add(new DropDownChoice('item', Item::findArray("itemname", "item_type <> " . Item::ITEM_TYPE_SERVICE)));
+        $this->filter->add(new AutocompleteTextInput('item'))->setAutocompleteHandler($this, 'OnAutoItem');
+
 
         $this->add(new Panel('detail'))->setVisible(false);
         $this->detail->add(new RedirectLink('print', "movereport"));
@@ -35,9 +37,19 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
+    public function OnAutoItem($sender)
+    {
+        $text = $sender->getText();
+        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <>" . Item::ITEM_TYPE_SERVICE);
+    }
+
     public function OnSubmit($sender)
     {
-
+        $item = $this->filter->item->getKey();
+        if (Item::load($item) == null) {
+            $this->setError('Не выбран ТМЦ');
+            return;
+        }
         $html = $this->generateReport();
         $this->detail->preview->setText($html, true);
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
@@ -60,7 +72,8 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
     {
 
         $store = $this->filter->store->getValue();
-        $item = $this->filter->item->getValue();
+        $item = $this->filter->item->getKey();
+
         $from = $this->filter->from->getDate();
         $to = $this->filter->to->getDate();
 
@@ -75,14 +88,38 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         $i = 1;
         $detail = array();
         $conn = \ZCL\DB\DB::getConnect();
-        $sql = "select t.* ,(select coalesce(sum(u.`quantity`),0) from erp_stock_activity_view u where u.`document_date` < t.dt and u.`stock_id` = t.`stock_id`) as  begin_quantity
-                             from (select stock_id,price, date(updated) as dt,
-                             sum(case  when  quantity > 0 then quantity else 0 end ) as  obin,
-                             sum(case  when  quantity < 0 then 0-quantity else 0 end ) as  obout,
-                             GROUP_CONCAT(document_number) as docs
-                             from `erp_stock_activity_view`
-                             where  item_id ={$item}   and   store_id ={$store} and date(document_date) >= " . $conn->DBDate($from) . " and date(document_date) <= " . $conn->DBDate($to) . " 
-                             group  by stock_id, price,date(updated) ) t order  by dt   ";
+
+        $sql = "
+            SELECT
+              t.*,
+              (SELECT
+                  COALESCE(SUM(u.`quantity`), 0)
+                FROM erp_account_subconto u
+                WHERE u.`document_date` < t.dt
+                AND u.`stock_id` = t.`stock_id`) AS begin_quantity
+            FROM (
+            SELECT
+                st.stock_id,
+                price,
+                DATE(sc.document_date) AS dt,
+                SUM(
+                CASE WHEN quantity > 0 THEN quantity ELSE 0 END) AS obin,
+                SUM(
+                CASE WHEN quantity < 0 THEN 0 - quantity ELSE 0 END) AS obout,
+                GROUP_CONCAT(dc.document_number) AS docs
+              FROM
+               erp_account_subconto  sc join erp_store_stock  st on  sc.stock_id = st.stock_id
+               join erp_document  dc  on sc.document_id = dc.document_id
+
+              WHERE st.item_id = {$item}
+              AND st.store_id = {$store}
+              AND DATE(sc.document_date) >= " . $conn->DBDate($from) . "
+              AND DATE(sc.document_date) <= " . $conn->DBDate($to) . "
+              GROUP BY st.stock_id,
+                       st.price,
+                       DATE(sc.document_date)) t
+            ORDER BY dt
+        ";
 
         $rs = $conn->Execute($sql);
 
@@ -91,10 +128,11 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
                 "date" => date("d.m.Y", strtotime($row['dt'])),
                 "documents" => str_replace(',', '<br>', $row['docs']),
                 "price" => H::fm($row['price']),
-                "in" => $row['begin_quantity'],
-                "obin" => $row['obin'],
-                "obout" => $row['obout'],
-                "out" => $row['begin_quantity'] + $row['obin'] - $row['obout']);
+                "in" => $row['begin_quantity'] / 1000,
+                "obin" => $row['obin'] / 1000,
+                "obout" => $row['obout'] / 1000,
+                "out" => ($row['begin_quantity'] + $row['obin'] - $row['obout']) / 1000
+            );
         }
 
 

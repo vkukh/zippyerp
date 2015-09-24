@@ -1,5 +1,7 @@
 <?php
 
+//todofirst
+
 namespace ZippyERP\ERP\Pages\Doc;
 
 use \Zippy\Html\Form\Form;
@@ -68,7 +70,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
             'enddate' => $this->docform->enddate->getDate()
         );
         $this->_doc->detaildata = array();
-        $this->_doc->intattr1 = $this->docform->customer->getValue();
+        $this->_doc->datatag = $this->docform->customer->getValue();
 
 
         $isEdited = $this->_doc->document_id > 0;

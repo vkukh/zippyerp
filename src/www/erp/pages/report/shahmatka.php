@@ -11,9 +11,12 @@ use \Zippy\Html\Panel;
 use \ZippyERP\ERP\Entity\Account;
 use \Zippy\Html\Link\RedirectLink;
 use \ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 class Shahmatka extends \ZippyERP\ERP\Pages\Base
 {
+
+    private $_updatejs = false;
 
     public function __construct()
     {
@@ -28,25 +31,31 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new RedirectLink('html', ""));
         $this->detail->add(new RedirectLink('excel', ""));
         $this->detail->add(new Label('preview'));
+        $this->detail->add(new ClickLink('loader'))->setAjaxClickHandler($this, "onReport");
     }
 
     public function OnSubmit($sender)
     {
 
-        $html = $this->generateReport();
-        $this->detail->preview->setText($html, true);
+        //$html = $this->generateReport();
+        $this->detail->preview->setText("<center style=\"padding-top:100px;padding-bottom:100px;\"><img title=\"Загрузка...\" src=\"/assets/images/ajax-loader.gif\"></center>", true);
 
-        \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
+        \ZippyERP\System\Session::getSession()->printform = "";
+
+        //\ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
+
         $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', "shaxmatkareport");
         $this->detail->html->pagename = $reportpage;
         $this->detail->html->params = array('html', "shaxmatkareport");
-        
+
         $this->detail->excel->pagename = $reportpage;
         $this->detail->excel->params = array('xls', "shaxmatkareport");
 
         $this->detail->setVisible(true);
+
+        $this->_updatejs = true;
     }
 
     private function generateReport()
@@ -100,6 +109,29 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $html = $report->generate($header, $detail);
 
         return $html;
+    }
+
+    public function onReport($sender)
+    {
+        $html = $this->generateReport();
+
+
+        //  $html ="<h1>ddd</h1>";
+
+        $this->detail->preview->setText($html, true);
+        \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
+
+        $this->updateAjax(array("preview"));
+    }
+
+    protected function beforeRender()
+    {
+        parent::beforeRender();
+
+        if ($this->_updatejs) {
+            App::$app->getResponse()->addJavaScript("$(\"#loader\").click();", true);
+            $this->_updatejs = false;
+        }
     }
 
 }

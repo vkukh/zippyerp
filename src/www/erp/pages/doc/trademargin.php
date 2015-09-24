@@ -15,10 +15,9 @@ use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Link\SubmitLink;
 use ZippyERP\ERP\Entity\Store;
 
-
 /**
  * Страница  документа списание  торговой наценки
- * 
+ *
  */
 class TradeMargin extends \ZippyERP\ERP\Pages\Base
 {
@@ -28,37 +27,37 @@ class TradeMargin extends \ZippyERP\ERP\Pages\Base
         parent::__construct();
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new Date('created'))->setDate(time());
+        $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
-        
+
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET_SUM)));
-        
+
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             if ($this->_doc == null)
                 App::RedirectError('Докумен не найден');
-            
+
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->created->setDate($this->_doc->document_date);
-            $this->docform->store->setValue($this->_doc->headerdata['store_id']);            
+            $this->docform->document_date->setDate($this->_doc->document_date);
+            $this->docform->store->setValue($this->_doc->headerdata['store_id']);
         } else {
             $this->_doc = Document::create('TradeMargin');
             $this->docform->document_number->setText($this->_doc->nextNumber());
-            
-        }        
+        }
     }
+
     public function savedocOnClick($sender)
     {
-        $store=Store::load($this->docform->store->getValue());
-        if($store == null){
-              $this->setError("Не  выбран  магазин");
-              return;
-        }   
+        $store = Store::load($this->docform->store->getValue());
+        if ($store == false) {
+            $this->setError("Не  выбран  магазин");
+            return;
+        }
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = $this->docform->document_date->getDate();
         $this->_doc->headerdata['store_id'] = $store->store_id;
-        $this->_doc->headerdata['storename'] = $store->storename ;
+        $this->_doc->headerdata['storename'] = $store->storename;
         $isEdited = $this->_doc->document_id > 0;
 
         $this->_doc->save();
@@ -77,4 +76,5 @@ class TradeMargin extends \ZippyERP\ERP\Pages\Base
     {
         App::RedirectBack();
     }
+
 }

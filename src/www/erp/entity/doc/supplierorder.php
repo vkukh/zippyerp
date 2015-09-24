@@ -13,8 +13,7 @@ class SupplierOrder extends Document
     protected function init()
     {
         parent::init();
-        $this->intattr1 = 0; //поставщик
-        $this->intattr2 = 0; // оплата
+        $this->datatag = 0; //поставщик
     }
 
     public function generateReport()
@@ -26,18 +25,18 @@ class SupplierOrder extends Document
             $detail[] = array("no" => $i++,
                 "tovar_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity'],
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
-                "amount" => H::fm($value['quantity'] * $value['price'])
+                "amount" => H::fm(($value['quantity'] / 1000) * $value['price'])
             );
-            $total += $value['quantity'] * $value['price'];
+            $total += ($value['quantity'] / 1000) * $value['price'];
         }
 
-        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["supplier"]);
+
         $header = array('date' => date('d.m.Y', $this->document_date),
-            "customername" => $customer->customer_name,
+            "customername" => $this->suppliername,
             "document_number" => $this->document_number,
-            "base" => $this->base,
+            "timeline" => date('d.m.Y', $this->headerdata['timeline']),
             "total" => H::fm($total));
 
         $report = new \ZippyERP\ERP\Report('supplierorder.tpl');

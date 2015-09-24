@@ -252,6 +252,15 @@ class Helper
     {
         return number_format($value / 100, 2, '.', '');
     }
+    /**
+     * Форматирует  вывод  денежной суммы   в  тысячах
+     * 
+     * @param mixed $value     сумма   в   копейках
+     */
+    public static function fm_t1($value)
+    {
+        return number_format($value / 100000, 1, '.', '');
+    }
 
     /**
      * Возвращает  НДС

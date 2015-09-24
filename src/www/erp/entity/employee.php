@@ -4,15 +4,15 @@ namespace ZippyERP\ERP\Entity;
 
 /**
  * Клас-сущность  сотрудник
- * 
+ *
  * @table=erp_staff_employee
  * @view=erp_staff_employee_view
  * @keyfield=employee_id
  */
 class Employee extends \ZCL\DB\Entity
 {
-    const TAX_ACCOUNTABLE =1; // подотчет
-    
+
+    const TAX_ACCOUNTABLE = 1; // подотчет
 
     protected function afterLoad()
     {
@@ -37,21 +37,6 @@ class Employee extends \ZCL\DB\Entity
             $name = $name . " " . mb_substr($this->middlename, 0, 1, "UTF-8") . '.';
         }
         return $name;
-    }
-
-    
-    /**
-    * Движения  по  сотруднику
-    * 
-    * @param mixed $employee_id
-    * @param mixed $amount
-    * @param mixed $document_id
-    * @param mixed $tax_type   тип начисления,  удержания  или  подотчет
-    */
-    public static function AddActivity($employee_id, $amount, $document_id,$tax_type=0)
-    {
-        $conn = \ZCL\DB\DB::getConnect();
-        $conn->Execute("insert into erp_staff_employee_activity (employee_id,document_id,amount,tax_type) values ({$employee_id},{$document_id},{$amount},{$tax_type})");
     }
 
 }

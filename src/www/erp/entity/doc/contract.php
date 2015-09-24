@@ -13,7 +13,7 @@ class Contract extends Document
     protected function init()
     {
         parent::init();
-        $this->intattr1 = 0; //контрагент
+        $this->datatag = 0; //контрагент
     }
 
     public function generateReport()

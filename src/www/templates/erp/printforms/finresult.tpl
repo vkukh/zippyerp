@@ -1,9 +1,9 @@
 <html>
     <body>
-        <table   border="0" cellspacing="0" cellpadding="2">
+        <table  class="ctable"   border="0" cellspacing="0" cellpadding="2">
 
 
-            <tr style="font-weight: bolder;">  
+            <tr style="font-weight: bolder;">
                 <td  >
                     Финансовые  результаты {$document_number}
                 </td>
@@ -14,4 +14,4 @@
         </table>
         <br> <br>
     </body>
-</html>            
+</html>

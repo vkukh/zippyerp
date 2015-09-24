@@ -13,6 +13,7 @@ use \Zippy\Html\Form\SubmitButton;
 use \Zippy\Html\Form\Button;
 use \Zippy\Html\Panel;
 use \ZippyERP\ERP\Entity\Item;
+use \ZippyERP\ERP\Entity\GroupItem;
 
 class ItemList extends \ZippyERP\ERP\Pages\Base
 {
@@ -23,10 +24,17 @@ class ItemList extends \ZippyERP\ERP\Pages\Base
     {
         parent::__construct();
 
+        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->filter->add(new TextInput('searchkey'));
+        $this->filter->add(new DropDownChoice('group',GroupItem::getList()));
+        
+        
         $this->add(new Panel('itemtable'))->setVisible(true);
-        $this->itemtable->add(new DataView('itemlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Item'), $this, 'itemlistOnRow'))->Reload();
-        $this->itemtable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
-
+        $this->itemtable->add(new DataView('itemlist', new ItemDataSource($this), $this, 'itemlistOnRow'))->Reload();
+        $this->itemtable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->itemtable->itemlist->setPageSize(10);
+        $this->itemtable->add(new \Zippy\Html\DataList\Paginator('pag', $this->itemtable->itemlist));
+        $this->itemtable->itemlist->reload(); 
 
         $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnDetail'))->setVisible(false);
     }
@@ -70,6 +78,50 @@ class ItemList extends \ZippyERP\ERP\Pages\Base
     {
         $this->itemtable->setVisible(true);
         $this->itemtable->itemlist->Reload();
+    }
+
+    
+    public function OnSubmit($sender)
+    {
+       $this->itemtable->itemlist->Reload();     
+    }
+}
+
+class ItemDataSource implements \Zippy\Interfaces\DataSource
+{
+
+    private $page;
+
+    public function __construct($page)
+    {
+        $this->page = $page;
+    }
+
+    private function getWhere(){
+        $where ="1=1 ";
+        $form = $this->page->filter;
+        if($form->group->getValue() >0){
+           $where =  $where . " and group_id=" . $form->group->getValue() ;   
+        }
+        if(strlen($form->searchkey->getText()) >0){
+           $where =  $where . " and (itemname like ". Item::qstr('%'.$form->searchkey->getText().'%') ." or description like ".Item::qstr('%'.$form->searchkey->getText().'%')." )  ";
+        }
+        return $where ;
+    }
+    
+    public function getItemCount()
+    {
+        return Item::findCnt($this->getWhere());
+    }
+
+    public function getItems($start, $count, $sortfield = null, $asc = null)
+    {
+        return Item::find($this->getWhere(), "itemname", "asc", $count, $start);
+    }
+
+    public function getItem($id)
+    {
+        return Item::load($id);
     }
 
 }

@@ -26,16 +26,16 @@ class CustomerOrder extends Document
             $detail[] = array("no" => $i++,
                 "tovar_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity'],
+                "quantity" => $value['quantity']/1000,
                 "price" => H::fm($value['price']),
-                "amount" => H::fm($value['quantity'] * $value['price'])
+                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
             );
-            $total += $value['quantity'] * $value['price'];
+            $total += ($value['quantity']/1000) * $value['price'];
         }
 
-        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
+        //$customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
-            "customername" => $customer->customer_name,
+            "customername" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
             "base" => $this->base,
             "total" => H::fm($total));

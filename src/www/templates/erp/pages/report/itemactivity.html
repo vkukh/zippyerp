@@ -4,27 +4,42 @@
     </head>
     <body>
         <div class="row">
-            <div class="col-md-12">    
+            <div class="col-xs-12">
                 <h3>Отчет о движении  товаров</h3>
-                <form zippy="filter" >
-                    <table>
-                        <tr><td> С <input style="width: 100px" type="text" zippy="from"></td> <td>по <input  style="width: 100px" type="text" zippy="to"  > </td></tr>
-                        <tr><td>      Склад  <select zippy="store"> </select> </td> <td>       Товар  <select zippy="item"> </select>  </td></tr>
-                        <tr><td colspan="2">     <input class="btn btn-default btn-xs" type="submit" value="Ввод"></td></tr>
-                    </table>
+                <form zippy="filter" class="navbar-form ">
+                    <div class="form-group">
+                        <label for="from">С</label>
+                        <input class="form-control" style="width: 100px" type="text" zippy="from">
+                    </div>
+                    <div class="form-group">
+                        <label for="to">по</label>
+                        <input class="form-control"  style="width: 100px" type="text" zippy="to"  >
+                    </div>
+                    <div class="form-group">
+                        <label for="to">Склад</label>
+                        <select class="form-control" zippy="store"> </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="to">ТМЦ</label>
+                        <input class="form-control" zippy="item" placeholder="Начните вводить наименвание...">
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-default  " type="submit" value="Ввод">
+                    </div>
+
                 </form>
 
-                <br>
+
                 <div zippy="detail">
                     <div >
-                        <a zippy="print" target="_blank"  title="Печать"><img class="icon20" src="/templates/images/print_32.png"></a> 
-                        <a zippy="html" target="_blank"  title="Экспорт в HTML"><img class="icon20" src="/templates/images/html.png"></a> 
-                        <a zippy="word" target="_blank"  title="Экспорт в Word"><img class="icon20" src="/templates/images/word_32.png"></a> 
-                        <a zippy="excel" target="_blank"  title="Экспорт в Excel"><img class="icon20" src="/templates/images/excel_32.png"></a> 
+                        <a zippy="print" target="_blank"  title="Печать"><img class="icon20" src="/assets/images/print_32.png"></a>
+                        <a zippy="html" target="_blank"  title="Экспорт в HTML"><img class="icon20" src="/assets/images/html.png"></a>
+                        <a zippy="word" target="_blank"  title="Экспорт в Word"><img class="icon20" src="/assets/images/word_32.png"></a>
+                        <a zippy="excel" target="_blank"  title="Экспорт в Excel"><img class="icon20" src="/assets/images/excel_32.png"></a>
                     </div>
 
                     <div zippy="preview" style="padding: 2px;width:800px; overflow:auto; border: 1px solid #ccc"></div>
 
                 </div>
-            </div>   </div>   
+            </div>   </div>
     </body></html>

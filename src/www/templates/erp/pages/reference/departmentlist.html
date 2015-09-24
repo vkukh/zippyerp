@@ -4,10 +4,10 @@
 
     <body>
         <div class="row">
-            <div class="col-md-12">    
+            <div class="col-xs-12">
                 <div zippy="departmenttable">
                     <h3>Справочник подразделений </h3>
-                    <a zippy="add" class="btn btn-default btn-xs">Добавить</a> 
+                    <a zippy="addnew" class="btn btn-default  ">Добавить</a>
                     <table class="table table-bordered   table-condensed" style="width:400px">
                         <tr>
                             <th >Наименование</th>
@@ -18,26 +18,26 @@
                             <td zippy="department_name"></td>
 
 
-                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><i class="icon-edit"></i></a> <a zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
                         </tr>
                     </table>
 
 
                 </div>
 
-                <form class="col-md-4" zippy="departmentdetail" method="post" >                  
+                <form class="col-xs-4" zippy="departmentdetail" method="post" >
                     <div class="form-group">
                         <label for="editdepartmentname">Наименование</label>
                         <input class="form-control" zippy="editdepartmentname" />
                     </div>
 
 
-                    <input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
-                    <input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
+                    <input zippy="save" type="submit" value="Сохранить" class="btn btn-default ">&nbsp;&nbsp;
+                    <input zippy="cancel" type="button" value="Отменить" class="btn btn-default  "></td>
 
                 </form>
-            </div> 
-        </div>   
+            </div>
+        </div>
 
     </body>
 </html>

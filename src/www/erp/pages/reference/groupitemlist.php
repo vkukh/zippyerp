@@ -26,7 +26,7 @@ class GroupItemList extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('groupitemtable'))->setVisible(true);
         $this->groupitemtable->add(new DataView('groupitemlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\GroupItem'), $this, 'groupitemlistOnRow'))->Reload();
-        $this->groupitemtable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
+        $this->groupitemtable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
         $this->add(new Form('groupitemdetail'))->setVisible(false);
         $this->groupitemdetail->add(new TextInput('editgroupitemname'));
         $this->groupitemdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');

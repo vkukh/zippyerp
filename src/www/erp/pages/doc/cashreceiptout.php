@@ -16,7 +16,7 @@ use \ZippyERP\ERP\Entity\Doc\Document;
 use \ZippyERP\ERP\Entity\Customer;
 use \ZippyERP\ERP\Entity\MoneyFund;
 use \ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Entity\Doc\CashReceiptOut as CRIN;
+use \ZippyERP\ERP\Entity\Doc\CashReceiptOut as CROUT;
 
 /**
  * Страница документа расходный кассовый  ордер
@@ -32,10 +32,12 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new Date('created', time()));
-        $this->docform->add(new DropDownChoice('optype', CRIN::getTypes(), 1))->setChangeHandler($this, 'optypeOnChange');
+        $this->docform->add(new Date('document_date', time()));
+        $this->docform->add(new DropDownChoice('optype', CROUT::getTypes(), 1))->setChangeHandler($this, 'optypeOnChange');
         $this->docform->add(new Label('lblopdetail'));
-        $this->docform->add(new DropDownChoice('opdetail'));
+        $this->docform->add(new AutocompleteTextInput('opdetail'))->setAutocompleteHandler($this, 'opdetailOnAutocomplete');
+        ;
+        ;
         $this->docform->add(new TextInput('amount'));
         $this->docform->add(new AutocompleteTextInput('basedoc'))->setAutocompleteHandler($this, 'basedocOnAutocomplete');
         $this->docform->add(new TextInput('notes'));
@@ -46,11 +48,12 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->amount->setText($this->_doc->amount / 100);
             $this->docform->optype->setValue($this->_doc->headerdata['optype']);
             $this->optypeOnChange(null);
-            $this->docform->opdetail->setValue($this->_doc->headerdata['opdetail']);
+            $this->docform->opdetail->setKey($this->_doc->headerdata['opdetail']);
+            $this->docform->opdetail->setText($this->_doc->headerdata['opdetailname']);
             $this->docform->notes->setText($this->_doc->headerdata['notes']);
             $basedocid = $this->_doc->headerdata['basedoc'];
             if ($basedocid > 0) {
@@ -66,17 +69,31 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
     public function optypeOnChange($sender)
     {
         $optype = $this->docform->optype->getValue();
-        if ($optype == CRIN::TYPEOP_CUSTOMER) {
-            $this->docform->opdetail->setOptionList(Customer::getBuyers());
+        if ($optype == CROUT::TYPEOP_CUSTOMER) {
             $this->docform->lblopdetail->setText('Покупатель');
         }
-        if ($optype == CRIN::TYPEOP_BANK) {
-            $this->docform->opdetail->setOptionList(MoneyFund::findArray('title', "ftype=1"));
+        if ($optype == CROUT::TYPEOP_BANK) {
             $this->docform->lblopdetail->setText('Р/счет');
         }
-        if ($optype == CRIN::TYPEOP_CASH) {
-            $this->docform->opdetail->setOptionList(Employee::findArray('fullname', "", 'fullname'));
+        if ($optype == CROUT::TYPEOP_CASH) {
             $this->docform->lblopdetail->setText('Сотрудник');
+        }
+        $this->docform->opdetail->setKey(0);
+        $this->docform->opdetail->setText('');
+    }
+
+    public function opdetailOnAutocomplete($sender)
+    {
+        $text = $sender->getValue();
+        $optype = $this->docform->optype->getValue();
+        if ($optype == CROUT::TYPEOP_CUSTOMER) {
+            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
+        }
+        if ($optype == CROUT::TYPEOP_BANK) {
+            return MoneyFund::findArray('title', "title like '%{$text}%' ");
+        }
+        if ($optype == CROUT::TYPEOP_CASH) {
+            return Employee::findArray('fullname', "fullname like '%{$text}%' ");
         }
     }
 
@@ -95,36 +112,45 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
     public function savedocOnClick($sender)
     {
-        $basedocid = $this->docform->basedoc->getKey();
-        $this->_doc->headerdata = array(
-            'optype' => $this->docform->optype->getValue(),
-            'opdetail' => $this->docform->opdetail->getValue(),
-            'amount' => $this->docform->amount->getValue() * 100,
-            'basedoc' => $basedocid,
-            'notes' => $this->docform->notes->getText()
-        );
-        $this->_doc->amount = 100 * $this->docform->amount->getText();
-        $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = $this->docform->created->getDate();
-        $isEdited = $this->_doc->document_id > 0;
-        $this->_doc->save();
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $basedocid = $this->docform->basedoc->getKey();
+            $this->_doc->headerdata = array(
+                'optype' => $this->docform->optype->getValue(),
+                'opdetail' => $this->docform->opdetail->getKey(),
+                'opdetailname' => $this->docform->opdetail->getText(),
+                'amount' => $this->docform->amount->getValue() * 100,
+                'basedoc' => $basedocid,
+                'notes' => $this->docform->notes->getText()
+            );
+            $this->_doc->amount = 100 * $this->docform->amount->getText();
+            $this->_doc->document_number = $this->docform->document_number->getText();
+            $this->_doc->document_date = $this->docform->document_date->getDate();
+            $isEdited = $this->_doc->document_id > 0;
+            $this->_doc->save();
 
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+
+            if ($basedocid > 0) {
+                $this->_doc->AddConnectedDoc($basedocid);
+            }
+            $conn->CommitTrans();
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->getMessage());
+            return;
         }
-
-        if ($basedocid > 0) {
-            $this->_doc->AddConnectedDoc($basedocid);
-        }
-
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
 }

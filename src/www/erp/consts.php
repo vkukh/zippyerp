@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP;
 
 /**
- * Класс - набор констант не  привязанных к  сущностям 
+ * Класс - набор констант не  привязанных к  сущностям
  */
 class Consts
 {
@@ -13,7 +13,7 @@ class Consts
     const META_DOCUMENT = 2; //документ
     const META_REGISTER = 3; //журнал
     const META_CUSTOMPAGE = 5; //пользовательская страница
-    const META_REPORT = 4; //отчет  
+    const META_REPORT = 4; //отчет
     // типы  сообщений
     const MSG_ITEM_TYPE_DOC = 1; //  документ
     const MSG_ITEM_TYPE_PRJ = 2; //  проект
@@ -27,13 +27,34 @@ class Consts
     //Типы  налогов  и сборов
     const TAX_NDS = 101;
 
+
+
+    /**
+    * Список  типов  налогов
+    *
+    */
     public static function getTaxesList()
     {
-        $list = array();
-        $list[TAX_NDS] = "НДС";
-
+         $list = array();
+         $list[TAX_NDS] = "НДС";
 
         return $list;
     }
 
+    /**
+    * Список  типов  затрат
+    *
+    */
+    public static function getExpensesList()
+    {
+
+
+        $list = array();
+        $list[23] = "Прямые производственные затраты";
+        $list[91] = "Общепроизводственные затраты";
+        $list[92] = "Административные затраты";
+        $list[93] = "Затраты  на сбыт";
+
+        return $list;
+    }
 }

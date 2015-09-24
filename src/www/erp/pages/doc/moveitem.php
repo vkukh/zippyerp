@@ -26,6 +26,7 @@ use \ZippyERP\ERP\Helper as H;
  */
 class MoveItem extends \ZippyERP\ERP\Pages\Base
 {
+    private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ',26=>'Готовая продукция');
 
     public $_itemlist = array();
     private $_doc;
@@ -37,7 +38,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new Date('created', time()));
+        $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('storefrom'))->setChangeHandler($this, 'OnChangeStore');
         $this->docform->add(new DropDownChoice('storeto'))->setChangeHandler($this, 'OnChangeStore');
         $this->docform->storefrom->setOptionList(Store::findArray("storename", "store_type=" . Store::STORE_TYPE_OPT));
@@ -53,7 +54,8 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new AutocompleteTextInput('edititem'))->setAutocompleteHandler($this, 'OnAutocompleteItem');
         $this->editdetail->edititem->setChangeHandler($this, 'OnChangeItem');
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
-        $this->editdetail->add(new TextInput('editprice'))->setText("0");
+        $this->editdetail->add(new TextInput('editprice'))->setVisible(false);;
+        $this->editdetail->add(new DropDownChoice('edittype', $this->_itemtype))->setChangeHandler($this,"OnItemType");
 
         $this->editdetail->add(new Label('qtystock'));
         $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
@@ -62,7 +64,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         if ($docid > 0) {    //загружаем   содержимок  документа на страницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->storefrom->setValue($this->_doc->headerdata['storefrom']);
             $this->docform->storeto->setValue($this->_doc->headerdata['storeto']);
 
@@ -85,7 +87,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('item', $item->itemname));
 
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity));
+        $row->add(new Label('quantity', $item->quantity/1000));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
@@ -119,14 +121,14 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText($stock->quantity);
+        $this->editdetail->editquantity->setText($stock->quantity/1000);
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
         $this->editdetail->edititem->setKey($stock->stock_id);
         $this->editdetail->edititem->setText($stock->itemname);
-        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
-
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate())/1000 . ' ' . $stock->measure_name);
+        $this->editdetail->edittype->setValue($stock->type);
         $this->_rowid = $stock->stock_id;
     }
 
@@ -140,7 +142,8 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
 
         $stock = Stock::load($id);
-        $stock->quantity = $this->editdetail->editquantity->getText();
+        $stock->quantity = 1000*$this->editdetail->editquantity->getText();
+        $stock->type = $this->editdetail->edittype->getValue();
 
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
@@ -155,15 +158,20 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edititem->setValue(0);
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
         $this->editdetail->editquantity->setText("1");
-        $this->editdetail->editprice->setText("1");
+        $this->editdetail->editprice->setText(" ");
     }
 
     public function cancelrowOnClick($sender)
     {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
+        $this->editdetail->editquantity->setText("1");
+        $this->editdetail->editprice->setText(" ");
     }
 
     public function savedocOnClick($sender)
@@ -185,7 +193,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
 
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
         $this->_doc->save();
@@ -199,7 +207,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
     /**
      * Валидация   формы
-     * 
+     *
      */
     private function checkForm()
     {
@@ -226,16 +234,16 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
     {
         $stock_id = $sender->getKey();
         $stock = Stock::load($stock_id);
-        $this->editdetail->qtystock->setText(Stock::getQuantity($stock_id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock_id, $this->docform->document_date->getDate(),$this->editdetail->edittype->getValue())/1000 . ' ' . $stock->measure_name);
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
-            $this->editdetail->editprice->setText(H::fm($stock->price));
+           // $this->editdetail->editprice->setText(H::fm($stock->price));
         } else {
             $item = Item::load($stock->item_id);
             $this->editdetail->editprice->setText(H::fm($item->priceret));
         }
         if ($store->store_type == Store::STORE_TYPE_RET) {
-            //если  уже   есть  товар  в  магзине  берем  цену  оттуда
+            //если  уже   есть  товар  в  магазине  берем  цену  оттуда
             $stock = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and closed <> 1");
             if ($stock instanceof Stock) {
                 $this->editdetail->editprice->setText(H::fm($stock->price));
@@ -252,21 +260,33 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         }
         if ($sender->id == 'storeto') {
 
-            $store = Store::load($sender->getValue());
-            if ($store->store_type == Store::STORE_TYPE_OPT) {
-                $this->editdetail->editprice->setVisible(false);
-            } else {
-                $this->editdetail->editprice->setVisible(true);
-            }
+    
         }
     }
 
+    public function OnItemType($sender){
+       $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
+        $this->editdetail->editquantity->setText("1");
+        $this->editdetail->editprice->setText(" ");
+
+    }
     public function OnAutocompleteItem($sender)
     {
         $text = $sender->getValue();
         $store_id = $this->docform->storefrom->getValue();
 
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
+       return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and   stock_id in(select stock_id  from  erp_account_subconto  where  account_id= ".$this->editdetail->edittype->getValue() .") ");
     }
 
+    public function beforeRender(){
+            parent::beforeRender();
+            
+            $store = Store::load($this->docform->storeto->getValue());
+            if ($store->store_type == Store::STORE_TYPE_OPT) {
+                $this->editdetail->editprice->setVisible(false);
+            } else {
+                $this->editdetail->editprice->setVisible(true);
+            }        
+    }
 }

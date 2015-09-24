@@ -1,0 +1,272 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+
+/* Custom container */
+.container {
+  width: 960px !important;
+  max-width: 960px !important;
+  min-width: 960px !important;
+  margin: 0 auto; }
+
+
+/*-----------------login form ===================================*/
+
+.vertical-offset-100{
+    padding-top:20%;
+}
+
+
+.bordered{
+
+    border: 5px solid #2995b7 !important;
+    border-radius: 5px;
+}
+
+.panel-title{
+font-family: "Century Gothic";
+	font-size: 24px;
+	color: #555;
+	text-shadow: 0 1px #fff;
+    text-align: center;
+}
+
+
+
+
+.panel {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+
+}
+
+
+.my-btn{
+    width: 78px;
+    height: 38px;
+    border: none;
+    background: url(images/btn-login.png);
+}
+.my-btn:hover{
+    background: url(images/btn-login-hover.png);
+}
+
+
+
+
+
+/*=======================================================main page ======================================================================*/
+
+
+.brand-logo{
+    width: 115px;
+    height: 45px;
+    display: block;
+    background: url(/assets/images/logo.png) no-repeat;
+    background-size: cover;
+}
+
+
+.admin-holder{
+    background: #fff;
+    position: relative;
+}
+.admin-holder a{
+    color: #363636;
+    text-decoration: none;
+}
+
+.admin-holder a:hover{
+    color: #24abd5;
+}
+
+
+
+
+
+
+
+
+/*drop down submenu*/
+
+.dropdown {
+  float: left;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #24abd5;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+
+
+
+
+/*------------ cuutomize navbar ---------------------*/
+
+#custom-bootstrap-menu.navbar-default .navbar-brand {
+    color: rgba(119, 119, 119, 1);
+        margin: 20px 10px 0 30px;
+}
+#custom-bootstrap-menu.navbar-default {
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 1);
+    border-width: 0px;
+    border-radius: 0px;
+}
+#custom-bootstrap-menu.navbar-default .navbar-nav>li>a {
+    color: rgba(119, 119, 119, 1);
+    background-color: rgba(255, 255, 255, 1);
+}
+#custom-bootstrap-menu.navbar-default .navbar-nav>li>a:hover,
+#custom-bootstrap-menu.navbar-default .navbar-nav>li>a:focus {
+    color: rgba(51, 51, 51, 1);
+    background-color: rgba(211, 232, 240, 1);
+}
+#custom-bootstrap-menu.navbar-default .navbar-nav>.active>a,
+#custom-bootstrap-menu.navbar-default .navbar-nav>.active>a:hover,
+#custom-bootstrap-menu.navbar-default .navbar-nav>.active>a:focus {
+    color: rgba(85, 85, 85, 1);
+    background-color: rgba(211, 232, 240, 1);
+}
+#custom-bootstrap-menu.navbar-default .navbar-toggle {
+    border-color: #d3e8f0;
+}
+#custom-bootstrap-menu.navbar-default .navbar-toggle:hover,
+#custom-bootstrap-menu.navbar-default .navbar-toggle:focus {
+    background-color: #d3e8f0;
+}
+#custom-bootstrap-menu.navbar-default .navbar-toggle .icon-bar {
+    background-color: #d3e8f0;
+}
+#custom-bootstrap-menu.navbar-default .navbar-toggle:hover .icon-bar,
+#custom-bootstrap-menu.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #ffffff;
+}
+
+
+/*=======================custom navbar=====================*/
+.dropdown-menu {
+
+  /* border: 1px solid #ccc; */
+  /* border: 1px solid rgba(0,0,0,.15); */
+   border-radius: 0px !important;
+   -webkit-box-shadow: 0 0 0 rgba(0,0,0,.175);
+    box-shadow: 0 0 0 rgba(0,0,0,.175);
+}
+
+.dropdown-menu>li>a:hover{
+    background: #24abd5;
+}
+
+
+
+
+
+
+
+
+
+.nav {
+    float:left;
+}
+
+
+
+.btn-primary{
+    background: #24abd5;
+    border: #24abd5;
+}
+
+
+
+/* integration */
+/*
+    Author: denys.ark@gmail.com
+    28.06.2015
+*/
+
+.navigation{
+    padding-top: 5px;
+}
+
+.panel-default{
+    border-color: transparent;
+}
+
+.panel-default>.panel-heading {
+
+ background-color: #fff;
+   border-color: #fff;
+}
+
+
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+
+}
+
+
+.nav-tabs{
+    float: none;
+}
+
+
+.ctable td{
+   padding: 2px;;
+}
+
+.ctable th{
+   padding: 2px;
+   text-align: center;
+}
+
+
+

@@ -4,11 +4,12 @@
     </head>
 
     <body>
-        <div class="row">
-            <div class="col-md-12">    
-                <h3>Справочник мест хранения</h3>
-                <div zippy="storetable">
-                    <table class="table table-bordered  table-condensed" style="width: 60%">
+
+        <div zippy="storetable">
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3>Справочник мест хранения</h3>
+                    <table class="table table-bordered  table-condensed">
                         <tr>
                             <th >Наименование</th>
                             <th >Описание</th>
@@ -17,45 +18,52 @@
                         <tr zippy="storelist">
                             <td zippy="storename"></td>
                             <td zippy="storedesc"></td>
-                            <td align="center"><a zippy="showitem" title="Товары на складе"><img src="/templates/images/list.png"></a> <a zippy="storeedit" title="Редактирование"><img src="/templates/images/edit.png"></a> <a  zippy="storedelete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                            <td align="center"><a zippy="showitem" title="Товары на складе"><i class="icon-list"></i></a> <a zippy="storeedit" title="Редактирование"><i class="icon-edit"></i></a> <a  zippy="storedelete" title="Удалить"><i class="icon-remove"></i></a></td>
                         </tr>
                     </table>
 
-                    <a zippy="storeadd" class="btn btn-default btn-xs">Добавить</a> 
+                    <a zippy="storeadd" class="btn btn-default  ">Добавить</a>
                 </div>
-                <form zippy="storeform" method="post" >
-                    <table class="table table-bordered" width="200" border="0" cellpadding="2">
-                        <tr>
-                            <td>Наименование</td>
-                            <td><input type="text" zippy="storeeditname" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td>Тип  склада</td>
-                            <td><select zippy="storeedittype">
-                                    <option value="1">Оптовый склад</option>
-                                    <option  value="2">Розничный склад (магазин)</option>
-                                    <option  value="3">Торговая  точка  с  суммовым  учетом</option>
-                                </select></td>
-                        </tr>
-                        <tr>
-                            <td valign="top" >Описание</td>
-                            <td><textarea  zippy="storeeditdesc" cols="40" rows="3"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><input zippy="storesave" type="submit" value="Сохранить" class="btn btn-default btn-xs"> &nbsp;&nbsp;&nbsp;&nbsp;<input zippy="storecancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
-                        </tr>
-                    </table>
-                </form> 
+            </div>
+        </div>
+        <form zippy="storeform" method="post" >
+            <div class="row">
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <label for="storeeditname" class="  control-label"> Наименование</label>
+                        <input class="form-control" type="text" zippy="storeeditname" required="required"     >
+                    </div>
+                    <div class="form-group">
+                        <label for="storeedittype" class="  control-label">  Тип  склада</label>
+                        <select  class="form-control" zippy="storeedittype">
+                            <option value="1">Оптовый склад</option>
+                            <option  value="2">Розничный склад (магазин)</option>
+                            <option  value="3">Торговая  точка  с  суммовым  учетом</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="storeeditdesc" class="  control-label"> Описание</label>
+                        <textarea class="form-control" type="text" zippy="storeeditdesc"   ></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input zippy="storesave" type="submit" value="Сохранить" class="btn btn-default  "> &nbsp;
+                        <input zippy="storecancel" type="button" value="Отменить" class="btn btn-default ">
+                    </div>
 
-                <br>
-                <div zippy="itemtable" > <strong>Список  товаров</strong>
-                    <table class="table table-bordered  table-condensed" style="width: 60%"  >
+                </div>
+            </div>  </form>
+
+
+        <div zippy="itemtable" >
+            <div class="row">
+                <div class="col-xs-6">
+                    <h4>Список  товаров</h4>
+                    <table class="table table-bordered  table-condensed"   >
                         <tr>
                             <th>Наименование</th>
                             <th width="50">Ед.</th>
                             <th>Цена</th>
-                            <th colspan="3">Количество <i title="Текущее,  зарезервированное, ожидаемое"  class="fa fa-info-circle"></i> </th>
+                            <th colspan="3">Количество <i title="Текущее,  зарезервированное, ожидаемое"  class="icon-info-sign"></i> </th>
                             <th> </th>
                         </tr>
                         <tr zippy="itemlist">
@@ -65,13 +73,14 @@
                             <td zippy="quantity" align="right"></td>
                             <td zippy="quantityr" align="right"></td>
                             <td zippy="quantityw" align="right"></td>
-                            <td><a title="Отключить  неиспользуемую  партию" zippy="pcancel"><img class="icon20" src="/templates/images/cancel-on.png"></a></td>
+                            <td><a title="Отключить  неиспользуемую  партию" zippy="pcancel"><i class="icon-remove"></i></a></td>
                         </tr>
                     </table>
                     <div zippy="pag"></div>
-                </div>
+                </div>   </div>
+        </div>
 
-            </div>   </div>   
+
 
     </body>
 </html>

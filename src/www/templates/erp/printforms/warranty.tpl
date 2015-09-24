@@ -1,6 +1,6 @@
 <html>
     <body>
-        <table   border="0" cellspacing="0" cellpadding="2">
+        <table  class="ctable"   border="0" cellspacing="0" cellpadding="2">
 
 
             <tr style="font-weight: bolder;">  <td> </td>
@@ -39,13 +39,13 @@
                     <b>  Покупатель</b> {$customer}
                 </td>
                 <td  colspan="4">
-                    <b> Продавец</b>  {$firmname}   
-                </td>     
+                    <b> Продавец</b>  {$firmname}
+                </td>
 
             </tr>
             <tr >  <td> </td>
                 <td colspan="8"  >
-                    Подпись 
+                    Подпись
                 </td>
 
 

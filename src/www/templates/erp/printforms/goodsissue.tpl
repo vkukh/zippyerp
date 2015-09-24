@@ -1,6 +1,6 @@
 <html>
     <body>
-        <table   border="0" cellspacing="0" cellpadding="2">
+        <table  class="ctable"   border="0" cellspacing="0" cellpadding="2">
             <tr><th width="30">&nbsp;</th><th  width="100" >&nbsp;</th><th  width="130" >&nbsp;</th><th  width="50">&nbsp;</th><th width="50">&nbsp;</th><th width="60">&nbsp;</th><th width="80">&nbsp;</th></tr>
 
             <tr ><td> </td><td >Поствщик</td><td colspan="5">{$firmname}</td></tr>
@@ -41,7 +41,7 @@
                 </td>
                 <td  colspan="4">
                     Получил
-                </td>     
+                </td>
 
             </tr>
         </table>

@@ -124,12 +124,12 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('itemname', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('price', $item->price > 0 ? H::fm($item->price ) : ''));
+        $row->add(new Label('price', $item->price > 0 ? H::fm($item->price) : ''));
         $qty = Stock::getQuantity($item->stock_id, time());
         $f = Stock::getQuantityFuture($item->stock_id, time());
-        $row->add(new Label('quantity', $qty));
-        $row->add(new Label('quantityw', $f['w']));
-        $row->add(new Label('quantityr', $f['r']));
+        $row->add(new Label('quantity', $qty / 1000));
+        $row->add(new Label('quantityw', $f['w'] / 1000));
+        $row->add(new Label('quantityr', $f['r'] / 1000));
         $row->add(new ClickLink('pcancel'))->setClickHandler($this, 'partionOnClick');
         $row->pcancel->setVisible(false);
 
@@ -165,13 +165,13 @@ class StockDataSource implements \Zippy\Interfaces\DataSource
     }
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
-    { 
+    {
         return Stock::find("closed  <> 1 and store_id=" . $this->page->_store->store_id, "itemname", "asc", $count, $start);
     }
 
     public function getItem($id)
     {
-        return Stock::load($image_id);
+        return Stock::load($id);
     }
 
 }

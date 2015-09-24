@@ -27,7 +27,7 @@ class PositionList extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('positiontable'))->setVisible(true);
         $this->positiontable->add(new DataView('positionlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\position'), $this, 'positionlistOnRow'))->Reload();
-        $this->positiontable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
+        $this->positiontable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
         $this->add(new Form('positiondetail'))->setVisible(false);
         $this->positiondetail->add(new TextInput('editpositionname'));
         $this->positiondetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');

@@ -6,10 +6,11 @@ use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Entity\Entry;
 use ZippyERP\ERP\Entity\Customer;
 use \ZippyERP\ERP\Helper as H;
+use \ZippyERP\ERP\Entity\SubConto;
 
 /**
  * Класс-сущность  документ банковская выписка
- * 
+ *
  */
 class BankStatement extends Document
 {
@@ -65,34 +66,61 @@ class BankStatement extends Document
                 if ($value['noentry'] === 'true')
                     continue;
 
-               // $sql = "insert  into erp_moneyfunds_activity (document_id,id_moneyfund,amount) values ({$this->document_id},{$this->headerdata['bankaccount']},{$value['amount']})";
-              //  $conn->Execute($sql);
+
 
                 if ($value['optype'] == self::OUT) {
-                    Entry::AddEntry('63', "31", $value['amount'], $this->document_id,$value['customer'],$this->headerdata['bankaccount']);
-                   // Customer::AddActivity($value['customer'], 0-$value['amount'], $this->document_id);
-                    
+                    Entry::AddEntry('63', "31", $value['amount'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this->document_id, $this->document_date, 63);
+                    $sc->setCustomer($value['customer']);
+                    $sc->setAmount($value['amount']);
+                    $sc->save();
+                    $sc = new SubConto($this->document_id, $this->document_date, 31);
+                    $sc->setMoneyfund($this->headerdata['bankaccount']);
+                    $sc->setAmount(0 - $value['amount']);
+                    $sc->save();
                 }
                 if ($value['optype'] == self::IN) {
-                    Entry::AddEntry('31', "36",  $value['amount'], $this->document_id,$this->headerdata['bankaccount'],$value['customer']);
-                    //Customer::AddActivity($value['customer'],  $value['amount'], $this->document_id);
+                    Entry::AddEntry('31', "36", $value['amount'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this->document_id, $this->document_date, 36);
+                    $sc->setCustomer($value['customer']);
+                    $sc->setAmount(0 - $value['amount']);
+                    $sc->save();
+                    $sc = new SubConto($this->document_id, $this->document_date, 31);
+                    $sc->setMoneyfund($this->headerdata['bankaccount']);
+                    $sc->setAmount($value['amount']);
+                    $sc->save();
                 }
                 if ($value['optype'] == self::TAX) {
-                    //Entry::AddEntry('64', "31", $value['amount'], $this->document_id);
-                    //Customer::AddActivity($value['customer'], 0-$value['amount'], $this->document_id);
-                    
+                    Entry::AddEntry('64', "31", $value['amount'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this->document_id, $this->document_date, 64);
+                    $sc->setCustomer($value['customer']);
+                    $sc->setAmount($value['amount']);
+                    $sc->save();
+
+
+                    $sc = new SubConto($this->document_id, $this->document_date, 31);
+                    $sc->setMoneyfund($this->headerdata['bankaccount']);
+                    $sc->setExtCode($value['tax']); // код налога
+                    $sc->setAmount(0 - $value['amount']);
+                    $sc->save();
                 }
                 if ($value['optype'] == self::CASHIN) {
                     $cash = MoneyFund::getCash();
-                    Entry::AddEntry('30', "31", $value['amount'], $this->document_id,$cash->id,$this->headerdata['bankaccount']);
-
+                    Entry::AddEntry('30', "31", $value['amount'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this->document_id, $this->document_date, 31);
+                    $sc->setMoneyfund($this->headerdata['bankaccount']);
+                    $sc->setAmount(0 - $value['amount']);
+                    $sc->save();
                 }
                 if ($value['optype'] == self::CASHOUT) {
                     $cash = MoneyFund::getCash();
-                    Entry::AddEntry('31', "30", $value['amount'], $this->document_id,$this->headerdata['bankaccount'],$cash->id);
-
+                    Entry::AddEntry('31', "30", $value['amount'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this->document_id, $this->document_date, 31);
+                    $sc->setMoneyfund($this->headerdata['bankaccount']);
+                    $sc->setAmount($value['amount']);
+                    $sc->save();
                 }
-                // Движение  по  денежным  счетам
+
 
 
 

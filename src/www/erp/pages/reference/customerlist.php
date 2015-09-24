@@ -29,7 +29,7 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('customertable'))->setVisible(true);
         $this->customertable->add(new DataView('customerlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Customer'), $this, 'customerlistOnRow'))->Reload();
-        $this->customertable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
+        $this->customertable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
         $this->customertable->add(new ClickLink('addf'))->setClickHandler($this, 'addOnClick');
         $this->add(new Form('customerdetail'))->setVisible(false);
         $this->customerdetail->add(new TextInput('editcustomername'));
@@ -124,7 +124,7 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
             $this->_customer->contact_id = -1;   // признак  что будет связыватся   с  контактом
             $this->customerdetail->setVisible(false);
             $this->editcontacts->setVisible(true);
-            $this->editcontacts->toclist->setVisible(false);
+            // $this->editcontacts->toclist->setVisible(false);
             $this->editcontacts->cname->setText('Новый контрагент');
         }
     }

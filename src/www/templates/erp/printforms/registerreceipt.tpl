@@ -1,6 +1,6 @@
 <html>
     <body>
-        <table   border="0" cellspacing="0" cellpadding="2">
+        <table   class="ctable"  border="0" cellspacing="0" cellpadding="2">
             <tr><th width="30">&nbsp;</th><th  width="100" >&nbsp;</th><th  width="130" >&nbsp;</th><th  width="50">&nbsp;</th><th width="50">&nbsp;</th><th width="60">&nbsp;</th><th width="80">&nbsp;</th></tr>
 
             <tr ><td> </td><td >Продавец</td><td colspan="5">{$firmname}</td></tr>
@@ -9,7 +9,7 @@
 
             <tr >
                 <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7"  valign="middle" >
-                    <br><br>  Чек ЭККА № {$document_number}  от  {$date}    <br><br><br>
+                    <br><br>  Чек ЭККА № {$document_number}  от  {$date}  {if $return == 1} (возврат) {/if} <br><br><br>
                 </td>
             </tr>
 
@@ -21,7 +21,7 @@
 
             <tr style="font-weight: bolder;" ><td  colspan="6"  align="right" >В  т.ч. НДС:</td><td align="right">{$totalnds}</td></tr>
 
-            
+
 
         </table>
         <br> <br>

@@ -1,26 +1,50 @@
 
 <html >
     <body>
-        <div class="row">
-            <div class="col-md-2 col-md-offset-4" style="padding-top:100px;">  
-
-                <form role="form" zippy="loginform">
-                    <div class="form-group">
-                        <label for="userlogin">Логин</label>
-                        <input value="admin" type="input" class="form-control" zippy="userlogin" required="required" placeholder="admin" >
-                    </div>
-                    <div class="form-group">
-                        <label for="userpassword">Пароль</label>
-                        <input value="admin"  type="password" class="form-control" zippy="userpassword" required="required"  placeholder="admin" >
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="remember"> Запомнить
-                        </label>
-                    </div>
-                    <button type="submit" zippy="submit" class="btn btn-default btn-sm">Ввод</button>
-                </form>
-            </div></div>
-        <div style="height:200px;"> </div>
+                
+        
+        <div class="container">
+    <div class="row vertical-offset-100">
+    	<div class="col-xs-4 col-xs-offset-4">
+    
+    		<div class="panel panel-default">
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Zippy ERP</h3>
+			 	</div>
+			  	<div class="panel-body">
+			    	<form accept-charset="UTF-8" role="form" zippy="loginform">
+                    <fieldset>
+			    	  	<div class="form-group">
+			    		    <input class="form-control" zippy="userlogin" required="required" placeholder="Логин" type="text">
+			    		</div>
+			    		<div class="form-group">
+			    			<input class="form-control" placeholder="Пароль" name="password" zippy="userpassword" required="required" type="password" value="">
+			    		</div>
+			    		 <div class="checkbox pull-left">
+         
+            
+ <div class="checkboxFive">
+  		<input type="checkbox" zippy="remember" value="1" id="checkboxFiveInput" name="" />
+	  	<label for="checkboxFiveInput"><span>Запомнить</span></label>
+  	</div>
+            
+            
+        </div>
+        <button type="submit" zippy="submit" class="btn btn-default pull-right">Ввод</button>
+			    	</fieldset>
+			      	</form>
+			    </div>
+			</div>
+			
+			
+			
+			
+			
+			
+		</div>
+	</div>
+</div> <!-- end container -->
+        
+        
     </body>
 </html>

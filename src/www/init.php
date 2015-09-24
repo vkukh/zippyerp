@@ -89,5 +89,5 @@ $logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor());
 
 @mkdir(_ROOT . "logs");
 
-$logger->info("Hi");
+ 
 

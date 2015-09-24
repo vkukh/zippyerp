@@ -5,6 +5,7 @@ namespace ZippyERP\ERP\Pages\Doc;
 use Zippy\Html\DataList\DataView;
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
@@ -34,6 +35,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
+    private $_itemtype = array( 281 => 'Товар',26 => 'Готовая продукция');
 
     public function __construct($docid = 0, $basedocid = 0)
     {
@@ -42,13 +44,14 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
 
-        $this->docform->add(new Date('created'))->setDate(time());
+        $this->docform->add(new Date('document_date'))->setDate(time());
 
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->setChangeHandler($this, 'OnChangeStore');
-        $this->docform->add(new DropDownChoice('customer', Customer::getBuyers()));
+        $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
         $this->docform->add(new CheckBox('isnds', true))->setChangeHandler($this, 'onIsnds');
         $this->docform->add(new CheckBox('cash'));
-        $this->docform->add(new TextInput('based'));
+        $this->docform->add(new AutocompleteTextInput('contract'))->setAutocompleteHandler($this, "OnAutoContract");
+
 
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
@@ -61,9 +64,9 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new TextInput('editpricends'));
-        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
-        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
-        $this->editdetail->add(new DropDownChoice('edittovar'))->setAjaxChangeHandler($this, 'OnItem');
+        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->setAutocompleteHandler($this, "OnAutoItem");
+        $this->editdetail->edittovar->setChangeHandler($this, 'OnChangeItem');
+        $this->editdetail->add(new DropDownChoice('edittype', $this->_itemtype))->setChangeHandler($this,"OnItemType");
 
         $this->editdetail->add(new Label('qtystock'));
 
@@ -75,13 +78,15 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_number->setText($this->_doc->document_number);
 
             //  $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
             $this->docform->cash->setChecked($this->_doc->headerdata['cash']);
-            $this->docform->based->setText($this->_doc->headerdata['based']);
-            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+           $this->docform->customer->setKey($this->_doc->headerdata['customer']);
+            $this->docform->customer->setText($this->_doc->headerdata['customername']);
+             $this->docform->contract->setKey($this->_doc->headerdata['contract']);
+            $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
 
             foreach ($this->_doc->detaildata as $item) {
                 $stock = new Stock($item);
@@ -99,8 +104,10 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 
 
                     if ($basedoc->meta_name == 'Invoice') {
-                        //  $this->docform->nds->setText($basedoc->headerdata['nds'] / 100);
-                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->contract->setKey($basedoc->headerdata['contract']);
+                        $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
                         $this->docform->isnds->setChecked($basedoc->headerdata['isnds']);
 
                         foreach ($basedoc->detaildata as $item) {
@@ -110,7 +117,6 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
                             $keys = array_keys($options);
                             $stock = Stock::getFirst("closed <> 1 and group_id={$item->group_id} and item_id={$item->item_id} and store_id=" . $keys[0], 'stock_id', 'desc');
                             if ($stock instanceof Stock) {
-                                $stock->quantity = $this->editdetail->editquantity->getText();
                                 $stock->quantity = $item->quantity;
                                 //  $stock->partion = $item->priceopt;
                                 //   $stock->group_id = $item->group_id;
@@ -136,10 +142,10 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('partion', H::fm($item->partion)));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity));
+        $row->add(new Label('quantity', $item->quantity/1000));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new Label('pricends', H::fm($item->pricends)));
-        $row->add(new Label('amount', H::fm($item->pricends * $item->quantity)));
+        $row->add(new Label('amount', H::fm($item->pricends * ($item->quantity/1000))));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
     }
@@ -166,31 +172,31 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText($stock->quantity);
+        $this->editdetail->editquantity->setText($stock->quantity/1000);
         $this->editdetail->editprice->setText(H::fm($stock->price));
         $this->editdetail->editpricends->setText(H::fm($stock->pricends));
 
-        $this->editdetail->editgroup->setValue($stock->group_id);
-        $list = Stock::findArrayEx("closed  <> 1 and group_id={$stock->group_id} and store_id={$stock->store_id}");
-        $this->editdetail->edittovar->setOptionList($list);
-        $this->editdetail->edittovar->setValue($stock->stock_id);
-        //  $this->editdetail->editid->setText($item->item_id);
-        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
+        $this->editdetail->edittovar->setKey($stock->stock_id);
+        $this->editdetail->edittovar->setText($stock->itemname);
+        $this->editdetail->edittype->setValue($stock->type);
+
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate(),$stock->type) /1000 . ' ' . $stock->measure_name);
 
         $this->_rowid = $stock->stock_id;
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getValue();
+        $id = $this->editdetail->edittovar->getKey();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
         }
 
         $stock = Stock::load($id);
-        $stock->quantity = $this->editdetail->editquantity->getText();
+        $stock->quantity = 1000*$this->editdetail->editquantity->getText();
         $stock->partion = $stock->price;
+        $stock->type = $this->editdetail->edittype->getValue();
         $stock->price = $this->editdetail->editprice->getText() * 100;
         $stock->pricends = $this->editdetail->editpricends->getText() * 100;
 
@@ -201,7 +207,8 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setValue(0);
+        $this->editdetail->edittovar->setKey(0);
+        $this->editdetail->edittovar->setText('');
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -223,11 +230,13 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getValue(),
+            'customer' => $this->docform->customer->getKey(),
+            'customername' => $this->docform->customer->getText(),
             'store' => $this->docform->store->getValue(),
+            'contract' => $this->docform->contract->getKey(),
+            'contractnumber' => $this->docform->contract->getText(),
             'isnds' => $this->docform->isnds->isChecked(),
             'cash' => $this->docform->cash->isChecked(),
-            'based' => $this->docform->based->getText(),
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
@@ -238,7 +247,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 
         $this->_doc->amount = 100 * $this->docform->total->getText();
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
         $this->_doc->save();
@@ -256,7 +265,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 
     /**
      * Расчет  итого
-     * 
+     *
      */
     private function calcTotal()
     {
@@ -264,8 +273,8 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $total = 0;
         $totalnds = 0;
         foreach ($this->_tovarlist as $item) {
-            $item->amount = $item->pricends * $item->quantity;
-            $item->nds = $item->amount - $item->price * $item->quantity;
+            $item->amount = $item->pricends * ($item->quantity/1000);
+            $item->nds = $item->amount - $item->price * ($item->quantity/1000);
             $total = $total + $item->amount;
             $totalnds = $totalnds + $item->nds;
         }
@@ -275,13 +284,17 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 
     /**
      * Валидация   формы
-     * 
+     *
      */
     private function checkForm()
     {
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
+            return false;
+        }
+  if ($this->docform->customer->getKey() == 0) {
+            $this->setError("Не введен   покупатель");
             return false;
         }
         return true;
@@ -293,7 +306,10 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->totalnds->setVisible($this->docform->isnds->isChecked());
 
         $this->calcTotal();
-        App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
+        if ($this->docform->isnds->isChecked())
+            App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
+        else
+            App::$app->getResponse()->addJavaScript("var _nds = 0;var nds_ = 0;");
     }
 
     public function backtolistOnClick($sender)
@@ -320,20 +336,32 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function OnGroup(DropDownChoice $sender)
+    public function OnAutoContragent($sender)
     {
-        $id = $sender->getValue();
-        $store_id = $this->docform->store->getValue();
-        $list = Stock::findArrayEx("closed  <> 1 and group_id={$id} and store_id={$store_id}");
-        $list = array_replace(array(0 => 'Выбрать'), $list);
-        $this->editdetail->edittovar->setOptionList($list);
-        $this->updateAjax(array('edittovar'));
+        $text = $sender->getValue();
+        return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
     }
 
-    public function OnItem(DropDownChoice $sender)
+    public function OnAutoContract($sender)
     {
-        $id = $sender->getValue();
+        $text = $sender->getValue();
+        return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
+    }
+
+    public function OnAutoItem($sender)
+    {
+        $text = $sender->getValue();
+        $store_id = $this->docform->store->getValue();
+
+        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
+    }
+
+    public function OnChangeItem(  $sender)
+    {
+        $id = $sender->getKey();
         $stock = Stock::load($id);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate(),$this->editdetail->edittype->getValue())/1000 . ' ' . $stock->measure_name);
+
         $item = Item::load($stock->item_id);
         $this->editdetail->editprice->setText(H::fm($item->priceopt));
         $nds = 0;
@@ -342,9 +370,13 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->editdetail->editpricends->setText(H::fm($item->priceopt + $item->priceopt * $nds));
-        $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
 
         $this->updateAjax(array('editprice', 'editpricends', 'qtystock'));
     }
+    public function OnItemType($sender){
+        $stock_id = $this->editdetail->edittovar->getKey();
+        $stock = Stock::load($stock_id);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock_id, $this->docform->document_date->getDate(),$this->editdetail->edittype->getValue())/1000 . ' ' . $stock->measure_name);
 
+    }
 }

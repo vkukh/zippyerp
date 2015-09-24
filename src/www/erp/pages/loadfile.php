@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP\Pages;
 
-//страница  для  загрузки  файла  
+//страница  для  загрузки приатаченого  файла  
 class LoadFile extends \Zippy\Html\WebPage
 {
 
@@ -43,5 +43,3 @@ class LoadFile extends \Zippy\Html\WebPage
     }
 
 }
-
-

@@ -6,7 +6,7 @@ use \ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ  Платежное поручение
- * 
+ *
  */
 class TransferOrder extends Document
 {

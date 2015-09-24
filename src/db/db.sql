@@ -1,12 +1,7 @@
---
--- Скрипт сгенерирован Devart dbForge Studio for MySQL, Версия 6.2.280.0
--- Домашняя страница продукта: http://www.devart.com/ru/dbforge/mysql/studio
--- Дата скрипта: 02.03.2015 17:05:36
--- Версия сервера: 5.1.41-community
--- Версия клиента: 4.1
---
 
-
+--
+-- Описание для таблицы erp_account_entry
+--
 CREATE TABLE erp_account_entry (
   entry_id int(11) NOT NULL AUTO_INCREMENT,
   acc_d int(11) NOT NULL,
@@ -15,17 +10,20 @@ CREATE TABLE erp_account_entry (
   document_id int(11) NOT NULL,
   dtag int(11) DEFAULT 0,
   ctag int(11) DEFAULT 0,
-  created date DEFAULT NULL,
+  document_date date DEFAULT NULL,
   PRIMARY KEY (entry_id),
-  INDEX created (created),
+  INDEX created (document_date),
   INDEX document_id (document_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 257
-AVG_ROW_LENGTH = 37
+AUTO_INCREMENT = 472
+AVG_ROW_LENGTH = 32
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_account_plan
+--
 CREATE TABLE erp_account_plan (
   acc_code int(16) NOT NULL,
   acc_name varchar(255) NOT NULL,
@@ -33,10 +31,41 @@ CREATE TABLE erp_account_plan (
   PRIMARY KEY (acc_code)
 )
 ENGINE = MYISAM
-AVG_ROW_LENGTH = 65
+AVG_ROW_LENGTH = 64
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_account_subconto
+--
+CREATE TABLE erp_account_subconto (
+  subconto_id int(11) NOT NULL AUTO_INCREMENT,
+  account_id int(11) NOT NULL,
+  document_id int(11) NOT NULL,
+  document_date date NOT NULL,
+  amount int(11) NOT NULL DEFAULT 0,
+  quantity int(11) NOT NULL DEFAULT 0,
+  customer_id int(11) NOT NULL DEFAULT 0,
+  employee_id int(11) NOT NULL DEFAULT 0,
+  contract_id int(11) NOT NULL DEFAULT 0,
+  extcode int(11) NOT NULL DEFAULT 0,
+  stock_id int(11) NOT NULL DEFAULT 0,
+  moneyfund_id int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (subconto_id),
+  INDEX account_id (account_id),
+  INDEX document_date (document_date),
+  INDEX document_id (document_id),
+  INDEX stock_id (stock_id)
+)
+ENGINE = MYISAM
+AUTO_INCREMENT = 126
+AVG_ROW_LENGTH = 48
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+--
+-- Описание для таблицы erp_bank
+--
 CREATE TABLE erp_bank (
   bank_id int(11) NOT NULL AUTO_INCREMENT,
   bank_name varchar(255) NOT NULL,
@@ -49,6 +78,9 @@ AVG_ROW_LENGTH = 66
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_contact
+--
 CREATE TABLE erp_contact (
   contact_id int(11) NOT NULL AUTO_INCREMENT,
   firstname varchar(64) NOT NULL,
@@ -62,11 +94,14 @@ CREATE TABLE erp_contact (
   INDEX customer_id (customer_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 23
-AVG_ROW_LENGTH = 127
+AUTO_INCREMENT = 24
+AVG_ROW_LENGTH = 131
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_customer
+--
 CREATE TABLE erp_customer (
   customer_id int(11) NOT NULL AUTO_INCREMENT,
   customer_name varchar(255) DEFAULT NULL,
@@ -82,10 +117,13 @@ CREATE TABLE erp_customer (
 )
 ENGINE = MYISAM
 AUTO_INCREMENT = 20
-AVG_ROW_LENGTH = 246
+AVG_ROW_LENGTH = 235
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_docrel
+--
 CREATE TABLE erp_docrel (
   doc1 int(11) DEFAULT NULL,
   doc2 int(11) DEFAULT NULL,
@@ -97,6 +135,9 @@ AVG_ROW_LENGTH = 9
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_document
+--
 CREATE TABLE erp_document (
   document_id int(11) NOT NULL AUTO_INCREMENT,
   document_number varchar(45) NOT NULL,
@@ -104,23 +145,23 @@ CREATE TABLE erp_document (
   created datetime NOT NULL,
   updated datetime NOT NULL,
   user_id int(11) NOT NULL,
-  notes text DEFAULT NULL,
   content text DEFAULT NULL,
   amount int(11) DEFAULT NULL,
   type_id int(11) NOT NULL,
   state tinyint(4) NOT NULL,
-  intattr1 int(11) DEFAULT NULL,
-  intattr2 int(11) DEFAULT NULL,
-  strattr varchar(255) DEFAULT NULL,
+  datatag int(11) DEFAULT NULL,
   PRIMARY KEY (document_id),
   INDEX document_date (document_date)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 151
-AVG_ROW_LENGTH = 656
+AUTO_INCREMENT = 208
+AVG_ROW_LENGTH = 717
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_document_update_log
+--
 CREATE TABLE erp_document_update_log (
   document_update_log_id int(11) NOT NULL AUTO_INCREMENT,
   hostname varchar(128) DEFAULT NULL,
@@ -133,11 +174,14 @@ CREATE TABLE erp_document_update_log (
   INDEX user_id (user_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 579
+AUTO_INCREMENT = 829
 AVG_ROW_LENGTH = 36
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_files
+--
 CREATE TABLE erp_files (
   file_id int(11) NOT NULL AUTO_INCREMENT,
   item_id int(11) DEFAULT NULL,
@@ -151,6 +195,9 @@ AUTO_INCREMENT = 12
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_filesdata
+--
 CREATE TABLE erp_filesdata (
   file_id int(11) DEFAULT NULL,
   filedata longblob DEFAULT NULL,
@@ -161,22 +208,30 @@ CHARACTER SET utf8
 COLLATE utf8_general_ci
 ROW_FORMAT = DYNAMIC;
 
+--
+-- Описание для таблицы erp_item
+--
 CREATE TABLE erp_item (
   item_id int(11) NOT NULL AUTO_INCREMENT,
   itemname varchar(64) DEFAULT NULL,
   description varchar(255) DEFAULT NULL,
   measure_id varchar(32) DEFAULT NULL,
-  item_type tinyint(4) DEFAULT NULL,
   group_id int(11) DEFAULT NULL,
   detail text NOT NULL COMMENT 'цена  для   прайса',
-  PRIMARY KEY (item_id)
+  item_code varchar(16) DEFAULT NULL,
+  item_type smallint(6) DEFAULT NULL,
+  PRIMARY KEY (item_id),
+  UNIQUE INDEX item_code (item_code)
 )
 ENGINE = MYISAM
 AUTO_INCREMENT = 16
-AVG_ROW_LENGTH = 135
+AVG_ROW_LENGTH = 165
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_item_group
+--
 CREATE TABLE erp_item_group (
   group_id int(11) NOT NULL AUTO_INCREMENT,
   group_name varchar(255) NOT NULL,
@@ -184,10 +239,13 @@ CREATE TABLE erp_item_group (
 )
 ENGINE = MYISAM
 AUTO_INCREMENT = 7
-AVG_ROW_LENGTH = 46
+AVG_ROW_LENGTH = 42
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_item_measures
+--
 CREATE TABLE erp_item_measures (
   measure_id int(11) NOT NULL AUTO_INCREMENT,
   measure_name varchar(64) NOT NULL,
@@ -200,6 +258,9 @@ AVG_ROW_LENGTH = 20
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_message
+--
 CREATE TABLE erp_message (
   message_id int(11) NOT NULL AUTO_INCREMENT,
   user_id int(11) DEFAULT NULL,
@@ -210,11 +271,14 @@ CREATE TABLE erp_message (
   PRIMARY KEY (message_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 39
-AVG_ROW_LENGTH = 48
+AUTO_INCREMENT = 43
+AVG_ROW_LENGTH = 46
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_metadata
+--
 CREATE TABLE erp_metadata (
   meta_id int(11) NOT NULL AUTO_INCREMENT,
   meta_type tinyint(11) NOT NULL,
@@ -226,11 +290,14 @@ CREATE TABLE erp_metadata (
   PRIMARY KEY (meta_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 57
-AVG_ROW_LENGTH = 89
+AUTO_INCREMENT = 67
+AVG_ROW_LENGTH = 105
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_metadata_access
+--
 CREATE TABLE erp_metadata_access (
   metadata_access_id int(11) NOT NULL AUTO_INCREMENT,
   metadata_id int(11) NOT NULL,
@@ -242,11 +309,14 @@ CREATE TABLE erp_metadata_access (
   PRIMARY KEY (metadata_access_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 32
+AUTO_INCREMENT = 52
 AVG_ROW_LENGTH = 17
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_moneyfunds
+--
 CREATE TABLE erp_moneyfunds (
   id int(11) NOT NULL AUTO_INCREMENT,
   title varchar(64) NOT NULL,
@@ -261,6 +331,9 @@ AVG_ROW_LENGTH = 50
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_staff_department
+--
 CREATE TABLE erp_staff_department (
   department_id int(11) NOT NULL AUTO_INCREMENT,
   department_name varchar(100) NOT NULL,
@@ -272,6 +345,9 @@ AVG_ROW_LENGTH = 32
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_staff_employee
+--
 CREATE TABLE erp_staff_employee (
   employee_id int(11) NOT NULL AUTO_INCREMENT,
   position_id int(11) NOT NULL,
@@ -291,6 +367,9 @@ AVG_ROW_LENGTH = 40
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_staff_employee_activity
+--
 CREATE TABLE erp_staff_employee_activity (
   account_id int(11) NOT NULL AUTO_INCREMENT,
   employee_id int(11) NOT NULL,
@@ -300,10 +379,14 @@ CREATE TABLE erp_staff_employee_activity (
   PRIMARY KEY (account_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 17
+AUTO_INCREMENT = 26
+AVG_ROW_LENGTH = 18
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_staff_position
+--
 CREATE TABLE erp_staff_position (
   position_id int(11) NOT NULL AUTO_INCREMENT,
   position_name varchar(100) NOT NULL,
@@ -315,20 +398,27 @@ AVG_ROW_LENGTH = 28
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_stock_activity
+--
 CREATE TABLE erp_stock_activity (
   stock_activity_id int(11) NOT NULL AUTO_INCREMENT,
   stock_id int(11) NOT NULL,
   document_id int(11) NOT NULL,
   qty float NOT NULL,
+  created datetime DEFAULT NULL,
   PRIMARY KEY (stock_activity_id),
   INDEX document_id (document_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 194
-AVG_ROW_LENGTH = 17
+AUTO_INCREMENT = 234
+AVG_ROW_LENGTH = 25
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_store
+--
 CREATE TABLE erp_store (
   store_id int(11) NOT NULL AUTO_INCREMENT,
   storename varchar(64) DEFAULT NULL,
@@ -342,6 +432,9 @@ AVG_ROW_LENGTH = 30
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_store_stock
+--
 CREATE TABLE erp_store_stock (
   stock_id int(11) NOT NULL AUTO_INCREMENT,
   item_id int(11) NOT NULL,
@@ -352,11 +445,14 @@ CREATE TABLE erp_store_stock (
   PRIMARY KEY (stock_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 36
+AUTO_INCREMENT = 59
 AVG_ROW_LENGTH = 22
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_store_stock_serials
+--
 CREATE TABLE erp_store_stock_serials (
   stock_serial_id int(11) NOT NULL AUTO_INCREMENT,
   stock_id int(11) NOT NULL,
@@ -368,6 +464,9 @@ AUTO_INCREMENT = 4
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_task_project
+--
 CREATE TABLE erp_task_project (
   project_id int(11) NOT NULL AUTO_INCREMENT,
   doc_id int(11) DEFAULT NULL,
@@ -383,6 +482,9 @@ AVG_ROW_LENGTH = 56
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_task_task
+--
 CREATE TABLE erp_task_task (
   task_id int(11) NOT NULL AUTO_INCREMENT,
   project_id int(11) DEFAULT NULL,
@@ -404,6 +506,9 @@ AVG_ROW_LENGTH = 80
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы erp_task_task_emp
+--
 CREATE TABLE erp_task_task_emp (
   task_emp_id int(11) NOT NULL AUTO_INCREMENT,
   task_id int(11) NOT NULL,
@@ -416,16 +521,22 @@ CHARACTER SET utf8
 COLLATE utf8_general_ci
 COMMENT = '  ';
 
+--
+-- Описание для таблицы system_options
+--
 CREATE TABLE system_options (
   optname varchar(64) NOT NULL,
   optvalue text NOT NULL,
   UNIQUE INDEX optname (optname)
 )
 ENGINE = MYISAM
-AVG_ROW_LENGTH = 182
+AVG_ROW_LENGTH = 246
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы system_roles
+--
 CREATE TABLE system_roles (
   role_id int(11) NOT NULL AUTO_INCREMENT,
   rolename varchar(64) NOT NULL,
@@ -438,22 +549,28 @@ AVG_ROW_LENGTH = 40
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы system_session
+--
 CREATE TABLE system_session (
   sesskey varchar(64) NOT NULL DEFAULT '',
-  expiry timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  expiry timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   expireref varchar(250) DEFAULT '',
-  created timestamp DEFAULT '0000-00-00 00:00:00',
-  modified timestamp DEFAULT '0000-00-00 00:00:00',
+  created timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   sessdata longtext DEFAULT NULL,
   PRIMARY KEY (sesskey),
   INDEX sess2_expireref (expireref),
   INDEX sess2_expiry (expiry)
 )
 ENGINE = MYISAM
-AVG_ROW_LENGTH = 106776
+AVG_ROW_LENGTH = 62144
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы system_user_role
+--
 CREATE TABLE system_user_role (
   role_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -464,6 +581,9 @@ AVG_ROW_LENGTH = 9
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
+--
+-- Описание для таблицы system_users
+--
 CREATE TABLE system_users (
   user_id int(11) NOT NULL AUTO_INCREMENT,
   userlogin varchar(32) NOT NULL,
@@ -480,22 +600,10 @@ AVG_ROW_LENGTH = 30
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
-DELIMITER $$
 
-CREATE TRIGGER entry_insert
-BEFORE INSERT
-ON erp_account_entry
-FOR EACH ROW
-BEGIN
-  SET new.created = (SELECT
-      document_date
-    FROM erp_document
-    WHERE document_id = new.document_id);
-END
-$$
-
-DELIMITER ;
-
+--
+-- Описание для представления erp_contact_view
+--
 CREATE OR REPLACE
 VIEW erp_contact_view
 AS
@@ -504,11 +612,11 @@ SELECT
   `erp_contact`.`firstname` AS `firstname`,
   `erp_contact`.`middlename` AS `middlename`,
   `erp_contact`.`lastname` AS `lastname`,
-  concat_ws(' ', `erp_contact`.`lastname`, `erp_contact`.`firstname`, `erp_contact`.`middlename`) AS `fullname`,
+  CONCAT_WS(' ', `erp_contact`.`lastname`, `erp_contact`.`firstname`, `erp_contact`.`middlename`) AS `fullname`,
   `erp_contact`.`email` AS `email`,
   `erp_contact`.`detail` AS `detail`,
-  coalesce(`e`.`employee_id`, 0) AS `employee`,
-  coalesce(`cc`.`customer_id`, 0) AS `customer`,
+  COALESCE(`e`.`employee_id`, 0) AS `employee`,
+  COALESCE(`cc`.`customer_id`, 0) AS `customer`,
   `erp_contact`.`description` AS `description`,
   `cc`.`customer_name` AS `customer_name`
 FROM ((`erp_contact`
@@ -517,6 +625,9 @@ FROM ((`erp_contact`
   LEFT JOIN `erp_customer` `cc`
     ON ((`erp_contact`.`customer_id` = `cc`.`customer_id`)));
 
+--
+-- Описание для представления erp_customer_view
+--
 CREATE OR REPLACE
 VIEW erp_customer_view
 AS
@@ -529,6 +640,9 @@ SELECT
   `c`.`contact_id` AS `contact_id`
 FROM `erp_customer` `c`;
 
+--
+-- Описание для представления erp_document_view
+--
 CREATE OR REPLACE
 VIEW erp_document_view
 AS
@@ -539,15 +653,12 @@ SELECT
   `d`.`created` AS `created`,
   `d`.`updated` AS `updated`,
   `d`.`user_id` AS `user_id`,
-  `d`.`notes` AS `notes`,
   `d`.`content` AS `content`,
   `d`.`amount` AS `amount`,
   `d`.`type_id` AS `type_id`,
-  `d`.`intattr1` AS `intattr1`,
-  `d`.`intattr2` AS `intattr2`,
-  `d`.`strattr` AS `strattr`,
   `u`.`userlogin` AS `userlogin`,
   `d`.`state` AS `state`,
+  `d`.`datatag` AS `datatag`,
   `erp_metadata`.`meta_name` AS `meta_name`,
   `erp_metadata`.`description` AS `meta_desc`
 FROM ((`erp_document` `d`
@@ -556,6 +667,9 @@ FROM ((`erp_document` `d`
   JOIN `erp_metadata`
     ON ((`erp_metadata`.`meta_id` = `d`.`type_id`)));
 
+--
+-- Описание для представления erp_item_view
+--
 CREATE OR REPLACE
 VIEW erp_item_view
 AS
@@ -566,15 +680,19 @@ SELECT
   `t`.`description` AS `description`,
   `t`.`measure_id` AS `measure_id`,
   `m`.`measure_name` AS `measure_name`,
-  `t`.`item_type` AS `item_type`,
   `t`.`group_id` AS `group_id`,
-  `g`.`group_name` AS `group_name`
+  `g`.`group_name` AS `group_name`,
+  `t`.`item_code` AS `item_code`,
+  `t`.`item_type` AS `item_type`
 FROM ((`erp_item` `t`
   JOIN `erp_item_measures` `m`
     ON ((`t`.`measure_id` = `m`.`measure_id`)))
   LEFT JOIN `erp_item_group` `g`
     ON ((`t`.`group_id` = `g`.`group_id`)));
 
+--
+-- Описание для представления erp_message_view
+--
 CREATE OR REPLACE
 VIEW erp_message_view
 AS
@@ -590,6 +708,9 @@ FROM (`erp_message`
   JOIN `system_users`
     ON ((`erp_message`.`user_id` = `system_users`.`user_id`)));
 
+--
+-- Описание для представления erp_metadata_access_view
+--
 CREATE OR REPLACE
 VIEW erp_metadata_access_view
 AS
@@ -607,6 +728,9 @@ FROM ((`erp_metadata_access` `a`
   JOIN `erp_metadata` `m`
     ON ((`a`.`metadata_id` = `m`.`meta_id`)));
 
+--
+-- Описание для представления erp_staff_employee_view
+--
 CREATE OR REPLACE
 VIEW erp_staff_employee_view
 AS
@@ -625,8 +749,8 @@ SELECT
   `d`.`department_name` AS `department_name`,
   `p`.`position_name` AS `position_name`,
   `e`.`contact_id` AS `contact_id`,
-  concat_ws(' ', `c`.`lastname`, `c`.`firstname`, `c`.`middlename`) AS `fullname`,
-  concat_ws(' ', `c`.`lastname`, `c`.`firstname`) AS `shortname`
+  CONCAT_WS(' ', `c`.`lastname`, `c`.`firstname`, `c`.`middlename`) AS `fullname`,
+  CONCAT_WS(' ', `c`.`lastname`, `c`.`firstname`) AS `shortname`
 FROM (((`erp_staff_employee` `e`
   JOIN `erp_contact` `c`
     ON ((`e`.`contact_id` = `c`.`contact_id`)))
@@ -635,6 +759,9 @@ FROM (((`erp_staff_employee` `e`
   LEFT JOIN `erp_staff_department` `d`
     ON ((`e`.`department_id` = `d`.`department_id`)));
 
+--
+-- Описание для представления erp_stock_activity_view
+--
 CREATE OR REPLACE
 VIEW erp_stock_activity_view
 AS
@@ -655,6 +782,9 @@ FROM ((`erp_stock_activity`
   JOIN `erp_document`
     ON ((`erp_stock_activity`.`document_id` = `erp_document`.`document_id`)));
 
+--
+-- Описание для представления erp_task_project_view
+--
 CREATE OR REPLACE
 VIEW erp_task_project_view
 AS
@@ -669,6 +799,9 @@ SELECT
   0 AS `taskclosed`
 FROM `erp_task_project`;
 
+--
+-- Описание для представления erp_account_entry_view
+--
 CREATE OR REPLACE
 VIEW erp_account_entry_view
 AS
@@ -681,13 +814,16 @@ SELECT
   `doc`.`document_number` AS `document_number`,
   `doc`.`meta_desc` AS `meta_desc`,
   `doc`.`type_id` AS `type_id`,
-  `doc`.`document_date` AS `created`,
+  `doc`.`document_date` AS `document_date`,
   `e`.`dtag` AS `dtag`,
   `e`.`ctag` AS `ctag`
 FROM (`erp_account_entry` `e`
   JOIN `erp_document_view` `doc`
     ON ((`e`.`document_id` = `doc`.`document_id`)));
 
+--
+-- Описание для представления erp_stock_view
+--
 CREATE OR REPLACE
 VIEW erp_stock_view
 AS
@@ -700,7 +836,7 @@ SELECT
   `erp_item_view`.`measure_name` AS `measure_name`,
   `erp_store_stock`.`price` AS `price`,
   `erp_store_stock`.`partion` AS `partion`,
-  coalesce(`erp_store_stock`.`closed`, 0) AS `closed`,
+  COALESCE(`erp_store_stock`.`closed`, 0) AS `closed`,
   `erp_item_view`.`item_type` AS `item_type`,
   `erp_item_view`.`group_id` AS `group_id`
 FROM ((`erp_store_stock`
@@ -708,8 +844,11 @@ FROM ((`erp_store_stock`
     ON ((`erp_store_stock`.`item_id` = `erp_item_view`.`item_id`)))
   JOIN `erp_store`
     ON ((`erp_store_stock`.`store_id` = `erp_store`.`store_id`)))
-WHERE (`erp_item_view`.`item_type` <> 3);
+WHERE COALESCE((`erp_item_view`.`item_type` <> 3));
 
+--
+-- Описание для представления erp_task_task_view
+--
 CREATE OR REPLACE
 VIEW erp_task_task_view
 AS
@@ -727,7 +866,7 @@ SELECT
   `t`.`priority` AS `priority`,
   `t`.`updated` AS `updated`,
   `u`.`userlogin` AS `creatwedbyname`,
-  concat_ws(' ', `a`.`lastname`, `a`.`firstname`) AS `assignedtoname`,
+  CONCAT_WS(' ', `a`.`lastname`, `a`.`firstname`) AS `assignedtoname`,
   `p`.`projectname` AS `projectname`
 FROM (((`erp_task_task` `t`
   JOIN `erp_task_project` `p`

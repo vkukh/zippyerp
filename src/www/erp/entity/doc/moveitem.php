@@ -5,12 +5,13 @@ namespace ZippyERP\ERP\Entity\Doc;
 use \ZippyERP\System\System;
 use \ZippyERP\ERP\Entity\Store;
 use \ZippyERP\ERP\Entity\Stock;
+use \ZippyERP\ERP\Entity\SubConto;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  локумент перемещения товаров
- * 
+ *
  * @table=store_document
  * @view=store_document_view
  * @keyfield=document_id
@@ -23,53 +24,73 @@ class MoveItem extends Document
         $conn = \ZCL\DB\DB::getConnect();
         $conn->StartTrans();
 
-        $ret = 0;
+        $ret = 0;    // торговая  наценка
         $amount = 0;
         foreach ($this->detaildata as $value) {
 
-            $stock = Stock::getStock($this->headerdata['storefrom'], $value['item_id'], $value['partion']);
-            $stock->updateStock(0 - $value['quantity'], $this->document_id);
+            //списываем  со склада
+            $stockfrom = Stock::getStock($this->headerdata['storefrom'], $value['item_id'], $value['partion']);
+            $sc = new SubConto($this->document_id, $this->document_date, $value['type']);
+            $sc->setStock($stockfrom->stock_id) ;
+            $sc->setQuantity(0-$value['quantity']) ;
+            $sc->save();
 
             $store = Store::load($this->headerdata['storeto']);
-            if ($store->store_type == Store::STORE_TYPE_OPT) {
-                $stock = Stock::getStock($this->headerdata['storeto'], $value['item_id'], $value['price'], true);
-                $stock->updateStock($value['quantity'], $this->document_id);
+            if ($store->store_type == Store::STORE_TYPE_OPT) {    //оптовый
+                 $stockto = Stock::getStock($this->headerdata['storeto'], $value['item_id'], $value['price'], true);
+
+                 $sc = new SubConto($this->document_id, $this->document_date, $value['type']);
+                 $sc->setStock($stockto->stock_id) ;
+                 $sc->setQuantity( $value['quantity']) ;
+                 $sc->save();
             }
-            if ($store->store_type == Store::STORE_TYPE_RET) {
-                $stock = Stock::getFirst("store_id={$this->headerdata['storeto']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
-                if ($stock instanceof Stock) {
-                    $stock->updateStock($value['quantity'], $this->document_id);
+            if ($store->store_type == Store::STORE_TYPE_RET) {    //розница
+                $stockto = Stock::getFirst("store_id={$this->headerdata['storeto']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
+                if ($stockto instanceof Stock) {
+
                 } else {
-                    $stock = new Stock();
-                    $stock->document_id = $this->document_id;
-                    $stock->store_id = $this->headerdata['storeto'];
-                    $stock->item_id = $value['item_id'];
-                    $stock->price = $value['price'];
-                    $stock->partion = $value['partion'];  // себестоимость
+                    $stockto = new Stock();
+                    $stockto->document_id = $this->document_id;
+                    $stockto->store_id = $this->headerdata['storeto'];
+                    $stockto->item_id = $value['item_id'];
+                    $stockto->price = $value['price'];
+                    $stockto->partion = $value['partion'];  // себестоимость
+                    $stockto->Save();
                 }
-                $stock->Save();
+                 $sc = new SubConto($this->document_id, $this->document_date, 282);
+                 $sc->setStock($stockto->stock_id) ;
+                 $sc->setQuantity( $value['quantity']) ;
+                 $sc->save();
 
-                $ret += $value['quantity'] * ($value['price'] - $value['partion']);
-                $amount += $value['quantity'] * $value['price'];
+
+                $ret += ($value['quantity']/1000) * ($value['price'] - $value['partion']);
+                $amount += ($value['quantity']/1000)* $value['price'];
             }
 
-            if ($store->store_type == Store::STORE_TYPE_RET_SUM) {
+            if ($store->store_type == Store::STORE_TYPE_RET_SUM) {   //розница суммовой учет
 
                 //специальный  товар  для  cуммового  учета
-                $item = \ZippyERP\ERP\Entity\Item::getFirst('item_type=' . \ZippyERP\ERP\Entity\Item::ITEM_TYPE_RETSUM);
+                $item = \ZippyERP\ERP\Entity\Item::getSumItem();
 
-                $stock = Stock::getStock($this->headerdata['storeto'], $item->item_id, 1, true);
-                $stock->updateStock($value['quantity'] * $value['price'], $this->document_id);
-                $stock->Save();
-                $ret += $value['quantity'] * ($value['price'] - $value['partion']);
-                $amount += $value['quantity'] * $value['partion'];
-            }
+                $stockto = Stock::getStock($this->headerdata['storeto'], $item->item_id, 1, true);
+                $sc = new SubConto($this->document_id, $this->document_date, 282);
+                $sc->setStock($stockto->stock_id) ;
+                $sc->setQuantity( ($value['quantity'] ) * $value['price']) ; //цена  единицы  товара - 1 копейка.
+                $sc->save();
 
-            if ($amount > 0) {  // розница
-                Entry::AddEntry(282, 281, $amount, $this->document_id);
-                Entry::AddEntry(282, 285, $ret, $this->document_id,0,$store->store_id);
+                $ret += ($value['quantity']/1000) * ($value['price'] - $value['partion']);
+                $amount += ($value['quantity']/1000) * $value['partion'];
             }
         }
+        if ($amount > 0) {  // розница
+            Entry::AddEntry(282, 281, $amount, $this->document_id, $this->document_date);
+            Entry::AddEntry(282, 285, $ret, $this->document_id, $this->document_date );
+            $sc = new SubConto($this->document_id, $this->document_date, 285);
+            $sc->setExtCode($store->store_id);  //запоминаем на  каком  магащине  сколько наценки
+            $sc->setAmount(0 - $ret);
+            $sc->save();
+        }
+
         $conn->CompleteTrans();
         return true;
     }
@@ -94,7 +115,7 @@ class MoveItem extends Document
                 "item_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
                 "price" => H::fm($value['price']),
-                "quantity" => $value['quantity']);
+                "quantity" => $value['quantity']/1000);
         }
 
 

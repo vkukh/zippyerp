@@ -4,9 +4,25 @@
 
     <body>
         <div class="row">
-            <div class="col-md-10">    
+            <div class="col-xs-10">    
                 <div zippy="itemtable">
                     <h3>Справочник ТМЦ </h3>
+                    <form zippy="filter" class="navbar-form ">
+                    <div class="form-group">
+                        <label for="searchkey">Поиск</label>
+                        <input class="form-control"  type="text" zippy="searchkey"  >
+                    </div>
+                   <div class="form-group">
+                        <label for="group">Группа</label>
+                        <select class="form-control"   zippy="group"  >
+                        <option value="0">Все</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-default  " type="submit" value="Ввод">
+                    </div>         
+                    </form>
+                    <a zippy="addnew" class="btn btn-primary  ">Добавить</a> 
                     <table  class="table table-bordered  table-condensed table-striped">
                         <tr>
                             <th >Наименование</th>
@@ -20,10 +36,10 @@
                             <td zippy="measure"></td>
                             <td zippy="typename"></td>
                             <td zippy="group_name"></td>
-                            <td aling="center"> <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                            <td aling="center"> <a zippy="edit"  title="Редактирование"><i class="icon-edit"></i></a> <a zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
                         </tr>
                     </table>
-                    <a zippy="add" class="btn btn-default btn-xs">Добавить</a> 
+                    <div zippy="pag"></div>
                 </div>
 
 

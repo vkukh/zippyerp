@@ -55,10 +55,10 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
     public function clistOnRow($row)
     {
         $item = $row->getDataItem();
-        $amount = $item->amount;
+        $amount = $item->saldo;
         $row->add(new Label('customername', $item->customer_name));
-        $row->add(new Label('credit', $amount > 0 ? H::fm($amount) : ''));
-        $row->add(new Label('debet', $amount < 0 ? H::fm(0 - $amount) : '' ));
+        $row->add(new Label('debet', $amount > 0 ? H::fm($amount) : ''));
+        $row->add(new Label('credit', $amount < 0 ? H::fm(0 - $amount) : '' ));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('invoice'))->setClickHandler($this, 'invoiceOnClick');
     }
@@ -68,20 +68,22 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $customer = $sender->getOwner()->getDataItem();
         $this->doclist->custname1->setText($customer->customer_name);
         $conn = \ZCL\DB\DB::getConnect();
-        $sql = "select ctag,document_id,amount,meta_desc,document_number,created from erp_account_entry_view where (dtag = {$customer->customer_id} or  ctag = {$customer->customer_id} ) and (acc_d = 36 or acc_c = 63 or acc_c = 36 or acc_d = 63)  order  by  created  desc";
+        $sql = "select  sc.document_id,sc.amount,meta_desc,document_number,sc.document_date
+                from  erp_account_subconto sc  join erp_document_view dc on sc.document_id = dc.document_id
+                where customer_id = {$customer->customer_id} and (account_id = 36 or account_id = 63)
+                order  by  sc.`document_date`  desc";
         $rs = $conn->Execute($sql);
         $this->_dlist = array();
         foreach ($rs as $row) {
             $item = new \ZippyERP\ERP\DataItem();
             $item->document_id = $row['document_id'];
             $item->amount = $row['amount'];
-            $item->amount = $row['ctag'] == $customer->customer_id ? 0 - $item->amount : $item->amount ;
             $item->description = $row['meta_desc'];
             $item->document_number = $row['document_number'];
-            $item->document_date = strtotime($row['created']);
+            $item->document_date = strtotime($row['document_date']);
 
             $this->_dlist[] = $item;
-        }        
+        }
 
         $this->doclist->dlist->Reload();
         $this->clistpanel->setVisible(false);
@@ -100,10 +102,11 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
     {
         $item = $row->getDataItem();
 
-        $row->add(new Label('amountfrom', $item->amount < 0 ? H::fm(0-$item->amount) : ''));
+        $row->add(new Label('amountfrom', $item->amount < 0 ? H::fm(0 - $item->amount) : ''));
         $row->add(new Label('amountto', $item->amount > 0 ? H::fm($item->amount) : ''));
         $row->add(new Label('ddate', date('Y-m-d', $item->document_date)));
-        $row->add(new ClickLink('ddoc', $this, 'ddocOnClick'))->setValue($item->document_number);
+
+        $row->add(new ClickLink('ddoc', $this, 'ddocOnClick'))->setValue($item->description . ' ' . $item->document_number);
     }
 
     public function ddocOnClick($sender)
@@ -120,7 +123,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $customer = $sender->getOwner()->getDataItem();
         $this->invoicelist->custname2->setText($customer->customer_name);
 
-        $this->_ilist = Document::find('intattr1=' . $customer->customer_id . " and  (meta_name='Invoice' or meta_name='PurchaseInvoice') and state <> " . Document::STATE_CLOSED . " and state <> " . Document::STATE_EXECUTED,'document_id asc' );
+        $this->_ilist = Document::find('datatag=' . $customer->customer_id . " and  (meta_name='Invoice' or meta_name='PurchaseInvoice') and state <> " . Document::STATE_CLOSED . " and state <> " . Document::STATE_EXECUTED, 'document_id asc');
         $this->invoicelist->ilist->Reload();
         $this->clistpanel->setVisible(false);
         $this->invoicelist->setVisible(true);
@@ -133,11 +136,12 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         // $row->add(new Label('idoc', $item->document_number));
         $row->add(new Label('iamount', $item->amount > 0 ? H::fm($item->amount) : ''));
         $row->add(new Label('idate', date('Y-m-d', $item->headerdata['payment_date'])));
+        if ($item->headerdata['payment_date'] < time())
+            $row->idate->setAttribute('style', 'color: red;');
         $row->add(new ClickLink('idoc', $this, 'ddocOnClick'))->setValue($item->meta_desc . ' ' . $item->document_number);
     }
 
 }
-
 
 class CPDataSource implements \Zippy\Interfaces\DataSource
 {
@@ -152,30 +156,31 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItemCount()
     {
-        $conn = \ZCL\DB\DB::getConnect();
-        $_sql = "select sum( case when ctag=c.customer_id then 0-amount else amount  end ) from erp_account_entry where (dtag = c.customer_id or  ctag = c.customer_id ) and (acc_d = 36 or acc_c = 63 or acc_c = 36 or acc_d = 63) ";
-        $sql = "select count(*) from (select c.*,coalesce(($_sql),0) as  amount from erp_customer c) t  ";
-        if($this->showall == false) $sql = $sql ." where amount <>0 ";
-        
-        $rs = $conn->GetOne($sql); 
+        //no pagination
     }
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
         $conn = \ZCL\DB\DB::getConnect();
-        $_sql = "select sum( case when ctag=c.customer_id then 0-amount else amount  end ) from erp_account_entry where (dtag = c.customer_id or  ctag = c.customer_id ) and (acc_d = 36 or acc_c = 63 or acc_c = 36 or acc_d = 63) ";
-        $sql = "select * from (select c.*,coalesce(($_sql),0) as  amount from erp_customer c) t  ";
-        if($this->showall == false) $sql = $sql ." where amount <>0 ";
-        if($this->sort == 0) $sql = $sql ." order by  customer_name ";
-        if($this->sort == 1) $sql = $sql ." order by  amount  ";
-        if($this->sort == 2) $sql = $sql ." order by  amount desc ";
+        $sql = "select  coalesce(sum(sc.amount ),0) as  saldo,sc.customer_id ,c.customer_name
+                from  erp_account_subconto sc join erp_customer c on sc.customer_id = c.customer_id
+                where  account_id = 36 or account_id = 63
+                group  by  sc.customer_id ,c.customer_name ";
+        if ($this->showall == false)
+            $sql = $sql . " having saldo <> 0 ";
+        if ($this->sort == 0)
+            $sql = $sql . " order by  customer_name ";
+        if ($this->sort == 1)
+            $sql = $sql . " order by  amount  ";
+        if ($this->sort == 2)
+            $sql = $sql . " order by  amount desc ";
         $list = array();
-        $rs = $conn->Execute($sql); 
-        foreach($rs as $row){
+        $rs = $conn->Execute($sql);
+        foreach ($rs as $row) {
             $customer = new Customer($row);
             $list[] = $customer;
         }
-        
+
         return $list;
     }
 

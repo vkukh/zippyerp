@@ -14,7 +14,6 @@ use \Zippy\Html\Panel;
 use \Zippy\Html\Link\RedirectLink;
 use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Filter;
-use \Zippy\Interfaces\Binding\PropertyBinding as Bund;
 use \ZippyERP\ERP\Entity\Doc\Document;
 use \ZippyERP\System\Application as App;
 use \ZippyERP\System\System;

@@ -2,27 +2,35 @@
 
     <body>
         <div class="row">
-            <div class="col-md-12">    
+            <div class="col-xs-12">
                 <h4>Списание торговой наценки</h4>
-     <form zippy="docform">
-                    <table  border="0" cellpadding="1">
-                        <tr>
-                            <td >Номер документа</td>
-                            <td >  <input type="text" zippy="document_number" required="required" ></td>
-                            <td >Дата</td>
-                            <td >    <input type="text" zippy="created" required="required"  ></td>
-                        </tr>
-                        <tr><td>Магазин</td><td colspan="3"><select zippy="store"></select></td></tr>
-                  </table>      
-                   <p>&nbsp;</p>
-                    <p>
-                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
-                        &nbsp;<input zippy="execdoc" type="submit"  value="Выполнить"  class="btn btn-default btn-xs">  
+                <form zippy="docform">
+   <div class="row">
+                <div class="col-xs-3">
+      <div class="form-group">
+                        <label for="document_number" class="  control-label">Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required"     >
+                    </div>
+                   <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Дата</label>
+                        <input class="form-control" type="text" zippy="document_date" required="required"       >
+                    </div>
+                 <div class="form-group">
+                        <label   for="store" class="  control-label"> Торговая точка</label>
+                        <select class="form-control" zippy="store"></select>
+                    </div>
+                 <div class="form-group">
+             <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default ">
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Выполнить"  class="btn btn-default ">
+             </div>
 
-                    </p>
-                   </form>
-            </div>   
-        </div>   
+
+
+
+
+                </form>
+            </div>
+        </div>
 
     </body>
-</html>                        
+</html>

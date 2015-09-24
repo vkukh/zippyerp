@@ -1,0 +1,52 @@
+<html>
+
+    <body>
+        <div class="row">
+            <div class="span12">    
+                <h4>Платежное поручение</h4>
+                <form zippy="docform">
+                    <table  border="0" cellpadding="1">
+                        <tr>
+                            <td >Номер документа</td>
+                            <td >  <input type="text" zippy="document_number" required="required" ></td>
+                            <td >Дата</td>
+                            <td >    <input type="text" zippy="document_date" required="required"  ></td>
+                        </tr>
+                        <tr><td  >Расчетный счет</td>
+                            <td ><select zippy="bankaccount" >
+                                </select></td>
+                            <td  > </td>
+                            <td > </td>
+                        </tr>                        
+                        <tr><td  >Уплата налогов и сборов</td>
+                            <td ><input type="checkbox" zippy="tax"></td>
+                            <td  >Контрагент</td>
+                            <td ><select zippy="customer" ></select></td>
+                        </tr>
+
+                        <tr>
+                            <td >Сумма</td>
+                            <td >  <input type="text" zippy="amount" required="required" pattern= "[0-9\.]+"  style="width: 60px;" ></td>
+                            <td >В т.ч. НДС</td>
+                            <td >    <input type="text" zippy="nds"  pattern= "[0-9\.]+"  style="width: 60px;" ></td>
+                        </tr>                        
+                        <tr><td  >Документ - основание</td>
+                            <td > <input type="text" zippy="basedoc"></td>
+                            <td valign="top">Назначение</td>
+                            <td ><textarea zippy="notes"></textarea></td>
+                        </tr>
+
+                    </table>
+                    <p>&nbsp;</p>
+                    <p>
+                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
+                        <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> 
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Оплачено"  class="btn btn-default btn-xs">  
+
+                    </p>                        
+                </form>
+            </div>   
+        </div>   
+
+    </body>
+</html>    

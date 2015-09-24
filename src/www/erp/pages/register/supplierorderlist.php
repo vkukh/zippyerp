@@ -17,7 +17,6 @@ use \ZippyERP\System\System;
 use \ZippyERP\System\Session;
 use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Filter;
-use \Zippy\Interfaces\Binding\PropertyBinding as Bund;
 use \ZippyERP\ERP\Entity\Customer;
 
 /**
@@ -27,7 +26,7 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
 {
 
     /**
-     * 
+     *
      * @param mixed $docid  Документ  должен  быть  показан  в  просмотре
      * @return DocList
      */
@@ -68,7 +67,7 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('date', date('d-m-Y', $item->document_date)));
         $row->add(new Label('supplier', ($supplier) ? $supplier->customer_name : ""));
         $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
-        $row->add(new Label('payment', ($item->intattr2 > 0) ? H::fm($item->intattr2 ) : ""));
+        $row->add(new Label('payment', ($item->intattr2 > 0) ? H::fm($item->intattr2) : ""));
 
         $row->add(new Label('state', Document::getStateName($item->state)));
         $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');

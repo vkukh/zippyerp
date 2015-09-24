@@ -8,7 +8,7 @@ use \ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ счет-фактура
- * 
+ *
  */
 class Invoice extends Document
 {
@@ -24,18 +24,18 @@ class Invoice extends Document
             $detail[] = array("no" => $i++,
                 "tovar_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity'],
+                "quantity" => $value['quantity']/1000,
                 "price" => H::fm($value['price']),
-                "amount" => H::fm($value['quantity'] * $value['price'])
+                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
             );
-            $total += $value['quantity'] * $value['price'] ;
+            $total += ($value['quantity']/1000) * $value['price'];
         }
 
         $firm = \ZippyERP\System\System::getOptions("firmdetail");
 
         $f = \ZippyERP\ERP\Entity\MoneyFund::findOne('ftype = 1');
         $bank = \ZippyERP\ERP\Entity\Bank::load($f->bank);
-        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
+      //  $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
             "firmname" => $firm['name'],
             "firmcode" => $firm['code'],
@@ -43,7 +43,7 @@ class Invoice extends Document
             "bank" => $bank->bank_name,
             "mfo" => $bank->mfo,
             "address" => $firm['city'] . ', ' . $firm['street'],
-            "customername" => $customer->customer_name,
+            "customername" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
             "base" => $this->base,
             "paydate" => date('d.m.Y', $this->headerdata["payment_date"]),
@@ -73,19 +73,22 @@ class Invoice extends Document
         $list['TaxInvoice'] = 'Налоговая  накладная';
         return $list;
     }
+
     /**
-    *@see Document
-    */
+     * @see Document
+     */
     public function export($type)
     {
-     if($type==self::EX_XML_GNAU)
-        return array("filename"=>"invoice.xml","content"=>"<test/>");
+        if ($type == self::EX_XML_GNAU)
+            return array("filename" => "invoice.xml", "content" => "<test/>");
     }
 
     /**
-    *@see Document
-    */
-    public  function supportedExport(){
-        return array(self::EX_EXCEL,self::EX_WORD,self::EX_XML_GNAU);
-    }  
+     * @see Document
+     */
+    public function supportedExport()
+    {
+        return array(self::EX_EXCEL, self::EX_WORD, self::EX_XML_GNAU);
+    }
+
 }

@@ -4,7 +4,7 @@
 
         <h3 style="font-size: 16px;">Шахматка c {$from}  по  {$to}</h3>
         <br>
-        <table   cellspacing="0" cellpadding="1" border="1">
+        <table   class="ctable"  cellspacing="0" cellpadding="1" border="1">
             {set  $i = 0}
 
             {foreach $_detail as $row}
@@ -18,9 +18,9 @@
                 </tr>
             {/foreach}
 
-        </table>     
+        </table>
 
 
-        <br> 
+        <br>
     </body>
 </html>

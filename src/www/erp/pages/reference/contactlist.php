@@ -39,7 +39,7 @@ class ContactList extends \ZippyERP\ERP\Pages\Base
         $this->contacttable->add(new Paginator('pag', $this->contacttable->contactlist));
         $this->contacttable->contactlist->setSelectedClass('success');
         $this->contacttable->contactlist->Reload();
-        $this->contacttable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
+        $this->contacttable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
 
         $this->add(new \ZippyERP\ERP\Blocks\Contact('contactdetail', $this, 'OnDetail'))->setVisible(false);
         $this->add(new \ZippyERP\ERP\Blocks\ContactView('contactview'))->setVisible(false);

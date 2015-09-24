@@ -1,6 +1,6 @@
 <html>
     <body >
-        <table width="400" border="0" cellspacing="0" cellpadding="2">
+        <table  class="ctable" width="400" border="0" cellspacing="0" cellpadding="2">
 
             <tr><td colspan="5">Контрагент: {$customer}</td></tr>
             <tr><td colspan="5" align="center"> <b>  Договор  № {$document_number}  от {$date}</b></td></tr>
@@ -9,7 +9,7 @@
             <tr><td colspan="5">{$description}</td> </tr>
 
 
-        </table>     
+        </table>
 
         <br>
     </body>

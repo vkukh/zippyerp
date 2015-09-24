@@ -1,0 +1,34 @@
+<html>
+
+    <body>
+        <div class="row">
+            <div class="col-xs-12">    
+                <h4>Переоценка в суммовом  учете</h4>
+                <form zippy="docform">
+                    <table    class="ctable">
+                        <tr>
+                            <td >Номер документа</td>
+                            <td >  <input type="text" zippy="document_number" required="required" ></td>
+                            <td >Дата</td>
+                            <td >    <input type="text" zippy="created" required="required"  ></td>
+                        </tr>
+                        <tr><td>Магазин</td><td ><select zippy="store"><option value="0">Выбрать</option></select></td><td>Учетная сумма:</td><td><span zippy="actual"></span></td></tr>
+                        <tr><td>Тип<td ><select zippy="type">
+                                    <option value="1">Переоценка</option>
+                                    <option value="2">Списание недостач</option>
+                                    <option value="3">Оприходование излишков</option>
+                                </select></td>
+                            <td>Новая сумма</td><td><input type="text" required="required"  zippy="summa" pattern= "[0-9\.]+"></td>                                </tr>
+                    </table>      
+                    <p>&nbsp;</p>
+                    <p>
+                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Выполнить"  class="btn btn-default btn-xs">  
+
+                    </p>
+                </form>
+            </div>   
+        </div>   
+
+    </body>
+</html>                        

@@ -4,7 +4,7 @@
 
     <body>
         <div class="row">
-            <div class="col-md-12">    
+            <div class="col-xs-12">    
                 <div zippy="customertable">
                     <h3>Справочник контрагентов </h3>
                     <table class="table table-bordered   table-condensed" style="width:400px">
@@ -16,13 +16,13 @@
                             <td zippy="customername"></td>
 
                             <td style="width:90px"> 
-                                <a zippy="edit"  title="Редактирование"><img src="/templates/images/edit.png"></a>
-                                <a zippy="editcontactlist"  title="Контакты"><img src="/templates/images/usercard.png"></a>
-                                <a zippy="delete" title="Удалить"><img src="/templates/images/delete.png"></a>
+                                <a zippy="edit"  title="Редактирование"><i class="icon-edit"></i></a>
+                                <a zippy="editcontactlist"  title="Контакты"><i class="icon-contact-businesscard"></i></a>
+                                <a zippy="delete" title="Удалить"><i class="icon-remove"></i></a>
                             </td>
                         </tr>
                     </table>
-                    <a zippy="add" class="btn btn-default btn-xs">Добавить юр. лицо</a> &nbsp;
+                    <a zippy="addnew" class="btn btn-default btn-xs">Добавить юр. лицо</a> &nbsp;
                     <a zippy="addf" class="btn btn-default btn-xs">Добавить физ. лицо</a> 
                 </div>
 
@@ -32,9 +32,9 @@
         </div>            
         <div class="row"> 
 
-             <H4>Редактирование контрагента</h4>
+            <H4>Редактирование контрагента</h4>
             <form zippy="customerdetail" method="post" >
-                <div class="col-md-4">  
+                <div class="col-xs-4">  
                     <div class="form-group">
                         <label for="editcustomername">Наименование</label>
                         <input class="form-control" zippy="editcustomername" />
@@ -75,7 +75,7 @@
                         <input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
                     </div>  
                 </div>    
-                <div class="col-md-3"> 
+                <div class="col-xs-3"> 
 
 
                     <div class="form-group">
@@ -106,7 +106,7 @@
 
         </div>
         <div class="row"> 
-            <div class="col-md-8" zippy="editcontacts"> 
+            <div class="col-xs-8" zippy="editcontacts"> 
 
                 Контакты контрагента <strong zippy="cname"></strong> <br>
                 <a zippy="toclist">К списку</a>
@@ -124,7 +124,7 @@
 
                         <td zippy="cemail"></td>
 
-                        <td style="width:75px"> <a zippy="cedit"  title="Редактирование"><img src="/templates/images/edit.png"></a> <a zippy="cshow"  title="Работа  с контентом"><img src="/templates/images/loupe.png"></a> <a zippy="cdelete" title="Удалить"><img src="/templates/images/delete.png"></a></td>
+                        <td style="width:75px"> <a zippy="cedit"  title="Редактирование"><i class="icon-edit"></i></a> <a zippy="cshow"  title="Работа  с контентом"><i class="icon-preview"></i></a> <a zippy="cdelete" title="Удалить"><i class="icon-remove"></i></a></td>
 
                     </tr>
                 </table>
@@ -135,7 +135,7 @@
 
             </div> 
 
-            <div class="col-md-8" >
+            <div class="col-xs-8" >
                 <div zippy="contactdetail">
 
                 </div>

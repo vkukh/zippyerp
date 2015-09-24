@@ -1,5 +1,7 @@
 <?php
 
+//todofirst
+
 namespace ZippyERP\ERP\Pages\Doc;
 
 use \ZippyERP\System\System;
@@ -35,8 +37,9 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "ftype=1")));
-        $this->docform->add(new CheckBox('tax'))->setChangeHandler($this, 'taxOnChange');
-        $this->docform->add(new DropDownChoice('customer'));
+        $this->docform->add(new CheckBox('tax'));
+        $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
+        ;
         $this->docform->add(new TextInput('amount'));
         $this->docform->add(new TextInput('nds'));
         $this->docform->add(new AutocompleteTextInput('basedoc'))->setAutocompleteHandler($this, 'OnAutocomplete');
@@ -46,7 +49,6 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
 
-        $this->taxOnChange(null);
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
@@ -63,8 +65,9 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
             $this->docform->basedoc->setKey($this->_doc->headerdata['basedoc']);
             $this->docform->basedoc->setText($this->_doc->headerdata['basedocname']);
 
-            $this->taxOnChange(null);
-            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+
+            $this->docform->customer->setKey($this->_doc->headerdata['customer']);
+            $this->docform->customer->setText($this->_doc->headerdata['customername']);
         } else {
             $this->_doc = Document::create('TransferOrder');
             $this->docform->document_number->setText($this->_doc->nextNumber());
@@ -77,13 +80,10 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function taxOnChange($sender)
+    public function OnAutoContragent($sender)
     {
-        if ($this->docform->tax->isChecked()) {    //уплата  налогов
-            $this->docform->customer->setOptionList(Customer::getGov());
-        } else {
-            $this->docform->customer->setOptionList(Customer::getBuyers());
-        }
+        $text = $sender->getValue();
+        return Customer::findArray('customer_name', "customer_name like '%{$text}%' ");
     }
 
     public function backtolistOnClick($sender)
@@ -93,8 +93,13 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
 
     public function savedocOnClick($sender)
     {
+        if ($this->docform->customer->getKey() <= 0) {
+            $this->setError('Не выбран  контрагент');
+            return;
+        }
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getValue(),
+            'customer' => $this->docform->customer->getKey(),
+            'customername' => $this->docform->customer->getText(),
             'bankaccount' => $this->docform->bankaccount->getValue(),
             'tax' => $this->docform->tax->getValue(),
             'notes' => $this->docform->notes->getText(),

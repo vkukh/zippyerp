@@ -1,0 +1,106 @@
+
+
+
+/* autocomplete */
+input.autocomplete-loading
+{
+    background-image:url(images/autocomplete.gif);
+    background-position: center right;
+    background-repeat:no-repeat;
+}
+
+ul.autocomplete
+{
+
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid ButtonShadow;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    color: #000;
+    display:none;
+    z-index:1000;
+
+}
+ul.autocomplete li
+{
+  display: block;
+  padding: 2%;
+  overflow: hidden;
+  width: 100%;
+  cursor:pointer;
+}
+
+ul.autocomplete li.selected
+{
+  background-color: Highlight ;
+  color: #fff;
+}
+
+
+/*  Datatable         */
+
+table.datatable{
+
+}
+
+table.datatable  tr.headerrow{
+
+}
+
+table.datatable  th.headercell{
+   background-color: #AAAAAA;
+   color:white;
+}
+
+table.datatable .desc{
+
+    background-image: url("images/ui-icons_0073ea_256x240.png");
+    background-position: 0 -16px;
+    height: 16px;
+    width: 16px;
+
+}
+
+table.datatable .asc{
+
+    background-image: url("images/ui-icons_0073ea_256x240.png");
+    background-position: -64px -16px;
+    height: 16px;
+    width: 16px;
+
+}
+
+table.datatable .nosort{
+
+}
+
+
+
+table.datatable  tr.datarow{
+
+}
+
+table.datatable  tr.odd{
+    background-color: #EDEDED;
+}
+
+table.datatable  tr.even{
+    background-color: #DEDEDE;
+}
+
+table.datatable  td.datacell{
+
+}
+
+table.datatable  td.footercell{
+    background-color: #EEEEFF;
+}
+
+
+
+
+
+
+

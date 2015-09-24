@@ -32,7 +32,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('employeetable'))->setVisible(true);
         $this->employeetable->add(new DataView('employeelist', new EDS('\ZippyERP\ERP\Entity\employee'), $this, 'employeelistOnRow'))->Reload();
-        $this->employeetable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
+        $this->employeetable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
         $this->add(new Form('employeedetail'))->setVisible(false);
         $this->employeedetail->add(new AutocompleteTextInput('editcontact'))->setAutocompleteHandler($this, "onContact");
         $this->employeedetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');

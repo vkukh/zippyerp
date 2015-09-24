@@ -10,7 +10,6 @@ use \Zippy\Html\Label;
 use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Panel;
 use \Zippy\Html\Link\RedirectLink;
-use \Zippy\Interfaces\Binding\PropertyBinding as Bund;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\System\Application as App;
 use \ZippyERP\System\System;
@@ -32,8 +31,8 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
         $this->filter->add(new Date('from', strlen($filter->from) > 0 ? $filter->from : time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', strlen($filter->to) > 0 ? $filter->to : time()));
-        $this->filter->add(new DropDownChoice('dt', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_code not in (select acc_pid  from erp_account_plan)")));
-        $this->filter->add(new DropDownChoice('ct', \ZippyERP\ERP\Entity\Account::findArray("acc_name", "acc_code not in (select acc_pid  from erp_account_plan)")));
+        $this->filter->add(new DropDownChoice('dt', \ZippyERP\ERP\Entity\Account::findArrayEx(  "acc_code not in (select acc_pid  from erp_account_plan)")));
+        $this->filter->add(new DropDownChoice('ct', \ZippyERP\ERP\Entity\Account::findArrayEx(  "acc_code not in (select acc_pid  from erp_account_plan)")));
         if (strlen($filter->dt) > 0)
             $this->filter->dt->setValue($filter->dt);
         if (strlen($filter->ct) > 0)
@@ -64,7 +63,7 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('acc_c', $item->acc_c));
         $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
 
-        $row->add(new Label('created', date('d-m-Y', $item->created)));
+        $row->add(new Label('created', date('d-m-Y', $item->document_date)));
         $row->add(new ClickLink('show', $this, 'showOnClick'))->setValue($item->meta_desc . ' ' . $item->document_number);
     }
 
@@ -89,7 +88,7 @@ class EntryDataSource implements \Zippy\Interfaces\DataSource
 
         $filter = Filter::getFilter("entrylist");
 
-        $where = " date(created) >= " . $conn->DBDate($filter->from) . " and  date(created) <= " . $conn->DBDate($filter->to);
+        $where = " date(document_date) >= " . $conn->DBDate($filter->from) . " and  date(document_date) <= " . $conn->DBDate($filter->to);
 
         if ($filter->dt > 0) {
             $where .= " and (acc_d = " . $filter->dt . " or acc_c = " . $filter->dt . ")";
@@ -108,12 +107,12 @@ class EntryDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Entry::find($this->getWhere(), "created", "desc");
+        return Entry::find($this->getWhere(), "document_date", "desc");
     }
 
     public function getItem($id)
     {
-        
+
     }
 
 }

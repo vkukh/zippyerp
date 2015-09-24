@@ -14,12 +14,13 @@ use \Zippy\Html\Panel;
 use \Zippy\Html\Link\RedirectLink;
 use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Filter;
-use \Zippy\Interfaces\Binding\PropertyBinding as Bund;
 use \ZippyERP\ERP\Entity\Doc\Document;
 use \ZippyERP\System\Application as App;
 use \ZippyERP\System\System;
 use \ZippyERP\System\Session;
 use \Zippy\Html\DataList\Paginator;
+
+//use Pinq\ITraversable ;
 
 /**
  * журнал  докуметов
@@ -28,7 +29,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
 {
 
     /**
-     * 
+     *
      * @param mixed $docid  Документ  должен  быть  показан  в  просмотре
      * @return DocList
      */
@@ -86,7 +87,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('name', $item->meta_desc));
         $row->add(new Label('number', $item->document_number));
         $row->add(new Label('date', date('d-m-Y', $item->document_date)));
-        $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount ) : ""));
+        $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
 
         $row->add(new Label('state', Document::getStateName($item->state)));
         // $row->add(new Label('created', date('d-m-Y', $item->created)));
@@ -208,7 +209,12 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Document::find($this->getWhere(), "created ", "desc", $count, $start);
+        $docs = Document::find($this->getWhere(), "created ", "desc", $count, $start);
+
+        //$l = Traversable::from($docs);
+        //$l = $l->where(function ($doc) {return $doc->document_id == 169; }) ;
+        //$l = $l->select(function ($doc) { return $doc; })->asArray() ;
+        return $docs;
     }
 
     public function getItem($id)

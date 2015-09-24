@@ -1,6 +1,6 @@
 <html>
     <body>
-        <table   border="0" cellspacing="0" cellpadding="2">
+        <table  class="ctable"   border="0" cellspacing="0" cellpadding="2">
             <tr><th width="30">&nbsp;</th><th  width="100" >&nbsp;</th><th  width="130" >&nbsp;</th><th  width="50">&nbsp;</th><th width="50">&nbsp;</th><th width="60">&nbsp;</th><th width="80">&nbsp;</th></tr>
 
             <tr ><td> </td><td  >Поствщик</td><td >{$firmname}</td><td> </td> <td colspan="3" style="font-size:larger;font-weight:bolder; ">Счет-фактура</td></tr>
@@ -14,7 +14,7 @@
 
             <tr >
                 <td colspan="7" >
-                    <br>Основание:{$base}<br>   
+                    <br>Основание:{$base}<br>
                 </td>
             </tr>
 
@@ -23,17 +23,16 @@
                 <tr ><td align="right" >{$item.no}<td  colspan="2">{$item.tovar_name}</td><td>{$item.measure}</td><td align="right">{$item.quantity}</td><td align="right">{$item.price}</td><td align="right">{$item.amount}</td></tr>
                     {/foreach}
             <tr style="font-weight: bolder;" ><td style="border-top:1px #000 solid;"  colspan="6"  align="right" >Всего:</td><td style="border-top:1px #000 solid;" align="right" >{$total}</td></tr>
-            <tr style="font-weight: bolder;" ><td  colspan="6"  align="right" >НДС:</td><td align="right">{$nds}</td></tr>
             <tr style="font-weight: bolder;" ><td  colspan="6"  align="right" >Всего  с  НДС:</td><td align="right" >{$totalnds}</td></tr>
             <tr  ><td  colspan="7"  valign="middle" ><br><br><span>Всего на сумму:</span> <span style="font-weight: bolder;">{$summa}</span> <br><br><br></td></tr>
 
             <tr >  <td> </td>
                 <td colspan="2"  >
-                    К  оплате  до <b>{$paydate}</b>  
+                    К  оплате  до <b>{$paydate}</b>
                 </td>
                 <td  colspan="4">
-                    Выписал  
-                </td>     
+                    Выписал
+                </td>
 
             </tr>
         </table>

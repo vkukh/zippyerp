@@ -119,7 +119,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $f->save();
         }
 
-        \ZippyERP\System\System::setOptions("firmdetail",$detail) ;
+        \ZippyERP\System\System::setOptions("firmdetail", $detail);
     }
 
     public function saveCommonOnClick($sender)

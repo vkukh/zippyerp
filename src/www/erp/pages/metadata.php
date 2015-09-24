@@ -7,6 +7,7 @@ use \ZippyERP\System\Application as App;
 use \Zippy\Html\Panel;
 use \Zippy\Html\Form\Form;
 use \Zippy\Html\Link\ClickLink;
+use \Zippy\Html\Link\RedirectLink;
 use \Zippy\Html\DataList\DataView;
 use \Zippy\Html\Label;
 use \Zippy\Html\Image;
@@ -41,6 +42,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $this->listpan->filter->add(new CheckBox('fpage'))->setChecked(true);
         $this->listpan->add(new ClickLink('addnew'))->setClickHandler($this, 'addnewOnClick');
         $this->listpan->add(new DataView('metarow', $this->metadatads, $this, 'metarowOnRow'))->Reload();
+
         $this->add(new Panel('editpan'))->setvisible(false);
         $this->editpan->add(new Form('editform'))->setSubmitHandler($this, 'editformOnSubmit');
         $this->editpan->editform->add(new TextInput('meta_id'));
@@ -52,6 +54,9 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $this->editpan->editform->add(new DropDownChoice('edit_meta_type'));
         $this->editpan->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');
         $this->editpan->editform->add(new DataView('rolerow', $this->roleaccessds, $this, 'rolerowOnRow'));
+        //  $this->editpan->editform->add(new Panel('eipan'));
+        //  $this->editpan->editform->eipan->add(new RedirectLink('exportzip', ""));
+        //   $this->editpan->editform->eipan->add(new \Zippy\Html\Form\File('importfile'));
     }
 
     public function filterOnSubmit($sender)
@@ -83,6 +88,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
     {
         $this->listpan->setVisible(false);
         $this->editpan->setVisible(true);
+        //   $this->editpan->editform->eipan->setVisible(false);
         $this->editpan->editform->meta_id->setText(0);
 
         $this->roleaccessds->setArray(ACL::getRoleAccess(0));
@@ -100,29 +106,27 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $item = $row->getDataItem();
         $row->setAttribute('style', $item->disabled == 1 ? 'color: #aaa' : null);
         switch ($item->meta_type) {
-            case 1: $icon = "document.png";
+            case 1:
                 $title = "Документ";
                 break;
-            case 2: $icon = "report.png";
+            case 2:
                 $title = "Отчет";
                 break;
-            case 3: $icon = "register.png";
+            case 3:
                 $title = "Журнал";
                 break;
-            case 4: $icon = "reference.png";
+            case 4:
                 $title = "Справочник";
                 break;
-            case 5: $icon = "page.png";
+            case 5:
                 $title = "Страница";
                 break;
         }
 
-        $img = $row->add(new Image('meta_type'));
-        $img->setAttribute("src", "/templates/images/" . $icon);
-        $img->setAttribute("title", $title);
         $row->add(new Label('description', $item->description));
         $row->add(new Label('meta_name', $item->meta_name));
         $row->add(new Label('menugroup', $item->menugroup));
+        $row->add(new Label('type', $title));
         $row->add(new ClickLink('rowedit'))->setClickHandler($this, 'roweditOnClick');
         $row->add(new ClickLink('rowdelete'))->setClickHandler($this, 'rowdeleteOnClick');
     }
@@ -142,9 +146,12 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
 
         $this->listpan->setVisible(false);
         $this->editpan->setVisible(true);
-
+        //   $form->eipan->setVisible(true);
         $this->roleaccessds->setArray(ACL::getRoleAccess($item->meta_id));
         $this->editpan->editform->rolerow->Reload();
+
+        //  $form->eipan->exportzip->pagename = $reportpage;
+        //   $form->eipan->exportzip->params = array('metaie', $item->meta_id);
     }
 
     public function rowdeleteOnClick($sender)
@@ -176,6 +183,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         ACL::updateRoleAccess($item->meta_id, $this->getComponent('rolerow')->getDataRows());
         $this->listpan->setVisible(true);
         $this->editpan->setVisible(false);
+
         $this->listpan->metarow->Reload();
         //обнуляем  поля   формы
         $this->editpan->editform->edit_description->setText('');

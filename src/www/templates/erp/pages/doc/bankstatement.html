@@ -1,28 +1,30 @@
 <html>
     <body>
-        <div class="row">
-            <div class="col-md-12">  
-                <strong>Банковская выписка</strong>
-                <form zippy="docform">
 
-                    <table  border="0" cellpadding="1">
-                        <tr>
-                            <td >Номер документа</td>
-                            <td >  <input type="text" zippy="document_number" required="required" style="width:100px"></td>
-                            <td >Дата</td>
-                            <td >    <input type="text" zippy="created" required="required"  ></td>
-                        </tr>
-                        <tr>
-                            <td >Расчетный счет</td>
-                            <td colspan="3"> <select zippy="bankaccount">
-                                </select> </td>  </tr>
-                        <tr>  <td >Коментарий</td>
-                            <td  colspan="3"><input zippy="notes" style="width:200px"></td>
-                        </tr>
 
-                    </table>
+        <form zippy="docform">
+            <strong>Банковская выписка</strong>
+            <div class="row">
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <label for="document_number" class="  control-label">Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required"     >
+                    </div>
+                    <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Дата</label>
+                        <input class="form-control" type="text" zippy="document_date" required="required"       >
+                    </div>
+                    <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Расчетный счет</label>
+                        <select class="form-control" zippy="bankaccount">                                </select>
+                    </div>
 
-                    <table  border="0" cellpadding="1"  width="500px">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <table  class="table"  >
                         <tr >
                             <th >Тип</th>
                             <th width="60">Сумма</th>
@@ -37,34 +39,72 @@
                             <td zippy="document" ></td>
                             <td zippy="customer" ></td>
                             <td zippy="comment" ></td>
-                            <td><a  zippy="delete"><img src="/templates/images/delete.png"></a> </td>
+                            <td><a  zippy="delete"><i class="icon-remove"></i></a> </td>
                         </tr>
                     </table>
                     <a zippy="addrow">Добавить строку</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default ">&nbsp;
+                    <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default ">&nbsp;
+                    <input zippy="execdoc" type="submit"  value="Выполнить" class="btn btn-default ">
+                </div>
+            </div>
+
+        </form>
+        <form zippy="editdetail">
+            <h4>Новая  строка</h4>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Тип операции</label>
+                        <select class="form-control" zippy="editoptype" > <option value="0">Выбрать</option></select>                               </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editcustomer" for="editcustomer" class="  control-label">Контрагент</label>
+                        <input class="form-control" type="text" zippy="editcustomer" required="required"     >
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editdoc" for="editdoc" class="  control-label">Документ</label>
+                        <input class="form-control" type="text" zippy="editdoc"      >
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editpayment" for="editdoc" class="  control-label">Тип  платежа</label>
+                        <select class="form-control" zippy="editpayment" ><option value="0">Выбрать</option></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label   for="editamount" class="  control-label">Сумма</label>
+                        <input class="form-control"   type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  style="width: 100px;" ></input>
+                    </div>
+                    <div class="form-group">
+                        <label  data-label="editnds"  for="editnds" class="  control-label">Ндс</label>
+                        <input class="form-control"   type="text" zippy="editnds" required="required" pattern= "[0-9\.]+"  style="width: 100px;" ></input>
+                    </div>
 
 
-                    <p>&nbsp;</p>
-                    <p>
-                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">&nbsp;  <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs">&nbsp;   <input zippy="execdoc" type="submit"  value="Выполнить" class="btn btn-default btn-xs"> 
-                    </p>
 
-                </form>
-                <form zippy="editdetail">
-                    <strong>Новая  строка</strong>
-                    <table  border="0" >
-                        <tr><td>Тип операции</td><td><select zippy="editoptype" > <option value="0">Выбрать</option></select> 
-                        <tr><td><span data-label="editcustomer">Контрагент</span></td><td><select zippy="editcustomer" ><option value="0">Выбрать</option></select> </td></tr>
-                        <tr><td><span data-label="editdoc">Документ</span></td><td><input zippy="editdoc" ></td></tr>
-                        <tr><td><span data-label="editpayment">Тип  платежа</span></td><td><select zippy="editpayment" ><option value="0">Выбрать</option></select></td></tr>
-                        <tr><td>Сумма</td><td><input type="text" zippy="editamount" required="required" pattern= "[0-9\.]+"  style="width: 75px;" ></input></td></tr>
-                        <tr><td><span data-label="editnds">Ндс</span></td><td><input type="text" zippy="editnds"  pattern= "[0-9\.]+"  style="width: 75px;" ></input></td></tr>
-                        <tr><td>Комментарий</td><td><input type="text" zippy="editcomment"    ></td></tr>
-                        <tr><td>Не выполнять проводки</td><td><input type="checkbox" zippy="editnoentry"></td></tr>
-                        <tr><td><input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default btn-xs"> </td><td><input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default btn-xs"> </td></tr>
-                    </table>
-                </form>
-            </div> 
-        </div>   
+
+                    <div class="form-group">
+                        <label   for="editcomment" class="  control-label"> Комментарий</label>
+                        <input class="form-control" type="text" zippy="editcomment"    >
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" zippy="editnoentry"> Не выполнять проводки
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default ">&nbsp;<input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default ">
+                    </div>
+                </div>
+            </div>
+        </form>
 
     </body>
 </html>

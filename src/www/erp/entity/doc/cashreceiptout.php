@@ -5,11 +5,11 @@ namespace ZippyERP\ERP\Entity\Doc;
 use \ZippyERP\ERP\Entity\MoneyFund;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Entity\Customer;
-
+use \ZippyERP\ERP\Entity\SubConto;
 
 /**
  * Класс-сущность  документ  расходный кассовый  ордер
- * 
+ *
  */
 class CashReceiptOut extends Document
 {
@@ -22,28 +22,24 @@ class CashReceiptOut extends Document
     {
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
-            "notes" => $this->headerdata['notes'],            
+            "notes" => $this->headerdata['notes'],
             "amount" => \ZippyERP\ERP\Helper::fm($this->headerdata["amount"])
         );
-         $optype = $this->headerdata['optype'];
-         
+        $optype = $this->headerdata['optype'];
+
         if ($optype == self::TYPEOP_CUSTOMER) {
-            $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["opdetail"]);
-            $header['opdetail']  =  $customer->customer_name;
-            $header['optype']  =  "Оплата поставщику";
+
+            $header['optype'] = "Оплата поставщику";
         }
         if ($optype == self::TYPEOP_CASH) {
-            $emp = \ZippyERP\ERP\Entity\Employee::load($this->headerdata["opdetail"]);
-            $header['opdetail']  =  $emp->shortname;
-            $header['optype']  =  "В  подотчет";
+
+            $header['optype'] = "В  подотчет";
         }
         if ($optype == self::TYPEOP_BANK) {
-            $mf = \ZippyERP\ERP\Entity\MoneyFund::load($this->headerdata["opdetail"]);
-            $header['opdetail']  =  $mf->title;
-            $header['optype']  =  "Перечисление на счет";
-          
+
+            $header['optype'] = "Перечисление на счет";
         }
-        
+        $header['opdetail'] = $this->headerdata["opdetailname"];
         $report = new \ZippyERP\ERP\Report('cashreceiptout.tpl');
 
         $html = $report->generate($header);
@@ -54,21 +50,33 @@ class CashReceiptOut extends Document
     public function Execute()
     {
         $mf = MoneyFund::getCash();
-        $optype = $this->header['optype'];
+        $optype = $this->headerdata['optype'];
         if ($optype == self::TYPEOP_CUSTOMER) {
-           // Customer::AddActivity($this->headerdata['opdetail'],0-$this->headerdata['amount'], $this->document_id);
-            $ret = Entry::AddEntry(63, 30, $this->headerdata['amount'], $this->document_id,$this->headerdata['opdetail'],$mf->id);
-           
+            $ret = Entry::AddEntry(63, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc->setCustomer($this->headerdata['opdetail']);
+            $sc->setAmount($this->headerdata['amount']);
+            $sc->save();
         }
         if ($optype == self::TYPEOP_CASH) {
-              $ret = Entry::AddEntry(372, 30, $this->headerdata['amount'], $this->document_id,$this->headerdata['opdetail'],$mf->id);
-            
+            $ret = Entry::AddEntry(372, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this->document_id, $this->document_date, 372);
+            $sc->setEmployee($this->headerdata['opdetail']);
+            $sc->setAmount($this->headerdata['amount']);
+            $sc->save();
         }
         if ($optype == self::TYPEOP_BANK) {
-              $ret = Entry::AddEntry(31, 30, $this->headerdata['amount'], $this->document_id,$this->headerdata['opdetail'],$mf->id);
-          
+            $ret = Entry::AddEntry(31, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this->document_id, $this->document_date, 31);
+            $sc->setMoneyfund($this->headerdata['opdetail']);
+            $sc->setAmount($this->headerdata['amount']);
+            $sc->save();
         }
-
+        //касса
+        $sc = new SubConto($this->document_id, $this->document_date, 30);
+        $sc->setMoneyfund($this->headerdata['opdetail']);
+        $sc->setAmount(0 - $this->headerdata['amount']);
+        $sc->save();
         return true;
     }
 

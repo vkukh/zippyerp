@@ -47,6 +47,7 @@ function getTemplate($templatepath, $className, $layout = '')
 
 function Route($uri)
 {
+    global  $logger;
     $api = explode('/', $uri);
 
     if ($api[0] == 'api' && count($api) > 2) {
@@ -68,7 +69,8 @@ function Route($uri)
                 $page = new $class;
                 $response = call_user_func_array(array($page, $api[2]), $params);
             } catch (Exception $e) {
-                Logger::getLogger("api")->error($e->getMessage(), e);
+         
+        $logger->error($e->getMessage(), e);
                 $response = "<error>" . $e->getMessage() . "</error>";
             }
         }

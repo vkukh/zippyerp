@@ -24,7 +24,7 @@ use ZippyERP\ERP\Entity\Entry;
 use ZippyERP\ERP\Helper as H;
 
 /**
- * Банковская   выписка 
+ * Банковская   выписка
  */
 class BankStatement extends \ZippyERP\ERP\Pages\Base
 {
@@ -36,9 +36,9 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     {
         parent::__construct();
         $this->add(new Form('docform'));
-        $this->docform->add(new Date('created', time()));
+        $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new TextInput('notes'));
+
         $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "ftype=1")));
 
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
@@ -48,7 +48,8 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes()))->setChangeHandler($this, 'typeOnClick');
-        $this->editdetail->add(new DropDownChoice('editcustomer'));
+        $this->editdetail->add(new AutocompleteTextInput('editcustomer'))->setAutocompleteHandler($this, "OnAutoContragent");
+        ;
         $this->editdetail->add(new DropDownChoice('editpayment'))->setOptionList(\ZippyERP\ERP\Consts::getTaxesList());
         $this->editdetail->editpayment->setVisible(false);
         $docinput = $this->editdetail->add(new AutocompleteTextInput('editdoc'));
@@ -65,16 +66,16 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->_doc = Document::load($docid);
 
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->notes->setText($this->_doc->notes);
+
             $this->docform->bankaccount->setValue($this->_doc->headerdata['bankaccount']);
-            $this->docform->created->setText(date('Y-m-d', $this->_doc->document_date));
+            $this->docform->document_date->setText(date('Y-m-d', $this->_doc->document_date));
 
 
             foreach ($this->_doc->detaildata as $item) {
                 $entry = new Entry($item);
                 $this->_list[$entry->entry_id] = $entry;
             }
-            $this->docform->created->setText(date('Y-m-d', $this->_doc->document_date));
+            $this->docform->document_date->setText(date('Y-m-d', $this->_doc->document_date));
         } else {
             $this->_doc = Document::create('BankStatement');
         }
@@ -115,11 +116,14 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     {
 
         $doc = $this->editdetail->editdoc->getKey();
-        if ($doc == 0) {
+        if ($doc == 0 && $this->editdetail->editdoc->isVisible()) {
             $this->setError("Не выбран документ  или счет");
             return;
         }
-
+        if ($this->editdetail->editcustomer->isVisible() && $this->editdetail->editcustomer->getKey() <= 0) {
+            $this->setError('Не выбран  контрагент');
+            return;
+        }
 
         $entry = new Entry();   //используем   класс  проводки  для   строки
         $entry->optype = $this->editdetail->editoptype->getValue();
@@ -127,11 +131,9 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
 
         $entry->doc = $this->editdetail->editdoc->getKey();
         $entry->docnumber = $this->editdetail->editdoc->getValue();
-        $entry->customer = $this->editdetail->editcustomer->getValue();
-        if ($entry->customer > 0) {
-            $list = $this->editdetail->editcustomer->getOptionList();
-            $entry->customername = $list[$entry->customer];
-        }
+        $entry->customer = $this->editdetail->editcustomer->getKey();
+        $entry->customername = $this->editdetail->editcustomer->getText();
+
         $entry->amount = $this->editdetail->editamount->getText() * 100;
         $entry->nds = $this->editdetail->editnds->getText() * 100;
         $entry->tax = $this->editdetail->editpayment->getValue();
@@ -148,7 +150,10 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editpayment->setValue(0);
         $this->editdetail->editdoc->setKey(0);
         $this->editdetail->editdoc->setText('');
-        $this->editdetail->editcustomer->setOptionList(array());
+        $this->editdetail->editcustomer->setKey(0);
+        ;
+        $this->editdetail->editcustomer->setText('');
+        ;
         $this->editdetail->editamount->setText("0");
         $this->editdetail->editnds->setText("0");
         $this->editdetail->editcomment->setText("");
@@ -175,9 +180,9 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->_doc->amount = $total;
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->notes = $this->docform->notes->getText();
+
         $this->_doc->headerdata['bankaccount'] = $this->docform->bankaccount->getValue();
         $isEdited = $this->_doc->document_id > 0;
 
@@ -189,12 +194,12 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
         }
 
-        App::Redirect('\ZippyERP\ERP\Pages\Register\DocList', $this->_doc->document_id);
+        App::RedirectBack();
     }
 
     /**
      * Валидация   формы
-     * 
+     *
      */
     private function checkForm()
     {
@@ -203,20 +208,13 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не введена ни одна строка");
             return false;
         }
-        /*  if (strlen($this->docform->basedoc->getValue()) > 0) {
-          if ($this->docform->basedoc->getKey() > 0) {
 
-          } else {
-          $this->setError("Неверно введен документ-основание");
-          return false;
-          }
-          } */
         return true;
     }
 
     public function backtolistOnClick($sender)
     {
-        App::Redirect("\\ZippyERP\\ERP\\Pages\\Register\\DocList");
+        App::RedirectBack();
     }
 
     public function typeOnClick($sender)
@@ -224,14 +222,9 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editnds->setVisible(true);
         $this->editdetail->editdoc->setVisible(true);
         $list = array();
-        if ($sender->getValue() == BS::IN) {
-            $list = Customer::getBuyers();  //если  приход то  продавцы
-        }
-        if ($sender->getValue() == BS::OUT) {
-            $list = Customer::getSellers();  //если  расход  то  покупатели
-        }
+
         if ($sender->getValue() == BS::TAX) {
-            $list = Customer::getGov();  // оплата  налогов  и  сборов
+
             $this->editdetail->editnds->setVisible(false);
             $this->editdetail->editdoc->setVisible(false);
             $this->editdetail->editpayment->setVisible(true);
@@ -245,7 +238,30 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->editdetail->editcustomer->setVisible(true);
         }
-        $this->editdetail->editcustomer->setOptionList($list);
+        $this->editdetail->editcustomer->setKey(0);
+        ;
+        $this->editdetail->editcustomer->setText('');
+        ;
+    }
+
+    public function OnAutoContragent($sender)
+    {
+        $type = $this->editdetail->editoptype->getValue();
+        $text = $sender->getValue();
+        $where = "";
+        if ($type == BS::IN) {
+            //если  приход то  продавцы
+            $where = "  and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+        }
+        if ($type == BS::OUT) {
+            //если  расход  то  покупатели
+            $where = "  and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+        }
+        if ($type == BS::TAX) {
+            // оплата  налогов  и  сборов
+            $where = "  and  cust_type=" . Customer::TYPE_GOV;
+        }
+        return Customer::findArray('customer_name', "customer_name like '%{$text}%'  " . $where);
     }
 
     public function OnDocAutocomplete($sender)

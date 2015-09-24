@@ -2,7 +2,7 @@
     <body >
 
         <div class="row">
-            <div class="col-md-12">  
+            <div class="col-xs-12">
 
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="active"><a href="#commontab" data-toggle="tab">Общие</a></li>
@@ -10,15 +10,15 @@
                 </ul>
                 <div class="tab-content">
                     <div  id="commontab" class="tab-pane  active" >
-                        <form  class=" col-sm-4" role="form" zippy="common" method="post" >
+                        <form  class=" col-xs-4" role="form" zippy="common" method="post" >
                             <div class="form-group">
-                                <label for="closeddate" class=" control-label ">Дата  закрытия периода</label>
+                                <label for="closeddate"  >Дата  закрытия периода</label>
                                 <input type="text" class="form-control " zippy="closeddate" >
-                            </div>  
+                            </div>
                             <div class="form-group">
-                                <label for="nds" class=" control-label ">НДС %</label>
+                                <label for="nds"  >НДС %</label>
                                 <input type="text" class="form-control " zippy="nds" >
-                            </div>  
+                            </div>
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" zippy="hasnds"> Плательщик НДС
@@ -34,104 +34,98 @@
                                     <input type="checkbox" zippy="juridical"> Юридическое  лицо
                                 </label>
                             </div>
-                            <input zippy="commonsave" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
+                            <input zippy="commonsave" type="submit" value="Сохранить" class="btn btn-default  ">
 
                         </form>
-                    </div> 
+                    </div>
 
 
                     <div  id="attrtab" class="tab-pane  " >
 
-                        <form zippy="detail" method="post" >
-                            <table><tr><td  valign="top">
-                                        <table  border="0" cellpadding="2">
-                                            <tr>
-                                                <td>Наименование</td>
-                                                <td><input type="text" zippy="name" required="required"></td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="top" >Город</td>
-                                                <td><input type="text" zippy="city" required="required"></td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="top" >Улица, дом</td>
-                                                <td><input type="text" zippy="street" required="required"></td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="top" >Телефон</td>
-                                                <td><input type="tel" zippy="phone" ></td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="top" >Email</td>
-                                                <td><input type="email" zippy="email"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" ></td>
-                                            </tr> 
-                                            <tr>
-                                                <td valign="top" >Директор</td>
-                                                <td><input type="text" zippy="manager" ></td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="top" >Бухгалтер</td>
-                                                <td><input type="text" zippy="accounter" ></td>
-                                            </tr> 
-                                                                                         <tr>
-                                                <td valign="top">Основной счет</td>
-                                                <td>Банк<br>
-                                                    <select zippy="bank">
-                                                    </select><br>Номер счета<br>
-                                                    <input type="number" zippy="bankaccount" >
-                                                </td>
-                                            </tr>
-                                        </table>
+                        <form zippy="detail" method="post"   role="form">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label for="name"  >Наименование</label>
+                                        <input type="text" class="form-control " zippy="name" required="required">
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="city"  >Город</label>
+                                        <input type="text" class="form-control " zippy="city"  >
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="street"  >Улица, дом</label>
+                                        <input type="text" class="form-control " zippy="street"  >
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="phone"  >Телефон</label>
+                                        <input type="text" class="form-control " zippy="phone"  >
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="email"  >Email</label>
+                                        <input type="text" class="form-control " zippy="email"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="manager"  >Директор</label>
+                                        <input type="text" class="form-control " zippy="manager"  >
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="accounter"  >Бухгалтер</label>
+                                        <input type="text" class="form-control " zippy="accounter"   >
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="bankaccount"  >Номер основного счета</label>
+                                        <input   class="form-control " type="number" zippy="bankaccount"   >
+                                    </div>                         
+                                    <div class="form-group">
+                                        <label for="bank"  >В банке</label>
+                                        <select zippy="bank" class="form-control ">
+                                        </select>
+                                    </div>                         
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="form-group">
+                                        <label for="edrpou"  >ЄДРПОУ</label>
+                                        <input  class="form-control " zippy="edrpou"  >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="koatuu"  >КОАТУУ</label>
+                                        <input  class="form-control " type="number" zippy="koatuu"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kopfg"  >КОПФГ</label>
+                                        <input  class="form-control " type="number" zippy="kopfg"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kodu"  >КОДУ</label>
+                                        <input  class="form-control " type="number" zippy="kodu"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kved"  >КВЕД</label>
+                                        <input  class="form-control " type="number" zippy="kved"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gni"  >Код ГНИ</label>
+                                        <input  class="form-control " type="number" zippy="gni"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inn"  >ИНН</label>
+                                        <input  class="form-control " type="number" zippy="inn"   >
+                                    </div>
 
-                                    </td><td valign="top">
-                                        <table  border="0" cellpadding="2">
-
-                                            <tr>
-                                                <td >ЄДРПОУ</td>
-                                                <td><input  zippy="edrpou" ></td>
-                                            </tr>
-                                            <tr>
-                                                <td >КОАТУУ</td>
-                                                <td><input type="number" zippy="koatuu" ></td>
-                                            </tr>
-                                            <tr>
-                                                <td >КОПФГ</td>
-                                                <td><input type="number" zippy="kopfg" ></td>
-                                            </tr>
-                                            <tr>
-                                                <td >КОДУ</td>
-                                                <td><input type="number" zippy="kodu" ></td>
-                                            </tr>
-                                           <tr>
-                                                <td >КВЕД</td>
-                                                <td><input type="number" zippy="kved" ></td>
-                                            </tr>
-                                         <tr>
-                                                <td >Код ГНИ</td>
-                                                <td><input type="number" zippy="gni" ></td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <td >ИНН</td>
-                                                <td><input type="number" zippy="inn" ></td>
-                                            </tr>
+                                </div>
+                            </div>   
 
 
-                                        </table>
 
-                                    </td> 
-                                </tr>
-                                <tr>
-                                    <td colspan=2><input zippy="detailsave" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
+                            <input zippy="detailsave" type="submit" value="Сохранить" class="btn btn-default ">
 
-                                </tr>
-
-                            </table>
                         </form>
+                        <br>
+                        <br>
 
 
-
-                    </div> 
+                    </div>
 
                 </div>
             </div>

@@ -1,45 +1,61 @@
 <html>
 
     <body>
-        <div class="row">
-            <div class="span12">    
-                <h4>Расходный кассовый ордер</h4>
-                <form zippy="docform">
-                    <table  border="0" cellpadding="1">
-                        <tr>
-                            <td >Номер документа</td>
-                            <td >  <input type="text" zippy="document_number" required="required" ></td>
-                            <td >Дата</td>
-                            <td >    <input type="text" zippy="created" required="required"  ></td>
-                        </tr>
-                        <tr><td  >Тип  операции</td>
-                            <td ><select zippy="optype" >
-                                </select></td>
-                            <td zippy="lblopdetail" ></td>
-                            <td ><select zippy="opdetail" ></select></td>
-                        </tr>
-                        <tr>
-                            <td >Сумма</td>
-                            <td colspan="3">  <input type="text" zippy="amount" required="required" pattern= "[0-9\.]+"  style="width: 60px;" ></td>
-                            
-                        </tr>                        
-                        <tr><td  >Документ - основание</td>
-                            <td > <input type="text" zippy="basedoc"></td>
-                            <td >Примечание</td>
-                            <td ><input type="text" zippy="notes"></td>
-                        </tr>
+        <h4>Расходный кассовый ордер</h4>
 
-                    </table>
-                    <p>&nbsp;</p>
-                    <p>
-                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
-                        <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default btn-xs"> 
-                        &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default btn-xs">  
 
-                    </p>                        
-                </form>
-            </div>   
-        </div>   
+
+        <form zippy="docform">
+            <div class="row">
+                <div class="col-xs-4">
+
+                    <div class="form-group">
+                        <label for="optype" class="  control-label"> Тип  операции</label>
+                        <select class="form-control" zippy="optype" >       </select>
+                    </div>
+                    <div class="form-group">
+                        <label zippy="lblopdetail" for="opdetail" class="  control-label"> </label>
+                        <input class="form-control" type="text" zippy="opdetail"   placeholder="Начните ввод"      >
+                    </div>
+                    <div class="form-group">
+                        <label  for="basedoc" class="  control-label"> Документ - основание</label>
+                        <input class="form-control" type="text" zippy="basedoc"         >
+                    </div>
+                    <div class="form-group">
+                        <label   for="notes" class="  control-label"> Примечание</label>
+                        <textarea class="form-control"  zippy="notes"     ></textarea>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <label for="document_number" class="  control-label">Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required"     >
+                    </div>
+                    <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Дата</label>
+                        <input class="form-control" type="text" zippy="document_date" required="required"       >
+                    </div>
+                    <div class="form-group">
+                        <label   for="amount" class="  control-label"> Сумма</label>
+                        <input class="form-control" type="text" zippy="amount" required="required"   pattern= "[0-9\.]+" >
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div  class="row">
+                <div  class="col-xs-6">
+                    <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
+                    &nbsp;<input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default  ">
+                    &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default  ">
+
+                </div>
+            </div>
+        </form>
+
+
 
     </body>
-</html>    
+</html>

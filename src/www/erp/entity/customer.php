@@ -48,32 +48,33 @@ class Customer extends \ZCL\DB\Entity
         parent::afterLoad();
     }
 
-
     //список продавцов
     public static function getSellers()
     {
         return Customer::findArray('customer_name', 'cust_type=' . self::TYPE_SELLER . ' or cust_type= ' . self::TYPE_BUYER_SELLER, 'customer_name');
     }
+
     //список покупателей
     public static function getBuyers()
     {
         return Customer::findArray('customer_name', 'cust_type=' . self::TYPE_BUYER . ' or cust_type= ' . self::TYPE_BUYER_SELLER, 'customer_name');
     }
+
     //список госучреждений
     public static function getGov()
     {
         return Customer::findArray('customer_name', 'cust_type=' . self::TYPE_GOV, 'customer_name');
     }
-    
+
     /**
-    * возвращает контрашента по  ИНН
-    * null если  не  найден
-    * 
-    */
+     * возвращает контрашента по  ИНН
+     * null если  не  найден
+     * 
+     */
     public static function loadByInn($inn)
     {
-      
-        return Customer::findOne("detail LIKE '%<inn>{$inn}</inn>%' " );
+
+        return Customer::findOne("detail LIKE '%<inn>{$inn}</inn>%' ");
     }
 
 }

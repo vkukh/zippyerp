@@ -4,12 +4,14 @@ namespace ZippyERP\ERP\Entity\Doc;
 
 use \ZippyERP\System\System;
 use \ZippyERP\ERP\Entity\Item;
+use \ZippyERP\ERP\Entity\SubConto;
+use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  локумент акт  о  выполненных работах
  * сторонней организацией
- * 
+ *
  */
 class ServiceIncome extends Document
 {
@@ -17,7 +19,6 @@ class ServiceIncome extends Document
     public function generateReport()
     {
 
-        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
 
         $i = 1;
         $total = 0;
@@ -26,16 +27,16 @@ class ServiceIncome extends Document
             $detail[] = array("no" => $i++,
                 "itemname" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity'],
+                "quantity" => $value['quantity']/ 1000,
                 "price" => H::fm($value['price']),
                 "pricends" => H::fm($value['pricends']),
-                "amount" => H::fm($value['quantity'] * $value['price'])
+                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
             );
-            $total += $value['quantity'] * $value['price'];
+            $total += ($value['quantity']/1000) * $value['price'];
         }
 
         $header = array('date' => date('d.m.Y', $this->document_date),
-            "customer" => $customer->customer_name,
+            "customer" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
             "nds" => H::fm($this->headerdata["nds"]),
             "totalnds" => H::fm($this->headerdata["totalnds"]),
@@ -57,21 +58,40 @@ class ServiceIncome extends Document
         $total = $this->headerdata['total'];
         $customer_id = $this->headerdata["customer"];
 
-      //  \ZippyERP\ERP\Entity\Customer::AddActivity($customer_id, 0 - $total, $this->document_id);
 
         if ($this->headerdata['cash'] == true) {
-            $cash = MoneyFund::getCash();
-            //MoneyFund::AddActivity($cash->id, 0 - $this->headerdata['total'], $this->document_id);
 
-            \ZippyERP\ERP\Entity\Entry::AddEntry("63", "30", $total, $this->document_id,$customer_id,$cash->id);
+            $cash = MoneyFund::getCash();
+            Entry::AddEntry("63", "30", $total, $this->document_id, $this->document_date);
+            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->setAmount( $total);
+            $sc->save();
+            $sc = new SubConto($this->document_id, $this->document_date, 30);
+            $sc->setMoneyfund($cash->id);
+            $sc->setAmount($total);
+            // $sc->save();
         }
 
         if ($this->headerdata['totalnds'] > 0) {
             $total = $total - $this->headerdata['totalnds'];
-            \ZippyERP\ERP\Entity\Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id,0,$customer_id);
+            Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id, 0, $customer_id);
+            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc->setCustomer($customer_id);
+            $sc->setAmount(0 - $this->headerdata['totalnds']);
+            $sc->save();
+            $sc = new SubConto($this->document_id, $this->document_date, 644);
+            $sc->setExtCode(TAX_NDS);
+            $sc->setAmount($this->headerdata['totalnds']);
+            //$sc->save();
         }
 
-        \ZippyERP\ERP\Entity\Entry::AddEntry("91", "63", $total, $this->document_id,0,$customer_id);
+
+        Entry::AddEntry("91", "63", $total, $this->document_id, $this->document_date);
+        $sc = new SubConto($this->document_id, $this->document_date, 63);
+        $sc->setCustomer($customer_id);
+        $sc->setAmount(0 - $value);
+        $sc->save();
 
 
         return true;

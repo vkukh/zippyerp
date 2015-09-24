@@ -27,7 +27,7 @@ class DepartmentList extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('departmenttable'))->setVisible(true);
         $this->departmenttable->add(new DataView('departmentlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Department'), $this, 'departmentlistOnRow'))->Reload();
-        $this->departmenttable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
+        $this->departmenttable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
         $this->add(new Form('departmentdetail'))->setVisible(false);
         $this->departmentdetail->add(new TextInput('editdepartmentname'));
         $this->departmentdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');

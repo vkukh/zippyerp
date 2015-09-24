@@ -92,29 +92,7 @@ class Application extends \Zippy\WebApplication
         }
     }
 
-    /**
-     * Выполняет клиентский редирект  на  страницу
-     *
-     * @param mixed $page     Имя класса  страницы
-     * @param mixed $arg1
-     * @param mixed $arg2
-     * @param mixed $arg3
-     * @param mixed $arg4
-     * @param mixed $arg5
-     */
-    public static function Redirect($page, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null)
-    {
-        self::$app->getResponse()->Redirect($page, $arg1, $arg2, $arg3, $arg4, $arg5);
-    }
-
-    /**
-     * Редирект на  домашнюю  страницу
-     * 
-     */
-    public static function RedirectHome()
-    {
-        self::$app->getResponse()->toIndexPage();
-    }
+    
 
     /**
      * Редирект на  страницу с  ошибкой
@@ -125,21 +103,6 @@ class Application extends \Zippy\WebApplication
         self::$app->getResponse()->Redirect("\\ZippyERP\\Pages\\Error", $message);
     }
 
-    /**
-     * Редирект на  страницу 404
-     * 
-     */
-    public static function Redirect404()
-    {
-        self::$app->getResponse()->to404Page();
-    }
-  /**
-     * Редирект на  предыдущую страницу
-     * 
-     */
-    public static function RedirectBack()
-    {
-        self::$app->getResponse()->toBack();
-    }
+  
 
 }

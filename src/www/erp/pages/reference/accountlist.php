@@ -26,8 +26,8 @@ class AccountList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('code', $item->acc_code));
         $row->add(new Label('name', $item->acc_name));
         $saldo = $item->getSaldo();
-        $row->add(new Label('dt', $saldo > 0 ? H::fm($saldo ) : ""));
-        $row->add(new Label('ct', $saldo < 0 ? H::fm(0 - $saldo ) : ""));
+        $row->add(new Label('dt', $saldo > 0 ? H::fm($saldo) : ""));
+        $row->add(new Label('ct', $saldo < 0 ? H::fm(0 - $saldo) : ""));
     }
 
 }

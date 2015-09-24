@@ -1,6 +1,6 @@
 <html>
     <body>
-        <table width="500"  cellspacing="0" cellpadding="1"  >
+        <table  class="ctable" width="500"  cellspacing="0" cellpadding="1"  >
             <tr >
 
                 <td colspan="3" width="160">
@@ -8,7 +8,7 @@
                 </td>
                 <td width="340" align="right">
                     Счет:<b> {$bankaccount}</b>
-                </td>         
+                </td>
             </tr>
 
             <tr >
@@ -27,7 +27,7 @@
             {foreach $_detail as $item}
                 <tr ><td>{$item.type}</td><td>{$item.cust}</td><td  align="right">{$item.amount}</td><td>{$item.comment} </td></tr>
                     {/foreach}
-        </table>     
+        </table>
 
         <br>
     </body>

@@ -5,7 +5,7 @@
     </head>
     <body>
         <div class="row">
-            <div class="col-md-4">  
+            <div class="col-xs-4">  
                 <form zippy="contactdetail" method="post" >                  
 
                     <div class="form-group">
@@ -26,7 +26,7 @@
 
                     <div class="form-group">
                         <label for="editemail">E-mail</label>
-                        <input type="email" class="form-control" zippy="editemail" />
+                        <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$" class="form-control" zippy="editemail" />
                     </div>
 
 

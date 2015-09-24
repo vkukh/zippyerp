@@ -1,5 +1,7 @@
 <?php
 
+//todofirst
+
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
@@ -19,7 +21,6 @@ use ZippyERP\System\Application as App;
 use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
-use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Entity\Stock;
@@ -33,8 +34,8 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
     public $_tovarlist = array();
     private $_doc;
-    
     private $_rowid = 0;
+    private $_basedocid = 0;
 
     public function __construct($docid = 0, $basedocid = 0)
     {
@@ -43,12 +44,12 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
 
-        $this->docform->add(new Date('created'))->setDate(time());
+        $this->docform->add(new Date('document_date'))->setDate(time());
 
-        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->setChangeHandler($this, 'OnChangeStore');
-        $this->docform->add(new DropDownChoice('customer', Customer::getBuyers()));
+        $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
 
-        $this->docform->add(new AutocompleteTextInput('based'))->setAutocompleteHandler($this,"OnBased");;
+         $this->docform->add(new AutocompleteTextInput('contract'))->setAutocompleteHandler($this, "OnAutoContract");
+
         $this->docform->add(new TextInput('author'));
         $this->docform->add(new TextInput('paytype'));
         $this->docform->add(new CheckBox('ernn'));
@@ -60,10 +61,9 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('editgroup'))->setAjaxChangeHandler($this, 'OnGroup');
-        $this->editdetail->editgroup->setOptionList(GroupItem::getList());
 
-        $this->editdetail->add(new DropDownChoice('edittovar'))->setAjaxChangeHandler($this, 'OnItem');
+        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->setAutocompleteHandler($this, "OnAutoItem");
+        $this->editdetail->edittovar->setChangeHandler($this, 'OnChangeItem');
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new TextInput('editpricends'));
@@ -78,19 +78,17 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_number->setText($this->_doc->document_number);
 
             $this->docform->totalnds->setText(H::fm($this->_doc->headerdata['totalnds']));
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->ernn->setChecked($this->_doc->headerdata['ernn']);
             $this->docform->paytype->setText($this->_doc->headerdata['paytype']);
             $this->docform->author->setText($this->_doc->headerdata['author']);
+                     $this->docform->contract->setKey($this->_doc->headerdata['contract']);
+                    $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
 
-            $this->docform->store->setValue($this->_doc->headerdata['store']);
+             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
+            $this->docform->customer->setText($this->_doc->headerdata['customername']);
 
-            $this->docform->based->setKey($this->_doc->headerdata['based']);
             $basedoc = Document::load($this->_doc->headerdata['based']);
-            if($basedoc instanceof Document){
-                $this->docform->based->setText($basedoc->document_number);
-            }
-            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
 
             foreach ($this->_doc->detaildata as $item) {
                 $item = new Item($item);
@@ -100,21 +98,22 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
             $this->_doc = Document::create('TaxInvoice');
             $this->docform->document_number->setText($this->_doc->nextNumber());
             $user = System::getUser();
-            $employee = \ZippyERP\ERP\Entity\Employee::find("login='{$user->userlogin}'" );
-            if($employee instanceof \ZippyERP\ERP\Entity\Employee)  {
-                 $this->docform->author->setText($employee->fullname);
+            $employee = \ZippyERP\ERP\Entity\Employee::find("login='{$user->userlogin}'");
+            if ($employee instanceof \ZippyERP\ERP\Entity\Employee) {
+                $this->docform->author->setText($employee->fullname);
             }
             if ($basedocid > 0) {  //создание на  основании
                 $basedoc = Document::load($basedocid);
                 if ($basedoc instanceof Document) {
-                    
-                    // $this->docform->base->setText($basedoc->meta_desc ." №". $basedoc->document_number);
 
-                    $this->docform->based->setKey($basedocid);
-                    $this->docform->based->setText($basedoc->document_number);
+                    $this->_basedocid = $basedocid;
+
                     if ($basedoc->meta_name == 'GoodsIssue') {
 
-                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->contract->setKey($basedoc->headerdata['contract']);
+                        $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
                         foreach ($basedoc->detaildata as $item) {
                             $item = new Item($item);
@@ -123,7 +122,10 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
                     }
                     if ($basedoc->meta_name == 'Invoice') {
 
-                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->contract->setKey($basedoc->headerdata['contract']);
+                        $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
                         foreach ($basedoc->detaildata as $item) {
                             $item = new Item($item);
@@ -143,10 +145,10 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity));
+        $row->add(new Label('quantity', $item->quantity/1000));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new Label('pricends', H::fm($item->pricends)));
-        $row->add(new Label('amount', H::fm($item->quantity * $item->pricends)));
+        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->pricends)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -164,7 +166,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
     {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
-        //$this->editdetail->edittovar->setOptionList(Stock::findArrayEx(" store_id=" . $this->docform->store->getValue()));
+
         $this->_rowid = 0;
     }
 
@@ -174,30 +176,27 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText($item->quantity);
+        $this->editdetail->editquantity->setText($item->quantity/1000);
         $this->editdetail->editprice->setText(H::fm($item->price));
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
 
-        $this->editdetail->editgroup->setValue($item->group_id);
-        $list = Item::findArray('itemname', 'group_id=' . $item->group_id);
-        $list = array_replace(array(0 => 'Выбрать'), $list);
 
-        $this->editdetail->edittovar->setOptionList($list);
-        $this->editdetail->edittovar->setValue($item->item_id);
-        //  $this->editdetail->editid->setText($item->item_id);
+        $this->editdetail->edittovar->setKey($item->item_id);
+        $this->editdetail->edittovar->setText($item->itemname);
+
 
         $this->_rowid = $item->item_id;
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getValue();
+        $id = $this->editdetail->edittovar->getKey();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
         }
         $item = Item::load($id);
-        $item->quantity = $this->editdetail->editquantity->getText();
+        $item->quantity = 1000*$this->editdetail->editquantity->getText();
         // $stock->partion = $stock->price;
         $item->price = $this->editdetail->editprice->getText() * 100;
         $item->pricends = $this->editdetail->editpricends->getText() * 100;
@@ -231,13 +230,14 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getValue(),
-            'store' => $this->docform->store->getValue(),
-            'based' => $this->docform->based->getKey(),
+            'customer' => $this->docform->customer->getKey(),
+            'customername' => $this->docform->customer->getText(),
+            'contract' => $this->docform->contract->getKey(),
+            'contractnumber' => $this->docform->contract->getText(),
             'total' => $this->docform->total->getText() * 100,
-            'ernn' => $this->docform->ernn->isChecked() ,
-            'author' => $this->docform->author->getText() ,
-            'paytype' => $this->docform->paytype->getText() ,
+            'ernn' => $this->docform->ernn->isChecked(),
+            'author' => $this->docform->author->getText(),
+            'paytype' => $this->docform->paytype->getText(),
             'totalnds' => $this->docform->totalnds->getText() * 100
         );
         $this->_doc->detaildata = array();
@@ -247,7 +247,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
         $this->_doc->amount = 100 * $this->docform->total->getText();
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
         $this->_doc->save();
@@ -256,21 +256,25 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
         }
-        if ($this->docform->based->getKey()> 0) {
-            $this->_doc->AddConnectedDoc($this->docform->based->getKey());
-        }
+             if ($this->_basedocid > 0) {
+                $this->_doc->AddConnectedDoc($this->_basedocid);
+                $this->_basedocid = 0;
+            }
+            if ($this->docform->contract->getKey() > 0) {
+                $this->_doc->AddConnectedDoc($this->docform->contract->getKey());
+            }
         App::RedirectBack();
     }
 
     /**
      * Расчет  итого
-     * 
+     *
      */
     private function calcTotal()
     {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
-            $total = $total + $tovar->price * $tovar->quantity;
+            $total = $total + $tovar->price * ($tovar->quantity/1000);
         }
 
         $nds = H::nds() * $total;
@@ -280,7 +284,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
     /**
      * Валидация   формы
-     * 
+     *
      */
     private function checkForm()
     {
@@ -297,8 +301,8 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         parent::beforeRender();
 
         $this->calcTotal();
-        
-        App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");        
+
+        App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
     }
 
     public function backtolistOnClick($sender)
@@ -306,21 +310,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-    public function OnChangeStore($sender)
-    {
-        //очистка  списка  товаров
-        $this->_tovarlist = array();
-        $this->docform->detail->Reload();
-    }
 
-    public function OnGroup(DropDownChoice $sender)
-    {
-        $id = $sender->getValue();
-        $list = Item::findArray('itemname', 'group_id=' . $id);
-        $list = array_replace(array(0 => 'Выбрать'), $list);
-        $this->editdetail->edittovar->setOptionList($list);
-        $this->updateAjax(array('edittovar'));
-    }
 
     public function OnItem(DropDownChoice $sender)
     {
@@ -333,8 +323,33 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->updateAjax(array('editprice', 'editpricends'));
     }
 
-    // выбор  документа-основания
-    public function OnBased($sender){
-       
+    public function OnAutoContragent($sender)
+    {
+        $text = $sender->getValue();
+        return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
+    }
+
+    public function OnAutoContract($sender)
+    {
+        $text = $sender->getValue();
+        return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
+    }
+
+    public function OnAutoItem($sender)
+    {
+        $text = $sender->getValue();
+        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <> " . Item::ITEM_TYPE_RETSUM);
+    }
+    public function OnChangeItem(  $sender)
+    {
+
+        $item = Item::load($id);
+        $this->editdetail->editprice->setText(H::fm($item->priceopt));
+
+        $nds = H::nds();
+
+        $this->editdetail->editpricends->setText(H::fm($item->priceopt + $item->priceopt * $nds));
+
+        $this->updateAjax(array('editprice', 'editpricends', 'qtystock'));
     }
 }

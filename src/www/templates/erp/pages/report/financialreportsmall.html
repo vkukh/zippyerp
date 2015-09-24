@@ -1,0 +1,51 @@
+<html>
+
+
+    <body>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Финансовый отчет</h3>
+
+                <br>
+                <form zippy="filter"  class="navbar-form ">
+
+                    <div class="form-group">
+                        <label for="yr">Год</label>
+                        <select zippy="yr"  class="form-control">
+                            <option value="2015">2015</option>
+                            <option value="20166">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="qw">квартал</label>
+                        <select zippy="qw"  class="form-control">
+
+                            <option value="1">I</option>
+                            <option value="2">II</option>
+                            <option value="3">III</option>
+                            <option value="4">IV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-default  "  type="submit" value="Ввод">
+                    </div>
+
+
+                </form>
+                <br>
+                <div zippy="detail">
+                    <div >
+                        <a zippy="print" target="_blank"  title="Печать"><img class="icon20" src="/assets/images/print_32.png"></a>
+                        <a zippy="html" target="_blank"   title="Экспорт в HTML"><img class="icon20" src="/assets/images/html.png"></a>
+                        <a zippy="word" target="_blank"   title="Экспорт в Word"><img class="icon20" src="/assets/images/word_32.png"></a>
+                        <a zippy="excel" target="_blank"   title="Экспорт в Excel"><img class="icon20" src="/assets/images/excel_32.png"></a>
+                    </div>
+
+                    <div zippy="preview" style="padding: 2px;width:800px; overflow:auto; border: 1px solid #ccc"></div>
+
+                </div>  </div>   </div>
+    </body>
+
+</html>

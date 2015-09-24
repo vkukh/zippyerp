@@ -9,56 +9,57 @@
 
         </script>
     </head>
-    <body> 
+    <body>
         <div class="row">
-            <div class="col-md-12">  
+            <div class="col-xs-12">
 
                 <div zippy="listpan">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-xs-8">
                             <h4>     Объекты  метаданных   </h4>
                             <form zippy="filter"  class="form-inline" role="form">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" zippy="fdoc" >Документы
                                     </label>
-                                </div>        
+                                </div>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" zippy="fdic" >Справочники
                                     </label>
-                                </div>        
+                                </div>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" zippy="frep" >Отчеты
                                     </label>
-                                </div>        
+                                </div>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" zippy="freg"  >Журналы
                                     </label>
-                                </div> 
+                                </div>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" zippy="fpage"  >Страницы
                                     </label>
-                                </div> 
-                                <button type="submit" class="btn btn-default btn-xs">Обновить</button>       
+                                </div>
+                                <button type="submit" class="btn btn-default btn-xs">Обновить</button>
                             </form>
                             <a class="btn btn-default  btn-xs" zippy="addnew">Создать</a>
                             <table class="table table-bordered table-striped table-condensed">
-                                <tr><th style="width:16px;"> </th><th>Обозначение</th><th>Имя класса</th><th>Группа</th><th  style="width:50px;"> </th></tr>
-                                <tr zippy="metarow"><td><img zippy="meta_type"></td> <td><span zippy="description"></span></td><td><span zippy="meta_name"></span></td><td><span zippy="menugroup"></span></td><td><a zippy="rowedit"><img src="templates/images/edit.png"></a> <a  zippy="rowdelete"><img src="templates/images/delete.png"></a> </td></tr>
+                                <tr> <th>Обозначение</th><th>Имя класса</th><th>Тип</th><th>Группа</th><th > </th></tr>
+                                <tr zippy="metarow">  <td><span zippy="description"></span></td><td><span zippy="meta_name"></span></td><td><span zippy="type"></span></td><td><span zippy="menugroup"></span></td>
+                                    <td  style="white-space:   nowrap"><a zippy="rowedit"><i class="icon-edit"></a> <a  zippy="rowdelete"> <i class="icon-remove"></a> </td></tr>
                             </table>
                         </div>
-                    </div>            
+                    </div>
                 </div>
                 <div zippy="editpan">
                     <h4> Редактирование  объекта</h4>
                     <form zippy="editform" role="form">
                         <input type="hidden" zippy="meta_id" value="0">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-xs-4">
                                 <h5>Елементы  объекта</h5>
                                 <div class="form-group">
                                     <label for="edit_description">Название</label>
@@ -85,20 +86,20 @@
                                 <div class="form-group">
                                     <label for="edit_menugroup">Описание</label>
                                     <textarea  style="height: 120px;" class="form-control" zippy="edit_notes" ></textarea>
-                                </div>   
+                                </div>
                                 <div class="form-group">
                                     <label for="edit_disabled">Не показывать  в  меню</label>
                                     <input type="checkbox" zippy="edit_disabled" >
-                                </div>   
+                                </div>
                             </div>
-                            <div class="col-md-4 col-md-offset-1">
+                            <div class="col-xs-4 col-xs-offset-1">
                                 <h5>Права  доступа</h5>
                                 <table class="table table-bordered table-striped table-condensed">
                                     <tr><th>Роль</th>
-                                        <th style="width:16px"><img title="Просмотр" src="/templates/images/loupe.png"></th>
-                                        <th style="width:16px"><img title="Редактирвание/Создание" src="/templates/images/edit.png"></th>
-                                        <th style="width:16px"><img title="Удаление" src="/templates/images/delete.png"></th>
-                                        <th style="width:16px"><img title="Выполнение" src="/templates/images/execute.png"></th>
+                                        <th style="width:16px"><i title="Просмотр" class="icon-preview"></i></th>
+                                        <th style="width:16px"><i title="Редактирвание/Создание"  class="icon-edit"></i></th>
+                                        <th style="width:16px"><i title="Удаление"  class="icon-remove"></i></th>
+                                        <th style="width:16px"><i title="Выполнение"  class="icon-cog"></i></th>
                                     </tr>
                                     <tr zippy="rolerow"><td><span zippy="rolename"></span></td>
                                         <td align="center"> <input type="checkbox" zippy="viewacc"></td>
@@ -109,13 +110,13 @@
                                     </tr>
                                 </table>
                             </div>
-                        </div>         
-                        <button type="submit" class="btn btn-default btn-xs">Сохранить</button>        
+                        </div>
+                        <button type="submit" class="btn btn-default btn-xs">Сохранить</button>
                         &nbsp;&nbsp;&nbsp;  <a zippy="cancel" class="btn btn-default btn-xs">Отменить</a>
                     </form>
-                </div>           
+                </div>
 
             </div>
         </div>
     </body>
-</html>            
+</html>

@@ -3,7 +3,7 @@
 
     <body>
 
-        <table  border=0 cellpadding=0 cellspacing=0 width="510" style="font-size:12px;">
+        <table   class="ctable" border=0 cellpadding=0 cellspacing=0 width="510" style="font-size:12px;">
 
 
             <tr  style='height:15.75pt'>

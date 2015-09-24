@@ -1,47 +1,40 @@
 <html>
     <body>
-        <table width="500" border="0" cellpadding="2" cellspacing="0">
-            <tr >
-                <td width="100">
-                    Отправитель:
-                </td>
-                <td >
-                    {$customer}
-                </td>
-                <td>
-                    Дата: {$date}
-                </td>
-            </tr>
-            <tr >
-                <td style="width: 100;">
-                    Получатель:
-                </td>
-                <td >
-                    Эта  фирма
-                </td>
-                <td>
+        <table  class="ctable"   border="0" cellspacing="0" cellpadding="2">
+            <tr><th width="30">&nbsp;</th><th  width="100" >&nbsp;</th><th  width="130" >&nbsp;</th><th  width="50">&nbsp;</th><th width="50">&nbsp;</th><th width="60">&nbsp;</th><th width="80">&nbsp;</th></tr>
 
+            <tr ><td> </td><td >Поствщик</td><td colspan="5">{$customername}</td></tr>
+
+            <tr >
+                <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7"  valign="middle" >
+                    <br><br>   Накладная № {$document_number}  от  {$date}    <br><br><br>
                 </td>
             </tr>
+
             <tr style="font-weight: bolder;">
-                <td colspan="3" align="center" >
-                    Приходная  накладная  № {$document_number}
-                </td>
-            </tr>
-
-        </table>
-        <br>
-        <table width="500"  cellspacing="0" cellpadding="1" border="0">
-            <tr style="font-weight: bolder;"><th width="20" style="border: 1px solid black;">№</th><th style="border: 1px solid black;" width="180" >Наименование</th><th style="border: 1px solid black;"  width="50">Ед.изм</th><th style="border: 1px solid black;" width="50">Кол.</th><th style="border: 1px solid black;" width="50">Цена-</th><th style="border: 1px solid black;" width="50">Цена+</th><th style="border: 1px solid black;" width="50">Сумма</th></tr>
+               <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="30">№</th>
+               <th colspan="2" width="230"  style="border-top:1px #000 solid;border-bottom:1px #000 solid;" >Наименование</th>
+               <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Ед.изм</th>
+               <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кол.</th>
+               <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="60">Цена</th>
+               <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">Сумма</th>
+               </tr>
                     {foreach $_detail as $item}
-                <tr ><td>{$item.no}</td><td>{$item.itemname}</td><td>{$item.measure}</td><td align="right">{$item.quantity}</td><td align="right">{$item.price}</td><td align="right">{$item.pricends}</td><td align="right">{$item.amount}</td></tr>
+                <tr >
+                   <td align="right" >{$item.no}</td>
+                   <td  colspan="2">{$item.itemname}</td>
+                   <td>{$item.measure}</td>
+                   <td align="right">{$item.quantity}</td>
+                   <td align="right">{$item.price}</td>
+                   <td align="right">{$item.amount}</td>
+                </tr>
                     {/foreach}
-                     <tr style="font-weight: bolder;"><td  colspan="6"  style="border-top: 1px solid black;"  align="right">Всего:</td><td width="50" style="border-top: 1px solid black;" align="right">{$total} </td></tr>
-           {if $totalnds > 0}
-                <tr style="font-weight: bolder;"><td colspan="6"  align="right">В т.ч. НДС:</td><td    align="right">{$totalnds} </td></tr>
-            {/if}
-        </table>
+            <tr style="font-weight: bolder;" ><td style="border-top:1px #000 solid;"  colspan="6"  align="right" >Всего:</td><td style="border-top:1px #000 solid;" align="right" >{$total}</td></tr>
+                {if $nds > 0}
+                <tr style="font-weight: bolder;" ><td  colspan="6"  align="right" >В т.ч. НДС:</td><td align="right">{$nds}</td></tr>
+                {/if}
 
-        <br>
+        </table>
+        <br> <br>
     </body>
 </html>

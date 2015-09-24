@@ -6,7 +6,7 @@ use ZippyERP\ERP\Consts;
 
 /**
  * Клас-сущность  товар
- * 
+ *
  * @table=erp_item
  * @view=erp_item_view
  * @keyfield=item_id
@@ -15,29 +15,17 @@ class Item extends \ZCL\DB\Entity
 {
 
     // типы  ТМЦ
-
-    const ITEM_TYPE_GOODS = 1; //товар
-    const ITEM_TYPE_MBP = 2;   //МБП
+    //   const ITEM_TYPE_GOODS = 1; //товар
+    //  const ITEM_TYPE_MBP = 2;   //МБП
     const ITEM_TYPE_SERVICE = 3; //Услуга
-    const ITEM_TYPE_STUFF = 4; //материалы
-    const ITEM_TYPE_PRODUCTION = 5; //Готовая продукция
+    const ITEM_TYPE_STUFF = 0; //материалы
+    // const ITEM_TYPE_PRODUCTION = 5; //Готовая продукция
     const ITEM_TYPE_RETSUM = 6; //Вмртуальный товар для  суммового  учета   в  рознице
 
     protected function afterLoad()
     {
 
-        switch ($this->item_type) {
-            case self::ITEM_TYPE_GOODS : $this->typename = 'Товар';
-                break;
-            case self::ITEM_TYPE_MBP : $this->typename = 'МБП';
-                break;
-            case self::ITEM_TYPE_SERVICE : $this->typename = 'Услуги';
-                break;
-            case self::ITEM_TYPE_STUFF : $this->typename = 'Материалы';
-                break;
-            case self::ITEM_TYPE_PRODUCTION : $this->typename = 'Готовая продукция';
-                break;
-        }
+
 
         $xml = @simplexml_load_string($this->detail);
         $this->priceopt = (string) ($xml->priceopt[0]);
@@ -50,15 +38,14 @@ class Item extends \ZCL\DB\Entity
         parent::afterLoad();
     }
 
-    // типы  ТМЦ
+    // типы   
     public static function getTypeList()
     {
         $list = array();
-        $list[self::ITEM_TYPE_GOODS] = 'Товар';
-        $list[self::ITEM_TYPE_MBP] = 'МБП';
-        $list[self::ITEM_TYPE_SERVICE] = 'Услуги';
-        $list[self::ITEM_TYPE_STUFF] = 'Материал';
-        $list[self::ITEM_TYPE_PRODUCTION] = 'Готовая продукция';
+
+        $list[self::ITEM_TYPE_SERVICE] = 'Услуга';
+        $list[self::ITEM_TYPE_STUFF] = 'ТМЦ';
+
 
         return $list;
     }
@@ -79,27 +66,43 @@ class Item extends \ZCL\DB\Entity
     }
 
     /**
-     * Количество на складе на  дату
-     * 
+     * Количество на оптовом складе на  дату
+     *
      * @param mixed $item_id
      * @param mixed $date
-     * 
+     *
      */
     public static function getQuantity($item_id, $date)
     {
         $conn = \ZCL\DB\DB::getConnect();
-        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_stock_activity_view  where    item_id = {$item_id} and date(document_date) <= " . $conn->DBDate($date);
+        $where = "   stock_id IN( select stock_id from erp_store_stock st join erp_store sr on st.store_id = sr.store_id  where item_id= {$item_id} and store_type = ". Store::STORE_TYPE_OPT ." )  and date(document_date) <= " . $conn->DBDate($date);
+        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_account_subconto  where " . $where ;
         return $conn->GetOne($sql);
     }
 
     /**
-    * возвращает ТМЦ по  коду УКТ ЗЕД
-    * null если  не  найден
-    * 
-    */
+     * возвращает ТМЦ по  коду УКТ ЗЕД
+     * null если  не  найден
+     *
+     */
     public static function loadByUktzed($code)
     {
-      
-        return Item::findOne("detail LIKE '%<uktzed>{$code}</uktzed>%' " );
+
+        return Item::findOne("detail LIKE '%<uktzed>{$code}</uktzed>%' ");
+    }
+
+    
+    /**
+    * возвращает  специльный  товар  для  суммвового  учета
+    * 
+    */
+    public static function getSumItem()
+    {
+        $item= Item::getFirst('item_type=' . Item::ITEM_TYPE_RETSUM);
+        if($item instanceof Item){
+            return  $item;
+        }else {
+            throw new  \ZippyERP\System\Exception("Не  найдет товар для  суммового  учета");
+        }
     }    
 }

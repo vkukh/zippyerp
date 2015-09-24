@@ -94,9 +94,13 @@ INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (66, 'Розрахунки зa виплатами працівникам', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (661, 'Розрахунки за заробітною платою', 66);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(23, 'Виробництво', 
 
 
 -- метаданные
+
+ 
 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (1, 4, 'Места хранения', 'StoreList', 'Склад', '', 0);
@@ -117,7 +121,7 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (12, 2, 'Шахматка', 'Shahmatka', 'Бухгалтерия', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(13, 1, 'Ручная хоз. операция', 'ManualEntry', 'Прочее', '    <p> Документ предназначен  для  ввода  редкоиспользуемых операций   а  также   ввода  начальных  остатков. </p>\r\n    <p>    Проводки не  требуют  корреспонденции счетов - счета  можно  вводить  по  одному.     Счета  только  синтетические - аналитика  выполняет  свои  проводки. </p>\r\n   ', 0);
+(13, 1, 'Ручная хоз. операция', 'ManualEntry', 'Прочее', '    <p> Документ предназначен  для  ввода  редкоиспользуемых операций   а  также   ввода  начальных  остатков. </p>\r\n    <p>    Проводки не  требуют  корреспонденции счетов - счета  можно  вводить  по  одному.      </p>\r\n   <p>    Для ввода  аналитики  необходимо  выбрать  один  из  счетов  из  проводок к  которому  будут привязаны  данные    аналитического  учета       </p>  ', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (14, 1, 'Банковская выписка', 'BankStatement', 'Банк', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
@@ -167,9 +171,9 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (42, 1, 'Расходный КО', 'CashReceiptOut', 'Касса', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(43, 1, 'Авансовый  отчет', 'ExpenseReport', 'Касса', '', 1);
+(43, 1, 'Авансовый  отчет', 'ExpenseReport', 'Прочее', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(45, 1, 'Чек ЭККА', 'RegisterReceipt', 'Розница', '', 0);
+(45, 1, 'Чек ЭККА', 'RegisterReceipt', 'Розница', '', 1);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (47, 1, 'Гарантийный  талон', 'Warranty', 'Розница', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
@@ -185,13 +189,28 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (52, 1, 'Оказанные  услуги', 'ServiceIncome', 'Закупки', 'Акт о  выполнении  услуг  сторонней  организацией', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(54, 2, 'Баланс малого предприятия', 'BalanceSimple', 'Регламентированные', '', 0);
+(54, 2, 'Финансовый отчет малого предприятия', 'FinancialReportSmall', 'Регламентированные', 'Додаток 1\r\nдо Положення (стандарту) бухгалтерського обліку 25 «Фінансовий звіт суб’єкта малого підприємництва»\r\n', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (55, 1, 'Финансовые  результаты', 'FinResult', 'Прочее', 'Списание  фин. результатов  на  79  счет', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(56, 5, 'Расчеты  с  подотчетными  лицами', 'AccountablePayments', '', '', 1);
--- служебный  товар для  суммового  учета
-INSERT INTO `erp_item` (`item_id`, `itemname`, `description`, `measure_id`, `item_type`, `group_id`, `detail`) VALUES(11, 'Суммовой учет', NULL, '1', 6, NULL, '1');
-
-INSERT INTO erp_store(store_id, storename, description, store_type) VALUES
-(12, 'Основной склад', '', 1);
+(56, 5, 'Расчеты  с  подотчетными  лицами', 'AccountablePayments', '', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(57, 1, 'Возврат  поставщику', 'ReturnGoodsReceipt', 'Закупки', '            Возврат  поставленных  товаров  поставщику.   может  быть  создан на основаниии приходной  накладной', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(58, 1, 'Возвратная накладная', 'ReturnGoodsIssue', 'Продажи', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(59, 1, 'Возврат  в  рознице', 'ReturnRetailIssue', 'Розница', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(60, 1, 'Додаток2 к НН', 'TaxInvoice2', '', 'Приложение2 к  НН (корректировка)', 1);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(61, 1, 'Переоценка (суммовой учет)', 'RevaluationRetSum', 'Склад', '  Документ служит для  переоценки товара  в магазине  с  суммовым  учетом.  также   может  быть использован  для  списания  товаров.', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(62, 1, 'Возврат на  склад', 'MoveBackItem', 'Склад', '  Возврат на склад  с  розницы', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(63, 1, 'Инвентаризация', 'Inventory', 'Склад', 'Акт инвентаризации.\r\n', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(64, 1, 'Списание ТМЦ', 'InventoryLoss', 'Склад', 'Списание  ТМЦ в  результате  недостачи, порчи и  т.д.', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(65, 1, 'Оприходование  излишков', 'InventoryGain', 'Склад', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(66, 1, 'Переоценка (розница)', 'RevaluationRet', 'Склад', '', 0);

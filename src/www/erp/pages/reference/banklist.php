@@ -24,7 +24,7 @@ class BankList extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Panel('banktable'))->setVisible(true);
         $this->banktable->add(new DataView('banklist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Bank'), $this, 'banklistOnRow'))->Reload();
-        $this->banktable->add(new ClickLink('add'))->setClickHandler($this, 'addOnClick');
+        $this->banktable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
         $this->add(new Form('bankdetail'))->setVisible(false);
         $this->bankdetail->add(new TextInput('editbankname'));
         $this->bankdetail->add(new TextInput('editmfo'));

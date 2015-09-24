@@ -404,7 +404,7 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
             $tasks = array();
             $items = $this->_taskds->getItems();
             foreach ($items as $item) {
-                $tasks[] = new \ZCL\Gantt\GanttItem($item->task_id, $item->taskname, $item->start_date, $item->end_date, "");
+                $tasks[] = new \ZCL\Gantt\GanttItem($item->task_id, $item->taskname, $item->start_date, $item->end_date, "#ffaaaa");
             }
 
             $this->taskstab->ganttab->gantt->setData($tasks);

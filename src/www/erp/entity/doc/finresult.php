@@ -10,14 +10,13 @@ use \ZippyERP\ERP\Entity\Account;
 
 /**
  * Класс-сущность  документ финансовые  результаты
- * 
+ *
  */
 class FinResult extends Document
 {
 
     public function generateReport()
     {
-
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -36,10 +35,10 @@ class FinResult extends Document
 
         $acc702 = Account::load("702");
         $s702 = $acc702->getSaldo($this->document_date);
-        Entry::AddEntry(702, 79, $s702, $this->document_id);
+        Entry::AddEntry(702, 79, abs($s702), $this->document_id, $this->document_date);
         $acc902 = Account::load("902");
         $s902 = $acc902->getSaldo($this->document_date);
-        Entry::AddEntry(79, 902, $s902, $this->document_id);
+        Entry::AddEntry(79, 902, abs($s902), $this->document_id, $this->document_date);
 
         return true;
     }

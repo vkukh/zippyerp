@@ -3,7 +3,7 @@
 namespace ZippyERP\System;
 
 /**
- * Класс  исключения для  CMS
+ * Класс  исключения для  ERP
  */
 class Exception extends \Exception
 {

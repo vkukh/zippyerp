@@ -51,11 +51,7 @@ class Stock extends \ZCL\DB\Entity
             $stock->price = $price;
             $stock->partion = $price;
 
-            //  if ($item_id == 0) {  // товар  для  суммового  учета
-            //      $stock->price = 1;
-            //       $stock->partion = 1;
-            //       $stock->item_id = 0;
-            //   }
+
 
             $stock->Save();
         }
@@ -74,14 +70,14 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $acc Синтетический счет
      *
      */
-    public static function getQuantity($stock_id, $date,$acc=0)
+    public static function getQuantity($stock_id, $date, $acc = 0)
     {
         $conn = \ZCL\DB\DB::getConnect();
         $where = "   stock_id = {$stock_id} and date(document_date) <= " . $conn->DBDate($date);
-        if($acc >0){
-           $where = $where . " and account_id= " . $acc;
+        if ($acc > 0) {
+            $where = $where . " and account_id= " . $acc;
         }
-        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_account_subconto  where " . $where ;
+        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_account_subconto  where " . $where;
         return $conn->GetOne($sql);
     }
 
@@ -93,14 +89,14 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $acc Синтетический счет
      * @return Массив с  двумя  значениями 'r'  и 'w'
      */
-    public static function getQuantityFuture($stock_id, $date,$acc=0)
+    public static function getQuantityFuture($stock_id, $date, $acc = 0)
     {
         $conn = \ZCL\DB\DB::getConnect();
         $where = "    stock_id = {$stock_id} and date(document_date) > " . $conn->DBDate($date);
-        if($acc >0){
-           $where = $where . " and account_id= " . $acc;
+        if ($acc > 0) {
+            $where = $where . " and account_id= " . $acc;
         }
-        $sql = " select coalesce(sum(case  when  quantity > 0 then quantity else 0 end ),0) as  w,  coalesce(sum(case  when  quantity < 0 then 0-quantity else 0 end ),0) as  r  from erp_account_subconto  where  " .$where;
+        $sql = " select coalesce(sum(case  when  quantity > 0 then quantity else 0 end ),0) as  w,  coalesce(sum(case  when  quantity < 0 then 0-quantity else 0 end ),0) as  r  from erp_account_subconto  where  " . $where;
         return $conn->GetRow($sql);
     }
 

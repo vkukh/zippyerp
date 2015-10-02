@@ -53,29 +53,25 @@ class CashReceiptOut extends Document
         $optype = $this->headerdata['optype'];
         if ($optype == self::TYPEOP_CUSTOMER) {
             $ret = Entry::AddEntry(63, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc = new SubConto($this, 63, $this->headerdata['amount']);
             $sc->setCustomer($this->headerdata['opdetail']);
-            $sc->setAmount($this->headerdata['amount']);
             $sc->save();
         }
         if ($optype == self::TYPEOP_CASH) {
             $ret = Entry::AddEntry(372, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 372);
+            $sc = new SubConto($this, 372, $this->headerdata['amount']);
             $sc->setEmployee($this->headerdata['opdetail']);
-            $sc->setAmount($this->headerdata['amount']);
             $sc->save();
         }
         if ($optype == self::TYPEOP_BANK) {
             $ret = Entry::AddEntry(31, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 31);
+            $sc = new SubConto($this, 31, $this->headerdata['amount']);
             $sc->setMoneyfund($this->headerdata['opdetail']);
-            $sc->setAmount($this->headerdata['amount']);
             $sc->save();
         }
         //касса
-        $sc = new SubConto($this->document_id, $this->document_date, 30);
+        $sc = new SubConto($this, 30, 0 - $this->headerdata['amount']);
         $sc->setMoneyfund($this->headerdata['opdetail']);
-        $sc->setAmount(0 - $this->headerdata['amount']);
         $sc->save();
         return true;
     }

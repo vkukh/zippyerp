@@ -59,10 +59,10 @@ class GoodsReceipt extends Document
         foreach ($this->detaildata as $item) {
             $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $item['item_id'], $item['price'], true);
 
-            $sc = new SubConto($this->document_id, $this->document_date, $item['type']);
+            $sc = new SubConto($this, $item['type'], $item['amount'] - $item['nds']) ;
             $sc->setStock($stock->stock_id);
             $sc->setQuantity($item['quantity']);
-            $sc->setAmount($item['amount'] - $item['nds']);
+
             $sc->save();
 
             //группируем по синтетическим счетам
@@ -75,9 +75,8 @@ class GoodsReceipt extends Document
 
         foreach ($types as $acc => $value) {
             Entry::AddEntry($acc, "63", $value, $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc = new SubConto($this, 63, 0 - $value);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount(0 - $value);
             $sc->save();
         }
 
@@ -87,26 +86,22 @@ class GoodsReceipt extends Document
 
             $cash = MoneyFund::getCash();
             Entry::AddEntry("63", "30", $total, $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc = new SubConto($this, 63, $total);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount( $total);
-             $sc->save();
-            $sc = new SubConto($this->document_id, $this->document_date, 30);
+            $sc->save();
+            $sc = new SubConto($this, 30, 0 - $total);
             $sc->setMoneyfund($cash->id);
-            $sc->setAmount(0-$total);
             // $sc->save();
         }
 
         //налоговый кредит
         if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id, 0, $customer_id);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 63, 0 - $this->headerdata['totalnds']);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount(0 - $this->headerdata['totalnds']);
             $sc->save();
-            $sc = new SubConto($this->document_id, $this->document_date, 644);
+            $sc = new SubConto($this, 644, $this->headerdata['totalnds']);
             $sc->setExtCode(TAX_NDS);
-            $sc->setAmount($this->headerdata['totalnds']);
             //$sc->save();
         }
 

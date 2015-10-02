@@ -6,13 +6,14 @@ use \ZippyERP\System\System;
 use \ZippyERP\ERP\Util;
 use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Entity\Entry;
+use \ZippyERP\ERP\Entity\SubConto;
 use \ZippyERP\ERP\Entity\Account;
 use \ZippyERP\ERP\Entity\Stock;
 use Carbon\Carbon;
 
 /**
  * Класс-сущность  документ переоценка  в  суммовом  учете
- * 
+ *
  */
 class RevaluationRetSum extends Document
 {
@@ -49,16 +50,20 @@ class RevaluationRetSum extends Document
     {
         $diff = $this->headerdata['summa'] - $this->headerdata['actual'];
 
-        $stock_id = $this->headerdata['stock_id'];
+        ;
 
-        $stock = Stock::load($stock_id);
-        //обновляем в  магазине
-        $stock->updateStock($this->document_id, $diff);
+        Entry::AddEntry("282", "285", $diff, $this->document_id, $cash->id, $customer_id);
+        $sc = new SubConto($this, 282, $diff);
+        $sc->setStock($this->headerdata["stock_id"]);
+        $sc->setQuantity($diff);
+
+        $sc->save();
+        $sc = new SubConto($this, 285, 0 - $diff);
+        $sc->setExtCode($this->headerdata["store_id"]);
+
+        $sc->save();
 
 
-        $a282 = Account::load(282);
-
-        Entry::AddEntry("902", "282", $diff, $this->document_id);
 
         return true;
     }

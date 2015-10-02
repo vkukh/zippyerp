@@ -9,7 +9,7 @@ use \Zippy\Html\Label;
 use \Zippy\Html\Form\SubmitButton;
 use \Zippy\Html\Form\Button;
 use \Zippy\Html\Form\DropDownChoice;
-use \ZippyERP\ERP\Helper as H;   
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Виджет для  редатирования  товара
@@ -89,8 +89,8 @@ class Item extends \Zippy\Html\PageFragment
             $item = new \ZippyERP\ERP\Entity\Item();
         $this->item = $item;
         $this->itemdetail->editname->setText($this->item->itemname);
-        $this->itemdetail->editpriceret->setText(H::fm($this->item->priceret ));
-        $this->itemdetail->editpriceopt->setText(H::fm($this->item->priceopt ));
+        $this->itemdetail->editpriceret->setText(H::fm($this->item->priceret));
+        $this->itemdetail->editpriceopt->setText(H::fm($this->item->priceopt));
         $this->itemdetail->editdescription->setText($this->item->description);
         $this->itemdetail->editcode->setText($this->item->code);
         $this->itemdetail->edituktzed->setText($this->item->uktzed);

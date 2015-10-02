@@ -113,18 +113,29 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
 
         $isEdited = $this->_doc->document_id > 0;
-        $this->_doc->save();
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
 
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+            if ($this->_basedocid > 0) {
+                $this->_doc->AddConnectedDoc($this->_basedocid);
+                $this->_basedocid = 0;
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-        if ($this->_basedocid > 0) {
-            $this->_doc->AddConnectedDoc($this->_basedocid);
-            $this->_basedocid = 0;
-        }
-        App::RedirectBack();
     }
 
     // автолоад документов-оснований

@@ -10,12 +10,12 @@ AddType video/webm .webm
 RewriteEngine on
 RewriteBase / 
 
-#RewriteCond %{HTTPS} !on
-#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+#RewriteCond %{SERVER_PORT}   !^443$
+#RewriteRule  (.*)$  https://%{HTTP_HOST}/$1   [R=301,L]  
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule .* /index.php [L,QSA]
+RewriteRule ^(\/index\.php.{0,}|[-#a-zA-Z0-9\/_]+)$ /index.php [L,QSA]
 
 
 

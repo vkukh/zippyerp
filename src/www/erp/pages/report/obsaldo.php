@@ -64,12 +64,13 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
         $totenddt = 0;
         $totendct = 0;
 
-        $from = strtotime($this->filter->from->getValue());
-        $to = strtotime($this->filter->to->getValue());
+        $from =  $this->filter->from->getDate();
+        $to =  $this->filter->to->getDate();
 
         foreach ($acclist as $acc) {
 
             $data = $acc->getSaldoAndOb($from, $to);  //получаем остатки  и  обороты  на  период
+
 
             $detail[] = array(
                 "acc_code" => $acc->acc_code,
@@ -80,7 +81,7 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
                 'enddt' => H::fm($data['enddt']),
                 'endct' => H::fm($data['endct'])
             );
-            if ($data['parent'] != true) {  //только  для счетов а не  для   субсчетов
+            if ( $acc->acc_pid == 0) {
                 $totstartdt += $data['startdt'];
                 $totstartct += $data['startct'];
                 $totobdt += $data['obdt'];
@@ -88,6 +89,7 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
                 $totenddt += $data['enddt'];
                 $totendct += $data['endct'];
             }
+
         }
 
         $header = array(

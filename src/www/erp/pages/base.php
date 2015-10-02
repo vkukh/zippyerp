@@ -42,12 +42,14 @@ class Base extends \Zippy\Html\WebPage
         $this->_errormsg = $msg;
         $this->errormessage->setVisible(true);
     }
-   public function setWarn($msg)
+
+    public function setWarn($msg)
     {
         $this->_warnmsg = $msg;
         $this->warnmessage->setVisible(true);
     }
-   public function setSuccess($msg)
+
+    public function setSuccess($msg)
     {
         $this->_successmsg = $msg;
         $this->successmessage->setVisible(true);

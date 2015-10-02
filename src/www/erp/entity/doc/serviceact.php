@@ -26,12 +26,12 @@ class ServiceAct extends Document
             $detail[] = array("no" => $i++,
                 "itemname" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity']/ 1000,
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
                 "pricends" => H::fm($value['pricends']),
-                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
+                "amount" => H::fm(($value['quantity'] / 1000) * $value['price'])
             );
-            $total += ($value['quantity']/1000) * $value['price'];
+            $total += ($value['quantity'] / 1000) * $value['price'];
         }
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -58,30 +58,29 @@ class ServiceAct extends Document
 
         // \ZippyERP\ERP\Entity\Customer::AddActivity($customer_id, 0 - $total, $this->document_id);
 
-         if ($this->headerdata['cash'] == true) {
+        if ($this->headerdata['cash'] == true) {
 
             $cash = MoneyFund::getCash();
             \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", $total, $this->document_id, $cash->id, $customer_id);
-            $sc = new SubConto($this->document_id, $this->document_date, 36);
+            $sc = new SubConto($this, 36, 0 - $total);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount(0- $total);
-            $sc->save();
-            $sc = new SubConto($this->document_id, $this->document_date, 30);
-            $sc->setMoneyfund($cash->id);
-            $sc->setAmount( $total);
-            // $sc->save();
 
+            $sc->save();
+            $sc = new SubConto($this, 30, $total);
+            $sc->setMoneyfund($cash->id);
+
+            // $sc->save();
         }
 
-               if ($this->headerdata['totalnds'] > 0) {
-                  Entry::AddEntry("703", "643", $this->headerdata['totalnds'], $this->document_id,$this->document_date);
-               }
+        if ($this->headerdata['totalnds'] > 0) {
+            Entry::AddEntry("703", "643", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+        }
 
-            Entry::AddEntry("36", "703", $total, $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 36);
-            $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount(  $total);
-            $sc->save();
+        Entry::AddEntry("36", "703", $total, $this->document_id, $this->document_date);
+        $sc = new SubConto($this, 36, $total);
+        $sc->setCustomer($this->headerdata["customer"]);
+
+        $sc->save();
 
 
 

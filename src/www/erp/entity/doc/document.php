@@ -168,6 +168,7 @@ class Document extends \ZCL\DB\Entity
         //   $conn->Execute("delete from erp_customer_activity  where document_id =" . $this->document_id);
         //  $conn->Execute("delete from erp_staff_employee_activity   where document_id =" . $this->document_id);
         $conn->Execute("delete from erp_account_subconto   where document_id =" . $this->document_id);
+        $conn->Execute("delete from erp_document_update_log   where document_id =" . $this->document_id);
         $conn->CompleteTrans();
 
         //todo  серийные  номера

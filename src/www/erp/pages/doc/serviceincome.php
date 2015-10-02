@@ -21,8 +21,6 @@ use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Customer;
-
-
 use ZippyERP\ERP\Helper as H;
 
 /**
@@ -92,7 +90,7 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
 
                     if ($basedoc->meta_name == 'PurchaseInvoice') {
                         $this->docform->isnds->setChecked($basedoc->headerdata['isnds']);
-                         $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
                         $this->docform->customer->setText($basedoc->headerdata['customername']);
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
@@ -119,10 +117,10 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('item', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', ($item->quantity/1000)));
+        $row->add(new Label('quantity', ($item->quantity / 1000)));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new Label('pricends', H::fm($item->pricends)));
-        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->price)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->price)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -133,7 +131,7 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText(($item->quantity/1000));
+        $this->editdetail->editquantity->setText(($item->quantity / 1000));
         $this->editdetail->editprice->setText(H::fm($item->price));
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
         $this->editdetail->edititem->setKey($item->item_id);
@@ -166,7 +164,7 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $item = Item::load($id);
-        $item->quantity = 1000*$this->editdetail->editquantity->getText();
+        $item->quantity = 1000 * $this->editdetail->editquantity->getText();
         $item->price = $this->editdetail->editprice->getText() * 100;
         $item->pricends = $this->editdetail->editpricends->getText() * 100;
 
@@ -223,13 +221,13 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         $conn->BeginTrans();
         try {
 
-        $this->_doc->save();
+            $this->_doc->save();
 
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
-        }
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
 
             if ($this->_basedocid > 0) {
                 $this->_doc->AddConnectedDoc($this->_basedocid);
@@ -239,12 +237,14 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
                 $this->_doc->AddConnectedDoc($this->docform->contract->getKey());
             }
             $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
-            return;
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
     /**
@@ -257,8 +257,8 @@ class ServiceIncome extends \ZippyERP\ERP\Pages\Base
         $total = 0;
         $totalnds = 0;
         foreach ($this->_itemlist as $item) {
-            $item->amount = $item->pricends * ($item->quantity/1000);
-            $item->nds = $item->amount - $item->price * ($item->quantity/1000);
+            $item->amount = $item->pricends * ($item->quantity / 1000);
+            $item->nds = $item->amount - $item->price * ($item->quantity / 1000);
             $total = $total + $item->amount;
             $totalnds = $totalnds + $item->nds;
         }

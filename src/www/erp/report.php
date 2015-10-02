@@ -38,11 +38,11 @@ class Report
             return "Файл  печатной формы " . $this->_template . " не найден";
         }
 
-            $fenom = \Fenom::factory(_ROOT . 'templates/erp/printforms' );
+        $fenom = \Fenom::factory(_ROOT . 'templates/erp/printforms');
 
         $html = $fenom->fetch($this->_template, $header);
-        $html = str_replace("\n","",$html);  
-        $html = str_replace("\r","",$html);  
+        $html = str_replace("\n", "", $html);
+        $html = str_replace("\r", "", $html);
         return $html;
     }
 

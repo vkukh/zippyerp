@@ -75,8 +75,8 @@ class Item extends \ZCL\DB\Entity
     public static function getQuantity($item_id, $date)
     {
         $conn = \ZCL\DB\DB::getConnect();
-        $where = "   stock_id IN( select stock_id from erp_store_stock st join erp_store sr on st.store_id = sr.store_id  where item_id= {$item_id} and store_type = ". Store::STORE_TYPE_OPT ." )  and date(document_date) <= " . $conn->DBDate($date);
-        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_account_subconto  where " . $where ;
+        $where = "   stock_id IN( select stock_id from erp_store_stock st join erp_store sr on st.store_id = sr.store_id  where item_id= {$item_id} and store_type = " . Store::STORE_TYPE_OPT . " )  and date(document_date) <= " . $conn->DBDate($date);
+        $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_account_subconto  where " . $where;
         return $conn->GetOne($sql);
     }
 
@@ -91,18 +91,18 @@ class Item extends \ZCL\DB\Entity
         return Item::findOne("detail LIKE '%<uktzed>{$code}</uktzed>%' ");
     }
 
-    
     /**
-    * возвращает  специльный  товар  для  суммвового  учета
-    * 
-    */
+     * возвращает  специльный  товар  для  суммвового  учета
+     * 
+     */
     public static function getSumItem()
     {
-        $item= Item::getFirst('item_type=' . Item::ITEM_TYPE_RETSUM);
-        if($item instanceof Item){
-            return  $item;
-        }else {
-            throw new  \ZippyERP\System\Exception("Не  найдет товар для  суммового  учета");
+        $item = Item::getFirst('item_type=' . Item::ITEM_TYPE_RETSUM);
+        if ($item instanceof Item) {
+            return $item;
+        } else {
+            throw new \ZippyERP\System\Exception("Не  найдет товар для  суммового  учета");
         }
-    }    
+    }
+
 }

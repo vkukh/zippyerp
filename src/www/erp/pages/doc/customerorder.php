@@ -90,9 +90,9 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('item', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity/1000));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
-        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->price)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->price)));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
 
@@ -126,7 +126,6 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
             'customername' => $this->docform->customer->getText(),
             'orderstate' => $new_state,
             'timeline' => $this->docform->timeline->getDate(),
-
         );
         $this->_doc->detaildata = array();
         foreach ($this->_itemlist as $item) {
@@ -138,11 +137,22 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = $this->docform->document_date->getDate();
         $this->_doc->order_state = $this->docform->orderstate->getValue();
         $this->_doc->tagcode = $this->docform->customer->getKey();
-        $this->_doc->save();
-        if ($new_state != $old_state) {
-            $this->_doc->updateStatus($new_state);
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($new_state != $old_state) {
+                $this->_doc->updateStatus($new_state);
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
     public function backtolistOnClick($sender)
@@ -158,7 +168,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $item = Item::load($id);
-        $item->quantity = $this->editdetail->editquantity->getText()*1000;
+        $item->quantity = $this->editdetail->editquantity->getText() * 1000;
         $item->price = $this->editdetail->editprice->getText() * 100;
 
 
@@ -211,20 +221,19 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
     {
         $total = 0;
         foreach ($this->_itemlist as $item) {
-            $total = $total + $item->price * ($item->quantity/1000);
+            $total = $total + $item->price * ($item->quantity / 1000);
         }
         $this->docform->total->setText(H::fm($total));
     }
 
-
-    public function OnChangeItem(  $sender)
+    public function OnChangeItem($sender)
     {
         $id = $sender->getKey();
         $item = Item::load($id);
         $this->editdetail->editprice->setText(H::fm($item->priceopt));
 
 
-        $this->editdetail->qtystore->setText(Item::getQuantity($id, $this->docform->timeline->getDate())/1000);
+        $this->editdetail->qtystore->setText(Item::getQuantity($id, $this->docform->timeline->getDate()) / 1000);
         $this->updateAjax(array('editprice', 'qtystore'));
     }
 
@@ -233,9 +242,11 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $text = $sender->getValue();
         return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
     }
+
     public function OnAutoItem($sender)
     {
         $text = $sender->getValue();
         return Item::findArray('itemname', "itemname like '%{$text}%' and item_type =" . Item::ITEM_TYPE_STUFF);
     }
+
 }

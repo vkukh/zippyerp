@@ -26,8 +26,8 @@ use \ZippyERP\ERP\Helper as H;
  */
 class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 {
-    private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ',26=>'Готовая продукция');
 
+    private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ', 26 => 'Готовая продукция');
     public $_itemlist = array();
     private $_doc;
     private $_rowid = 0;
@@ -57,7 +57,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editprice'));
 
 
-        $this->editdetail->add(new DropDownChoice('edittype', $this->_itemtype))->setChangeHandler($this,"OnItemType");
+        $this->editdetail->add(new DropDownChoice('edittype', $this->_itemtype))->setChangeHandler($this, "OnItemType");
 
 
         $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
@@ -89,7 +89,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('item', $item->itemname));
 
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity/1000));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
@@ -123,7 +123,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText($stock->quantity/1000);
+        $this->editdetail->editquantity->setText($stock->quantity / 1000);
 
 
 
@@ -144,22 +144,22 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 
 
         $stock = Stock::load($id);
-        $stock->quantity = 1000*$this->editdetail->editquantity->getText();
-        $stock->price = 100*$this->editdetail->editprice->getText();
+        $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
+        $stock->price = 100 * $this->editdetail->editprice->getText();
         $stock->type = $this->editdetail->edittype->getValue();
 
-        $doc =Document::getFirst("meta_name ='MoveItem' and  state=" . Document::STATE_EXECUTED. "  and content  like '%<item_id>{$stock->item_id}</item_id>%'");
+        $doc = Document::getFirst("meta_name ='MoveItem' and  state=" . Document::STATE_EXECUTED . "  and content  like '%<item_id>{$stock->item_id}</item_id>%'");
         if ($doc == null) {
             $this->setWarn('Не найден документ перемещения со склада  с таким  ТМЦ');
         }
 
         $store = Store::load($this->docform->storefrom->getValue());
-      // $fromstock = Stock::getStock($this->docform->storefrom->getValue(),$stock->item_id,$stock->price,false);
+        // $fromstock = Stock::getStock($this->docform->storefrom->getValue(),$stock->item_id,$stock->price,false);
         $stockfrom = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and price={$stock->price} and partion={$stock->partion} and closed <> 1");
 
-        if($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET){
-           $this->setError('Товар  с  такой  ценой и партией не найден  в  магазине');
-           return;
+        if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET) {
+            $this->setError('Товар  с  такой  ценой и партией не найден  в  магазине');
+            return;
         }
 
 
@@ -173,7 +173,6 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->edititem->setText('');
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editprice->setText("");
-
     }
 
     public function cancelrowOnClick($sender)
@@ -184,7 +183,6 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->edititem->setText('');
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editprice->setText("");
-
     }
 
     public function savedocOnClick($sender)
@@ -209,13 +207,25 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
     /**
@@ -252,7 +262,6 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 
         } else {
             $item = Item::load($stock->item_id);
-
         }
         if ($store->store_type == Store::STORE_TYPE_RET) {
 
@@ -268,28 +277,26 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         }
         if ($sender->id == 'storeto') {
 
-
         }
     }
 
-    public function OnItemType($sender){
-     //   $stock_id = $this->editdetail->edititem->getKey();
-   //     $stock = Stock::load($stock_id);
-    //    if($stock==null) return;
-
-     //  $this->editdetail->edititem->setKey(0);
-     //   $this->editdetail->edititem->setText('');
-    //    $this->editdetail->editquantity->setText("1");
-
+    public function OnItemType($sender)
+    {
+        //   $stock_id = $this->editdetail->edititem->getKey();
+        //     $stock = Stock::load($stock_id);
+        //    if($stock==null) return;
+        //  $this->editdetail->edititem->setKey(0);
+        //   $this->editdetail->edititem->setText('');
+        //    $this->editdetail->editquantity->setText("1");
     }
+
     public function OnAutocompleteItem($sender)
     {
         //ищем  партии  ТМЦ  на  оптовом складе
         $text = $sender->getValue();
         $store_id = $this->docform->storeto->getValue();
 
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and   stock_id in(select stock_id  from  erp_account_subconto  where  account_id= ".$this->editdetail->edittype->getValue() .") ");
+        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and   stock_id in(select stock_id  from  erp_account_subconto  where  account_id= " . $this->editdetail->edittype->getValue() . ") ");
     }
-
 
 }

@@ -4,7 +4,6 @@ namespace ZippyERP\ERP\Entity\Doc;
 
 use \ZippyERP\ERP\Entity\MoneyFund;
 use \ZippyERP\ERP\Entity\Entry;
-
 use \ZippyERP\ERP\Entity\Customer;
 use \ZippyERP\ERP\Entity\Employee;
 use \ZippyERP\ERP\Entity\SubConto;
@@ -61,43 +60,38 @@ class CashReceiptIn extends Document
         if ($optype == self::TYPEOP_CUSTOMER) {
 
             $ret = Entry::AddEntry(30, 36, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 36);
+            $sc = new SubConto($this, 36, 0 - $this->headerdata['amount'] );
             $sc->setCustomer($this->headerdata['opdetail']);
-            $sc->setAmount(0 - $this->headerdata['amount']);
             $sc->save();
         }
         if ($optype == self::TYPEOP_CASH) {
             $ret = Entry::AddEntry(30, 372, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 372);
+            $sc = new SubConto($this, 372, 0 - $this->headerdata['amount']);
             $sc->setEmployee($this->headerdata['opdetail']);
-            $sc->setAmount(0 - $this->headerdata['amount']);
             $sc->save();
         }
         if ($optype == self::TYPEOP_BANK) {
             $ret = Entry::AddEntry(30, 31, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 31);
+            $sc = new SubConto($this, 31, 0 - $this->headerdata['amount']);
             $sc->setMoneyfund($this->headerdata['opdetail']);
-            $sc->setAmount(0 - $this->headerdata['amount']);
             $sc->save();
         }
         if ($optype == self::TYPEOP_RET) {
             $store_id = $this->headerdata['opdetail']; // магазин
             $ret = Entry::AddEntry(30, 702, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 702);
+            $sc = new SubConto($this, 702, 0 - $this->headerdata['amount']);
             $sc->setExtCode($this->headerdata['opdetail']);
-            $sc->setAmount(0 - $this->headerdata['amount']);
             $sc->save();
 
-            $store = \ZippyERP\ERP\Entity\Store::load($store_id) ;
-            if($store->store_type == \ZippyERP\ERP\Entity\Store::STORE_TYPE_RET_SUM){
+            $store = \ZippyERP\ERP\Entity\Store::load($store_id);
+            if ($store->store_type == \ZippyERP\ERP\Entity\Store::STORE_TYPE_RET_SUM) {
                 $nds = \ZippyERP\ERP\Helper::nds(true);
-                Entry::AddEntry(702, 643, $nds*$this->headerdata['amount'], $this->document_id, $this->document_date);
+                Entry::AddEntry(702, 643, $nds * $this->headerdata['amount'], $this->document_id, $this->document_date);
             }
         }
         //касса
-        $sc = new SubConto($this->document_id, $this->document_date, 30);
+        $sc = new SubConto($this, 30, $this->headerdata['amount']);
         $sc->setMoneyfund($cash->id);
-        $sc->setAmount($this->headerdata['amount']);
         $sc->save();
 
         if (strlen($ret) > 0)

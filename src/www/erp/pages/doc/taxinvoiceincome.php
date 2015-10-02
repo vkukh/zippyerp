@@ -78,8 +78,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
             //      $this->docform->nds->setText($this->_doc->headerdata['nds'] / 100);
             $this->docform->document_date->setDate($this->_doc->document_date);
 
-                    $this->docform->contract->setKey($this->_doc->headerdata['contract']);
-                    $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
+            $this->docform->contract->setKey($this->_doc->headerdata['contract']);
+            $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
 
             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
             $this->docform->customer->setText($this->_doc->headerdata['customername']);
@@ -101,7 +101,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
                     // Создатся  на  основании  приходной  накладной
                     if ($basedoc->meta_name == 'GoodsReceipt') {
                         //  $this->docform->nds->setText($basedoc->headerdata['nds'] / 100);
-                          $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
                         $this->docform->customer->setText($basedoc->headerdata['customername']);
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
@@ -114,7 +114,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
                     // Создать  на  основании  счета  входящего
                     if ($basedoc->meta_name == 'PurchaseInvoice') {
 
-                         $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
                         $this->docform->customer->setText($basedoc->headerdata['customername']);
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
@@ -150,10 +150,10 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity/1000));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new Label('pricends', H::fm($item->pricends)));
-        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->price)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->price)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -163,14 +163,14 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $item = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
-           $this->editdetail->edittovar->setKey($item->item_id);
-           $this->editdetail->edittovar->setText($item->itemname);
+        $this->editdetail->edittovar->setKey($item->item_id);
+        $this->editdetail->edittovar->setText($item->itemname);
 
-        $this->editdetail->editquantity->setText($item->quantity/1000);
+        $this->editdetail->editquantity->setText($item->quantity / 1000);
         $this->editdetail->editprice->setText(H::fm($item->price));
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
         $this->_rowid = $item->item_id;
-      }
+    }
 
     public function deleteOnClick($sender)
     {
@@ -196,7 +196,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $item = Item::load($id);
-        $item->quantity = 1000*$this->editdetail->editquantity->getText();
+        $item->quantity = 1000 * $this->editdetail->editquantity->getText();
         // $stock->partion = $stock->price;
         $item->price = $this->editdetail->editprice->getText() * 100;
         $item->pricends = $this->editdetail->editpricends->getText() * 100;
@@ -248,12 +248,15 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_CLOSED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
-        }
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_CLOSED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
             if ($this->_basedocid > 0) {
                 $this->_doc->AddConnectedDoc($this->_basedocid);
                 $this->_basedocid = 0;
@@ -261,7 +264,15 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
             if ($this->docform->contract->getKey() > 0) {
                 $this->_doc->AddConnectedDoc($this->docform->contract->getKey());
             }
-        App::RedirectBack();
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
+        }
     }
 
     /**
@@ -273,8 +284,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $total = 0;
         $totalnds = 0;
         foreach ($this->_tovarlist as $item) {
-            $item->amount = $item->pricends * ($item->quantity/1000);
-            $item->nds = $item->amount - $item->price * ($item->quantity/1000);
+            $item->amount = $item->pricends * ($item->quantity / 1000);
+            $item->nds = $item->amount - $item->price * ($item->quantity / 1000);
             $total = $total + $item->amount;
             $totalnds = $totalnds + $item->nds;
         }
@@ -313,8 +324,6 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-
-
     public function importdocOnClick($sender)
     {
 
@@ -344,6 +353,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->detail->Reload();
     }
+
     public function OnAutoContragent($sender)
     {
         $text = $sender->getValue();
@@ -361,4 +371,5 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $text = $sender->getValue();
         return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <> " . Item::ITEM_TYPE_RETSUM);
     }
+
 }

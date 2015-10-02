@@ -114,7 +114,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnItem'))->setVisible(false);
     }
 
-   public function detailOnRow($row)
+    public function detailOnRow($row)
     {
         $item = $row->getDataItem();
 
@@ -249,12 +249,14 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
                 $this->_doc->AddConnectedDoc($this->docform->contract->getKey());
             }
             $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
-            return;
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
     /**

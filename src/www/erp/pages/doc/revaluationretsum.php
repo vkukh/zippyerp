@@ -19,7 +19,7 @@ use ZippyERP\ERP\Entity\Stock;
 
 /**
  * Страница  документа переоценка  в  суммовом  учете
- * 
+ *
  */
 class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
 {
@@ -29,7 +29,7 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
         parent::__construct();
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new Date('created'))->setDate(time());
+        $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
 
@@ -45,7 +45,7 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
                 App::RedirectError('Докумен не найден');
 
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->store->setValue($this->_doc->headerdata['store_id']);
             $this->docform->type->setValue($this->_doc->headerdata['type']);
             $this->docform->summa->setText(H::fm($this->_doc->headerdata['summa']));
@@ -73,7 +73,7 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $this->_doc->headerdata['store_id'] = $store->store_id;
         $this->_doc->headerdata['type'] = $this->docform->type->getValue();
         $this->_doc->headerdata['storename'] = $store->storename;
@@ -81,16 +81,26 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['actual'] = 100 * $this->docform->actual->getText();
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+
+
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-
-
-
-        App::RedirectBack();
     }
 
     public function backtolistOnClick($sender)
@@ -103,9 +113,9 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
     {
         $store_id = $this->docform->store->getValue();
         if ($store_id > 0) {
-            $list = Stock::find("store_id = " . $store_id);
+            $list = Stock::find("store_id = " . $store_id);  //ишем  сток  со  спецтоваром
             foreach ($list as $stock) {
-                $amount = Stock::getQuantity($stock->stock_id, $this->docform->created->getDate());
+                $amount = Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate());
                 $this->docform->actual->setText(H::fm($amount));
                 $this->_doc->headerdata['stock_id'] = $stock->stock_id;
                 return;

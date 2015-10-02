@@ -53,8 +53,8 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date'));
         //проводки
         $this->docform->add(new DataView('acctable', new ArrayDataSource($this, '_entryarr'), $this, 'acctableOnRow'));
-        $this->docform->add(new DropDownChoice('e_acclistd', Account::findArrayEx(  'acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
-        $this->docform->add(new DropDownChoice('e_acclistc', Account::findArrayEx(  'acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
+        $this->docform->add(new DropDownChoice('e_acclistd', Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
+        $this->docform->add(new DropDownChoice('e_acclistc', Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
         $this->docform->add(new TextInput('e_accsumma'));
         $this->docform->add(new SubmitButton('addaccbtn'))->setClickHandler($this, 'addaccbtnOnClick');
         //ТМЦ
@@ -296,7 +296,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('cop', $_oplist[$c->op]));
         $row->add(new Label('сname', $c->customer_name));
-        $row->add(new Label('сamount', $c->val));
+        $row->add(new Label('сamount',H::fm( $c->val)));
         $row->add(new ClickLink('delс'))->setClickHandler($this, 'delсOnClick');
     }
 
@@ -337,7 +337,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('fop', $_oplist[$f->op]));
         $row->add(new Label('fname', $f->title));
-        $row->add(new Label('famount', $f->val));
+        $row->add(new Label('famount',H::fm( $f->val)));
         $row->add(new ClickLink('delf'))->setClickHandler($this, 'delfOnClick');
     }
 
@@ -382,14 +382,25 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['f'] = base64_encode(serialize($this->_farr));
         $this->_doc->headerdata['description'] = $this->docform->description->getText();
 
-        $this->_doc->save();
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
 
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($this->_edited ? Document::STATE_EDITED : Document::STATE_NEW);
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($this->_edited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-        $this->backtolistOnClick(null);
     }
 
     public function afterRequest()

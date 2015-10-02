@@ -128,26 +128,29 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
     public function savedocOnClick($sender)
     {
 
+
+
+        $basedocid = $this->docform->basedoc->getKey();
+        $this->_doc->headerdata = array(
+            'optype' => $this->docform->optype->getValue(),
+            'opdetail' => $this->docform->opdetail->getKey(),
+            'opdetailname' => $this->docform->opdetail->getText(),
+            'amount' => $this->docform->amount->getValue() * 100,
+            'nds' => $this->docform->nds->getValue() * 100,
+            'basedoc' => $basedocid,
+            'notes' => $this->docform->notes->getText()
+        );
+        $this->_doc->amount = 100 * $this->docform->amount->getText();
+        $this->_doc->document_number = $this->docform->document_number->getText();
+        $this->_doc->document_date = $this->docform->document_date->getDate();
+        $this->_doc->datatag = $this->_doc->headerdata['opdetail'];
+
+        $isEdited = $this->_doc->document_id > 0;
+
         $conn = \ZCL\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
 
-            $basedocid = $this->docform->basedoc->getKey();
-            $this->_doc->headerdata = array(
-                'optype' => $this->docform->optype->getValue(),
-                'opdetail' => $this->docform->opdetail->getKey(),
-                'opdetailname' => $this->docform->opdetail->getText(),
-                'amount' => $this->docform->amount->getValue() * 100,
-                'nds' => $this->docform->nds->getValue() * 100,
-                'basedoc' => $basedocid,
-                'notes' => $this->docform->notes->getText()
-            );
-            $this->_doc->amount = 100 * $this->docform->amount->getText();
-            $this->_doc->document_number = $this->docform->document_number->getText();
-            $this->_doc->document_date = $this->docform->document_date->getDate();
-            $this->_doc->datatag = $this->_doc->headerdata['opdetail'];
-
-            $isEdited = $this->_doc->document_id > 0;
             $this->_doc->save();
 
             if ($sender->id == 'execdoc') {
@@ -160,12 +163,14 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
                 $this->_doc->AddConnectedDoc($basedocid);
             }
             $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
-            return;
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
 }

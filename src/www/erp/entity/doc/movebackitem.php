@@ -29,48 +29,47 @@ class MoveBackItem extends Document
         foreach ($this->detaildata as $value) {
 
             //приниммаем на склад
-            $stockto = Stock::getStock($this->headerdata['storeto'], $value['item_id'], $value['partion'],true);
-            $sc = new SubConto($this->document_id, $this->document_date, $value['type']);
-            $sc->setStock($stockto->stock_id) ;
-            $sc->setQuantity( $value['quantity']) ;
+            $stockto = Stock::getStock($this->headerdata['storeto'], $value['item_id'], $value['partion'], true);
+            $sc = new SubConto($this, $value['type'], ($value['quantity'] / 1000) * $stockto->price);
+            $sc->setStock($stockto->stock_id);
+            $sc->setQuantity($value['quantity']);
             $sc->save();
 
             $store = Store::load($this->headerdata['storefrom']);
 
             if ($store->store_type == Store::STORE_TYPE_RET) {    //розница
-                 $stockfrom = Stock::getFirst("store_id={$this->headerdata['storefrom']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
-                 if($stockfrom ==null) return false;
-                 $sc = new SubConto($this->document_id, $this->document_date, 282);
-                 $sc->setStock($stockfrom->stock_id) ;
-                 $sc->setQuantity(0- $value['quantity']) ;
-                 $sc->save();
+                $stockfrom = Stock::getFirst("store_id={$this->headerdata['storefrom']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
+                if ($stockfrom == null)
+                    return false;
+                $sc = new SubConto($this, 282, 0 - ($value['quantity'] / 1000) * $stockfrom->price);
+                $sc->setStock($stockfrom->stock_id);
+                $sc->setQuantity(0 - $value['quantity']);
+                $sc->save();
 
 
-                $ret += ($value['quantity']/1000) * ($value['price'] - $value['partion']);
-                $amount += ($value['quantity']/1000)* $value['partion'];
+                $ret += ($value['quantity'] / 1000) * ($value['price'] - $value['partion']);
+                $amount += ($value['quantity'] / 1000) * $value['partion'];
             }
 
             if ($store->store_type == Store::STORE_TYPE_RET_SUM) {   //розница суммовой учет
-
                 //специальный  товар  для  cуммового  учета
                 $item = \ZippyERP\ERP\Entity\Item::getSumItem();
 
                 $stockfrom = Stock::getStock($this->headerdata['storefrom'], $item->item_id, 1, true);
-                $sc = new SubConto($this->document_id, $this->document_date, 282);
-                $sc->setStock($stockfrom->stock_id) ;
-                $sc->setQuantity(0- ($value['quantity'] ) * $value['price']) ; //цена  единицы  товара - 1 копейка.
+                $sc = new SubConto($this, 282, 0 - ($value['quantity'] ) * $value['price']);  //цена  единицы  товара = 1 копейка.
+                $sc->setStock($stockfrom->stock_id);
+                $sc->setQuantity(0 - ($value['quantity'] ) * $value['price']); //цена  единицы  товара - 1 копейка.
                 $sc->save();
 
-                $ret += ($value['quantity']/1000) * ($value['price'] - $value['partion']);
-                $amount += ($value['quantity']/1000) * $value['partion'];
+                $ret += ($value['quantity'] / 1000) * ($value['price'] - $value['partion']);
+                $amount += ($value['quantity'] / 1000) * $value['partion'];
             }
         }
         if ($amount > 0) {  // розница
             Entry::AddEntry(281, 282, $amount, $this->document_id, $this->document_date);
-            Entry::AddEntry(285, 282, $ret, $this->document_id, $this->document_date );
-            $sc = new SubConto($this->document_id, $this->document_date, 285);
+            Entry::AddEntry(285, 282, $ret, $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 285, $ret);
             $sc->setExtCode($store->store_id);
-            $sc->setAmount(  $ret);
             $sc->save();
         }
         $conn->CompleteTrans();
@@ -97,7 +96,7 @@ class MoveBackItem extends Document
                 "item_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
                 "price" => H::fm($value['price']),
-                "quantity" => $value['quantity']/1000);
+                "quantity" => $value['quantity'] / 1000);
         }
 
 

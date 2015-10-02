@@ -15,7 +15,7 @@ use Zippy\Html\Link\SubmitLink;
 
 /**
  * Страница  документа финансовые результаты
- * 
+ *
  */
 class FinResult extends \ZippyERP\ERP\Pages\Base
 {
@@ -51,16 +51,25 @@ class FinResult extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->created->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-
-
-
-        App::RedirectBack();
     }
 
     public function backtolistOnClick($sender)

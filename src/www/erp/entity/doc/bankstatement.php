@@ -58,98 +58,74 @@ class BankStatement extends Document
 
     public function Execute()
     {
-        $conn = \ZCL\DB\DB::getConnect();
-        $conn->BeginTrans();
-        try {
 
-            foreach ($this->detaildata as $value) {
-                if ($value['noentry'] === 'true')
-                    continue;
+
+        foreach ($this->detaildata as $value) {
+            if ($value['noentry'] === 'true') //не выполнять проводки
+                continue;
 
 
 
-                if ($value['optype'] == self::OUT) {
-                    Entry::AddEntry('63', "31", $value['amount'], $this->document_id, $this->document_date);
-                    $sc = new SubConto($this->document_id, $this->document_date, 63);
-                    $sc->setCustomer($value['customer']);
-                    $sc->setAmount($value['amount']);
-                    $sc->save();
-                    $sc = new SubConto($this->document_id, $this->document_date, 31);
-                    $sc->setMoneyfund($this->headerdata['bankaccount']);
-                    $sc->setAmount(0 - $value['amount']);
-                    $sc->save();
-                }
-                if ($value['optype'] == self::IN) {
-                    Entry::AddEntry('31', "36", $value['amount'], $this->document_id, $this->document_date);
-                    $sc = new SubConto($this->document_id, $this->document_date, 36);
-                    $sc->setCustomer($value['customer']);
-                    $sc->setAmount(0 - $value['amount']);
-                    $sc->save();
-                    $sc = new SubConto($this->document_id, $this->document_date, 31);
-                    $sc->setMoneyfund($this->headerdata['bankaccount']);
-                    $sc->setAmount($value['amount']);
-                    $sc->save();
-                }
-                if ($value['optype'] == self::TAX) {
-                    Entry::AddEntry('64', "31", $value['amount'], $this->document_id, $this->document_date);
-                    $sc = new SubConto($this->document_id, $this->document_date, 64);
-                    $sc->setCustomer($value['customer']);
-                    $sc->setAmount($value['amount']);
-                    $sc->save();
-
-
-                    $sc = new SubConto($this->document_id, $this->document_date, 31);
-                    $sc->setMoneyfund($this->headerdata['bankaccount']);
-                    $sc->setExtCode($value['tax']); // код налога
-                    $sc->setAmount(0 - $value['amount']);
-                    $sc->save();
-                }
-                if ($value['optype'] == self::CASHIN) {
-                    $cash = MoneyFund::getCash();
-                    Entry::AddEntry('30', "31", $value['amount'], $this->document_id, $this->document_date);
-                    $sc = new SubConto($this->document_id, $this->document_date, 31);
-                    $sc->setMoneyfund($this->headerdata['bankaccount']);
-                    $sc->setAmount(0 - $value['amount']);
-                    $sc->save();
-                }
-                if ($value['optype'] == self::CASHOUT) {
-                    $cash = MoneyFund::getCash();
-                    Entry::AddEntry('31', "30", $value['amount'], $this->document_id, $this->document_date);
-                    $sc = new SubConto($this->document_id, $this->document_date, 31);
-                    $sc->setMoneyfund($this->headerdata['bankaccount']);
-                    $sc->setAmount($value['amount']);
-                    $sc->save();
-                }
-
-
-
-
-                $this->AddConnectedDoc($value['doc']);
-
-                //проставляем  оплату
-                //  $doc = Document::find($value['doc']);
-                //   if ($doc instanceof Document) {
-                //      $doc->intattr2 = $doc->intattr2 + $value['amount'];
-                //       $doc->save();
-                // }
+            if ($value['optype'] == self::OUT) {
+                Entry::AddEntry('63', "31", $value['amount'], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, 63, $value['amount']);
+                $sc->setCustomer($value['customer']);
+                $sc->save();
+                $sc = new SubConto($this, 31, 0 - $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->save();
             }
-            $conn->CommitTrans();
-        } catch (\Exception $ee) {
-            $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            if ($value['optype'] == self::IN) {
+                Entry::AddEntry('31', "36", $value['amount'], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, 36, 0 - $value['amount']);
+                $sc->setCustomer($value['customer']);
+                $sc->save();
+                $sc = new SubConto($this, 31, $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->save();
+            }
+            if ($value['optype'] == self::TAX) {
+                //Entry::AddEntry('643', "644", $value['amount'], $this->document_id, $this->document_date);
+                Entry::AddEntry('643', "31", $value['amount'], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, 643, $value['amount']);
+                $sc->setCustomer($value['customer']);
+                $sc->save();
+
+
+                $sc = new SubConto($this, 31, 0 - $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->setExtCode($value['tax']); // код налога
+                $sc->save();
+            }
+            if ($value['optype'] == self::CASHIN) {
+                $cash = MoneyFund::getCash();
+                Entry::AddEntry('30', "31", $value['amount'], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, 31, 0 - $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->save();
+            }
+            if ($value['optype'] == self::CASHOUT) {
+                $cash = MoneyFund::getCash();
+                Entry::AddEntry('31', "30", $value['amount'], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, 31, $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->save();
+            }
+
+
+
+
+           // $this->AddConnectedDoc($value['doc']);
         }
     }
-
-    // Список  типов операций
-    public static function getTypes()
-    {
-        $list = array();
-        $list[self::IN] = "Оплата от покупателя";
-        $list[self::OUT] = "Оплата поставщику";
-        $list[self::CASHIN] = "Поступление наличности";
-        $list[self::CASHOUT] = "Снятие наличности";
-        $list[self::TAX] = "Оплата  налогов";
-        return $list;
+        // Список  типов операций
+        public static function getTypes() {
+            $list = array();
+            $list[self::IN] = "Оплата от покупателя";
+            $list[self::OUT] = "Оплата поставщику";
+            $list[self::CASHIN] = "Поступление наличности";
+            $list[self::CASHOUT] = "Снятие наличности";
+            $list[self::TAX] = "Оплата  налогов";
+            return $list;
+        }
     }
-
-}

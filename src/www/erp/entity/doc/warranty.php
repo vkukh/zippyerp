@@ -23,9 +23,9 @@ class Warranty extends Document
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,
                 "tovar_name" => $value['itemname'],
-                "quantity" => $value['quantity']/1000,
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
-                "amount" => H::fm(($value['quantity']/1000) * $value['price']),
+                "amount" => H::fm(($value['quantity'] / 1000) * $value['price']),
                 "sn" => $value['sn'],
                 "warranty" => $value['warranty']
             );

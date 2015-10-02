@@ -8,6 +8,7 @@ use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Entity\Account;
 use \ZippyERP\ERP\Entity\Stock;
+use \ZippyERP\ERP\Entity\SubConto;
 use Carbon\Carbon;
 
 /**
@@ -25,7 +26,7 @@ class RevaluationRet extends Document
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
             "summa" => H::fm($this->headerdata['summa']),
-            "storename" => $this->headerdata['storename']
+            "store" => $this->headerdata['storename']
         );
         $i = 1;
         $detail = array();
@@ -47,14 +48,35 @@ class RevaluationRet extends Document
 
     public function Execute()
     {
-        $diff = 0;
+        $diffall = 0;
         foreach ($this->detaildata as $value) {
-            $diff = $diff + $value['quantity'] * ($value['newprice'] - $value['price']);
+
+            $diffall = $diffall + ($value['quantity'] / 1000) * ($value['newprice'] - $value['price']);
+
+            $stock = Stock::load($value["stock_id"]);
+            $newstock = Stock::getStock($stock->store_id, $stock->item_id, $value['newprice'], true);
+
+
+            $sc = new SubConto($this, 282, 0 - ($value['quantity'] / 1000) * $stock->price);
+            $sc->setStock($stock->stock_id);
+            $sc->setQuantity(0 - $value['quantity']);
+
+            $sc->save();
+            $sc = new SubConto($this, 282, ($value['quantity'] / 1000) * $newstock->price);
+            $sc->setStock($newstock->stock_id);
+            $sc->setQuantity($value['quantity']);
+
+            $sc->save();
         }
 
 
-        Entry::AddEntry("282", "285", $diff, $this->document_id);
 
+        Entry::AddEntry("282", "285", $diffall, $this->document_id, $cash->id, $customer_id);
+
+        $sc = new SubConto($this, 285, 0 - $diffall);
+        $sc->setExtCode($this->headerdata["store"]);
+
+        $sc->save();
         return true;
     }
 

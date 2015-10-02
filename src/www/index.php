@@ -6,6 +6,7 @@ require_once 'init.php';
 try {
 
 
+
     $app = new \ZippyERP\System\Application('\ZippyERP\ERP\Pages\Main', $modules);
 
     //  $app->getResponse()->setGzip($_config['common']['gzip']);
@@ -22,16 +23,16 @@ try {
       Logger::getLogger("main")->error($e->getMessage(), e);
       \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
       } catch (ADODB_Exception $e) {
-    
+
       \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
      */
 } catch (Exception $e) {
     if($e  instanceof ADODB_Exception){
-       
+
        \ZCL\DB\DB::getConnect()->CompleteTrans(false); // откат транзакции
     }
-    
+    $msg =    $e->getMessage() ;
     $logger->error($e);
-    \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
+   // \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
 }
 

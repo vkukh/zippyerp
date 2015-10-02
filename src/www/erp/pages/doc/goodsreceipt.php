@@ -31,7 +31,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();
-    private $_itemtype = array( 281 => 'Товар',201 => 'Материал', 22 => 'МПБ');
+    private $_itemtype = array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ');
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
@@ -87,7 +87,6 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->_doc = Document::create('GoodsReceipt');
             if ($basedocid > 0) {  //создание на  основании
-
                 $basedoc = Document::load($basedocid);
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;

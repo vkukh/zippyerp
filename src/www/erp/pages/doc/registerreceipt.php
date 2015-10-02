@@ -21,7 +21,6 @@ use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Entity\Stock;
-
 use \ZippyERP\ERP\Helper as H;
 
 /**
@@ -98,9 +97,9 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity/1000));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
-        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->price)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->price)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -128,7 +127,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText($stock->quantity/1000);
+        $this->editdetail->editquantity->setText($stock->quantity / 1000);
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
@@ -136,7 +135,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->edittovar->setKey($stock->stock_id);
         $this->editdetail->edittovar->setText($stock->itemname);
 
-        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate())/1000 . ' ' . $stock->measure_name);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 
         $this->_rowid = $stock->stock_id;
     }
@@ -149,7 +148,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $stock = Stock::load($id);
-        $stock->quantity = 1000*$this->editdetail->editquantity->getText();
+        $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
         $stock->partion = $stock->price;
         $stock->price = $this->editdetail->editprice->getText() * 100;
 
@@ -174,8 +173,6 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->setVisible(true);
     }
 
-
-
     public function savedocOnClick($sender)
     {
         if ($this->checkForm() == false) {
@@ -186,7 +183,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 
         $this->_doc->headerdata = array(
             'store' => $this->docform->store->getValue(),
-               'kassa' => $this->docform->kassa->getText(),
+            'kassa' => $this->docform->kassa->getText(),
             'total' => $this->docform->total->getText() * 100,
             'return' => $this->docform->return->isChecked(),
             'totalnds' => $this->docform->totalnds->getText() * 100
@@ -201,17 +198,29 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+            if ($this->_basedocid > 0) {
+                $this->_doc->AddConnectedDoc($this->_basedocid);
+                $this->_basedocid = 0;
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-        if ($this->_basedocid > 0) {
-            $this->_doc->AddConnectedDoc($this->_basedocid);
-            $this->_basedocid = 0;
-        }
-        App::RedirectBack();
     }
 
     /**
@@ -222,7 +231,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
     {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
-            $total = $total + $tovar->price * ($tovar->quantity/1000);
+            $total = $total + $tovar->price * ($tovar->quantity / 1000);
         }
 
         $nds = $total * H::nds(true);
@@ -263,7 +272,6 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-
     public function OnAutoItem($sender)
     {
         $text = $sender->getValue();
@@ -272,7 +280,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
     }
 
-    public function OnChangeItem(  $sender)
+    public function OnChangeItem($sender)
     {
         $id = $sender->getKey();
         $stock = Stock::load($id);
@@ -280,7 +288,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
-        $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate())/1000 . ' ' . $stock->measure_name);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 
         $this->updateAjax(array('editprice', 'qtystock'));
     }

@@ -5,7 +5,6 @@ namespace ZippyERP\ERP;
 use \ZCL\DB\DB;
 use ZippyERP\System\System;
 
-
 /**
  * Класс   со  вспомагательными   функциями
  *   для  работы с  БД 
@@ -135,16 +134,17 @@ class Helper
     }
 
     /**
-    * возвращает описание  мета-обьекта
-    * 
-    * @param mixed $metaname
-    */
-    public static function getMetaNotes($metaname){
-            $conn = DB::getConnect();
-            $sql = "select notes from  erp_metadata where meta_name = '{$metaname}' ";
-            return $conn->GetOne($sql);       
+     * возвращает описание  мета-обьекта
+     * 
+     * @param mixed $metaname
+     */
+    public static function getMetaNotes($metaname)
+    {
+        $conn = DB::getConnect();
+        $sql = "select notes from  erp_metadata where meta_name = '{$metaname}' ";
+        return $conn->GetOne($sql);
     }
-    
+
     /**
      * Возвращает  ссписок  денежных счетов
      * 
@@ -252,6 +252,7 @@ class Helper
     {
         return number_format($value / 100, 2, '.', '');
     }
+
     /**
      * Форматирует  вывод  денежной суммы   в  тысячах
      * 
@@ -279,18 +280,18 @@ class Helper
     }
 
     /**
-    * Вставляет пробелы  между символами строки
-    * 
-    * @param mixed $data
-    */
-    public static function addSpaces($data){
-       $_data ="";
-       for($i = 0;$i < strlen($data);$i++) {
-          $_data .= (" " . $data[$i]);
-       }
-       
-       return trim($_data);
+     * Вставляет пробелы  между символами строки
+     * 
+     * @param mixed $data
+     */
+    public static function addSpaces($data)
+    {
+        $_data = "";
+        for ($i = 0; $i < strlen($data); $i++) {
+            $_data .= (" " . $data[$i]);
+        }
+
+        return trim($_data);
     }
-    
 
 }

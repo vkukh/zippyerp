@@ -37,7 +37,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new Date('created', time()));
+        $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('store'))->setChangeHandler($this, 'OnChangeStore');
         $this->docform->store->setOptionList(Store::findArray("storename", "store_type=" . Store::STORE_TYPE_RET));
 
@@ -60,7 +60,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
         if ($docid > 0) {    //загружаем   содержимок  документа на страницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->store->setValue($this->_doc->headerdata['store']);
 
 
@@ -83,7 +83,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('item', $item->itemname));
 
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new Label('newprice', H::fm($item->newprice)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
@@ -124,7 +124,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 
         $this->editdetail->edititem->setKey($stock->stock_id);
         $this->editdetail->edititem->setText($stock->itemname);
-        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate()) . ' ' . $stock->measure_name);
 
         $this->_rowid = $stock->stock_id;
     }
@@ -141,7 +141,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
         $stock = Stock::load($id);
 
         $stock->newprice = $this->editdetail->editprice->getText() * 100;
-        $stock->quantity = Stock::getQuantity($stock->stock_id, $this->docform->created->getDate());
+        $stock->quantity = Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate());
 
         $this->_itemlist[$stock->stock_id] = $stock;
         $this->editdetail->setVisible(false);
@@ -165,10 +165,11 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
             return;
         }
 
-
+        $store = Store::load($this->docform->store->getValue());
 
         $this->_doc->headerdata = array(
-            'store' => $this->docform->store->getValue()
+            'store' => $store->store_id,
+            'storename' => $store->storename
         );
         $this->_doc->detaildata = array();
         foreach ($this->_itemlist as $item) {
@@ -177,16 +178,27 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 
 
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
     /**
@@ -215,7 +227,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
     {
         $stock_id = $sender->getKey();
         $stock = Stock::load($stock_id);
-        $this->editdetail->qtystock->setText(Stock::getQuantity($stock_id, $this->docform->created->getDate()) . ' ' . $stock->measure_name);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($stock_id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
     }
 
     public function OnChangeStore($sender)

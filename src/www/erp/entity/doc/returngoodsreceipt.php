@@ -27,7 +27,7 @@ class ReturnGoodsReceipt extends Document
             $detail[] = array("no" => $i++,
                 "itemname" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity']/1000,
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
                 "pricends" => H::fm($value['pricends']),
                 "amount" => H::fm($value['amount'])
@@ -59,10 +59,10 @@ class ReturnGoodsReceipt extends Document
         foreach ($this->detaildata as $item) {
             $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $item['item_id'], $item['price'], true);
 
-            $sc = new SubConto($this->document_id, $this->document_date, $item['type']);
+            $sc = new SubConto($this, $item['type'], 0 - ($item['amount'] - $item['nds']));
             $sc->setStock($stock->stock_id);
-            $sc->setQuantity(0-$item['quantity']);
-            $sc->setAmount(0-($item['amount'] - $item['nds']));
+            $sc->setQuantity(0 - $item['quantity']);
+
             $sc->save();
 
             //группируем по синтетическим счетам
@@ -74,10 +74,10 @@ class ReturnGoodsReceipt extends Document
         }
 
         foreach ($types as $acc => $value) {
-            Entry::AddEntry($acc, "63", 0-$value, $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            Entry::AddEntry($acc, "63", 0 - $value, $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 63, $value);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount(  $value);
+
             $sc->save();
         }
 
@@ -86,32 +86,32 @@ class ReturnGoodsReceipt extends Document
         if ($this->headerdata['cash'] == true) {
 
             $cash = MoneyFund::getCash();
-            Entry::AddEntry("63", "30", 0-$total, $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            Entry::AddEntry("63", "30", 0 - $total, $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 63, 0 - $total);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount( 0-$total);
-             $sc->save();
-            $sc = new SubConto($this->document_id, $this->document_date, 30);
+
+            $sc->save();
+            $sc = new SubConto($this, 30, $total);
             $sc->setMoneyfund($cash->id);
-            $sc->setAmount( $total);
+
             // $sc->save();
         }
 
         //налоговый кредит
         if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("644", "63", 0-$this->headerdata['totalnds'], $this->document_id, 0, $customer_id);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            Entry::AddEntry("644", "63", 0 - $this->headerdata['totalnds'], $this->document_id, 0, $customer_id);
+            $sc = new SubConto($this, 63, $this->headerdata['totalnds']);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount(  $this->headerdata['totalnds']);
+
             $sc->save();
-            $sc = new SubConto($this->document_id, $this->document_date, 644);
+            $sc = new SubConto($this, 644, 0 - $this->headerdata['totalnds']);
             $sc->setExtCode(TAX_NDS);
-            $sc->setAmount(0-$this->headerdata['totalnds']);
+
             //$sc->save();
         }
 
 
-  return true;
+        return true;
     }
 
     public function getRelationBased()

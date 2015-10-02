@@ -1,7 +1,10 @@
 <html>
     <body>
-        <div class="row">
-            <div class="col-xs-10" zippy="listtab">    
+       
+            <div   zippy="listtab">   
+             
+             <div class="row">
+               
 
 
                 <h4>Список заданий</h4>
@@ -61,7 +64,9 @@
                     </div>
                 </form>
 
-
+     </div> 
+     <div class="row">
+              <div class="col-xs-12">
                 <table class="table table-striped table-condensed " >
                     <tr>
                         <th >Код</th>
@@ -79,11 +84,11 @@
                         <td  align="right"><a zippy="code" title="Ссылка на  задачу"></a></td>
                         <td zippy="projectname"></td>
                         <td zippy="name"></td>
-                        <td zippy="startdate" ></td>
+                        <td zippy="startdate" style="white-space:   nowrap"></td>
                         <td zippy="status"></td>
                         <td zippy="hours"  align="center"></td>
                         <td zippy="assignedtoname" ></td>
-                        <td zippy="updated" ></td>
+                        <td zippy="updated" style="white-space:   nowrap"></td>
 
                         <td>
                             <a zippy="edit"  title="Просмотр"><i class="icon-preview"></i></a>
@@ -92,12 +97,14 @@
 
                     </tr>
                 </table>
-                <br>
+              
 
 
-            </div>   
-
-
+            </div>    
+            </div>    
+        
+    </div> 
+        <div class="row">
             <div class="col-xs-10" zippy="contenttab">         
                 <a zippy="tolist">К  списку задач</a><br>
                 <h3 zippy="showtaskname"></h3>    
@@ -143,7 +150,7 @@
                                 </div> 
 
 
-                                <input class="btn btn-default btn-xs" type="submit" value="Добавить">
+                                <input class="btn btn-default  " type="submit" value="Добавить">
 
                             </form>  
                             <h4>История изменений</h4>       

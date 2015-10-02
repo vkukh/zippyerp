@@ -29,12 +29,12 @@ class TaxInvoice extends Document
                 "tovar_code" => "",
                 "measure_name" => $value['measure_name'],
                 "measure_code" => $value['measure_code'],
-                "quantity" => $value['quantity']/1000,
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
                 "pricends" => H::fm($value['pricends']),
-                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
+                "amount" => H::fm(($value['quantity'] / 1000) * $value['price'])
             );
-            $total += ($value['quantity']/1000) * $value['price'];
+            $total += ($value['quantity'] / 1000) * $value['price'];
         }
 
         $firm = System::getOptions("firmdetail");
@@ -73,7 +73,7 @@ class TaxInvoice extends Document
 
     public function Execute()
     {
-
+        
     }
 
     /**

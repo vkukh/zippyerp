@@ -27,12 +27,12 @@ class ServiceIncome extends Document
             $detail[] = array("no" => $i++,
                 "itemname" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity']/ 1000,
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
                 "pricends" => H::fm($value['pricends']),
-                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
+                "amount" => H::fm(($value['quantity'] / 1000) * $value['price'])
             );
-            $total += ($value['quantity']/1000) * $value['price'];
+            $total += ($value['quantity'] / 1000) * $value['price'];
         }
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -63,34 +63,34 @@ class ServiceIncome extends Document
 
             $cash = MoneyFund::getCash();
             Entry::AddEntry("63", "30", $total, $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc = new SubConto($this, 63, $total);
             $sc->setCustomer($this->headerdata["customer"]);
-            $sc->setAmount( $total);
+
             $sc->save();
-            $sc = new SubConto($this->document_id, $this->document_date, 30);
+            $sc = new SubConto($this, 30, $total);
             $sc->setMoneyfund($cash->id);
-            $sc->setAmount($total);
+
             // $sc->save();
         }
 
         if ($this->headerdata['totalnds'] > 0) {
             $total = $total - $this->headerdata['totalnds'];
             Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id, 0, $customer_id);
-            $sc = new SubConto($this->document_id, $this->document_date, 63);
+            $sc = new SubConto($this, 63, 0 - $this->headerdata['totalnds']);
             $sc->setCustomer($customer_id);
-            $sc->setAmount(0 - $this->headerdata['totalnds']);
+
             $sc->save();
-            $sc = new SubConto($this->document_id, $this->document_date, 644);
+            $sc = new SubConto($this, 644, $this->headerdata['totalnds']);
             $sc->setExtCode(TAX_NDS);
-            $sc->setAmount($this->headerdata['totalnds']);
+
             //$sc->save();
         }
 
 
         Entry::AddEntry("91", "63", $total, $this->document_id, $this->document_date);
-        $sc = new SubConto($this->document_id, $this->document_date, 63);
+        $sc = new SubConto($this, 63, 0 - $value);
         $sc->setCustomer($customer_id);
-        $sc->setAmount(0 - $value);
+
         $sc->save();
 
 

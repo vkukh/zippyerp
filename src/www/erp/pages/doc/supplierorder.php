@@ -132,11 +132,22 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
 
         $this->_doc->datatag = $this->docform->supplier->getKey();
 
-        $this->_doc->save();
-        if ($new_state != $old_state) {
-            $this->_doc->updateStatus($new_state);
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($new_state != $old_state) {
+                $this->_doc->updateStatus($new_state);
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
     public function backtolistOnClick($sender)

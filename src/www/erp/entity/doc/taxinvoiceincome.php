@@ -26,10 +26,10 @@ class TaxInvoiceIncome extends Document
             $detail[] = array("no" => $i++,
                 "itemname" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity']/1000,
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
                 "pricends" => H::fm($value['pricends']),
-                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
+                "amount" => H::fm(($value['quantity'] / 1000) * $value['price'])
             );
         }
 
@@ -53,7 +53,7 @@ class TaxInvoiceIncome extends Document
 
     public function Execute()
     {
-
+        
     }
 
     /**
@@ -71,7 +71,7 @@ class TaxInvoiceIncome extends Document
         $data = str_replace("windows-1251", "utf-8", $data);
         $xml = @simplexml_load_string($data);
         if ($xml instanceof \SimpleXMLElement) {
-
+            
         } else {
             return "Неверный формат";
         }

@@ -4,10 +4,18 @@
     <body>
         <div class="row">
             <div class="col-xs-12">
-                <h3>Оборотно-сальдовая ведомость</h3>
+                <h3>Движения по  счету</h3>
 
 
                 <form zippy="filter" class="navbar-form ">
+                    <div class="form-group  ">
+                        <label for="dt" class="col-xs-2 control-label">Счет</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" zippy="acc">
+                                <option value="0">Выбрать</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="from">С</label>
                         <input class="form-control" style="width: 100px" type="text" zippy="from">
@@ -16,7 +24,7 @@
                         <label for="to">по</label>
                         <input class="form-control"  style="width: 100px" type="text" zippy="to"  >
                     </div>
-                        <div class="form-group">
+                      <div class="form-group">
                         <input class="btn btn-default  " type="submit" value="Ввод">
                     </div>
                 </form>

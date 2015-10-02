@@ -21,7 +21,6 @@ use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Entity\Stock;
-
 use \ZippyERP\ERP\Helper as H;
 
 /**
@@ -32,7 +31,6 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
     public $_tovarlist = array();
     private $_doc;
-
     private $_rowid = 0;
 
     public function __construct($docid = 0)
@@ -95,9 +93,9 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity/1000));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
-        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->price)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->price)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -124,7 +122,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText($stock->quantity/1000);
+        $this->editdetail->editquantity->setText($stock->quantity / 1000);
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
@@ -146,7 +144,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $stock = Stock::load($id);
-        $stock->quantity = 1000*$this->editdetail->editquantity->getText();
+        $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
         $stock->partion = $stock->price;
         $stock->price = $this->editdetail->editprice->getText() * 100;
 
@@ -190,10 +188,9 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-             'customer' => $this->docform->customer->getKey(),
+            'customer' => $this->docform->customer->getKey(),
             'customername' => $this->docform->customer->getText(),
             'store' => $this->docform->store->getValue(),
-
             'total' => $this->docform->total->getText() * 100,
             'totalnds' => $this->docform->totalnds->getText() * 100
         );
@@ -207,14 +204,26 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = $this->docform->document_date->getDate();
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
-        }
 
-        App::RedirectBack();
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
+        }
     }
 
     /**
@@ -225,7 +234,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
     {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
-            $total = $total + $tovar->price * ($tovar->quantity/1000);
+            $total = $total + $tovar->price * ($tovar->quantity / 1000);
         }
 
         $nds = $total * H::nds(true);
@@ -244,7 +253,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не введен ни один  товар");
             return false;
         }
-      if ($this->docform->customer->getKey() == 0) {
+        if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не введен   покупатель");
             return false;
         }
@@ -260,7 +269,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender)
     {
-       App::RedirectBack();
+        App::RedirectBack();
     }
 
     public function OnChangeStore($sender)
@@ -269,9 +278,6 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
     }
-
-
-
 
     public function OnAutoContragent($sender)
     {
@@ -287,7 +293,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
     }
 
-    public function OnChangeItem(  $sender)
+    public function OnChangeItem($sender)
     {
         $id = $sender->getKey();
         $stock = Stock::load($id);
@@ -295,8 +301,9 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
-        $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate())/1000 . ' ' . $stock->measure_name);
+        $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 
         $this->updateAjax(array('editprice', 'qtystock'));
     }
+
 }

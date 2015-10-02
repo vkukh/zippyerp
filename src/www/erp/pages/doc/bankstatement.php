@@ -186,15 +186,25 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['bankaccount'] = $this->docform->bankaccount->getValue();
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
 
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
         }
-
-        App::RedirectBack();
     }
 
     /**
@@ -269,7 +279,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $text = $sender->getValue();
         $answer = array();
         $conn = \ZCL\DB\DB::getConnect();
-        $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%' and document_id <> {$this->_doc->document_id} and state <> " . Document::STATE_EXECUTED . "  order  by document_id desc  limit 0,20";
+        $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%' and document_id <> {$this->_doc->document_id} and state = " . Document::STATE_EXECUTED . "  order  by document_id desc  limit 0,20";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {
             $answer[$row['document_id']] = $row['document_number'];

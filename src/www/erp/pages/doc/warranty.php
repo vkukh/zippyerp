@@ -20,7 +20,6 @@ use ZippyERP\System\Application as App;
 use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
-
 use ZippyERP\ERP\Entity\Customer;
 use \ZippyERP\ERP\Helper as H;
 
@@ -106,9 +105,9 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('sn', $item->sn));
         $row->add(new Label('warranty', $item->warranty));
-        $row->add(new Label('quantity', $item->quantity/1000));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
-        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->price)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->price)));
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
     }
@@ -132,7 +131,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $list = Item::findArray('itemname', 'group_id=' . $item->group_id);
         $this->editdetail->edittovar->setKey($item->item_id);
         $this->editdetail->edittovar->setText($item->itemname);
-        $this->editdetail->editquantity->setText($item->quantity/1000);
+        $this->editdetail->editquantity->setText($item->quantity / 1000);
         $this->editdetail->editwarranty->setText($item->warranty);
         $this->editdetail->editsn->setText($item->sn);
         $this->editdetail->setVisible(true);
@@ -155,7 +154,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $item = Item::load($id);
-        $item->quantity = 1000*$this->editdetail->editquantity->getText();
+        $item->quantity = 1000 * $this->editdetail->editquantity->getText();
         $item->price = $this->editdetail->editprice->getText() * 100;
         $item->sn = $this->editdetail->editsn->getText();
         $item->warranty = $this->editdetail->editwarranty->getText();
@@ -202,20 +201,31 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = $this->docform->document_date->getDate();
         $isEdited = $this->_doc->document_id > 0;
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
-        }
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
 
-        // если   создан на  основании
-        if ($this->_basedocid > 0) {
-            $this->_doc->AddConnectedDoc($this->_basedocid);
-            $this->_basedocid = 0;
-        }
+            // если   создан на  основании
+            if ($this->_basedocid > 0) {
+                $this->_doc->AddConnectedDoc($this->_basedocid);
+                $this->_basedocid = 0;
+            }
 
-        App::RedirectBack();
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
+        }
     }
 
     /**
@@ -237,7 +247,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-   public function OnAutoItem($sender)
+    public function OnAutoItem($sender)
     {
         $text = $sender->getValue();
         $store_id = $this->docform->store->getValue();

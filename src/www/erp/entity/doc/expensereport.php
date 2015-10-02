@@ -65,7 +65,7 @@ class ExpenseReport extends Document
                 //поиск  записи  о  товаре   на складе
 
                 $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $value['item_id'], $value['price'], true);
-                $sc = new SubConto($this->document_id, $this->document_date, $expensetype);
+                $sc = new SubConto($this, $expensetype, ($value['quantity'] / 1000) * $stock->price);
                 $sc->setStock($stock->stock_id);
                 $sc->setQuantity($value['quantity']);
                 $sc->save();
@@ -81,9 +81,8 @@ class ExpenseReport extends Document
         } else {
             Entry::AddEntry($expensetype, "372", $this->headerdata["expenseamount"], $this->document_id, $this->document_date);
 
-            $sc = new SubConto($this->document_id, $this->document_date, 372);
+            $sc = new SubConto($this, 372, 0 - $this->headerdata["expenseamount"]);
             $sc->setEmployee($employee_id);
-            $sc->setAmount(0 - $this->headerdata["expenseamount"]);
             $sc->save();
         }
 

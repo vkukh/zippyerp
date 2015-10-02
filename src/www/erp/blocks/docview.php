@@ -80,10 +80,10 @@ class DocView extends \Zippy\Html\PageFragment
 
         // проверяем  поддержку  экспорта
         $exportlist = $doc->supportedExport();
-        $this->word->setVisible(in_array(Document::EX_WORD,$exportlist));
-        $this->excel->setVisible(in_array(Document::EX_EXCEL,$exportlist));
-        $this->xml->setVisible(in_array(Document::EX_XML_GNAU,$exportlist));
-        
+        $this->word->setVisible(in_array(Document::EX_WORD, $exportlist));
+        $this->excel->setVisible(in_array(Document::EX_EXCEL, $exportlist));
+        $this->xml->setVisible(in_array(Document::EX_XML_GNAU, $exportlist));
+
         // генерация  печатной   формы                
         $html = $doc->generateReport();
         if (strlen($html) == 0) {
@@ -100,16 +100,16 @@ class DocView extends \Zippy\Html\PageFragment
 
         Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
         $filename = $type['meta_name'];
-        
+
         //экспорт  в  xml формат
         $xml = $doc->export(Document::EX_XML_GNAU);
-        if(is_array($xml) > 0){
+        if (is_array($xml) > 0) {
             Session::getSession()->xmlform = $xml['content'];
             $filename = $xml['filename'];
         }
         $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
 
-        
+
 
         $this->print->pagename = $reportpage;
         $this->print->params = array('print', $filename);
@@ -313,5 +313,5 @@ class DocView extends \Zippy\Html\PageFragment
         \ZippyERP\ERP\Entity\Message::delete($msg->message_id);
         $this->updateMessages();
     }
-    
+
 }

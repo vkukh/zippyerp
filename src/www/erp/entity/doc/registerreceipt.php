@@ -27,9 +27,9 @@ class RegisterReceipt extends Document
             $detail[] = array("no" => $i++,
                 "tovar_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
-                "quantity" => $value['quantity']/1000,
+                "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
-                "amount" => H::fm(($value['quantity']/1000) * $value['price'])
+                "amount" => H::fm(($value['quantity'] / 1000) * $value['price'])
             );
         }
 
@@ -63,11 +63,10 @@ class RegisterReceipt extends Document
             $ret = $ret + $stock->price - $stock->partion;
             $cost = $cost + $stock->partion;
 
-                 $sc = new SubConto($this->document_id, $this->document_date, 282);
-                 $sc->setStock($stock->stock_id) ;
-                 $sc->setQuantity($return == 1? 0-$value['quantity']:$value['quantity']) ;
-                 $sc->save();
-
+            $sc = new SubConto($this, 282, $return == 1 ? 0 - ($value['quantity'] / 1000) * $stock->price : ($value['quantity'] / 1000) * $stock->price);
+            $sc->setStock($stock->stock_id);
+            $sc->setQuantity($return == 1 ? 0 - $value['quantity'] : $value['quantity']);
+            $sc->save();
         }
 
         if ($return == 1) {  //возврат
@@ -78,10 +77,10 @@ class RegisterReceipt extends Document
 
         // списываем  наценку
         Entry::AddEntry("285", "282", $ret, $this->document_id, $this->document_date);
-            $sc = new SubConto($this->document_id, $this->document_date, 285);
-            $sc->setExtCode($this->headerdata["store"]);
-            $sc->setAmount(  $ret);
-            $sc->save();
+        $sc = new SubConto($this, 285, $ret);
+        $sc->setExtCode($this->headerdata["store"]);
+
+        $sc->save();
         // себестоимость реализации
         Entry::AddEntry("902", "282", $cost, $this->document_id, $this->document_date);
 

@@ -4,7 +4,7 @@ define('_ROOT', __DIR__ . '/');
 $http = $_SERVER["HTTPS"] == 'on' ? 'https' : 'http';
 define('_BASEURL', $http . "://" . $_SERVER["HTTP_HOST"] . '/');
 define('_ZIPPY', _ROOT . 'zippy/');
-//define('_ZIPPY', 'z:/home/local.zippy/www/zippy/');
+
 
 define('UPLOAD_USERS', 'uploads/users/');
 
@@ -89,5 +89,5 @@ $logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor());
 
 @mkdir(_ROOT . "logs");
 
- 
+
 

@@ -68,10 +68,10 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $customer = $sender->getOwner()->getDataItem();
         $this->doclist->custname1->setText($customer->customer_name);
         $conn = \ZCL\DB\DB::getConnect();
-        $sql = "select  sc.document_id,sc.amount,meta_desc,document_number,sc.document_date
+        $sql = "select  sc.document_id,sum(sc.amount) as amount,meta_desc,document_number,sc.document_date
                 from  erp_account_subconto sc  join erp_document_view dc on sc.document_id = dc.document_id
                 where customer_id = {$customer->customer_id} and (account_id = 36 or account_id = 63)
-                order  by  sc.`document_date`  desc";
+                group by sc.document_id,meta_desc,document_number,sc.document_date order  by  sc.`document_date`  desc";
         $rs = $conn->Execute($sql);
         $this->_dlist = array();
         foreach ($rs as $row) {
@@ -151,7 +151,7 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
 
     public function __construct()
     {
-        
+
     }
 
     public function getItemCount()

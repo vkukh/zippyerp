@@ -31,7 +31,7 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();
-    private $_itemtype = array( 281 => 'Товар',201 => 'Материал', 22 => 'МПБ');
+    private $_itemtype = array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ');
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
@@ -87,7 +87,6 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->_doc = Document::create('ReturnGoodsIssue');
             if ($basedocid > 0) {  //создание на  основании
-
                 $basedoc = Document::load($basedocid);
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;
@@ -248,13 +247,16 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
             if ($this->docform->contract->getKey() > 0) {
                 $this->_doc->AddConnectedDoc($this->docform->contract->getKey());
             }
+
             $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
-            return;
+            throw new \Exception($ee->message);
         }
-        App::RedirectBack();
     }
 
     /**

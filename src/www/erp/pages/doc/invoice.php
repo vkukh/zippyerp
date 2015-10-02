@@ -47,7 +47,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new CheckBox('isnds'))->setChangeHandler($this, 'onIsnds');
 
 
-         $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
+        $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
         $this->docform->add(new AutocompleteTextInput('contract'))->setAutocompleteHandler($this, "OnAutoContract");
 
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
@@ -142,10 +142,10 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('quantity', $item->quantity/1000));
+        $row->add(new Label('quantity', $item->quantity / 1000));
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new Label('pricends', H::fm($item->pricends)));
-        $row->add(new Label('amount', H::fm(($item->quantity/1000) * $item->pricends)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->pricends)));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
     }
@@ -172,7 +172,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editquantity->setText($item->quantity/1000);
+        $this->editdetail->editquantity->setText($item->quantity / 1000);
         $this->editdetail->editprice->setText(H::fm($item->price));
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
 
@@ -190,7 +190,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
             return;
         }
         $item = Item::load($id);
-        $item->quantity = 1000*$this->editdetail->editquantity->getText();
+        $item->quantity = 1000 * $this->editdetail->editquantity->getText();
         $item->price = $this->editdetail->editprice->getText() * 100;
         $item->pricends = $this->editdetail->editpricends->getText() * 100;
 
@@ -244,22 +244,33 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $isEdited = $this->_doc->document_id > 0;
         $this->_doc->datatag = $this->docform->customer->getValue();
 
-        $this->_doc->save();
-        if ($sender->id == 'execdoc') {
-            $this->_doc->updateStatus(Document::STATE_EXECUTED);
-        } else {
-            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
-        }
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->BeginTrans();
+        try {
+            $this->_doc->save();
+            if ($sender->id == 'execdoc') {
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
+            } else {
+                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+            }
 
-        if ($this->_basedocid > 0) {
-            $this->_doc->AddConnectedDoc($this->_basedocid);
-            $this->_basedocid = 0;
-        }
-        if ($this->docform->contract->getKey() > 0) {
-            $this->_doc->AddConnectedDoc($this->docform->contract->getKey());
-        }
+            if ($this->_basedocid > 0) {
+                $this->_doc->AddConnectedDoc($this->_basedocid);
+                $this->_basedocid = 0;
+            }
+            if ($this->docform->contract->getKey() > 0) {
+                $this->_doc->AddConnectedDoc($this->docform->contract->getKey());
+            }
 
-        App::RedirectBack();
+            $conn->CommitTrans();
+            App::RedirectBack();
+        } catch (\ZippyERP\System\Exception $ee) {
+            $conn->RollbackTrans();
+            $this->setError($ee->message);
+        } catch (\Exception $ee) {
+            $conn->RollbackTrans();
+            throw new \Exception($ee->message);
+        }
     }
 
     /**
@@ -271,8 +282,8 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $total = 0;
         $totalnds = 0;
         foreach ($this->_tovarlist as $item) {
-            $item->amount = $item->pricends * ($item->quantity/1000);
-            $item->nds = $item->amount - $item->price * ($item->quantity/1000);
+            $item->amount = $item->pricends * ($item->quantity / 1000);
+            $item->nds = $item->amount - $item->price * ($item->quantity / 1000);
             $total = $total + $item->amount;
             $totalnds = $totalnds + $item->nds;
         }
@@ -328,8 +339,6 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-
-
     public function OnAutoContragent($sender)
     {
         $text = $sender->getValue();
@@ -347,17 +356,19 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $text = $sender->getValue();
         return Item::findArray('itemname', "itemname like'%{$text}%' and item_type =" . Item::ITEM_TYPE_STUFF);
     }
-    public function OnChangeItem(  $sender)
+
+    public function OnChangeItem($sender)
     {
         $id = $sender->getKey();
         $item = Item::load($id);
         $this->editdetail->editprice->setText(H::fm($item->priceopt));
         $this->editdetail->editpricends->setText(H::fm($item->priceopt));
-        if( $this->docform->isnds->IsChecked()){
-          $nds = H::nds();
-          $this->editdetail->editpricends->setText(H::fm($item->priceopt +  $item->priceopt * $nds));
+        if ($this->docform->isnds->IsChecked()) {
+            $nds = H::nds();
+            $this->editdetail->editpricends->setText(H::fm($item->priceopt + $item->priceopt * $nds));
         }
-       // $this->editdetail->editquantity->setText(Item::getQuantity($id, $this->docform->timeline->getDate())/1000);
-        $this->updateAjax(array('editprice','editpricends' ));
+        // $this->editdetail->editquantity->setText(Item::getQuantity($id, $this->docform->timeline->getDate())/1000);
+        $this->updateAjax(array('editprice', 'editpricends'));
     }
+
 }

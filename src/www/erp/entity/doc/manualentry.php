@@ -41,7 +41,7 @@ class ManualEntry extends Document
             foreach ($itemarr as $item) {
                 $stock = Stock::getStock($item->store_id, $item->item_id, $item->price, true);
                 $acc = explode('_', $item->op);
-                $sc = new SubConto($this->document_id, $this->document_date, $acc[0]);
+                $sc = new SubConto($this, $acc[0], $acc[1] == 'd' ? ($item->qty) / 1000 * $stock->price : 0 - ($item->qty) / 1000 * $stock->price);
                 $sc->setStock($stock->stock_id);
                 $sc->setQuantity($acc[1] == 'd' ? $item->qty : 0 - $item->qty);
                 $sc->save();
@@ -56,9 +56,8 @@ class ManualEntry extends Document
                 $val = $emp->val;
                 $acc = explode('_', $emp->op);
 
-                $sc = new SubConto($this->document_id, $this->document_date, $acc[0]);
+                $sc = new SubConto($this, $acc[0], $acc[1] == 'd' ? $val : 0 - $val);
                 $sc->setEmployee($emp->employee_id);
-                $sc->setAmount($acc[1] == 'd' ? $val : 0 - $val);
                 $sc->save();
             }
         }
@@ -70,9 +69,8 @@ class ManualEntry extends Document
                 $val = $c->val;
                 $acc = explode('_', $c->op);
 
-                $sc = new SubConto($this->document_id, $this->document_date, $acc[0]);
+                $sc = new SubConto($this, $acc[0], $acc[1] == 'd' ? $val : 0 - $val);
                 $sc->setCustomer($c->customer_id);
-                $sc->setAmount($acc[1] == 'd' ? $val : 0 - $val);
                 $sc->save();
             }
         }
@@ -84,9 +82,8 @@ class ManualEntry extends Document
                 $val = $f->val;
                 $acc = explode('_', $f->op);
 
-                $sc = new SubConto($this->document_id, $this->document_date, $acc[0]);
+                $sc = new SubConto($this, $acc[0], $acc[1] == 'd' ? $val : 0 - $val);
                 $sc->setMoneyfund($f->id);
-                $sc->setAmount($acc[1] == 'd' ? $val : 0 - $val);
                 $sc->save();
             }
         }

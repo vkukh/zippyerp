@@ -27,24 +27,22 @@ class Consts
     //Типы  налогов  и сборов
     const TAX_NDS = 101;
 
-
-
     /**
-    * Список  типов  налогов
-    *
-    */
+     * Список  типов  налогов
+     *
+     */
     public static function getTaxesList()
     {
-         $list = array();
-         $list[TAX_NDS] = "НДС";
+        $list = array();
+        $list[TAX_NDS] = "НДС";
 
         return $list;
     }
 
     /**
-    * Список  типов  затрат
-    *
-    */
+     * Список  типов  затрат
+     *
+     */
     public static function getExpensesList()
     {
 
@@ -57,4 +55,5 @@ class Consts
 
         return $list;
     }
+
 }

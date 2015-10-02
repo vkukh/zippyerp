@@ -11,7 +11,7 @@ class ACL
 {
 
     /**
-     * Возвращает  роли  с  правами  доступа   к обьекту 
+     * Возвращает  роли  с  правами  доступа   к обьекту
      */
     public static function getRoleAccess($meta_id)
     {

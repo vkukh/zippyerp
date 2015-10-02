@@ -1,34 +1,46 @@
 <html>
 
     <body>
-        <div class="row">
-            <div class="col-xs-12">    
-                <h4>Переоценка в суммовом  учете</h4>
+
+
                 <form zippy="docform">
-                    <table    class="ctable">
-                        <tr>
-                            <td >Номер документа</td>
-                            <td >  <input type="text" zippy="document_number" required="required" ></td>
-                            <td >Дата</td>
-                            <td >    <input type="text" zippy="created" required="required"  ></td>
-                        </tr>
-                        <tr><td>Магазин</td><td ><select zippy="store"><option value="0">Выбрать</option></select></td><td>Учетная сумма:</td><td><span zippy="actual"></span></td></tr>
-                        <tr><td>Тип<td ><select zippy="type">
+                <h4>Переоценка в суммовом  учете</h4>
+                   <div class="row">
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <label for="document_number" class="  control-label">Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required"     >
+                    </div>
+                   <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Дата</label>
+                        <input class="form-control" type="text" zippy="document_date" required="required"       >
+                    </div>
+                <div class="form-group">
+                        <label   for="store" class="  control-label"> Магазин</label>
+                        <select class="form-control" type zippy="store"><option value="0">Выбрать</option></select>
+                        Учетная сумма: <span zippy="actual"></span>
+                    </div>
+                   <div class="form-group">
+                        <label   for="type" class="  control-label"> Тип</label>
+                        <select zippy="type" class="form-control">
                                     <option value="1">Переоценка</option>
                                     <option value="2">Списание недостач</option>
                                     <option value="3">Оприходование излишков</option>
-                                </select></td>
-                            <td>Новая сумма</td><td><input type="text" required="required"  zippy="summa" pattern= "[0-9\.]+"></td>                                </tr>
-                    </table>      
-                    <p>&nbsp;</p>
-                    <p>
-                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
-                        &nbsp;<input zippy="execdoc" type="submit"  value="Выполнить"  class="btn btn-default btn-xs">  
+                                </select>
+                    </div>
+                  <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Новая сумма</label>
+                        <input class="form-control" type="text" required="required"  zippy="summa" pattern= "[0-9\.]+">
+                    </div>
+                     <div class="form-group">
+                 <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Выполнить"  class="btn btn-default  ">
 
-                    </p>
-                </form>
-            </div>   
-        </div>   
+                       </div>
+                       </div>
+
+            </div>
+
 
     </body>
-</html>                        
+</html>

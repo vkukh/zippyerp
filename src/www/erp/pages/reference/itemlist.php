@@ -26,15 +26,15 @@ class ItemList extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
         $this->filter->add(new TextInput('searchkey'));
-        $this->filter->add(new DropDownChoice('group',GroupItem::getList()));
-        
-        
+        $this->filter->add(new DropDownChoice('group', GroupItem::getList()));
+
+
         $this->add(new Panel('itemtable'))->setVisible(true);
         $this->itemtable->add(new DataView('itemlist', new ItemDataSource($this), $this, 'itemlistOnRow'))->Reload();
         $this->itemtable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
         $this->itemtable->itemlist->setPageSize(10);
         $this->itemtable->add(new \Zippy\Html\DataList\Paginator('pag', $this->itemtable->itemlist));
-        $this->itemtable->itemlist->reload(); 
+        $this->itemtable->itemlist->reload();
 
         $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnDetail'))->setVisible(false);
     }
@@ -80,11 +80,11 @@ class ItemList extends \ZippyERP\ERP\Pages\Base
         $this->itemtable->itemlist->Reload();
     }
 
-    
     public function OnSubmit($sender)
     {
-       $this->itemtable->itemlist->Reload();     
+        $this->itemtable->itemlist->Reload();
     }
+
 }
 
 class ItemDataSource implements \Zippy\Interfaces\DataSource
@@ -97,18 +97,19 @@ class ItemDataSource implements \Zippy\Interfaces\DataSource
         $this->page = $page;
     }
 
-    private function getWhere(){
-        $where ="1=1 ";
+    private function getWhere()
+    {
+        $where = "1=1 ";
         $form = $this->page->filter;
-        if($form->group->getValue() >0){
-           $where =  $where . " and group_id=" . $form->group->getValue() ;   
+        if ($form->group->getValue() > 0) {
+            $where = $where . " and group_id=" . $form->group->getValue();
         }
-        if(strlen($form->searchkey->getText()) >0){
-           $where =  $where . " and (itemname like ". Item::qstr('%'.$form->searchkey->getText().'%') ." or description like ".Item::qstr('%'.$form->searchkey->getText().'%')." )  ";
+        if (strlen($form->searchkey->getText()) > 0) {
+            $where = $where . " and (itemname like " . Item::qstr('%' . $form->searchkey->getText() . '%') . " or description like " . Item::qstr('%' . $form->searchkey->getText() . '%') . " )  ";
         }
-        return $where ;
+        return $where;
     }
-    
+
     public function getItemCount()
     {
         return Item::findCnt($this->getWhere());

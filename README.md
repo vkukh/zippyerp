@@ -7,7 +7,7 @@ Zippy ERP
 
 [Скачать](https://github.com/leon-mbs/zippyerp/releases/download/v0.9.0beta/erp-full.zip) дистрибутив  в  сборе   
 
-Требования: PHP5.3.3+
+Требования: PHP5.4+
 
 ####Планируемый функционал
 

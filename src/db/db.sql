@@ -1,8 +1,10 @@
+
+
 --
 -- Описание для таблицы erp_account_entry
 --
-
-CREATE TABLE erp_account_entry (
+DROP TABLE IF EXISTS erp_account_entry;
+CREATE TABLE IF NOT EXISTS erp_account_entry (
   entry_id int(11) NOT NULL AUTO_INCREMENT,
   acc_d int(11) NOT NULL,
   acc_c int(11) NOT NULL,
@@ -13,8 +15,8 @@ CREATE TABLE erp_account_entry (
   INDEX created (document_date),
   INDEX document_id (document_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 150
+ENGINE = MYISAM
+AUTO_INCREMENT = 365
 AVG_ROW_LENGTH = 24
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -22,23 +24,23 @@ COLLATE utf8_general_ci;
 --
 -- Описание для таблицы erp_account_plan
 --
-
-CREATE TABLE erp_account_plan (
+DROP TABLE IF EXISTS erp_account_plan;
+CREATE TABLE IF NOT EXISTS erp_account_plan (
   acc_code int(16) NOT NULL,
   acc_name varchar(255) NOT NULL,
   acc_pid int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (acc_code)
 )
-ENGINE = INNODB
-AVG_ROW_LENGTH = 63
+ENGINE = MYISAM
+AVG_ROW_LENGTH = 56
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_account_subconto
 --
-
-CREATE TABLE erp_account_subconto (
+DROP TABLE IF EXISTS erp_account_subconto;
+CREATE TABLE IF NOT EXISTS erp_account_subconto (
   subconto_id int(11) NOT NULL AUTO_INCREMENT,
   account_id int(11) NOT NULL,
   document_id int(11) NOT NULL,
@@ -47,7 +49,7 @@ CREATE TABLE erp_account_subconto (
   quantity int(11) NOT NULL DEFAULT 0,
   customer_id int(11) NOT NULL DEFAULT 0,
   employee_id int(11) NOT NULL DEFAULT 0,
-  contract_id int(11) NOT NULL DEFAULT 0,
+  asset_id int(11) NOT NULL DEFAULT 0,
   extcode int(11) NOT NULL DEFAULT 0,
   stock_id int(11) NOT NULL DEFAULT 0,
   moneyfund_id int(11) NOT NULL DEFAULT 0,
@@ -57,8 +59,8 @@ CREATE TABLE erp_account_subconto (
   INDEX document_id (document_id),
   INDEX stock_id (stock_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 165
+ENGINE = MYISAM
+AUTO_INCREMENT = 522
 AVG_ROW_LENGTH = 48
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -66,24 +68,24 @@ COLLATE utf8_general_ci;
 --
 -- Описание для таблицы erp_bank
 --
-
-CREATE TABLE erp_bank (
+DROP TABLE IF EXISTS erp_bank;
+CREATE TABLE IF NOT EXISTS erp_bank (
   bank_id int(11) NOT NULL AUTO_INCREMENT,
   bank_name varchar(255) NOT NULL,
   detail text NOT NULL,
   PRIMARY KEY (bank_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 5
-AVG_ROW_LENGTH = 66
+ENGINE = MYISAM
+AUTO_INCREMENT = 6
+AVG_ROW_LENGTH = 70
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_contact
 --
-
-CREATE TABLE erp_contact (
+DROP TABLE IF EXISTS erp_contact;
+CREATE TABLE IF NOT EXISTS erp_contact (
   contact_id int(11) NOT NULL AUTO_INCREMENT,
   firstname varchar(64) NOT NULL,
   middlename varchar(64) DEFAULT NULL,
@@ -95,17 +97,17 @@ CREATE TABLE erp_contact (
   PRIMARY KEY (contact_id),
   INDEX customer_id (customer_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 24
-AVG_ROW_LENGTH = 131
+ENGINE = MYISAM
+AUTO_INCREMENT = 35
+AVG_ROW_LENGTH = 122
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_customer
 --
-
-CREATE TABLE erp_customer (
+DROP TABLE IF EXISTS erp_customer;
+CREATE TABLE IF NOT EXISTS erp_customer (
   customer_id int(11) NOT NULL AUTO_INCREMENT,
   customer_name varchar(255) DEFAULT NULL,
   detail text NOT NULL,
@@ -118,31 +120,32 @@ CREATE TABLE erp_customer (
   PRIMARY KEY (customer_id),
   INDEX contact_id (contact_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 20
-AVG_ROW_LENGTH = 235
+ENGINE = MYISAM
+AUTO_INCREMENT = 26
+AVG_ROW_LENGTH = 288
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_docrel
 --
-
-CREATE TABLE erp_docrel (
+DROP TABLE IF EXISTS erp_docrel;
+CREATE TABLE IF NOT EXISTS erp_docrel (
   doc1 int(11) DEFAULT NULL,
   doc2 int(11) DEFAULT NULL,
   INDEX doc1 (doc1),
   INDEX doc2 (doc2)
 )
-ENGINE = INNODB
+ENGINE = MYISAM
+AVG_ROW_LENGTH = 9
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_document
 --
-
-CREATE TABLE erp_document (
+DROP TABLE IF EXISTS erp_document;
+CREATE TABLE IF NOT EXISTS erp_document (
   document_id int(11) NOT NULL AUTO_INCREMENT,
   document_number varchar(45) NOT NULL,
   document_date date NOT NULL,
@@ -157,17 +160,17 @@ CREATE TABLE erp_document (
   PRIMARY KEY (document_id),
   INDEX document_date (document_date)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 11
-AVG_ROW_LENGTH = 602
+ENGINE = MYISAM
+AUTO_INCREMENT = 70
+AVG_ROW_LENGTH = 1260
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_document_update_log
 --
-
-CREATE TABLE erp_document_update_log (
+DROP TABLE IF EXISTS erp_document_update_log;
+CREATE TABLE IF NOT EXISTS erp_document_update_log (
   document_update_log_id int(11) NOT NULL AUTO_INCREMENT,
   hostname varchar(128) DEFAULT NULL,
   document_id int(11) NOT NULL,
@@ -178,17 +181,17 @@ CREATE TABLE erp_document_update_log (
   INDEX document_id (document_id),
   INDEX user_id (user_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 147
-AVG_ROW_LENGTH = 44
+ENGINE = MYISAM
+AUTO_INCREMENT = 402
+AVG_ROW_LENGTH = 38
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_files
 --
-
-CREATE TABLE erp_files (
+DROP TABLE IF EXISTS erp_files;
+CREATE TABLE IF NOT EXISTS erp_files (
   file_id int(11) NOT NULL AUTO_INCREMENT,
   item_id int(11) DEFAULT NULL,
   filename varchar(255) DEFAULT NULL,
@@ -196,7 +199,7 @@ CREATE TABLE erp_files (
   item_type int(11) NOT NULL,
   PRIMARY KEY (file_id)
 )
-ENGINE = INNODB
+ENGINE = MYISAM
 AUTO_INCREMENT = 12
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -204,13 +207,13 @@ COLLATE utf8_general_ci;
 --
 -- Описание для таблицы erp_filesdata
 --
-
-CREATE TABLE erp_filesdata (
+DROP TABLE IF EXISTS erp_filesdata;
+CREATE TABLE IF NOT EXISTS erp_filesdata (
   file_id int(11) DEFAULT NULL,
   filedata longblob DEFAULT NULL,
   UNIQUE INDEX file_id (file_id)
 )
-ENGINE = INNODB
+ENGINE = MYISAM
 CHARACTER SET utf8
 COLLATE utf8_general_ci
 ROW_FORMAT = DYNAMIC;
@@ -218,8 +221,8 @@ ROW_FORMAT = DYNAMIC;
 --
 -- Описание для таблицы erp_item
 --
-
-CREATE TABLE erp_item (
+DROP TABLE IF EXISTS erp_item;
+CREATE TABLE IF NOT EXISTS erp_item (
   item_id int(11) NOT NULL AUTO_INCREMENT,
   itemname varchar(64) DEFAULT NULL,
   description varchar(255) DEFAULT NULL,
@@ -231,38 +234,38 @@ CREATE TABLE erp_item (
   PRIMARY KEY (item_id),
   UNIQUE INDEX item_code (item_code)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 16
-AVG_ROW_LENGTH = 165
+ENGINE = MYISAM
+AUTO_INCREMENT = 42
+AVG_ROW_LENGTH = 268
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_item_group
 --
-
-CREATE TABLE erp_item_group (
+DROP TABLE IF EXISTS erp_item_group;
+CREATE TABLE IF NOT EXISTS erp_item_group (
   group_id int(11) NOT NULL AUTO_INCREMENT,
   group_name varchar(255) NOT NULL,
   PRIMARY KEY (group_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 7
-AVG_ROW_LENGTH = 42
+ENGINE = MYISAM
+AUTO_INCREMENT = 12
+AVG_ROW_LENGTH = 28
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_item_measures
 --
-
-CREATE TABLE erp_item_measures (
+DROP TABLE IF EXISTS erp_item_measures;
+CREATE TABLE IF NOT EXISTS erp_item_measures (
   measure_id int(11) NOT NULL AUTO_INCREMENT,
   measure_name varchar(64) NOT NULL,
   measure_code varchar(10) NOT NULL,
   PRIMARY KEY (measure_id)
 )
-ENGINE = INNODB
+ENGINE = MYISAM
 AUTO_INCREMENT = 3
 AVG_ROW_LENGTH = 20
 CHARACTER SET utf8
@@ -271,8 +274,8 @@ COLLATE utf8_general_ci;
 --
 -- Описание для таблицы erp_message
 --
-
-CREATE TABLE erp_message (
+DROP TABLE IF EXISTS erp_message;
+CREATE TABLE IF NOT EXISTS erp_message (
   message_id int(11) NOT NULL AUTO_INCREMENT,
   user_id int(11) DEFAULT NULL,
   created datetime DEFAULT NULL,
@@ -281,17 +284,16 @@ CREATE TABLE erp_message (
   item_type int(11) DEFAULT NULL,
   PRIMARY KEY (message_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 43
-AVG_ROW_LENGTH = 46
+ENGINE = MYISAM
+AUTO_INCREMENT = 1
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_metadata
 --
-
-CREATE TABLE erp_metadata (
+DROP TABLE IF EXISTS erp_metadata;
+CREATE TABLE IF NOT EXISTS erp_metadata (
   meta_id int(11) NOT NULL AUTO_INCREMENT,
   meta_type tinyint(11) NOT NULL,
   description varchar(255) DEFAULT NULL,
@@ -301,17 +303,17 @@ CREATE TABLE erp_metadata (
   disabled tinyint(4) NOT NULL,
   PRIMARY KEY (meta_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 68
-AVG_ROW_LENGTH = 105
+ENGINE = MYISAM
+AUTO_INCREMENT = 77
+AVG_ROW_LENGTH = 106
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_metadata_access
 --
-
-CREATE TABLE erp_metadata_access (
+DROP TABLE IF EXISTS erp_metadata_access;
+CREATE TABLE IF NOT EXISTS erp_metadata_access (
   metadata_access_id int(11) NOT NULL AUTO_INCREMENT,
   metadata_id int(11) NOT NULL,
   role_id int(11) NOT NULL,
@@ -321,8 +323,8 @@ CREATE TABLE erp_metadata_access (
   execacc tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (metadata_access_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 56
+ENGINE = MYISAM
+AUTO_INCREMENT = 23
 AVG_ROW_LENGTH = 17
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -330,8 +332,8 @@ COLLATE utf8_general_ci;
 --
 -- Описание для таблицы erp_moneyfunds
 --
-
-CREATE TABLE erp_moneyfunds (
+DROP TABLE IF EXISTS erp_moneyfunds;
+CREATE TABLE IF NOT EXISTS erp_moneyfunds (
   id int(11) NOT NULL AUTO_INCREMENT,
   title varchar(64) NOT NULL,
   bank int(11) NOT NULL,
@@ -339,32 +341,32 @@ CREATE TABLE erp_moneyfunds (
   ftype smallint(6) NOT NULL COMMENT '0 касса,  1 - основной  счет, 2 -  дополнительный  счет',
   PRIMARY KEY (id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 5
-AVG_ROW_LENGTH = 50
+ENGINE = MYISAM
+AUTO_INCREMENT = 6
+AVG_ROW_LENGTH = 56
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_staff_department
 --
-
-CREATE TABLE erp_staff_department (
+DROP TABLE IF EXISTS erp_staff_department;
+CREATE TABLE IF NOT EXISTS erp_staff_department (
   department_id int(11) NOT NULL AUTO_INCREMENT,
   department_name varchar(100) NOT NULL,
   PRIMARY KEY (department_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 5
-AVG_ROW_LENGTH = 32
+ENGINE = MYISAM
+AUTO_INCREMENT = 7
+AVG_ROW_LENGTH = 34
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_staff_employee
 --
-
-CREATE TABLE erp_staff_employee (
+DROP TABLE IF EXISTS erp_staff_employee;
+CREATE TABLE IF NOT EXISTS erp_staff_employee (
   employee_id int(11) NOT NULL AUTO_INCREMENT,
   position_id int(11) NOT NULL,
   department_id int(11) NOT NULL,
@@ -377,86 +379,49 @@ CREATE TABLE erp_staff_employee (
   PRIMARY KEY (employee_id),
   INDEX contact_id (contact_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 16
-AVG_ROW_LENGTH = 40
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
---
--- Описание для таблицы erp_staff_employee_activity
---
-
-CREATE TABLE erp_staff_employee_activity (
-  account_id int(11) NOT NULL AUTO_INCREMENT,
-  employee_id int(11) NOT NULL,
-  document_id int(11) NOT NULL,
-  tax_type tinyint(4) NOT NULL,
-  amount int(11) NOT NULL,
-  PRIMARY KEY (account_id)
-)
-ENGINE = INNODB
-AUTO_INCREMENT = 26
-AVG_ROW_LENGTH = 18
+ENGINE = MYISAM
+AUTO_INCREMENT = 23
+AVG_ROW_LENGTH = 22
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_staff_position
 --
-
-CREATE TABLE erp_staff_position (
+DROP TABLE IF EXISTS erp_staff_position;
+CREATE TABLE IF NOT EXISTS erp_staff_position (
   position_id int(11) NOT NULL AUTO_INCREMENT,
   position_name varchar(100) NOT NULL,
   PRIMARY KEY (position_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 5
-AVG_ROW_LENGTH = 28
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
---
--- Описание для таблицы erp_stock_activity
---
-
-CREATE TABLE erp_stock_activity (
-  stock_activity_id int(11) NOT NULL AUTO_INCREMENT,
-  stock_id int(11) NOT NULL,
-  document_id int(11) NOT NULL,
-  qty float NOT NULL,
-  created datetime DEFAULT NULL,
-  PRIMARY KEY (stock_activity_id),
-  INDEX document_id (document_id)
-)
-ENGINE = INNODB
-AUTO_INCREMENT = 234
-AVG_ROW_LENGTH = 25
+ENGINE = MYISAM
+AUTO_INCREMENT = 11
+AVG_ROW_LENGTH = 34
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_store
 --
-
-CREATE TABLE erp_store (
+DROP TABLE IF EXISTS erp_store;
+CREATE TABLE IF NOT EXISTS erp_store (
   store_id int(11) NOT NULL AUTO_INCREMENT,
   storename varchar(64) DEFAULT NULL,
   description varchar(255) DEFAULT NULL,
   store_type tinyint(4) DEFAULT NULL,
   PRIMARY KEY (store_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 15
-AVG_ROW_LENGTH = 30
+ENGINE = MYISAM
+AUTO_INCREMENT = 18
+AVG_ROW_LENGTH = 36
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_store_stock
 --
-
-CREATE TABLE erp_store_stock (
+DROP TABLE IF EXISTS erp_store_stock;
+CREATE TABLE IF NOT EXISTS erp_store_stock (
   stock_id int(11) NOT NULL AUTO_INCREMENT,
   item_id int(11) NOT NULL,
   partion int(11) DEFAULT NULL,
@@ -465,32 +430,17 @@ CREATE TABLE erp_store_stock (
   closed tinyint(4) DEFAULT 0 COMMENT ' 1 - неиспользуемая  партия',
   PRIMARY KEY (stock_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 11
+ENGINE = MYISAM
+AUTO_INCREMENT = 23
 AVG_ROW_LENGTH = 22
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
---
--- Описание для таблицы erp_store_stock_serials
---
-
-CREATE TABLE erp_store_stock_serials (
-  stock_serial_id int(11) NOT NULL AUTO_INCREMENT,
-  stock_id int(11) NOT NULL,
-  serial_number varchar(255) NOT NULL,
-  PRIMARY KEY (stock_serial_id)
-)
-ENGINE = INNODB
-AUTO_INCREMENT = 4
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_task_project
 --
-
-CREATE TABLE erp_task_project (
+DROP TABLE IF EXISTS erp_task_project;
+CREATE TABLE IF NOT EXISTS erp_task_project (
   project_id int(11) NOT NULL AUTO_INCREMENT,
   doc_id int(11) DEFAULT NULL,
   description varchar(255) DEFAULT NULL,
@@ -499,17 +449,17 @@ CREATE TABLE erp_task_project (
   projectname varchar(255) NOT NULL,
   PRIMARY KEY (project_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 5
-AVG_ROW_LENGTH = 56
+ENGINE = MYISAM
+AUTO_INCREMENT = 6
+AVG_ROW_LENGTH = 48
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_task_task
 --
-
-CREATE TABLE erp_task_task (
+DROP TABLE IF EXISTS erp_task_task;
+CREATE TABLE IF NOT EXISTS erp_task_task (
   task_id int(11) NOT NULL AUTO_INCREMENT,
   project_id int(11) DEFAULT NULL,
   description varchar(255) DEFAULT NULL,
@@ -524,23 +474,23 @@ CREATE TABLE erp_task_task (
   updated datetime DEFAULT NULL,
   PRIMARY KEY (task_id)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 10
-AVG_ROW_LENGTH = 80
+ENGINE = MYISAM
+AUTO_INCREMENT = 11
+AVG_ROW_LENGTH = 76
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы erp_task_task_emp
 --
-
-CREATE TABLE erp_task_task_emp (
+DROP TABLE IF EXISTS erp_task_task_emp;
+CREATE TABLE IF NOT EXISTS erp_task_task_emp (
   task_emp_id int(11) NOT NULL AUTO_INCREMENT,
   task_id int(11) NOT NULL,
   employee_id int(11) NOT NULL,
   PRIMARY KEY (task_emp_id)
 )
-ENGINE = INNODB
+ENGINE = MYISAM
 AUTO_INCREMENT = 1
 CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -549,28 +499,28 @@ COMMENT = '  ';
 --
 -- Описание для таблицы system_options
 --
-
-CREATE TABLE system_options (
+DROP TABLE IF EXISTS system_options;
+CREATE TABLE IF NOT EXISTS system_options (
   optname varchar(64) NOT NULL,
   optvalue text NOT NULL,
   UNIQUE INDEX optname (optname)
 )
-ENGINE = INNODB
-AVG_ROW_LENGTH = 246
+ENGINE = MYISAM
+AVG_ROW_LENGTH = 252
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы system_roles
 --
-
-CREATE TABLE system_roles (
+DROP TABLE IF EXISTS system_roles;
+CREATE TABLE IF NOT EXISTS system_roles (
   role_id int(11) NOT NULL AUTO_INCREMENT,
   rolename varchar(64) NOT NULL,
   description varchar(255) NOT NULL,
   PRIMARY KEY (role_id)
 )
-ENGINE = INNODB
+ENGINE = MYISAM
 AUTO_INCREMENT = 2
 AVG_ROW_LENGTH = 40
 CHARACTER SET utf8
@@ -579,8 +529,8 @@ COLLATE utf8_general_ci;
 --
 -- Описание для таблицы system_session
 --
-
-CREATE TABLE system_session (
+DROP TABLE IF EXISTS system_session;
+CREATE TABLE IF NOT EXISTS system_session (
   sesskey varchar(64) NOT NULL DEFAULT '',
   expiry timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   expireref varchar(250) DEFAULT '',
@@ -591,21 +541,21 @@ CREATE TABLE system_session (
   INDEX sess2_expireref (expireref),
   INDEX sess2_expiry (expiry)
 )
-ENGINE = INNODB
-AVG_ROW_LENGTH = 40588
+ENGINE = MYISAM
+AVG_ROW_LENGTH = 78988
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
 -- Описание для таблицы system_user_role
 --
-
-CREATE TABLE system_user_role (
+DROP TABLE IF EXISTS system_user_role;
+CREATE TABLE IF NOT EXISTS system_user_role (
   role_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
   UNIQUE INDEX role_id (role_id, user_id)
 )
-ENGINE = INNODB
+ENGINE = MYISAM
 AVG_ROW_LENGTH = 9
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -613,8 +563,8 @@ COLLATE utf8_general_ci;
 --
 -- Описание для таблицы system_users
 --
-
-CREATE TABLE system_users (
+DROP TABLE IF EXISTS system_users;
+CREATE TABLE IF NOT EXISTS system_users (
   user_id int(11) NOT NULL AUTO_INCREMENT,
   userlogin varchar(32) NOT NULL,
   userpass varchar(255) NOT NULL,
@@ -624,18 +574,27 @@ CREATE TABLE system_users (
   PRIMARY KEY (user_id),
   UNIQUE INDEX userlogin (userlogin)
 )
-ENGINE = INNODB
-AUTO_INCREMENT = 4
-AVG_ROW_LENGTH = 30
+ENGINE = MYISAM
+AUTO_INCREMENT = 5
+AVG_ROW_LENGTH = 32
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 
- 
+--
+-- Скрипт сгенерирован Devart dbForge Studio for MySQL, Версия 6.3.358.0
+-- Домашняя страница продукта: http://www.devart.com/ru/dbforge/mysql/studio
+-- Дата скрипта: 05.02.2016 14:42:10
+-- Версия сервера: 5.1.41-community
+-- Версия клиента: 4.1
+--
+
+
 --
 -- Описание для представления erp_contact_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_contact_view  ;
+CREATE
 VIEW erp_contact_view
 AS
 SELECT
@@ -659,7 +618,8 @@ FROM ((`erp_contact`
 --
 -- Описание для представления erp_customer_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_customer_view  ;
+CREATE
 VIEW erp_customer_view
 AS
 SELECT
@@ -674,7 +634,8 @@ FROM `erp_customer` `c`;
 --
 -- Описание для представления erp_document_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_document_view  ;
+CREATE
 VIEW erp_document_view
 AS
 SELECT
@@ -701,7 +662,8 @@ FROM ((`erp_document` `d`
 --
 -- Описание для представления erp_item_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_item_view  ;
+CREATE
 VIEW erp_item_view
 AS
 SELECT
@@ -724,7 +686,8 @@ FROM ((`erp_item` `t`
 --
 -- Описание для представления erp_message_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_message_view  ;
+CREATE
 VIEW erp_message_view
 AS
 SELECT
@@ -742,7 +705,8 @@ FROM (`erp_message`
 --
 -- Описание для представления erp_metadata_access_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_metadata_access_view  ;
+CREATE
 VIEW erp_metadata_access_view
 AS
 SELECT
@@ -762,7 +726,8 @@ FROM ((`erp_metadata_access` `a`
 --
 -- Описание для представления erp_staff_employee_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_staff_employee_view  ;
+CREATE
 VIEW erp_staff_employee_view
 AS
 SELECT
@@ -791,32 +756,10 @@ FROM (((`erp_staff_employee` `e`
     ON ((`e`.`department_id` = `d`.`department_id`)));
 
 --
--- Описание для представления erp_stock_activity_view
---
-CREATE OR REPLACE
-VIEW erp_stock_activity_view
-AS
-SELECT
-  `erp_stock_activity`.`stock_activity_id` AS `stock_activity_id`,
-  `erp_stock_activity`.`stock_id` AS `stock_id`,
-  `erp_stock_activity`.`qty` AS `quantity`,
-  `erp_document`.`document_date` AS `updated`,
-  `erp_document`.`document_id` AS `document_id`,
-  `erp_store_stock`.`store_id` AS `store_id`,
-  `erp_store_stock`.`item_id` AS `item_id`,
-  `erp_store_stock`.`price` AS `price`,
-  `erp_document`.`document_number` AS `document_number`,
-  `erp_document`.`document_date` AS `document_date`
-FROM ((`erp_stock_activity`
-  JOIN `erp_store_stock`
-    ON ((`erp_stock_activity`.`stock_id` = `erp_store_stock`.`stock_id`)))
-  JOIN `erp_document`
-    ON ((`erp_stock_activity`.`document_id` = `erp_document`.`document_id`)));
-
---
 -- Описание для представления erp_task_project_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_task_project_view  ;
+CREATE
 VIEW erp_task_project_view
 AS
 SELECT
@@ -833,7 +776,8 @@ FROM `erp_task_project`;
 --
 -- Описание для представления erp_account_entry_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_account_entry_view ;
+CREATE
 VIEW erp_account_entry_view
 AS
 SELECT
@@ -853,7 +797,8 @@ FROM (`erp_account_entry` `e`
 --
 -- Описание для представления erp_stock_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_stock_view  ;
+CREATE
 VIEW erp_stock_view
 AS
 SELECT
@@ -878,7 +823,8 @@ WHERE COALESCE((`erp_item_view`.`item_type` <> 3));
 --
 -- Описание для представления erp_task_task_view
 --
-CREATE OR REPLACE
+DROP VIEW IF EXISTS erp_task_task_view  ;
+CREATE
 VIEW erp_task_task_view
 AS
 SELECT

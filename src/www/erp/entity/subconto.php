@@ -33,7 +33,7 @@ class SubConto extends \ZCL\DB\Entity
         } else {
             throw new \ZippyERP\System\Exception("Не задан счет для субконто");
         }
-        if ($account_id > 0) {
+        if ($amount != 0) {
             $this->amount = $amount;
         } else {
             throw new \ZippyERP\System\Exception("Не задана ссумма для субконто");
@@ -65,10 +65,18 @@ class SubConto extends \ZCL\DB\Entity
         $this->moneyfund_id = $moneyfund_id;
     }
 
+    public function setAsset($item_id)
+    {
+        $this->asset_id = $item_id;
+    }
+
     //типы  налогов, начислений  удержаний, прочая вспомагтельная  аналитика
     public function setExtCode($code)
     {
-        $this->extcode = $code;
+        if ($code > 0)
+            $this->extcode = $code;
+        else
+            $this->extcode = 0;
     }
 
     //отрицательное  если  счет по  кредиту
@@ -79,6 +87,7 @@ class SubConto extends \ZCL\DB\Entity
 
     /**
      * Получение  количества   по  комбинации измерений
+     * неиспользуемые значения  заполняются  нулем
      *
      * @param mixed $date       дата на  конец дня
      * @param mixed $acc        синтетичкеский счет
@@ -86,12 +95,17 @@ class SubConto extends \ZCL\DB\Entity
      * @param mixed $customer   контрашент
      * @param mixed $emp        сотрудник
      * @param mixed $mf         денежный счет
+     * @param mixed $asset      необоротный актив
      * @param mixed $code       универсальное поле
      */
-    public static function getQuantity($date, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $code = 0)
+    public static function getQuantity($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
     {
         $conn = \ZCL\DB\DB::getConnect();
-        $where = "   date(document_date) <= " . $conn->DBDate($date);
+        $where = "   1=1";
+        if ($date > 0) {
+            $where = $where . "   date(document_date) <= " . $conn->DBDate($date);
+        }
+
         if ($acc > 0) {
             $where = $where . " and account_id= " . $acc;
         }
@@ -106,7 +120,7 @@ class SubConto extends \ZCL\DB\Entity
         }
 
         if ($stock > 0) {
-            $where = $where . " and stock_id= " . $store;
+            $where = $where . " and stock_id= " . $stock;
         }
         if ($customer > 0) {
             $where = $where . " and customer_id= " . $customer;
@@ -117,6 +131,7 @@ class SubConto extends \ZCL\DB\Entity
 
     /**
      * Получение  суммы   по  комбинации измерений
+     * неиспользуемые значения  заполняются  нулем
      *
      * @param mixed $date       дата на  конец дня
      * @param mixed $acc        синтетичкеский счет
@@ -124,12 +139,16 @@ class SubConto extends \ZCL\DB\Entity
      * @param mixed $customer   контрашент
      * @param mixed $emp        сотрудник
      * @param mixed $mf         денежный счет
+     * @param mixed $asset      необоротный актив
      * @param mixed $code       универсальное поле
      */
-    public static function getAmount($date, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $code = 0)
+    public static function getAmount($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
     {
         $conn = \ZCL\DB\DB::getConnect();
-        $where = "   date(document_date) <= " . $conn->DBDate($date);
+        $where = "   1=1";
+        if ($date > 0) {
+            $where = $where . "   date(document_date) <= " . $conn->DBDate($date);
+        }
         if ($acc > 0) {
             $where = $where . " and account_id= " . $acc;
         }

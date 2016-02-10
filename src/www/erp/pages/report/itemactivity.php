@@ -40,7 +40,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
     public function OnAutoItem($sender)
     {
         $text = $sender->getText();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <>" . Item::ITEM_TYPE_SERVICE);
+        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type in (" . Item::ITEM_TYPE_RETSUM . "," . Item::ITEM_TYPE_STUFF . ")");
     }
 
     public function OnSubmit($sender)
@@ -55,15 +55,19 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
 
         // \ZippyERP\System\Session::getSession()->storereport = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
-        $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
+        $reportpage = "ZippyERP/ERP/Pages/ShowReport";
+        $reportname = "movereport";
+
+        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
+
         $this->detail->print->pagename = $reportpage;
-        $this->detail->print->params = array('print', "movereport");
+        $this->detail->print->params = array('print', $reportname);
         $this->detail->html->pagename = $reportpage;
-        $this->detail->html->params = array('html', "movereport");
+        $this->detail->html->params = array('html', $reportname);
         $this->detail->word->pagename = $reportpage;
-        $this->detail->word->params = array('doc', "movereport");
+        $this->detail->word->params = array('doc', $reportname);
         $this->detail->excel->pagename = $reportpage;
-        $this->detail->excel->params = array('xls', "movereport");
+        $this->detail->excel->params = array('xls', $reportname);
 
         $this->detail->setVisible(true);
     }

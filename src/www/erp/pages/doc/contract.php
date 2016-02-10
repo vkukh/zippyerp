@@ -31,7 +31,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new TextInput('amount'));
-        $this->docform->add(new Date('created', time()));
+        $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('customer', Customer::findArray("customer_name", "")));
         $this->docform->add(new Date('startdate', time()));
         $this->docform->add(new Date('enddate', time()));
@@ -41,7 +41,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->startdate->setDate($this->_doc->headerdata['startdate']);
             $this->docform->enddate->setDate($this->_doc->headerdata['enddate']);
             $this->docform->description->setText($this->_doc->headerdata['description']);
@@ -61,7 +61,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
         }
         $this->_doc->amount = 100 * $this->docform->amount->getText();
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = $this->docform->created->getDate();
+        $this->_doc->document_date = $this->docform->document_date->getDate();
 
         $this->_doc->headerdata = array(
             'customer' => $this->docform->customer->getValue(),

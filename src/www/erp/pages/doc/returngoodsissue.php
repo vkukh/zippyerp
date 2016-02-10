@@ -287,13 +287,11 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() <= 0) {
             $this->setError("Не выбран  поставщик");
-            return false;
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()

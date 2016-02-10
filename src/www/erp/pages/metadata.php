@@ -173,8 +173,8 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         }
 
         $item->description = $this->editpan->editform->edit_description->getText();
-        $item->menugroup = $this->editpan->editform->edit_menugroup->getText();
-        $item->meta_name = ucfirst($this->editpan->editform->edit_meta_name->getText());
+        $item->menugroup = trim($this->editpan->editform->edit_menugroup->getText());
+        $item->meta_name = trim(ucfirst($this->editpan->editform->edit_meta_name->getText()));
         $item->meta_type = $this->editpan->editform->edit_meta_type->getValue();
         $item->notes = $this->editpan->editform->edit_notes->getText();
         $item->disabled = $this->editpan->editform->edit_disabled->isChecked() ? 1 : 0;

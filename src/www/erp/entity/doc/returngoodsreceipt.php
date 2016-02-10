@@ -40,7 +40,7 @@ class ReturnGoodsReceipt extends Document
             "firmcode" => $firm['code'],
             "customername" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
-            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])
         );
 

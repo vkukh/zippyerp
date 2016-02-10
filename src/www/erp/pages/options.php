@@ -37,7 +37,9 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->detail->add(new TextInput('accounter'));
         $this->detail->add(new TextInput('email'));
         $this->detail->add(new DropDownChoice('bank', \ZippyERP\ERP\Entity\Bank::findArray('bank_name', '', 'bank_name')));
+        $this->detail->add(new DropDownChoice('bank2', \ZippyERP\ERP\Entity\Bank::findArray('bank_name', '', 'bank_name')));
         $this->detail->add(new TextInput('bankaccount'));
+        $this->detail->add(new TextInput('bankaccount2'));
         $this->detail->add(new SubmitButton('detailsave'))->setClickHandler($this, 'saveDetailOnClick');
 
 
@@ -50,6 +52,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->common->add(new CheckBox('simpletax'));
         $this->common->add(new CheckBox('juridical'));
         $this->common->add(new SubmitButton('commonsave'))->setClickHandler($this, 'saveCommonOnClick');
+        $this->common->add(new DropDownChoice('basestore', \ZippyERP\ERP\Entity\Store::findArray('storename', '')));
 
 
         $detail = \ZippyERP\System\System::getOptions("firmdetail");
@@ -78,6 +81,12 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $this->detail->bank->setValue($f->bank);
             $this->detail->bankaccount->setText($f->bankaccount);
         }
+        $f = \ZippyERP\ERP\Entity\MoneyFund::findOne('ftype = 2');
+
+        if ($f != null) {
+            $this->detail->bank2->setValue($f->bank);
+            $this->detail->bankaccount2->setText($f->bankaccount);
+        }
 
         $common = \ZippyERP\System\System::getOptions("common");
         if (!is_array($common))
@@ -87,6 +96,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->common->hasnds->setChecked($common['hasnds']);
         $this->common->simpletax->setChecked($common['simpletax']);
         $this->common->juridical->setChecked($common['juridical']);
+        $this->common->basestore->setValue($common['basestore']);
     }
 
     public function saveDetailOnClick($sender)
@@ -118,8 +128,15 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $f->bankaccount = $this->detail->bankaccount->getText();
             $f->save();
         }
+        $f = \ZippyERP\ERP\Entity\MoneyFund::findOne('ftype = 2');
+        if ($f != null) {  // обноваляем  дополнительный   счет
+            $f->bank = $this->detail->bank2->getValue();
+            $f->bankaccount = trim($this->detail->bankaccount2->getText());
+            $f->save();
+        }
 
         \ZippyERP\System\System::setOptions("firmdetail", $detail);
+        $this->setSuccess('Настройки сохранены');
     }
 
     public function saveCommonOnClick($sender)
@@ -130,7 +147,9 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $common['hasnds'] = $this->common->hasnds->isChecked();
         $common['simpletax'] = $this->common->simpletax->isChecked();
         $common['juridical'] = $this->common->juridical->isChecked();
+        $common['basestore'] = $this->common->basestore->getValue();
         \ZippyERP\System\System::setOptions("common", $common);
+        $this->setSuccess('Настройки сохранены');
     }
 
 }

@@ -69,7 +69,7 @@ class Document extends \ZCL\DB\Entity
 
     protected function beforeSave()
     {
-
+        $this->document_number = trim($this->document_number);
         $this->packData();
 
         //todo  отслеживание  изменений
@@ -81,6 +81,7 @@ class Document extends \ZCL\DB\Entity
      */
     private function packData()
     {
+
 
         $this->content = "<doc><header>";
 
@@ -113,8 +114,9 @@ class Document extends \ZCL\DB\Entity
      */
     private function unpackData()
     {
+
         $this->headerdata = array();
-        if (strlen($this->content) == 0) {
+        if ($this->content == null || strlen($this->content) == 0) {
             return;
         }
         $xml = new \SimpleXMLElement($this->content);

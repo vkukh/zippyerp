@@ -38,20 +38,22 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
     {
 
         //$html = $this->generateReport();
-        $this->detail->preview->setText("<center style=\"padding-top:100px;padding-bottom:100px;\"><img title=\"Загрузка...\" src=\"/assets/images/ajax-loader.gif\"></center>", true);
+        $reportpage = "ZippyERP/ERP/Pages/ShowReport";
+        $reportname = "shaxmatkareport";
+
 
         \ZippyERP\System\Session::getSession()->printform = "";
 
         //\ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
 
-        $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
+
         $this->detail->print->pagename = $reportpage;
-        $this->detail->print->params = array('print', "shaxmatkareport");
+        $this->detail->print->params = array('print', $reportname);
         $this->detail->html->pagename = $reportpage;
-        $this->detail->html->params = array('html', "shaxmatkareport");
+        $this->detail->html->params = array('html', $reportname);
 
         $this->detail->excel->pagename = $reportpage;
-        $this->detail->excel->params = array('xls', "shaxmatkareport");
+        $this->detail->excel->params = array('xls', $reportname);
 
         $this->detail->setVisible(true);
 
@@ -61,13 +63,13 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
     private function generateReport()
     {
 
-        $acclist = Account::find("", "cast(acc_code as char)");
+        $acclist = Account::find("acc_code>=10 and acc_code<1000", "cast(acc_code as char)");
 
         $detail = array();
         $left = array();
-        $top = array('');
+        $top = array(array('cell' => ''));
         $right = array();
-        $bottom = array('Кредит');
+        $bottom = array(array('cell' => 'Кредит', 'bold' => true));
 
 
         $from = strtotime($this->filter->from->getValue());
@@ -76,33 +78,42 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         foreach ($acclist as $acc) {
 
             $data = $acc->getSaldoAndOb($from, $to);  //получаем остатки  и  обороты  на  период
-            $left[] = $acc->acc_code;
-            $top[] = $acc->acc_code;
-            $right[] = H::fm($data['obdt']);
-            $bottom[] = H::fm($data['obct']);
+            //  $left[] = $acc->acc_code;
+            $top[] = array('cell' => $acc->acc_code, 'right' => true, 'bold' => true);
+            //  $right[] = H::fm($data['obdt']);
+            $bottom[] = array('cell' => H::fm($data['obct']), 'bold' => true);
         }
-        $top[] = 'Дебет';
-        $bottom[] = '';
+        $top[] = array('cell' => 'Дебет', 'bold' => true);
+        $bottom[] = array('cell' => '');
+        ;
 
-        $detail[] = $top;
+
+        $detail[] = array('row' => $top);
         foreach ($acclist as $acc) {
             $arr = array();
             $data = $acc->getSaldoAndOb($from, $to);  //получаем остатки  и  обороты  на  период
-            $arr[] = $acc->acc_code;
+            $arr[] = array('cell' => $acc->acc_code, 'right' => true, 'bold' => true);
 
             foreach ($acclist as $acc2) {
-                $arr[] = H::fm(Account::getObBetweenAccount($acc->acc_code, $acc2->acc_code, $from, $to));
+
+                $arr[] = array('cell' => H::fm(Account::getObBetweenAccount($acc->acc_code, $acc2->acc_code, $from, $to)));
             }
-            $arr[] = H::fm($data['obdt']);
-            $detail[] = $arr;
+            $arr[] = array('cell' => H::fm($data['obdt']), 'bold' => true);
+
+            $detail[] = array('row' => $arr);
         }
-        $detail[] = $bottom;
+        $detail[] = array('row' => $bottom);
 
         $header = array(
             'from' => date('d.m.Y', $from),
             'to' => date('d.m.Y', $to),
             'size' => count($top) - 1
         );
+        //  $detail = array();
+        //  $detail[] =  array('row'=>array(array('cell'=>'fff'),array('cell'=>'ffddddf')));
+        //   $detail[] =  array('row'=>array(array('cell'=>'fddssdff'),array('cell'=>'ffddddf')));
+
+
 
         $report = new \ZippyERP\ERP\Report('shahmatka.tpl');
 
@@ -121,7 +132,8 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $this->detail->preview->setText($html, true);
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
 
-        $this->updateAjax(array("preview"));
+
+        $this->updateAjax(array(), "$('#preview').attr('src','/?p=ZippyERP/ERP/Pages/ShowReport&arg=preview/shaxmatkareport')");
     }
 
     protected function beforeRender()

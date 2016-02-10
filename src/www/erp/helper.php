@@ -7,7 +7,7 @@ use ZippyERP\System\System;
 
 /**
  * Класс   со  вспомагательными   функциями
- *   для  работы с  БД 
+ *   для  работы с  БД
  */
 class Helper
 {
@@ -16,7 +16,7 @@ class Helper
 
     /**
      * Генерация  иеню  для  типа  метаданных
-     * 
+     *
      * @param mixed $meta_type
      */
 
@@ -67,7 +67,7 @@ class Helper
 
     /**
      * список  групп документов
-     * 
+     *
      */
     public static function getDocGroups()
     {
@@ -85,7 +85,7 @@ class Helper
 
     /**
      * список единиц измерения
-     * 
+     *
      */
     public static function getMeasureList()
     {
@@ -102,7 +102,7 @@ class Helper
 
     /**
      * список  групп товаров
-     * 
+     *
      */
     public static function getItemGroupList()
     {
@@ -119,7 +119,7 @@ class Helper
 
     /**
      * возварщает запись  метаданных
-     * 
+     *
      * @param mixed $id
      */
     public static function getMetaType($id)
@@ -135,7 +135,7 @@ class Helper
 
     /**
      * возвращает описание  мета-обьекта
-     * 
+     *
      * @param mixed $metaname
      */
     public static function getMetaNotes($metaname)
@@ -147,7 +147,7 @@ class Helper
 
     /**
      * Возвращает  ссписок  денежных счетов
-     * 
+     *
      * @param mixed $bank  true  если  банк иначе  касса
      */
     public static function getMoneyFundsList($bank)
@@ -169,7 +169,7 @@ class Helper
 
     /**
      * Запись  файла   в БД
-     * 
+     *
      * @param mixed $file
      * @param mixed $itemid   ID  объекта
      * @param mixed $itemtype  тип  объекта (документ - 0 )
@@ -193,7 +193,7 @@ class Helper
 
     /**
      * список  файдов  пррепленных  к  объекту
-     * 
+     *
      * @param mixed $item_id
      * @param mixed $item_type
      */
@@ -217,7 +217,7 @@ class Helper
 
     /**
      * удаление  файла
-     * 
+     *
      * @param mixed $file_id
      */
     public static function deleteFile($file_id)
@@ -229,7 +229,7 @@ class Helper
 
     /**
      * Возвращает  файл  и  его  содержимое
-     * 
+     *
      * @param mixed $file_id
      */
     public static function loadFile($file_id)
@@ -245,7 +245,7 @@ class Helper
 
     /**
      * Форматирует  вывод  денежной суммы
-     * 
+     *
      * @param mixed $value     сумма   в   копейках
      */
     public static function fm($value)
@@ -255,23 +255,24 @@ class Helper
 
     /**
      * Форматирует  вывод  денежной суммы   в  тысячах
-     * 
+     *
      * @param mixed $value     сумма   в   копейках
      */
     public static function fm_t1($value)
     {
+        if(abs($value) < 1000) $value =0;
         return number_format($value / 100000, 1, '.', '');
     }
 
     /**
      * Возвращает  НДС
-     * 
+     *
      * @param mixed $revert   возвращает  обратную  величину (наприме  если   20% (0.2)  возвращает 16.67% (0.1667) )
      */
     public static function nds($revert = false)
     {
         $common = System::getOptions("common");
-        // 
+        //
         $nds = $common['nds'] / 100;
         if ($revert) {
             $nds = 1 - 100 / (100 + $common['nds']);
@@ -281,7 +282,7 @@ class Helper
 
     /**
      * Вставляет пробелы  между символами строки
-     * 
+     *
      * @param mixed $data
      */
     public static function addSpaces($data)

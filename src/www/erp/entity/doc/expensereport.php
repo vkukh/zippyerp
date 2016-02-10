@@ -35,11 +35,11 @@ class ExpenseReport extends Document
         $elist = self::expenceList();
         $header = array('date' => date('d.m.Y', $this->document_date),
             "employee" => $employee->shortname,
-            "expenseamount" => H::fm($this->headerdata["expenseamount"]),
+            "expenseamount" => $this->headerdata["expenseamount"] > 0 ? H::fm($this->headerdata["expenseamount"]) : 0,
             "expensetype" => $elist[$this->headerdata["expensetype"]],
             "employee" => $employee->shortname,
             "document_number" => $this->document_number,
-            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])
         );
 

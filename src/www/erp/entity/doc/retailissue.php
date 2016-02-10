@@ -76,7 +76,10 @@ class RetailIssue extends Document
 
         //налоговые  обязательства
         if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("702", "643", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+            Entry::AddEntry("702", "641", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 641, 0 - $this->headerdata["totalnds"]);
+            $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
+            $sc->save();
         }
         return true;
     }

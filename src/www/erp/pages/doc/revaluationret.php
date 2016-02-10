@@ -210,12 +210,11 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
 
 
 
-        return true;
+        return !$this->isError();
     }
 
     public function backtolistOnClick($sender)

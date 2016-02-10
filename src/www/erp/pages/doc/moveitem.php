@@ -27,7 +27,6 @@ use \ZippyERP\ERP\Helper as H;
 class MoveItem extends \ZippyERP\ERP\Pages\Base
 {
 
-    private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ', 26 => 'Готовая продукция');
     public $_itemlist = array();
     private $_doc;
     private $_rowid = 0;
@@ -55,8 +54,8 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->edititem->setChangeHandler($this, 'OnChangeItem');
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'))->setVisible(false);
-        ;
-        $this->editdetail->add(new DropDownChoice('edittype', $this->_itemtype))->setChangeHandler($this, "OnItemType");
+
+        $this->editdetail->add(new DropDownChoice('edittype'))->setChangeHandler($this, "OnItemType");
 
         $this->editdetail->add(new Label('qtystock'));
         $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
@@ -227,15 +226,13 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->storeto->getValue() == $this->docform->storefrom->getValue()) {
             $this->setError("Выбран  тот  же  склад для  получения");
-            return false;
         }
 
 
-        return true;
+        return !$this->isError();
     }
 
     public function backtolistOnClick($sender)
@@ -299,8 +296,12 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
             $this->editdetail->editprice->setVisible(false);
+            $this->editdetail->edittype->setOptionList(array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ', 25 => 'Полуфабрикат', 26 => 'Готовая продукция'));
+            $this->editdetail->edittype->setValue(201);
         } else {
             $this->editdetail->editprice->setVisible(true);
+            $this->editdetail->edittype->setOptionList(array(281 => 'Товар', 26 => 'Готовая продукция'));
+            $this->editdetail->edittype->setValue(281);
         }
     }
 

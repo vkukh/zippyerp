@@ -39,7 +39,7 @@ class ServiceIncome extends Document
             "customer" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
             "nds" => H::fm($this->headerdata["nds"]),
-            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])
         );
 
@@ -73,26 +73,23 @@ class ServiceIncome extends Document
             // $sc->save();
         }
 
-        if ($this->headerdata['totalnds'] > 0) {
-            $total = $total - $this->headerdata['totalnds'];
-            Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id, 0, $customer_id);
-            $sc = new SubConto($this, 63, 0 - $this->headerdata['totalnds']);
-            $sc->setCustomer($customer_id);
 
-            $sc->save();
-            $sc = new SubConto($this, 644, $this->headerdata['totalnds']);
-            $sc->setExtCode(TAX_NDS);
-
-            //$sc->save();
-        }
 
 
         Entry::AddEntry("91", "63", $total, $this->document_id, $this->document_date);
-        $sc = new SubConto($this, 63, 0 - $value);
+        $sc = new SubConto($this, 63, 0 - $total);
         $sc->setCustomer($customer_id);
 
         $sc->save();
-
+        if ($this->headerdata['prepayment'] == 1) {  //предоплата
+            Entry::AddEntry("63", "371", $this->headerdata["total"], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 63, $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+            $sc = new SubConto($this, 371, 0 - $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+        }
 
         return true;
     }

@@ -28,17 +28,17 @@
             <tr>
             <tr>
                 <td colspan="3" style="text-align: right; font-size: 6pt;vertical-align: middle;">Дата складання податкової накладної</td>
-                <td colspan="3" style="border: #000000 1px solid;text-align: right; font-size: 12pt;letter-spacing:4px;">{$date}  </td>
+                <td colspan="3" style="border: #000000 1px solid;text-align: right; font-size: 12pt;letter-spacing:4px;">{{date}}  </td>
                 <td colspan="3" style="border: #fff 0px ;text-align: right;vertical-align: middle; font-size: 7pt;">Порядковий номер</td>
-                <td colspan="3" style="border: #000000 1px solid;text-align: right; font-size: 12pt;letter-spacing:4px;">{$document_number}</td>
+                <td colspan="3" style="border: #000000 1px solid;text-align: right; font-size: 12pt;letter-spacing:4px;">{{document_number}}</td>
                 <td style="text-align: left;border: #000000 1px solid; font-size: 10pt;letter-spacing:4px;">/ </td>
             </tr>
             <tr><td colspan="13">&nbsp;</td></tr>
             <tr>
                 <td colspan="2" style="text-align: right; font-size: 7pt;">Особа (платникподатку) - продавець </td>
-                <td colspan="4" style="border: #000000 1px solid; font-size: 9pt;vertical-align: middle;">{$firmname} </td>
+                <td colspan="4" style="border: #000000 1px solid; font-size: 9pt;vertical-align: middle;">{{firmname}} </td>
                 <td colspan="3" style="text-align: right; font-size: 7pt;">Особа (платник податку) – покупець</td>
-                <td colspan="5" style="border: #000000 1px solid; font-size: 9pt;vertical-align: middle;">{$customername}</td>
+                <td colspan="5" style="border: #000000 1px solid; font-size: 9pt;vertical-align: middle;">{{customername}}</td>
 
             </tr>
             <tr>
@@ -49,9 +49,9 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: right; font-size: 7pt;"></td>
-                <td colspan="4" style=" font-size: 10pt;border: #000000 1px solid;">{$firmcode}</td>
+                <td colspan="4" style=" font-size: 10pt;border: #000000 1px solid;">{{firmcode}}</td>
                 <td colspan="3" style="text-align: right; font-size: 7pt;">&nbsp;</td>
-                <td colspan="5" style="font-size: 10pt;border: #000000 1px solid;">{$customercode}</td>
+                <td colspan="5" style="font-size: 10pt;border: #000000 1px solid;">{{customercode}}</td>
             <tr>
                 <td colspan="2" style="text-align: right; font-size: 7pt;">&nbsp;</td>
                 <td colspan="4" style=" font-size: 6pt;">(індивідуальний податковий номер продавця) </td>
@@ -61,27 +61,27 @@
 
             <tr style="margin-bottom: 4px;">
                 <td colspan="2" style="text-align: right; font-size: 7pt;">Місцезнаходження (податкова адреса) продавця </td>
-                <td colspan="4" style="border-bottom: #000000 1px solid; font-size: 9pt;">{$saddress}</td>
+                <td colspan="4" style="border-bottom: #000000 1px solid; font-size: 9pt;">{{saddress}}</td>
                 <td colspan="3" style="text-align: right; font-size: 7pt;">Місцезнаходження (податкова адреса) покупця</td>
-                <td colspan="5" style="border-bottom: #000000 1px solid; font-size: 9pt;">{$baddress}</td>
+                <td colspan="5" style="border-bottom: #000000 1px solid; font-size: 9pt;">{{baddress}}</td>
 
             </tr>
             <tr><td colspan="13">&nbsp;</td></tr>
             <tr>
             <tr style="margin-bottom: 4px;">
                 <td colspan="2" style="text-align: right; font-size: 7pt;">Номер телефону</td>
-                <td colspan="4" style="border: #000000 1px solid; font-size: 9pt;">{$sphone}</td>
+                <td colspan="4" style="border: #000000 1px solid; font-size: 9pt;">{{sphone}}</td>
                 <td colspan="3" style="text-align: right; font-size: 7pt;">Номер телефону</td>
-                <td colspan="5" style="border: #000000 1px solid; font-size: 9pt;">{$bphone}</td>
+                <td colspan="5" style="border: #000000 1px solid; font-size: 9pt;">{{bphone}}</td>
 
             </tr>
             <tr><td colspan="13">&nbsp;</td></tr>
             <tr style="margin-bottom: 4px;">
                 <td colspan="2" style="text-align: right; font-size: 7pt;">Вид  цивільно-правового договору </td>
-                <td colspan="6" style="border-bottom: #000000 1px solid; font-size: 8pt;">{$contractname}</td>
+                <td colspan="6" style="border-bottom: #000000 1px solid; font-size: 8pt;">{{contractname}}</td>
                 <td style="text-align: right; font-size: 7pt;">від </td>
-                <td colspan="2" style=" font-size: 7pt;">{$contractdate}</td>
-                <td colspan="3" style="font-size: 8pt;">№ {$contractnumber}</td>
+                <td colspan="2" style=" font-size: 7pt;">{{contractdate}}</td>
+                <td colspan="3" style="font-size: 8pt;">№ {{contractnumber}}</td>
 
             </tr>
             <tr >
@@ -92,7 +92,7 @@
 
             <tr >
                 <td colspan="2" style="text-align: right; font-size: 7pt;">Форма проведених розрахунків</td>
-                <td colspan="7" style="border-bottom: #000000 1px solid; font-size: 8pt;">{$paytype} </td>
+                <td colspan="7" style="border-bottom: #000000 1px solid; font-size: 8pt;">{{paytype}} </td>
                 <td colspan="4" >&nbsp;</td>
 
 
@@ -141,24 +141,24 @@
                 <td style="width:30px;text-align: center;font-size: 6pt; border: #000000 1px solid;">12</td>
                 <td style="width:60px;text-align: center;font-size: 6pt; border: #000000 1px solid;">13</td>
             </tr>
-            {foreach $_detail as $item}
+            {{#_detail}}
             <tr>
                 <td style="text-align: center;font-size: 6pt; border-left: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{$item.date}</td>
-                <td style="text-align: left;font-size: 6pt; border: #000000 1px solid;">{$item.tovar_name}</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{$item.tovar_code}</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{$item.measure_name}</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{$item.measure_code}</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$item.quantity}</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$item.price}</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$item.amount}</td>
+                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{date}}</td>
+                <td style="text-align: left;font-size: 6pt; border: #000000 1px solid;">{{tovar_name}}</td>
+                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{tovar_code}}</td>
+                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{measure_name}}</td>
+                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{measure_code}}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{quantity}}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{price}}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{amount}}</td>
                 <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border-right: #000000 1px solid;border-bottom: #000000 1px solid;">{$item.amount}</td>
+                <td style="text-align: right;font-size: 6pt; border-right: #000000 1px solid;border-bottom: #000000 1px solid;">{{amount}}</td>
             </tr>
-            {/foreach}
+            {{/_detail}}
             <tr>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td colspan="2" style="font-size: 6pt; border: #000000 1px solid;">Усього за розділом I</td>
@@ -167,7 +167,7 @@
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$total}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{total}}</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
@@ -197,12 +197,12 @@
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$totalnds}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalnds}}</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">0</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">0</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$totalnds}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalnds}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">IV</td>
@@ -212,12 +212,12 @@
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$totalall}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalall}}</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{$totalall}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalall}}</td>
             </tr>
 
 
@@ -226,7 +226,7 @@
                 <td colspan="2"> </td>
             </tr>
             <tr><td colspan="3">&nbsp;</td>
-                <td colspan="8" style="border-bottom: #000 solid 1px;font-size: 8pt;">{$author}</td>
+                <td colspan="8" style="border-bottom: #000 solid 1px;font-size: 8pt;">{{author}}</td>
                 <td colspan="3">&nbsp;</td>
             </tr>
             <tr><td colspan="3">&nbsp;</td>

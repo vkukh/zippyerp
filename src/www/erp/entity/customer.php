@@ -4,7 +4,7 @@ namespace ZippyERP\ERP\Entity;
 
 /**
  * Класс-сущность  контрагент
- * 
+ *
  * @table=erp_customer
  * @keyfield=customer_id
  */
@@ -29,6 +29,7 @@ class Customer extends \ZCL\DB\Entity
         $this->detail .= "<faddress><![CDATA[{$this->faddress}]]></faddress>";
         $this->detail .= "<laddress><![CDATA[{$this->laddress}]]></laddress>";
         $this->detail .= "<bankaccount1><bank>{$this->bank}</bank><account>{$this->bankaccount}</account></bankaccount1>";
+        $this->detail .= "<bankaccount2><bank>{$this->bank2}</bank><account>{$this->bankaccount2}</account></bankaccount2>";
         $this->detail .= "</detail>";
 
         return true;
@@ -43,7 +44,9 @@ class Customer extends \ZCL\DB\Entity
         $this->city = (string) ($xml->city[0]);
         $this->street = (string) ($xml->street[0]);
         $this->bank = (string) ($xml->bankaccount1->bank[0]);
+        $this->bank2 = (string) ($xml->bankaccount2->bank[0]);
         $this->bankaccount = (string) ($xml->bankaccount1->account[0]);
+        $this->bankaccount2 = (string) ($xml->bankaccount2->account[0]);
 
         parent::afterLoad();
     }
@@ -69,7 +72,7 @@ class Customer extends \ZCL\DB\Entity
     /**
      * возвращает контрашента по  ИНН
      * null если  не  найден
-     * 
+     *
      */
     public static function loadByInn($inn)
     {

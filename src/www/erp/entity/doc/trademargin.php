@@ -8,7 +8,7 @@ use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Entity\SubConto;
 use \ZippyERP\ERP\Entity\Account;
-use Carbon\Carbon;
+use \Carbon\Carbon;
 
 /**
  * Класс-сущность  документ списание  торговой наценки
@@ -73,14 +73,14 @@ class TradeMargin extends Document
         // себестоимость реализации
         Entry::AddEntry("902", "282", $sb, $this->document_id, $this->document_date);
 
-                $item = \ZippyERP\ERP\Entity\Item::getSumItem();
+        $item = \ZippyERP\ERP\Entity\Item::getSumItem();
 
-                $stockto = \ZippyERP\ERP\Entity\Stock::getStock($store_id, $item->item_id, 1, true);
-                $sc = new SubConto($this, 282, 0-$saled);
-                $sc->setStock($stockto->stock_id);
-                $sc->setQuantity(0-$saled*1000); //цена  единицы  товара - 1 копейка.
+        $stockto = \ZippyERP\ERP\Entity\Stock::getStock($store_id, $item->item_id, 1, true);
+        $sc = new SubConto($this, 282, 0 - $saled);
+        $sc->setStock($stockto->stock_id);
+        $sc->setQuantity(0 - $saled * 1000); //цена  единицы  товара - 1 копейка.
 
-                $sc->save();
+        $sc->save();
 
 
         // НДС

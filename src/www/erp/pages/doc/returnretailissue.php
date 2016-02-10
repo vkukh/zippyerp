@@ -269,13 +269,11 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не введен   покупатель");
-            return false;
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()

@@ -1,11 +1,11 @@
 <html>
     <body >
 
-<h4> Ручная хоз. операция  № {$document_number}  Дата: {$date} </h4>
-Описание:<br>{$description}
+<h4> Ручная хоз. операция  № {{document_number}}  Дата: {{date}} </h4>
+Описание:<br>{{description}}
 <br>
 
-            {if count($_detail['entry']) > 0 }
+            {{#entry?}}
                 <b>Проводки:</b>
                 <table  class="ctable" cellpadding="2">
                 <tr >
@@ -13,15 +13,16 @@
                     <th style="width:40px;border-bottom: black solid 1px;">Кт</th>
                     <th style="width:60px;border-bottom: black solid 1px;">Сумма</th>
                 </tr>
-                {foreach $_detail['entry'] as $entry}
-                    <tr ><td >{$entry.acc_d}</td>
-                        <td  >{$entry.acc_c}</td>
-                        <td   align="right" >{$entry.amount}</td>
+                {{#entry}}
+                    <tr ><td >{{acc_d}}</td>
+                        <td  >{{acc_c}}</td>
+                        <td   align="right" >{{amount}}</td>
                      </tr>
-                    {/foreach}
+                    {{/entry}}
                 </table >
-            {/if}
-            {if count($_detail['item']) > 0 }
+            {{/entry?}}
+
+            {{#item?}}
                 <br><b>ТМЦ:</b>
                 <table  class="ctable" cellpadding="2">
                 <tr >
@@ -33,19 +34,21 @@
                     <th style="border-bottom: black solid 1px;">Сумма</th>
 
                 </tr>
-                {foreach $_detail['item'] as $item}
+                {{#item}}
                     <tr >
-                        <td >{$item.opname} </td>
+                        <td >{{opname}} </td>
 
-                        <td  >{$item.store_name}</td>
-                        <td  > {$item.item_name} </td>
-                        <td   align="right" > {$item.qty} </td>
-                        <td   align="right" > {$item.price} </td>
-                        <td   align="right" > {$item.amount} </td>
+                        <td  >{{store_name}}</td>
+                        <td  > {{item_name}} </td>
+                        <td   align="right" > {{qty}} </td>
+                        <td   align="right" > {{price}} </td>
+                        <td   align="right" > {{amount}} </td>
                     </tr>
-                {/foreach}    </table>
-            {/if}
-          {if count($_detail['emp']) > 0 }
+                {{/item}}
+                  </table>
+            {{/item?}}
+
+          {{#emp?}}
                 <br><b>Сотрудники:</b>
                 <table  class="ctable" cellpadding="2">
                 <tr >
@@ -54,15 +57,16 @@
                     <th style="border-bottom: black solid 1px;">Сумма</th>
 
                 </tr>
-                {foreach $_detail['emp'] as $item}
+                 {{#emp}}
                     <tr >
-                        <td  >{$item.opname} </td>
-                        <td  >{$item.name}</td>
-                        <td   align="right" >{$item.amount}</td>
+                        <td  >{{opname}} </td>
+                        <td  >{{name}}</td>
+                        <td   align="right" >{{amount}}</td>
                     </tr>
-                {/foreach}  </table>
-            {/if}
-        {if count($_detail['c']) > 0 }
+                 {{/emp}} </table>
+            {{/emp?}}
+
+            {{#c?}}
                 <br><b>Контрагенты:</b>
                 <table  class="ctable" cellpadding="2">
                 <tr >
@@ -72,16 +76,17 @@
                     <th style="border-bottom: black solid 1px;">Сумма</th>
 
                 </tr>
-                {foreach $_detail['c'] as $item}
+                 {{#c}}
                     <tr >
-                        <td  >{$item.opname}</td>
+                        <td  >{{opname}}</td>
 
-                        <td  >{$item.name}</td>
-                        <td   align="right" >{$item.amount}</td>
+                        <td  >{{name}}</td>
+                        <td   align="right" >{{amount}}</td>
                     </tr>
-                {/foreach}  </table>
-            {/if}
-       {if count($_detail['f']) > 0 }
+                 {{/c}}  </table>
+            {{/c?}}
+
+            {{#f?}}
                 <br><b>Денежные  счета:</b>
                 <table  class="ctable" cellpadding="2">
                 <tr >
@@ -90,15 +95,37 @@
                     <th style="border-bottom: black solid 1px;">Сумма</th>
 
                 </tr>
-                {foreach $_detail['f'] as $item}
+                 {{#f}}
                     <tr >
-                        <td  >{$item.opname}</td>
-                        <td  >{$item.name}</td>
-                        <td   align="right" >{$item.amount}</td>
+                        <td  >{{opname}}</td>
+                        <td  >{{name}}</td>
+                        <td   align="right" >{{amount}}</td>
                     </tr>
-                {/foreach}
+                 {{/f}}
                 </table>
-            {/if}
+            {{/f?}}
+
+           {{#ca?}}
+                <br><b>Необортные активы:</b>
+                <table  class="ctable" cellpadding="2">
+                <tr >
+                    <th style="border-bottom: black solid 1px;">Счет</th>
+                    <th style="border-bottom: black solid 1px;">Наименование</th>
+                    <th style="border-bottom: black solid 1px;">Кол.</th>
+                    <th style="border-bottom: black solid 1px;">Цена</th>
+
+                </tr>
+                 {{#ca}}
+                    <tr >
+                        <td  >{{opname}}</td>
+                        <td  >{{name}}</td>
+                        <td   align="right" >{{cnt}}</td>
+                        <td   align="right" >{{price}}</td>
+                    </tr>
+                 {{/ca}}
+                </table>
+            {{/ca?}}
+
 
 </body>
 </html>

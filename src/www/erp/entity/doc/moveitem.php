@@ -25,7 +25,7 @@ class MoveItem extends Document
         $conn->StartTrans();
 
         $ret = 0;    // торговая  наценка
-          $amount = 0;
+        $amount = 0;
         foreach ($this->detaildata as $value) {
 
             //списываем  со склада
@@ -48,7 +48,7 @@ class MoveItem extends Document
             if ($store->store_type == Store::STORE_TYPE_RET) {    //розница
                 $stockto = Stock::getFirst("store_id={$this->headerdata['storeto']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
                 if ($stockto instanceof Stock) {
-
+                    
                 } else {
                     $stockto = new Stock();
                     $stockto->document_id = $this->document_id;
@@ -67,7 +67,6 @@ class MoveItem extends Document
 
                 $ret += ($value['quantity'] / 1000) * ($value['price'] - $value['partion']);
                 $amount += ($value['quantity'] / 1000) * $value['price'];
-
             }
 
             if ($store->store_type == Store::STORE_TYPE_RET_SUM) {   //розница суммовой учет
@@ -75,9 +74,9 @@ class MoveItem extends Document
                 $item = \ZippyERP\ERP\Entity\Item::getSumItem();
 
                 $stockto = Stock::getStock($this->headerdata['storeto'], $item->item_id, 1, true);
-                $sc = new SubConto($this, 282, ($value['quantity']/1000 ) * $value['price']);
+                $sc = new SubConto($this, 282, ($value['quantity'] / 1000 ) * $value['price']);
                 $sc->setStock($stockto->stock_id);
-                $sc->setQuantity(($value['quantity']  ) * $value['price']); //цена  единицы  товара - 1 копейка.
+                $sc->setQuantity(($value['quantity'] ) * $value['price']); //цена  единицы  товара - 1 копейка.
 
                 $sc->save();
 
@@ -86,7 +85,7 @@ class MoveItem extends Document
             }
         }
         if ($amount > 0) {  // розница
-            Entry::AddEntry(282, 281, $amount-$ret, $this->document_id, $this->document_date);
+            Entry::AddEntry(282, 281, $amount - $ret, $this->document_id, $this->document_date);
             Entry::AddEntry(282, 285, $ret, $this->document_id, $this->document_date);
             $sc = new SubConto($this, 285, 0 - $ret);
             $sc->setExtCode($store->store_id);  //запоминаем на  каком  магащине  сколько наценки

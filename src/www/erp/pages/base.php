@@ -20,9 +20,9 @@ class Base extends \Zippy\Html\WebPage
     {
 
         $this->add(new \ZippyERP\System\Blocks\Header("header"));
-        $this->add(new Label("errormessage", new \Zippy\Binding\PropertyBinding($this, '_errormsg'), false, true))->setVisible(false);
-        $this->add(new Label("warnmessage", new \Zippy\Binding\PropertyBinding($this, '_warnmsg'), false, true))->setVisible(false);
-        $this->add(new Label("successmessage", new \Zippy\Binding\PropertyBinding($this, '_successmsg'), false, true))->setVisible(false);
+        $this->add(new Label("errormessage", new \Zippy\Binding\PropertyBinding($this, '_errormsg'), true))->setVisible(false);
+        $this->add(new Label("warnmessage", new \Zippy\Binding\PropertyBinding($this, '_warnmsg'), false))->setVisible(false);
+        $this->add(new Label("successmessage", new \Zippy\Binding\PropertyBinding($this, '_successmsg'), false))->setVisible(false);
         $this->add(new Label("menudoc", Helper::generateMenu(1), true));
         $this->add(new Label("menurep", Helper::generateMenu(2), true));
         $this->add(new Label("menureg", Helper::generateMenu(3), true));
@@ -39,7 +39,7 @@ class Base extends \Zippy\Html\WebPage
 
     public function setError($msg)
     {
-        $this->_errormsg = $msg;
+        $this->_errormsg = $this->_errormsg . ('<li>' . $msg . '</li>' );
         $this->errormessage->setVisible(true);
     }
 
@@ -57,16 +57,19 @@ class Base extends \Zippy\Html\WebPage
 
     protected function beforeRender()
     {
-        $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
-        $this->warnmessage->setVisible(strlen($this->_warnmsg) > 0);
-        $this->successmessage->setVisible(strlen($this->_successmsg) > 0);
+        //  $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
+        //   $this->warnmessage->setVisible(strlen($this->_warnmsg) > 0);
+        //   $this->successmessage->setVisible(strlen($this->_successmsg) > 0);
     }
 
     protected function afterRender()
     {
-        $this->setError('');
-        $this->setWarn('');
-        $this->setSuccess('');
+        $this->_errormsg = "";
+        $this->_warnmsg = "";
+        $this->_successmsg = "";
+        $this->errormessage->setVisible(false);
+        $this->warnmessage->setVisible(false);
+        $this->successmessage->setVisible(false);
     }
 
     protected function isError()

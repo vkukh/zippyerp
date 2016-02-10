@@ -6,6 +6,7 @@ use \ZippyERP\System\System;
 use \ZippyERP\ERP\Util;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Entity\MoneyFund;
+use \ZippyERP\ERP\Entity\SubConto;
 use \ZippyERP\ERP\Helper as H;
 
 /**
@@ -40,7 +41,7 @@ class TaxInvoiceIncome extends Document
             "firmcode" => $firm['code'],
             "customername" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
-            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])
         );
 
@@ -53,7 +54,15 @@ class TaxInvoiceIncome extends Document
 
     public function Execute()
     {
-        
+        Entry::AddEntry("641", "644", $this->headerdata["totalnds"], $this->document_id, $this->document_date);
+
+        $sc = new SubConto($this, 641, $this->headerdata["totalnds"]);
+        //   $sc->setCustomer($this->headerdata["customer"]);
+        $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
+        $sc->save();
+
+
+        return true;
     }
 
     /**

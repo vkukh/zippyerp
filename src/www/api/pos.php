@@ -10,8 +10,8 @@ class Pos
 
     /**
      * /api/Pos/addDoc
-     * 
-     * 
+     *
+     *
      */
     public function addDoc()
     {
@@ -19,8 +19,8 @@ class Pos
         $xml = $_POST['data'];
 
           $doc = new  \ZippyERP\ERP\Entity\Doc\RegisterReceipt();
-          
-          
+
+          // todo
           $doc->save();
 
 

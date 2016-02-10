@@ -100,14 +100,13 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
                 $basedoc = Document::load($basedocid);
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;
-                    $this->docform->base->setText($basedoc->meta_desc . " №" . $basedoc->document_number);
 
                     // Создается на  основании  заказа  поставщику
                     if ($basedoc->meta_name == 'SupplierOrder') {
                         $nds = H::nds(true);  // если  в  заказе   цена  с  НДС  получаем  базовую  цену
 
-                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
-                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->customer->setKey($basedoc->headerdata['supplier']);
+                        $this->docform->customer->setText($basedoc->headerdata['suppliername']);
                         $this->docform->contract->setKey($basedoc->document_id);
                         $this->docform->contract->setText($basedoc->document_number);
 
@@ -303,13 +302,11 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не выбран поставщик");
-            return false;
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()
@@ -354,7 +351,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
     public function OnAutoItem($sender)
     {
         $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type =" . Item::ITEM_TYPE_STUFF);
+        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <> " . Item::ITEM_TYPE_RETSUM);
     }
 
 }

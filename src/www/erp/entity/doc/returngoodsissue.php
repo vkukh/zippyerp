@@ -44,7 +44,7 @@ class ReturnGoodsIssue extends Document
         $header = array('date' => date('d.m.Y', $this->document_date),
             "customername" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
-            "nds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"]),
             "summa" => Util::ucfirst(Util::money2str($this->headerdata["total"] / 100, '.', ''))
         );

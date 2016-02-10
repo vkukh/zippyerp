@@ -60,7 +60,7 @@ class CashReceiptIn extends Document
         if ($optype == self::TYPEOP_CUSTOMER) {
 
             $ret = Entry::AddEntry(30, 36, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this, 36, 0 - $this->headerdata['amount'] );
+            $sc = new SubConto($this, 36, 0 - $this->headerdata['amount']);
             $sc->setCustomer($this->headerdata['opdetail']);
             $sc->save();
         }

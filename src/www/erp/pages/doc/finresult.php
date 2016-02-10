@@ -27,7 +27,7 @@ class FinResult extends \ZippyERP\ERP\Pages\Base
         parent::__construct();
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new Date('created'))->setDate(time());
+        $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
@@ -36,7 +36,7 @@ class FinResult extends \ZippyERP\ERP\Pages\Base
                 App::RedirectError('Докумен не найден');
             $this->docform->document_number->setText($this->_doc->document_number);
 
-            $this->docform->created->setDate($this->_doc->document_date);
+            $this->docform->document_date->setDate($this->_doc->document_date);
         } else {
             $this->_doc = Document::create('FinResult');
             $this->docform->document_number->setText($this->_doc->nextNumber());
@@ -48,7 +48,7 @@ class FinResult extends \ZippyERP\ERP\Pages\Base
 
 
         $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = strtotime($this->docform->created->getText());
+        $this->_doc->document_date = $this->docform->document_date->getDate();
         $isEdited = $this->_doc->document_id > 0;
 
         $conn = \ZCL\DB\DB::getConnect();

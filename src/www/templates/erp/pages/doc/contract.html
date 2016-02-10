@@ -2,36 +2,57 @@
 
     <body>
         <div class="row">
-            <div class="col-xs-12">    
+            <div class="col-xs-12">
                 <h4>Договор</h4>
-                <form zippy="docform">
+                <form zippy="docform" class="form-horizontal">
+                     <div class="form-group">
+                        <label for="document_number" class="col-xs-2 control-label">Номер док.</label>
+                        <div class="col-xs-3 ">
+                            <input class="form-control" type="text" zippy="document_number" required="required" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="document_date" class="col-xs-2 control-label">Дата</label>
+                        <div class="col-xs-3">
+                            <input class="form-control" type="text" zippy="document_date" required="required"  >
 
-                    <table    class="ctable">
-                        <tr>
-                            <td >Номер документа</td>
-                            <td >  <input type="text" zippy="document_number" required="required" ></td>
-                            <td >Дата</td>
-                            <td >    <input type="text" zippy="created" required="required"  style="width:100px;"  ></td>
-                        </tr>
+                        </div>
+                    </div>
+                   <div class="form-group">
+                        <label for="customer" class="col-xs-2 control-label">Контрагент</label>
+                        <div class="col-xs-3">
+                            <select class="form-control" zippy="customer" ><option value="0">Не  выбран</option>                                </select>
 
-                        <tr>
+                        </div>
+                        </div>
+                 <div class="form-group">
+                        <label for="document_date" class="col-xs-2 control-label">Период</label>
+                        <div class="col-xs-3">
+                            С <input class="form-control" zippy="startdate" style="width:100px;" > по <input class="form-control" zippy="enddate" style="width:100px;" >
+                        </div>
+                    </div>
+                 <div class="form-group">
+                        <label for="amount" class="col-xs-2 control-label">Сумма</label>
+                        <div class="col-xs-3">
+                           <input class="form-control" zippy="amount" value="0" style="width: 60px;" pattern= "[0-9\.]+" >
+                        </div>
+                    </div>
+                  <div class="form-group">
+                        <label for="description" class="col-xs-2 control-label">Описание</label>
+                        <div class="col-xs-3">
+                           <textarea class="form-control" zippy="description" rows="8" cols="50"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                       <input type="submit"  value="Сохранить"   class="btn btn-default btn-xs"  zippy="submit">&nbsp;<input type="button" zippy="cancel" value="Отменить"   class="btn btn-default btn-xs">
+                    </div>
 
-                            <td  >Контрагент</td>
-                            <td ><select zippy="customer" ><option value="0">Не  выбран</option>
-                                </select></td>
-                            <td>Период</td>
-                            <td >С <input zippy="startdate" style="width:100px;" > по <input zippy="enddate" style="width:100px;" > </td>
-                        </tr>
-                        <tr><td valign="top" >Сумма</td><td colspan="3"><input zippy="amount" value="0" style="width: 60px;" pattern= "[0-9\.]+" ></td></tr>
-                        <tr><td valign="top" >Описание</td><td colspan="3"><textarea zippy="description" rows="8" cols="50"></textarea></td></tr>
-                        <tr><td> </td><td><input type="submit"  value="Сохранить"   class="btn btn-default btn-xs"  zippy="submit">&nbsp;<input type="button" zippy="cancel" value="Отменить"   class="btn btn-default btn-xs"></td></tr>
 
-                    </table>
 
                 </form>
 
-            </div>   
-        </div>   
+            </div>
+        </div>
 
     </body>
-</html>                                  
+</html>

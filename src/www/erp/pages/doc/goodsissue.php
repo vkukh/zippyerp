@@ -50,6 +50,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
         $this->docform->add(new CheckBox('isnds', true))->setChangeHandler($this, 'onIsnds');
         $this->docform->add(new CheckBox('cash'));
+        $this->docform->add(new CheckBox('prepayment'))->setChecked(true);
         $this->docform->add(new AutocompleteTextInput('contract'))->setAutocompleteHandler($this, "OnAutoContract");
 
 
@@ -82,6 +83,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
+            $this->docform->prepayment->setChecked($this->_doc->headerdata['prepayment']);
             $this->docform->cash->setChecked($this->_doc->headerdata['cash']);
             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
             $this->docform->customer->setText($this->_doc->headerdata['customername']);
@@ -100,7 +102,6 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
                 $basedoc = Document::load($basedocid);
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;
-                    $this->docform->based->setText($basedoc->meta_desc . " №" . $basedoc->document_number);
 
 
                     if ($basedoc->meta_name == 'Invoice') {
@@ -118,10 +119,10 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
                             $stock = Stock::getFirst("closed <> 1 and group_id={$item->group_id} and item_id={$item->item_id} and store_id=" . $keys[0], 'stock_id', 'desc');
                             if ($stock instanceof Stock) {
                                 $stock->quantity = $item->quantity;
-                                //  $stock->partion = $item->priceopt;
-                                //   $stock->group_id = $item->group_id;
                                 $stock->pricends = $item->pricends;
                                 $stock->price = $item->price;
+                                $stock->type = 381;
+
                                 $this->_tovarlist[$stock->stock_id] = $stock;
                             } else {
                                 $this->setError('Не найден на складе  товар ' . $item->itemname);
@@ -237,6 +238,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             'contractnumber' => $this->docform->contract->getText(),
             'isnds' => $this->docform->isnds->isChecked(),
             'cash' => $this->docform->cash->isChecked(),
+            'prepayment' => $this->docform->prepayment->isChecked(),
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
@@ -302,13 +304,14 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не введен   покупатель");
-            return false;
         }
-        return true;
+        if ($this->docform->cash->isChecked() && $this->docform->prepayment->isChecked()) {
+            $this->setError("Должно  быть либо  предоплата либо  оплата  наличными");
+        }
+        return !$this->isError();
     }
 
     public function beforeRender()

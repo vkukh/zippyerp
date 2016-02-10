@@ -237,15 +237,13 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->storeto->getValue() == $this->docform->storefrom->getValue()) {
             $this->setError("Выбран  тот  же  склад для  получения");
-            return false;
         }
 
 
-        return true;
+        return !$this->isError();
     }
 
     public function backtolistOnClick($sender)
@@ -259,12 +257,12 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $stock = Stock::load($stock_id);
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
-
+            
         } else {
             $item = Item::load($stock->item_id);
         }
         if ($store->store_type == Store::STORE_TYPE_RET) {
-
+            
         }
     }
 
@@ -276,7 +274,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
             $this->docform->detail->Reload();
         }
         if ($sender->id == 'storeto') {
-
+            
         }
     }
 

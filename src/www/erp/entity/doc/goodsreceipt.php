@@ -5,6 +5,7 @@ namespace ZippyERP\ERP\Entity\Doc;
 use \ZippyERP\System\System;
 use \ZippyERP\ERP\Entity\Item;
 use \ZippyERP\ERP\Entity\SubConto;
+use \ZippyERP\ERP\Entity\MoneyFund;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Helper as H;
 
@@ -59,11 +60,14 @@ class GoodsReceipt extends Document
         foreach ($this->detaildata as $item) {
             $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $item['item_id'], $item['price'], true);
 
-            $sc = new SubConto($this, $item['type'], $item['amount'] - $item['nds']) ;
-            $sc->setStock($stock->stock_id);
-            $sc->setQuantity($item['quantity']);
+            if ($item['type'] == 15) {   //инвестиции
+            } else {
+                $sc = new SubConto($this, $item['type'], $item['amount'] - $item['nds']);
+                $sc->setStock($stock->stock_id);
+                $sc->setQuantity($item['quantity']);
 
-            $sc->save();
+                $sc->save();
+            }
 
             //группируем по синтетическим счетам
             if ($types[$item['type']] > 0) {
@@ -94,17 +98,15 @@ class GoodsReceipt extends Document
             // $sc->save();
         }
 
-        //налоговый кредит
-        if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("644", "63", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this, 63, 0 - $this->headerdata['totalnds']);
+        if ($this->headerdata['prepayment'] == 1) {  //предоплата
+            Entry::AddEntry("63", "371", $this->headerdata["total"], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 63, $this->headerdata["total"]);
             $sc->setCustomer($this->headerdata["customer"]);
             $sc->save();
-            $sc = new SubConto($this, 644, $this->headerdata['totalnds']);
-            $sc->setExtCode(TAX_NDS);
-            //$sc->save();
+            $sc = new SubConto($this, 371, 0 - $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
         }
-
 
 
 

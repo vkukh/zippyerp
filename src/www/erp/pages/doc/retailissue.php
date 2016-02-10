@@ -127,7 +127,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
 
 
-        $list = Stock::findArrayEx("closed  <> 1 and group_id={$stock->group_id} and store_id={$stock->store_id}");
+        $list = Stock::findArrayEx("closed  <> 1 and   store_id={$stock->store_id}");
         $this->editdetail->edittovar->setKey($stock->stock_id);
         $this->editdetail->edittovar->setText($stock->itemname);
 
@@ -251,13 +251,11 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не введен   покупатель");
-            return false;
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()

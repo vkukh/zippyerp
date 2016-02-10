@@ -5,10 +5,10 @@
 
             <tr style="font-weight: bolder;">
                 <td  >
-                    Финансовые  результаты {$document_number}
+                    Финансовые  результаты {{document_number}}
                 </td>
                 <td  >
-                    от  {$date}
+                    от  {{date}}
                 </td>
             </tr>
         </table>

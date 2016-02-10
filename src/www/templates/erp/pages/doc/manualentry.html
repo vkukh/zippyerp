@@ -32,6 +32,7 @@
                 <li><a href="#employeetab" data-toggle="tab">Сотрудники</a></li>
                 <li><a href="#contragenttab" data-toggle="tab">Контрагенты</a></li>
                 <li><a href="#mftab" data-toggle="tab">Денежные счета</a></li>
+                <li><a href="#catab" data-toggle="tab">Необоротные активы</a></li>
             </ul>
 
             <div class="tab-content" >
@@ -282,6 +283,66 @@
                     </div>
                 </div>
 
+             <div  id="catab" class="tab-pane " >
+                    <table style="width:700px;" class="table table-condensed">
+                        <tr>
+                            <th >Счет</th>
+
+                        
+                            <th>Наименование</th>
+                            <th style="width:50px;">Кол.</th>
+                            <th style="width:100px;">Цена</th>
+                            <th style="width:32px;"> </th>
+                        </tr>
+                        <tr zippy="catable">
+                            <td zippy="caop"></td>
+                        
+                            <td zippy="caname"></td>
+                            <td zippy="cacnt" align="right"></td>
+                            <td zippy="caprice" align="right"></td>
+                            <td><a zippy="delca"><i class="icon-remove"></i></a></td>
+                        </tr>
+                    </table> <a name="a2"></a>
+
+                    <div class="form-group row">
+                        <label for="e_caop" class="col-xs-2 control-label">Счет</label>
+                        <div class="col-xs-3">
+                            <select  class="form-control "  zippy="e_caop">
+                                <option value="0">Выбрать</option>
+                            </select>
+                        </div>
+                    </div>
+             
+                    <div class="form-group row">
+                        <label for="e_calist" class="col-xs-2 control-label">ТМЦ</label>
+                        <div class="col-xs-3">
+                            <input  class="form-control" type="text" zippy="e_calist" placeholder="Начните вводить">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="e_caquantity" class="col-xs-2 control-label">Количество</label>
+                        <div class="col-xs-3">
+                            <input class="form-control" type="text" zippy="e_caquantity"  pattern= "[0-9\.]+" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="e_caprice" class="col-xs-2 control-label">Цена</label>
+                        <div class="col-xs-3">
+                            <input class="form-control" type="text" zippy="e_caprice"  pattern= "[0-9\.]+" >
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label   class="col-xs-2 control-label"> </label>
+                        <div class="col-xs-3">
+                            <input   zippy="addcabtn" type="submit"  value="Добавить" class="btn btn-default  ">
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
 
             </div>
 

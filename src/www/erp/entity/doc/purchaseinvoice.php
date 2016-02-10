@@ -42,7 +42,7 @@ class PurchaseInvoice extends Document
             "document_number" => $this->document_number,
             "base" => $this->base,
             "paydate" => date('d.m.Y', $this->headerdata["payment_date"]),
-            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"]));
 
         $report = new \ZippyERP\ERP\Report('purchaseinvoice.tpl');

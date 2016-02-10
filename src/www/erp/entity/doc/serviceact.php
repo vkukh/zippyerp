@@ -38,7 +38,7 @@ class ServiceAct extends Document
             "customer" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
             "nds" => H::fm($this->headerdata["nds"]),
-            "totalnds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])
         );
         $report = new \ZippyERP\ERP\Report('serviceact.tpl');
@@ -71,10 +71,22 @@ class ServiceAct extends Document
 
             // $sc->save();
         }
+        if ($this->headerdata['prepayment'] == 1) {  //предоплата
+            Entry::AddEntry("681", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+            $sc = new SubConto($this, 681, $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+            if ($this->headerdata['isnds'] > 0) {
+                Entry::AddEntry("703", "643", $this->headerdata["totalnds"], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, 36, 0 - $this->headerdata['totalnds']);
 
-        if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("703", "643", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+                $sc->save();
+            }
         }
+
 
         Entry::AddEntry("36", "703", $total, $this->document_id, $this->document_date);
         $sc = new SubConto($this, 36, $total);

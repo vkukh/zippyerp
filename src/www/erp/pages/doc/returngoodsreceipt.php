@@ -90,7 +90,6 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
                 $basedoc = Document::load($basedocid);
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;
-                    $this->docform->reference->setText($basedoc->meta_desc . " №" . $basedoc->document_number);
 
 
                     if ($basedoc->meta_name == 'GoodsReceipt') {
@@ -287,13 +286,11 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() <= 0) {
             $this->setError("Не выбран  поставщик");
-            return false;
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()

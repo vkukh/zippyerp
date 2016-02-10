@@ -35,18 +35,20 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
     {
 
         $html = $this->generateReport();
-        $this->detail->preview->setText($html, true);
+        $reportpage = "ZippyERP/ERP/Pages/ShowReport";
+        $reportname = "obsaldoreport";
+
+        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
 
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
-        $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
         $this->detail->print->pagename = $reportpage;
-        $this->detail->print->params = array('print', "obsaldoreport");
+        $this->detail->print->params = array('print', $reportname);
         $this->detail->html->pagename = $reportpage;
-        $this->detail->html->params = array('html', "obsaldoreport");
+        $this->detail->html->params = array('html', $reportname);
         $this->detail->word->pagename = $reportpage;
-        $this->detail->word->params = array('doc', "obsaldoreport");
+        $this->detail->word->params = array('doc', $reportname);
         $this->detail->excel->pagename = $reportpage;
-        $this->detail->excel->params = array('xls', "obsaldoreport");
+        $this->detail->excel->params = array('xls', $reportname);
 
         $this->detail->setVisible(true);
     }
@@ -64,8 +66,8 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
         $totenddt = 0;
         $totendct = 0;
 
-        $from =  $this->filter->from->getDate();
-        $to =  $this->filter->to->getDate();
+        $from = $this->filter->from->getDate();
+        $to = $this->filter->to->getDate();
 
         foreach ($acclist as $acc) {
 
@@ -81,7 +83,7 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
                 'enddt' => H::fm($data['enddt']),
                 'endct' => H::fm($data['endct'])
             );
-            if ( $acc->acc_pid == 0) {
+            if ($acc->acc_pid == 0) {
                 $totstartdt += $data['startdt'];
                 $totstartct += $data['startct'];
                 $totobdt += $data['obdt'];
@@ -89,7 +91,6 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
                 $totenddt += $data['enddt'];
                 $totendct += $data['endct'];
             }
-
         }
 
         $header = array(

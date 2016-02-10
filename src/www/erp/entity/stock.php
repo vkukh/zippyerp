@@ -21,6 +21,11 @@ class Stock extends \ZCL\DB\Entity
      */
     public static function findArrayEx($criteria = "", $orderbyfield = null, $orderbydir = null, $count = -1, $offset = -1)
     {
+        if ($orderbyfield == null) {
+            $orderbyfield = "itemname";
+            $orderbydir = "asc";
+        }
+
         $entitylist = self::find($criteria, $orderbyfield, $orderbydir, $count, $offset);
 
         $list = array();
@@ -70,8 +75,11 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $acc Синтетический счет
      *
      */
-    public static function getQuantity($stock_id, $date, $acc = 0)
+    public static function getQuantity($stock_id, $date = null, $acc = 0)
     {
+        if ($date == null) {
+            $date = strtotime('+10 year', time(0));
+        }
         $conn = \ZCL\DB\DB::getConnect();
         $where = "   stock_id = {$stock_id} and date(document_date) <= " . $conn->DBDate($date);
         if ($acc > 0) {

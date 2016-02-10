@@ -253,7 +253,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         try {
             $this->_doc->save();
             if ($sender->id == 'execdoc') {
-                $this->_doc->updateStatus(Document::STATE_CLOSED);
+                $this->_doc->updateStatus(Document::STATE_EXECUTED);
             } else {
                 $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
             }
@@ -301,13 +301,11 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
     {
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не выбран поставщик");
-            return false;
         }
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()

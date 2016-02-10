@@ -1,4 +1,5 @@
 
+SET NAMES 'utf8';
 
 INSERT INTO `system_users` ( `userlogin`, `userpass`, `createdon`, `active`) VALUES
 ( 'admin', 'admin', '2012-08-23', 1);
@@ -15,8 +16,9 @@ INSERT INTO erp_item_measures(measure_id, measure_name, measure_code) VALUES(2, 
 -- Денежные  счета
 INSERT INTO `erp_bank` (`bank_id`, `bank_name`, `detail`) VALUES (1, 'Приват Банк', '<detail><mfo>305299</mfo></detail>');
 
-INSERT INTO erp_moneyfunds(id, title, bank, bankaccount, ftype) VALUES(3, 'Основная  касса', 0, '', 0);
-INSERT INTO erp_moneyfunds(id, title, bank, bankaccount, ftype) VALUES(4, 'Основной счет', 1, '2600222222222222', 1);
+INSERT INTO erp_moneyfunds(id, title, bank, bankaccount, ftype) VALUES(1, 'Основная  касса', 0, '', 0);
+INSERT INTO erp_moneyfunds(id, title, bank, bankaccount, ftype) VALUES(2, 'Основной счет', 1, '2600222222222222', 1);
+INSERT INTO erp_moneyfunds(id, title, bank, bankaccount, ftype) VALUES(3, 'Дополнительный счет', 1, '2600111111111', 2);
 
 -- настройки
 INSERT INTO `system_options` (`optname`, `optvalue`) VALUES('common', 's:84:"a:4:{s:10:"closeddate";b:0;s:3:"nds";s:2:"20";s:6:"hasnds";b:0;s:9:"simpletax";b:0;}";');
@@ -27,30 +29,60 @@ INSERT INTO `erp_item` (`item_id`, `itemname`, `description`, `measure_id`, `gro
 VALUES(1, 'Суммовой учет', NULL, '1', NULL, '1', NULL, 6);
 
 -- план счетов
- 
- 
+  
+
+
+
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(20, 'Виробничі запаси', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (22, 'МШП', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(23, 'Виробництво', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(26, 'Готова продукція', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (28, 'Товари', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(30, 'Каса', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(31, 'Рахунки в банках', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(36, 'Розрахунки з покупцями ', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(37, 'Розрахунки з рiзними дебiторами', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(40, 'Статутний капiтал', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(63, 'Розрахунки з постачальниками', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(64, 'Розрахунки за податками й платежами', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(66, 'Розрахунки зa виплатами працівникам', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(70, 'Доходи від реалізації', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(79, 'Фінансові результати', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(90, 'Собівартість реалізації', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(91, 'Загальновиробничі витрати', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(92, 'Адміністративні витрати', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(93, 'Витрати на збут', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(94, 'Інші витрати операційної діяльності', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(201, 'Сировина й матеріали', 20);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (281, 'Товари на складі', 28);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (282, 'Товари в торгівлі', 28);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(30, 'Каса', 0);
+(285, 'Торгова націнка', 28);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(63, 'Розрахунки з постачальниками', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(36, 'Розрахунки з покупцями ', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(31, 'Рахунки в банках', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(20, 'Виробничі запаси', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(201, 'Сировина й матеріали', 20);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(64, 'Розрахунки за податками й платежами', 0);
+(372, 'Розрахунки з пiдзвiтними особами', 37);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (641, 'Розрахунки за податками', 64);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
@@ -60,11 +92,7 @@ INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (644, 'Податковий кредит', 64);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(285, 'Торгова націнка', 28);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(91, 'Загальновиробничі витрати', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(26, 'Готова продукція', 0);
+(661, 'Розрахунки за заробітною платою', 66);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (701, 'Дохід від реалізації готової продукції', 70);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
@@ -72,41 +100,39 @@ INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (703, 'Дохід від реалізації робіт і послуг', 70);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(92, 'Адміністративні витрати', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(93, 'Витрати на збут', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(94, 'Інші витрати операційної діяльності', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(947, 'Нестачі і втрати від псування цінностей', 94);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(90, 'Собівартість реалізації', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (901, 'Собівартість реалізованої готової продукції', 90);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (902, 'Собівартість реалізованих товарів', 90);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
 (903, 'Собівартість реалізованих робіт і послуг', 90);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(79, 'Фінансові результати', 0);
+(97, 'Iншi витрати', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(37, 'Розрахунки з рiзними дебiторами', 0);
+(15, 'Капітальні інвестиції', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(372, 'Розрахунки з пiдзвiтними особами', 37);
+(1001, 'МЦ. Забалансовий', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(70, 'Доходи від реалізації', 0);
+(12, 'Нематеріальні активи', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(66, 'Розрахунки зa виплатами працівникам', 0);
+(13, 'Знос необоротних активів', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(661, 'Розрахунки за заробітною платою', 66);
+(371, 'Розрахунки за виданими авансами', 37);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(23, 'Виробництво', 0);
+(68, 'Розрахунки за iншми операцiями', 0);
 INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(40, 'Статутний капiтал', 0);
+(681, 'Розрахунки за отриманими авансами', 68);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(11, 'Iншi необоротнi активи', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(10, 'Основнi засоби', 0);
+INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
+(25, 'Напiвфабрикати', 0);
 
 -- метаданные
 
   
+
+ 
 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (1, 4, 'Места хранения', 'StoreList', 'Склад', '', 0);
@@ -115,9 +141,9 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (4, 1, 'Расходная накладная', 'GoodsIssue', 'Продажи', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(7, 4, 'Номенклатура', 'ItemList', 'Склад', '', 0);
-INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (6, 3, 'Журнал документов', 'DocList', '', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(7, 4, 'Номенклатура', 'ItemList', 'Склад', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (8, 4, 'План счетов', 'AccountList', 'Бухгалтерия', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
@@ -157,8 +183,6 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (30, 3, 'Задачи', 'TaskList', 'Проекты', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(53, 4, 'Группа  Товара', 'GroupItemList', 'Склад', '  Группировка  для  удобства  работы  со списками  и  прайсами', 0);
-INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (32, 1, 'Заказ  покупателя (клиента)', 'CustomerOrder', 'Продажи', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (33, 1, 'Заказ поставщику', 'SupplierOrder', 'Закупки', '', 0);
@@ -167,11 +191,9 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (35, 1, 'Счет-фактура', 'Invoice', 'Продажи', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(36, 1, 'Договор', 'Contract', '', '', 0);
+(36, 1, 'Договор', 'Contract', 'Прочее', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (39, 1, 'Платежное  поручение ', 'TransferOrder', 'Банк', '', 0);
-INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(44, 1, 'Розничная  накладная', 'RetailIssue', 'Розница', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (41, 1, 'Приходный КО', 'CashReceiptIn', 'Касса', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
@@ -179,11 +201,13 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (43, 1, 'Авансовый  отчет', 'ExpenseReport', 'Прочее', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(44, 1, 'Розничная  накладная', 'RetailIssue', 'Розница', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (45, 1, 'Чек ЭККА', 'RegisterReceipt', 'Розница', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(47, 1, 'Гарантийный  талон', 'Warranty', 'Розница', '', 0);
-INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (46, 1, 'Списание  торговой наценки', 'TradeMargin', 'Розница', 'Списание  проданных  товаров  в  магазине  с  суммовым  учетом', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(47, 1, 'Гарантийный  талон', 'Warranty', 'Розница', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (48, 1, 'Налоговая накладная', 'TaxInvoice', 'Продажи', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
@@ -194,6 +218,8 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 (51, 1, 'Акт выполненных работ', 'ServiceAct', 'Продажи', 'акт о  выполнении работ/услуг нашей фирмой', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (52, 1, 'Оказанные  услуги', 'ServiceIncome', 'Закупки', 'Акт о  выполнении  услуг  сторонней  организацией', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(53, 4, 'Группа  Товара', 'GroupItemList', 'Склад', '  Группировка  для  удобства  работы  со списками  и  прайсами', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (54, 2, 'Финансовый отчет малого предприятия', 'FinancialReportSmall', 'Регламентированные', 'Додаток 1\r\nдо Положення (стандарту) бухгалтерського обліку 25 «Фінансовий звіт суб’єкта малого підприємництва»\r\n', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
@@ -213,13 +239,30 @@ INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, 
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (62, 1, 'Возврат на  склад', 'MoveBackItem', 'Склад', '  Возврат на склад  с  розницы', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(63, 1, 'Инвентаризация', 'Inventory', 'Склад', 'Акт инвентаризации.\r\n', 1);
+(63, 1, 'Инвентаризация', 'Inventory', 'Склад', 'Акт инвентаризации.\r\n', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(64, 1, 'Списание ТМЦ', 'InventoryLoss', 'Склад', 'Списание  ТМЦ в  результате  недостачи, порчи и  т.д.', 1);
+(64, 1, 'Списание ТМЦ (потери)', 'InventoryLost', 'Склад', 'Списание  ТМЦ в  результате  недостачи, порчи и  т.д.', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
-(65, 1, 'Оприходование  излишков', 'InventoryGain', 'Склад', '', 1);
+(65, 1, 'Оприходование  излишков', 'InventoryGain', 'Склад', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (66, 1, 'Переоценка (розница)', 'RevaluationRet', 'Склад', '', 0);
 INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
 (67, 2, 'Движение по  счету', 'AccountActivity', 'Бухгалтерия', '', 0);
-
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(68, 4, 'ОС и НМА', 'CapitalAssets', '', 'основные средства  и  нематериальные активы', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(69, 1, 'Ввод  в  эксплуатацию МЦ', 'MZInMaintenance', 'Малоценка', 'Ввод  в эксплуатацию (списание)  МБП и малоценных необоротных активов', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(70, 1, 'Списание МЦ', 'MZOutMaintenance', 'Малоценка', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(71, 1, 'Ввод  в эксплуатацию ОС', 'NAInMaintenance', 'ОС и НМА', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(72, 1, 'Ликвидация  ОС', 'NAOutMaintenance', 'ОС и НМА', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(73, 1, 'Начисление износа', 'NADeprecation', 'ОС и НМА', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(74, 1, 'Начисление зарплаты', 'InSalary', 'Зарплата', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(75, 1, 'Выплата зарплаты', 'OutSalary', 'Зарплата', '', 0);
+INSERT INTO erp_metadata(meta_id, meta_type, description, meta_name, menugroup, notes, disabled) VALUES
+(76, 1, 'Списание ТМЦ (расходы)', 'InventoryExpence', 'Склад', 'Списание  ТМЦ  на  производство,  непроизводственные  и административные  затраты', 0);

@@ -46,7 +46,7 @@ class Header extends \Zippy\Html\PageFragment
                 $_SESSION['userlogin'] = $user->userlogin; //для  использования  вне  Application
                 //   @mkdir(_ROOT . UPLOAD_USERS .$user->user_id) ;
                 //  \ZippyERP\System\Util::removeDirRec(_ROOT . UPLOAD_USERS .$user->user_id.'/tmp') ;
-                //   @mkdir(_ROOT .UPLOAD_USERS .$user->user_id .'/tmp') ; 
+                //   @mkdir(_ROOT .UPLOAD_USERS .$user->user_id .'/tmp') ;
             }
         }
     }
@@ -66,7 +66,7 @@ class Header extends \Zippy\Html\PageFragment
         setcookie("remember", '', 0);
         System::setUser(new \ZippyERP\System\User());
         $_SESSION['user_id'] = 0;
-        $_SESSION['userlogin'] = 'Guest';
+        $_SESSION['userlogin'] = 'Гость';
 
         //$page = $this->getOwnerPage();
         //  $page = get_class($page)  ;

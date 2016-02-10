@@ -39,7 +39,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new TextInput('document_number'));
 
-        $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "ftype=1")));
+        $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "bankaccount <> '' and ftype>0")));
 
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
@@ -49,7 +49,8 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes()))->setChangeHandler($this, 'typeOnClick');
         $this->editdetail->add(new AutocompleteTextInput('editcustomer'))->setAutocompleteHandler($this, "OnAutoContragent");
-        ;
+        $this->editdetail->add(new CheckBox('editprepayment'))->setChecked(1);
+
         $this->editdetail->add(new DropDownChoice('editpayment'))->setOptionList(\ZippyERP\ERP\Consts::getTaxesList());
         $this->editdetail->editpayment->setVisible(false);
         $docinput = $this->editdetail->add(new AutocompleteTextInput('editdoc'));
@@ -133,6 +134,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $entry->docnumber = $this->editdetail->editdoc->getValue();
         $entry->customer = $this->editdetail->editcustomer->getKey();
         $entry->customername = $this->editdetail->editcustomer->getText();
+        $entry->prepayment = $this->editdetail->editprepayment->isChecked();
 
         $entry->amount = $this->editdetail->editamount->getText() * 100;
         $entry->nds = $this->editdetail->editnds->getText() * 100;
@@ -216,10 +218,9 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_list) == 0) {
             $this->setError("Не введена ни одна строка");
-            return false;
         }
 
-        return true;
+        return !$this->isError();
     }
 
     public function backtolistOnClick($sender)
@@ -245,13 +246,14 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->editdetail->editnds->setVisible(false);
             $this->editdetail->editdoc->setVisible(false);
             $this->editdetail->editcustomer->setVisible(false);
+            $this->editdetail->editprepayment->setVisible(false);
         } else {
             $this->editdetail->editcustomer->setVisible(true);
+            $this->editdetail->editprepayment->setVisible(true);
         }
         $this->editdetail->editcustomer->setKey(0);
-        ;
+
         $this->editdetail->editcustomer->setText('');
-        ;
     }
 
     public function OnAutoContragent($sender)

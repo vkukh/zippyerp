@@ -279,24 +279,20 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $tz = $this->docform->expensetype->getValue();
         if ($tz == 0) {
             $this->setError("Не выбран  тип затрат");
-            return false;
         }
         if ($this->docform->employee->getValue() == 0) {
             $this->setError("Не выбран  сотрудник");
-            return false;
         }
         if ($tz == 22 || $tz == 201 || $tz == 281) {
             if (count($this->_itemlist) == 0) {
                 $this->setError("Не введено ТМЦ");
-                return false;
             }
         } else {
             if (100 * $this->docform->expenseamount->getText() == 0) {
                 $this->setError("Не введена сумма");
-                return false;
             }
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()

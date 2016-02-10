@@ -21,7 +21,7 @@ class Item extends \Zippy\Html\PageFragment
 
     /**
      * put your comment there...
-     * 
+     *
      * @param mixed $id    id компонента
      * @param mixed $caller   ссылка на  класс  вызвавшей  страницы
      * @param mixed $callback  имя функции  к  вызвавшей странице  для возврата
@@ -38,7 +38,7 @@ class Item extends \Zippy\Html\PageFragment
         $this->itemdetail->add(new TextInput('editpriceopt'));
         $this->itemdetail->add(new TextInput('editpriceret'));
         $this->itemdetail->add(new DropDownChoice('editmeasure', \ZippyERP\ERP\Helper::getMeasureList()));
-        $this->itemdetail->add(new DropDownChoice('edittype', \ZippyERP\ERP\Entity\Item::getTypeList()));
+        $this->itemdetail->add(new DropDownChoice('edittype', \ZippyERP\ERP\Entity\Item::getTMZList()));
         $this->itemdetail->add(new DropDownChoice('editgroup', \ZippyERP\ERP\Helper::getItemGroupList()));
         $this->itemdetail->add(new TextInput('editbarcode'));
         $this->itemdetail->add(new TextInput('editcode'));
@@ -80,7 +80,7 @@ class Item extends \Zippy\Html\PageFragment
 
     /**
      * передает  данные для  редактирования
-     * 
+     *
      * @param mixed $item
      */
     public function open(\ZippyERP\ERP\Entity\Item $item = null)
@@ -104,7 +104,7 @@ class Item extends \Zippy\Html\PageFragment
 
     /**
      * возвращает отредактированные  данные
-     * 
+     *
      */
     public function getData()
     {

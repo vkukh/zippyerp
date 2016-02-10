@@ -8,7 +8,7 @@
 
             <tr  style='height:15.75pt'>
                 <td  style='height:15.75pt'></td>
-                <td  colspan='6' ><b>ПЛАТІЖНЕ ДОРУЧЕННЯ № {$document_number}</b></td>
+                <td  colspan='6' ><b>ПЛАТІЖНЕ ДОРУЧЕННЯ № {{document_number}}</b></td>
 
                 <td></td>
                 <td  align="right" width="75px" >410001</td>
@@ -16,7 +16,7 @@
             </tr>
             <tr  style='height:15.0pt'>
                 <td   style='height:15.0pt'></td>
-                <td  colspan='4' >від  <b>{$document_date}</b></td>
+                <td  colspan='4' >від  <b>{{document_date}}</b></td>
                 <td colspan='3' ></td>
                 <td></td>
             </tr>
@@ -37,13 +37,13 @@
             </tr>
             <tr  style='height:15.0pt'>
                 <td  >Платник</td>
-                <td colspan='3'> <b>{$myname}</b></td>
+                <td colspan='3'> <b>{{myname}}</b></td>
                 <td colspan='5' ></td>
 
             </tr>
             <tr  style='height:15.0pt'>
                 <td   style='height:15.0pt'>Код</td>
-                <td colspan='2' style="padding:1px;border: 1px solid #000"><b>{$mycode}</b></td>
+                <td colspan='2' style="padding:1px;border: 1px solid #000"><b>{{mycode}}</b></td>
                 <td colspan='6' > </td>
 
             </tr>
@@ -62,20 +62,20 @@
 
             </tr>
             <tr  style='height:15.0pt'>
-                <td colspan="3"  style='border-bottom: 1px solid #000;height:15.0pt'><b>{$mybank}</b></td>
+                <td colspan="3"  style='border-bottom: 1px solid #000;height:15.0pt'><b>{{mybank}}</b></td>
 
                 <td >&nbsp;</td>
                 <td >&nbsp; </td>
-                <td  style="padding:1px;border: 1px solid #000"><b>{$mybankcode}</b></td>
-                <td  colspan="2" style="padding:1px;border: 1px solid #000"><b>{$mybankaccount}</b></td>
-                <td  style="border-top: 1px solid #000;border-right: 1px solid #000" align="center"><b>{$amount}</b></td>
+                <td  style="padding:1px;border: 1px solid #000"><b>{{mybankcode}}</b></td>
+                <td  colspan="2" style="padding:1px;border: 1px solid #000"><b>{{mybankaccount}}</b></td>
+                <td  style="border-top: 1px solid #000;border-right: 1px solid #000" align="center"><b>{{amount}}</b></td>
 
 
             </tr>
 
             <tr  style='height:35.0pt'>
                 <td style='height:35.0pt' valign="bottom">Отримувач</td>
-                <td colspan='4'   valign="bottom"><b>{$cname}</b></td>
+                <td colspan='4'   valign="bottom"><b>{{cname}}</b></td>
                 <td >&nbsp;</td>
                 <td colspan='2' style="border-right: 1px solid #000">&nbsp;</td>
                 <td style="border-right: 1px solid #000">&nbsp;</td>
@@ -83,7 +83,7 @@
             </tr>
             <tr  style='height:15.0pt'>
                 <td   style='height:15.0pt' >Код </td>
-                <td colspan='2' style="padding:1px;border: 1px solid #000"><b>{$ccode}</b></td>
+                <td colspan='2' style="padding:1px;border: 1px solid #000"><b>{{ccode}}</b></td>
                 <td colspan='5'  style="border-right: 1px solid #000">&nbsp;</td>
                 <td style="border-right: 1px solid #000">&nbsp;</td>
 
@@ -102,17 +102,17 @@
                 <td></td>
                 <td ></td>
                 <td >Код банку</td>
-                <td colspan='2' style="padding:1px;border: 1px solid #000"><b>{$cbankaccount}</b></td>
+                <td colspan='2' style="padding:1px;border: 1px solid #000"><b>{{cbankaccount}}</b></td>
 
                 <td  style="border-right: 1px solid #000">&nbsp;</td>
 
             </tr>
             <tr  style='height:15.0pt'>
-                <td colspan="3"  style='border-bottom: 1px solid #000;height:15.0pt'><b>{$cbank}</b></td>
+                <td colspan="3"  style='border-bottom: 1px solid #000;height:15.0pt'><b>{{cbank}}</b></td>
 
                 <td >&nbsp;</td>
                 <td >&nbsp;</td>
-                <td style="padding:1px;border: 1px solid #000"><b>{$cbankcode}</b></td>
+                <td style="padding:1px;border: 1px solid #000"><b>{{cbankcode}}</b></td>
                 <td colspan="2" style="border: 1px solid #000">&nbsp;</td>
 
                 <td  style="border-bottom: 1px solid #000;border-right: 1px solid #000">&nbsp;</td>
@@ -124,7 +124,7 @@
 
             </tr>
             <tr  style='height:15.0pt'>
-                <td colspan="7" style="border-bottom: 1px solid #000" height=20  style='height:15.0pt'><b>{$amountstr}</b></td>
+                <td colspan="7" style="border-bottom: 1px solid #000" height=20  style='height:15.0pt'><b>{{amountstr}}</b></td>
 
                 <td  ></td>
                 <td></td>
@@ -138,7 +138,7 @@
 
             </tr>
             <tr  style='height:7.5pt'>
-                <td  colspan='5'  style='height:7.5pt;'><b>{$notes}</b></td>
+                <td  colspan='5'  style='height:7.5pt;'><b>{{notes}}</b></td>
                 <td >&nbsp;</td>
                 <td colspan='3' >&nbsp;</td>
 

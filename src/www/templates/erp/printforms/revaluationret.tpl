@@ -4,12 +4,12 @@
             <tr >
 
                 <td colspan="2">
-                    Дата: {$date}
+                    Дата: {{date}}
                 </td>
             </tr>
             <tr >
                 <td >
-                   Склад:  {$store}
+                   Склад:  {{store}}
                 </td>
 
                 <td>
@@ -18,7 +18,7 @@
             </tr>
             <tr style="font-weight: bolder;">
                 <td  colspan="2" align="center" >
-                    Переоценка   в  рознице  № {$document_number}
+                    Переоценка   в  рознице  № {{document_number}}
                 </td>
             </tr>
 
@@ -26,9 +26,9 @@
         <br>
         <table  class="ctable" width="500px"  cellspacing="0" cellpadding="1" border="1">
             <tr style="font-weight: bolder;"><th width="20px">№</th><th width="180px" >Наименование</th><th  width="60px">Ед.изм</th><th width="60px">Цена</th><th width="100px">Новая цена</th></tr>
-                    {foreach $_detail as $item}
-                <tr ><td>{$item.no}</td><td>{$item.item_name}</td><td>{$item.measure}</td><td align="right">{$item.price}</td><td align="right">{$item.newprice}</td></tr>
-                    {/foreach}
+                    {{#_detail}}
+                <tr ><td>{{no}}</td><td>{{item_name}}</td><td>{{measure}}</td><td align="right">{{price}}</td><td align="right">{{newprice}}</td></tr>
+                    {{/_detail}}
         </table>
 
 

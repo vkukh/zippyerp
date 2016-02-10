@@ -204,13 +204,12 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не выбран  поставщик");
-            return false;
         }
-        return true;
+
+        return !$this->isError();
     }
 
     /**
@@ -246,7 +245,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
     public function OnAutoItem($sender)
     {
         $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like '%{$text}%' and item_type =" . Item::ITEM_TYPE_STUFF);
+        return Item::findArray('itemname', "itemname like '%{$text}%' and item_type <>" . Item::ITEM_TYPE_RETSUM);
     }
 
 }

@@ -52,6 +52,7 @@ class ItemList extends \ZippyERP\ERP\Pages\Base
 
     public function deleteOnClick($sender)
     {
+        //проверка на партии
         Item::delete($sender->owner->getDataItem()->item_id);
         $this->itemtable->itemlist->Reload();
     }
@@ -71,7 +72,7 @@ class ItemList extends \ZippyERP\ERP\Pages\Base
 
     /**
      * вызывается  блоком  редактирования
-     * 
+     *
      * @param mixed true если cancel
      */
     public function OnDetail($cancel = false)
@@ -99,7 +100,7 @@ class ItemDataSource implements \Zippy\Interfaces\DataSource
 
     private function getWhere()
     {
-        $where = "1=1 ";
+        $where = "item_type <>" . Item::ITEM_TYPE_RETSUM . " and item_type != " . Item::ITEM_TYPE_OS;
         $form = $this->page->filter;
         if ($form->group->getValue() > 0) {
             $where = $where . " and group_id=" . $form->group->getValue();

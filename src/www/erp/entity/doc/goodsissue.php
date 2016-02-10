@@ -47,7 +47,7 @@ class GoodsIssue extends Document
             "firmcode" => $firm['code'],
             "customername" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
-            "nds" => H::fm($this->headerdata["totalnds"]),
+            "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"]),
             "summa" => Util::ucfirst(Util::money2str($this->headerdata["total"] / 100, '.', ''))
         );
@@ -76,11 +76,13 @@ class GoodsIssue extends Document
             $sc->save();
 
             //группируем по синтетическим счетам
-            if ($types[$item['type']] > 0) {
-                $types[$item['type']]['amount'] = $types[$item['type']] + $item['price'] * ($item['quantity'] / 1000);
-                $types[$item['type']]['pamount'] = $types[$item['type']] + $item['partion'] * ($item['quantity'] / 1000);
-                $types[$item['type']]['namount'] = $types[$item['type']] + $item['nds'];
+            if (is_array($types[$item['type']])) {
+                $types[$item['type']]['amount'] = $types[$item['type']]['amount'] + $item['price'] * ($item['quantity'] / 1000);
+                $types[$item['type']]['pamount'] = $types[$item['type']]['pamount'] + $item['partion'] * ($item['quantity'] / 1000);
+                $types[$item['type']]['namount'] = $types[$item['type']]['namount'] + $item['nds'];
             } else {
+                $types[$item['type']] = array();
+                ;
                 $types[$item['type']]['amount'] = $item['pricends'] * ($item['quantity'] / 1000);
                 $types[$item['type']]['pamount'] = $item['partion'] * ($item['quantity'] / 1000);
                 $types[$item['type']]['namount'] = $item['nds'];
@@ -89,36 +91,59 @@ class GoodsIssue extends Document
 
         foreach ($types as $acc => $value) {
 
-            if ($acc == 281) {
+            if ($acc == 281) {    //товары
                 Entry::AddEntry("902", "281", $value['pamount'], $this->document_id, $this->document_date);
                 Entry::AddEntry("36", "702", $value['amount'], $this->document_id, $this->document_date);
                 if ($this->headerdata['isnds'] > 0) {
-                    Entry::AddEntry("702", "643", $value['namount'], $this->document_id, $this->document_date);
+                    Entry::AddEntry("702", "641", $value['namount'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this, 641, 0 - $value['namount']);
+                    $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
+                    $sc->save();
                 }
             }
-            if ($acc == 26) {
-                Entry::AddEntry("902", "26", $value['pamount'], $this->document_id, $this->document_date);
+            if ($acc == 26) {    //готовая продукция
+                Entry::AddEntry("901", "26", $value['pamount'], $this->document_id, $this->document_date);
                 Entry::AddEntry("36", "701", $value['amount'], $this->document_id, $this->document_date);
                 if ($this->headerdata['isnds'] > 0) {
-                    Entry::AddEntry("701", "643", $value['namount'], $this->document_id, $this->document_date);
+                    Entry::AddEntry("701", "641", $value['namount'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this, 641, 0 - $value['namount']);
+                    $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
+                    $sc->save();
                 }
             }
-            $sc = new SubConto($this, 36, $value['amount']);
-            $sc->setCustomer($this->headerdata["customer"]);
-
-            $sc->save();
         }
+        if ($this->headerdata['prepayment'] == 1) {  //предоплата
+            Entry::AddEntry("681", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+            $sc = new SubConto($this, 681, $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+            if ($this->headerdata['isnds'] > 0) {
+                Entry::AddEntry("643", "36", $this->headerdata["totalnds"], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, 36, 0 - $this->headerdata['totalnds']);
+                $sc->setCustomer($this->headerdata["customer"]);
+                $sc->save();
+            }
+        }
+
+
+        $sc = new SubConto($this, 36, $this->headerdata["total"]);
+        $sc->setCustomer($this->headerdata["customer"]);
+        $sc->save();
+
 
 
         if ($this->headerdata['cash'] == true) {
 
             $cash = MoneyFund::getCash();
             \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", $total, $this->document_id, $cash->id, $customer_id);
-            $sc = new SubConto($this, 36, 0 - $total);
+            $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
             $sc->setCustomer($this->headerdata["customer"]);
 
             $sc->save();
-            $sc = new SubConto($this, 30, $total);
+            $sc = new SubConto($this, 30, $this->headerdata["total"]);
             $sc->setMoneyfund($cash->id);
             // $sc->save();
         }

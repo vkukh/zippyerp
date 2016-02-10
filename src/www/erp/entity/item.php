@@ -5,7 +5,7 @@ namespace ZippyERP\ERP\Entity;
 use ZippyERP\ERP\Consts;
 
 /**
- * Клас-сущность  товар
+ * Клас-сущность  ТМЦ
  *
  * @table=erp_item
  * @view=erp_item_view
@@ -15,12 +15,16 @@ class Item extends \ZCL\DB\Entity
 {
 
     // типы  ТМЦ
-    //   const ITEM_TYPE_GOODS = 1; //товар
-    //  const ITEM_TYPE_MBP = 2;   //МБП
+    //      const ITEM_TYPE_GOODS = 1; //товар
+    //    const ITEM_TYPE_MBP = 2;   //МБП
     const ITEM_TYPE_SERVICE = 3; //Услуга
-    const ITEM_TYPE_STUFF = 0; //материалы
+    const ITEM_TYPE_STUFF = 0; //ТМЦ
     // const ITEM_TYPE_PRODUCTION = 5; //Готовая продукция
     const ITEM_TYPE_RETSUM = 6; //Вмртуальный товар для  суммового  учета   в  рознице
+    const ITEM_TYPE_OS = 7; //Основные средства
+
+    // const ITEM_TYPE_NMA = 8; //Нематериальные активы
+    // const ITEM_TYPE_MNMA = 9; //Малоценные необортные средства
 
     protected function afterLoad()
     {
@@ -33,18 +37,20 @@ class Item extends \ZCL\DB\Entity
         $this->barcode = (string) ($xml->barcode[0]);
         $this->uktzed = (string) ($xml->uktzed[0]);
         $this->code = (string) ($xml->code[0]);
-        $this->description = (string) ($xml->description[0]);
 
         parent::afterLoad();
     }
 
-    // типы   
-    public static function getTypeList()
+    // типы  ТМЦ
+    public static function getTMZList()
     {
         $list = array();
 
         $list[self::ITEM_TYPE_SERVICE] = 'Услуга';
         $list[self::ITEM_TYPE_STUFF] = 'ТМЦ';
+        //$list[self::ITEM_TYPE_GOODS] = 'Товары';
+        //  $list[self::ITEM_TYPE_MBP] = 'МБП';
+        //  $list[self::ITEM_TYPE_MNMA] = 'МНМА';
 
 
         return $list;
@@ -59,7 +65,6 @@ class Item extends \ZCL\DB\Entity
         $this->detail .= "<code>{$this->code}</code>";
         $this->detail .= "<uktzed>{$this->uktzed}</uktzed>";
         $this->detail .= "<barcode>{$this->barcode}</barcode>";
-        $this->detail .= "<description>{$this->description}</description>";
         $this->detail .= "</detail>";
 
         return true;
@@ -93,7 +98,7 @@ class Item extends \ZCL\DB\Entity
 
     /**
      * возвращает  специльный  товар  для  суммвового  учета
-     * 
+     *
      */
     public static function getSumItem()
     {

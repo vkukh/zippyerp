@@ -2,19 +2,37 @@
 
 namespace ZippyERP\ERP\Pages;
 
-//страница  для  загрузки  файла экпорта 
+use \ZippyERP\ERP\Entity\Doc\Document;
+
+//страница  для  загрузки  файла экпорта
 class ShowDoc extends \Zippy\Html\WebPage
 {
 
-    public function __construct($type, $p1 = "report")
+    public function __construct($type, $docid)
     {
-        $html = \ZippyERP\System\Session::getSession()->printform;
-        $xml = \ZippyERP\System\Session::getSession()->xmlform;
+
+        $doc = Document::load($docid);
+        if ($doc == null) {
+            echo "Не задан  документ";
+            return;
+        }
+
+        $doc = $doc->cast();
+        $filename = $doc->meta_name;
+
+        //$html = \ZippyERP\System\Session::getSession()->printform;
+        //$xml = \ZippyERP\System\Session::getSession()->xmlform;
+
+        $html = $doc->generateReport();
 
         if (strlen($html) > 0) {
 
-            $filename = $p1;
 
+
+            if ($type == "preview") {
+                Header("Content-Type: text/html;charset=UTF-8");
+                echo $html;
+            }
             if ($type == "print") {
                 Header("Content-Type: text/html;charset=UTF-8");
                 echo $html;
@@ -30,7 +48,7 @@ class ShowDoc extends \Zippy\Html\WebPage
                 header("Content-type: application/vnd.ms-excel");
                 header("Content-Disposition: attachment;Filename={$filename}.xls");
                 header("Content-Transfer-Encoding: binary");
-                //echo '<meta http-equiv=Content-Type content="text/html; charset=windows-1251">'; 
+                //echo '<meta http-equiv=Content-Type content="text/html; charset=windows-1251">';
                 echo $html;
             }
             if ($type == "html") {
@@ -41,6 +59,7 @@ class ShowDoc extends \Zippy\Html\WebPage
                 echo $html;
             }
             if ($type == "xml") {
+                $xml = $doc->export(Document::EX_XML_GNAU);
                 header("Content-type: text/xml");
                 header("Content-Disposition: attachment;Filename={$filename}");
                 header("Content-Transfer-Encoding: binary");
@@ -57,21 +76,19 @@ class ShowDoc extends \Zippy\Html\WebPage
               $pdf->writeHTML($html, true, false, true, false, 'J');
               $pdf->Output("{$filename}.pdf", 'D');
               } */
+        } else {
+            $html = "<h4>Печатная форма  не  задана</h4>";
         }
 
-
-        if ($type == "metaie") { // экспорт  файлов  метаобьекта
-            if ($p1 > 0) {
-                $item = \ZippyERP\ERP\Entity\MetaData::load($p1);
-                $filename = $item->meta_name . ".zip";
+        if ($type == "metaie") { //todo экспорт  файлов  метаобьекта
+            $filename = $doc->meta_name . ".zip";
 
 
-                header("Content-type: application/zip");
-                header("Content-Disposition: attachment;Filename={$filename}");
-                header("Content-Transfer-Encoding: binary");
+            header("Content-type: application/zip");
+            header("Content-Disposition: attachment;Filename={$filename}");
+            header("Content-Transfer-Encoding: binary");
 
-                echo $zip;
-            }
+            echo $zip;
         }
         die;
     }

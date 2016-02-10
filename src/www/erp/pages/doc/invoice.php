@@ -300,13 +300,11 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не выбран покупатель");
-            return false;
         }
-        return true;
+        return !$this->isError();
     }
 
     public function beforeRender()
@@ -354,7 +352,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
     public function OnAutoItem($sender)
     {
         $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type =" . Item::ITEM_TYPE_STUFF);
+        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <> " . Item::ITEM_TYPE_RETSUM . " and item_type <> " . Item::ITEM_TYPE_SERVICE);
     }
 
     public function OnChangeItem($sender)

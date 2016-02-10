@@ -38,6 +38,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     public $_itemarr = array();
     public $_emparr = array();
     public $_carr = array();
+    public $_caarr = array();
     public $_farr = array();
     public $_acclist = array();  //список  счетов  из  проводок
     private $_doc;
@@ -86,6 +87,13 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new SubmitButton('addfbtn'))->setClickHandler($this, 'addfbtnOnClick');
         $this->docform->add(new DropDownChoice('e_foper', new Bind($this, '_acclist')));
 
+        //ОС и НМА
+        $this->docform->add(new DataView('catable', new ArrayDataSource($this, '_caarr'), $this, 'catableOnRow'));
+        $this->docform->add(new AutocompleteTextInput('e_calist'))->setAutocompleteHandler($this, "OnAutoCa");
+        $this->docform->add(new TextInput('e_caquantity'));
+        $this->docform->add(new TextInput('e_caprice'));
+        $this->docform->add(new DropDownChoice('e_caop', new Bind($this, '_acclist')));
+        $this->docform->add(new SubmitButton('addcabtn'))->setClickHandler($this, 'addcabtnOnClick');
 
 
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
@@ -103,6 +111,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
             $this->_itemarr = unserialize(base64_decode($this->_doc->headerdata['item']));
             $this->_emparr = unserialize(base64_decode($this->_doc->headerdata['emp']));
             $this->_carr = unserialize(base64_decode($this->_doc->headerdata['c']));
+            $this->_caarr = unserialize(base64_decode($this->_doc->headerdata['ca']));
             $this->_farr = unserialize(base64_decode($this->_doc->headerdata['f']));
             $this->docform->acctable->Reload();
             $this->updateAccList();
@@ -110,6 +119,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
             $this->docform->emptable->Reload();
             $this->docform->ftable->Reload();
             $this->docform->ctable->Reload();
+            $this->docform->catable->Reload();
         } else {
             $this->_doc = Document::create('ManualEntry');
             $this->docform->document_date->setDate(time());
@@ -296,7 +306,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('cop', $_oplist[$c->op]));
         $row->add(new Label('сname', $c->customer_name));
-        $row->add(new Label('сamount',H::fm( $c->val)));
+        $row->add(new Label('сamount', H::fm($c->val)));
         $row->add(new ClickLink('delс'))->setClickHandler($this, 'delсOnClick');
     }
 
@@ -337,7 +347,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('fop', $_oplist[$f->op]));
         $row->add(new Label('fname', $f->title));
-        $row->add(new Label('famount',H::fm( $f->val)));
+        $row->add(new Label('famount', H::fm($f->val)));
         $row->add(new ClickLink('delf'))->setClickHandler($this, 'delfOnClick');
     }
 
@@ -363,6 +373,64 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->e_famount->setText('');
     }
 
+    public function OnAutoCa($sender)
+    {
+        $text = $sender->getValue();
+        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type =" . Item::ITEM_TYPE_OS);
+    }
+
+    public function catableOnRow($row)
+    {
+        $item = $row->getDataItem();
+        $_oplist = $this->docform->e_caop->getOptionList();
+
+        $row->add(new Label('caop', $_oplist[$item->op]));
+        $row->add(new Label('caname', $item->itemname));
+        $row->add(new Label('cacnt', $item->qty / 1000));
+        $row->add(new Label('caprice', H::fm($item->price)));
+        $row->add(new ClickLink('delca'))->setClickHandler($this, 'delcaOnClick');
+    }
+
+    public function delcaOnClick($sender)
+    {
+        $item = $sender->owner->getDataItem();
+        $this->_caarr = array_diff_key($this->_caarr, array($item->item_id => $this->_caarr[$item->item_id]));
+        $this->docform->catable->Reload();
+    }
+
+    public function addcabtnOnClick($sender)
+    {
+        $id = $this->docform->e_calist->getKey();
+        if (isset($this->_caarr[$id])) {
+            $this->setError('Дублирование строки');
+        }
+        if ($id == 0) {
+            $this->setError('Не выбран  ТМЦ');
+        }
+        $item = Item::load($id);
+        $item->op = $this->docform->e_caop->getValue();
+        if ($item->op == 0) {
+            $this->setError('Не выбран  счет');
+        }
+
+
+
+
+        $item->qty = 1000 * $this->docform->e_caquantity->getText();
+        $item->price = 100 * $this->docform->e_caprice->getText();
+        if ($item->price == 0) {
+            $this->setError('Введите  цену');
+        }
+
+        if ($this->isError())
+            return;
+
+        $this->_caarr[$id] = $item;
+        $this->docform->catable->Reload();
+        $this->docform->e_caquantity->setText('1');
+        $this->docform->e_caprice->setText('0');
+    }
+
     public function backtolistOnClick($sender)
     {
 
@@ -379,6 +447,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['emp'] = base64_encode(serialize($this->_emparr));
         $this->_doc->headerdata['item'] = base64_encode(serialize($this->_itemarr));
         $this->_doc->headerdata['c'] = base64_encode(serialize($this->_carr));
+        $this->_doc->headerdata['ca'] = base64_encode(serialize($this->_caarr));
         $this->_doc->headerdata['f'] = base64_encode(serialize($this->_farr));
         $this->_doc->headerdata['description'] = $this->docform->description->getText();
 

@@ -14,7 +14,7 @@ class Report
 
     /**
      * Путь к  файлу  шаблона
-     * 
+     *
      * @param mixed $template
      */
     public function __construct($template)
@@ -24,23 +24,25 @@ class Report
 
     /**
      * Генерация  простой формы
-     * 
+     *
      * @param mixed $header    Массив  с даннымы  шапки
      * @param mixed $detail    Двумерный массив  табличной  части
      * @param mixed $summary   Список  полей  по  которым  вычисляются  итоговые  данные табличной части
      */
-    public function generate(array $header, array $detail = array(), array $summary = array())
+    public function generate(array $header, array $detail = array())
     {
 
         $header['_detail'] = $detail;
 
-        if (false == file_exists(_ROOT . 'templates/erp/printforms/' . $this->_template)) {
+        $template = @file_get_contents(_ROOT . 'templates/erp/printforms/' . $this->_template);
+        if (strlen($template) == 0) {
             return "Файл  печатной формы " . $this->_template . " не найден";
         }
+        $m = new \Mustache_Engine();
+        $html = $m->render($template, $header);
 
-        $fenom = \Fenom::factory(_ROOT . 'templates/erp/printforms');
 
-        $html = $fenom->fetch($this->_template, $header);
+
         $html = str_replace("\n", "", $html);
         $html = str_replace("\r", "", $html);
         return $html;

@@ -1,27 +1,30 @@
 <html>
 
     <body>
-        <div class="row">
-            <div class="col-xs-12">    
+
                 <h4>Финансовые  результаты</h4>
                 <form zippy="docform">
-                    <table    class="ctable">
-                        <tr>
-                            <td >Номер документа</td>
-                            <td >  <input type="text" zippy="document_number" required="required" ></td>
-                            <td >Дата</td>
-                            <td >    <input type="text" zippy="created" required="required"  ></td>
-                        </tr>
-                    </table>      
-                    <p>&nbsp;</p>
-                    <p>
+<div class="row">
+            <div class="col-xs-4">
+                   <div class="form-group">
+                        <label for="document_number" class="  control-label">Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required"     >
+                    </div>
+                            <div class="form-group">
+                                <label for="document_date">Дата</label>
+                                <input class="form-control"  type="text" zippy="document_date" required="required"  ></input>
+                            </div>
+                    <div class="form-group">
                         <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
-                        &nbsp;<input zippy="execdoc" type="submit"  value="Выполнить"  class="btn btn-default btn-xs">  
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Выполнить"  class="btn btn-default btn-xs">
+                    </div>
 
-                    </p>
+
+                         </div>
+        </div>
                 </form>
-            </div>   
-        </div>   
+            </div>
+        </div>
 
     </body>
-</html>                        
+</html>

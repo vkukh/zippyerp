@@ -1,0 +1,109 @@
+<html>
+
+    <body>
+
+
+                <form zippy="docform">
+                <h4>Ликвидация ОС</h4>
+   <div class="row">
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <label for="document_number" class="  control-label">Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required"     >
+                    </div>
+                   <div class="form-group">
+                        <label   for="document_date" class="  control-label"> Дата</label>
+                        <input class="form-control" type="text" zippy="document_date" required="required"       >
+                    </div>
+
+
+
+                </div>
+
+            </div>
+               <div  class="row">
+                <div  class="col-xs-8">
+                 <a zippy="addrow">Добавить ОС</a>
+                    <table    class="table table-condenced"   >
+                        <tr >
+                            <th >Наименование </th>
+
+                            <th  >Инв. номер</th>
+
+                             <th width="50"> </th>
+                        </tr>
+                        <tr zippy="detail">
+                            <td zippy="tovar"></td>
+                            <td zippy="inventory"></td>
+
+                              <td>  <a  zippy="delete"><i class="icon-remove"></i></a> </td>
+                        </tr>
+
+                    </table>
+
+                 </div>
+            </div>
+         <div  class="row">
+                <div  class="col-xs-6">
+                        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
+                        <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default  ">
+                        &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default ">
+
+                </div>
+            </div>
+
+
+
+                </form>
+                <form zippy="editdetail">
+                <h4>Ввод  ОС  </h4>
+       <div class="row">
+                <div class="col-xs-4">
+                      <div class="form-group">
+                        <label for="edittovar" class="  control-label">Наименование</label>
+                        <input class="form-control" type="text" zippy="edittovar" required="required" placeholder="Начните вводить наименование"      >
+
+
+                    </div>
+                  <!--  <div class="form-group">
+                        <label for="editinventory" class="  control-label">Инвентарный номер</label>
+                        <select class="form-control" zippy="editinventory" ></select>
+
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="editprice" class="  control-label">Начальная стоимость </label>
+                        <span style="width:100px" zippy="editvalue" class="form-control"></span>
+
+                    </div>
+                  <div class="form-group">
+                        <label for="editdeprecation" class="  control-label">Начисленная амортизация </label>
+                        <span style="width:100px" zippy="editdeprecation" class="form-control"></span>
+
+                    </div>
+                  <div class="form-group">
+                        <label for="editcancelvalue" class="  control-label">Ликвидационная стоимость </label>
+                        <span style="width:100px" zippy="editcancelvalue" class="form-control"></span>
+
+                    </div>
+                 <div class="form-group">
+                        <label for="editcanceltype" class="  control-label">Как  списать</label>
+                        <select zippy="editcanceltype"  class="form-control">
+                          <option value="1">Потери</option>
+                          <option value="2">На основной склад</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default ">
+                        &nbsp; <input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-default ">
+                    </div>
+
+                </div>
+            </div>
+
+                </form>
+
+
+    </body>
+</html>

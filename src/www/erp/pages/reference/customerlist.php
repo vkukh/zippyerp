@@ -41,7 +41,9 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
         $this->customerdetail->add(new TextInput('editphone'));
         $this->customerdetail->add(new TextInput('editemail'));
         $this->customerdetail->add(new DropDownChoice('editbank', \ZippyERP\ERP\Entity\Bank::findArray('bank_name', '', 'bank_name')));
+        $this->customerdetail->add(new DropDownChoice('editbank2', \ZippyERP\ERP\Entity\Bank::findArray('bank_name', '', 'bank_name')));
         $this->customerdetail->add(new TextInput('editbankaccount'));
+        $this->customerdetail->add(new TextInput('editbankaccount2'));
         $this->customerdetail->add(new DropDownChoice('cust_type'));
         $this->customerdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
         $this->customerdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
@@ -83,8 +85,10 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
         $this->customerdetail->editfaddress->setText($this->_customer->faddress);
         $this->customerdetail->editladdress->setText($this->_customer->laddress);
         $this->customerdetail->editbank->setValue($this->_customer->bank);
+        $this->customerdetail->editbank2->setValue($this->_customer->bank2);
         $this->customerdetail->cust_type->setValue($this->_customer->cust_type);
         $this->customerdetail->editbankaccount->setText($this->_customer->bankaccount);
+        $this->customerdetail->editbankaccount2->setText($this->_customer->bankaccount2);
     }
 
     public function editContactOnClick($sender)
@@ -143,8 +147,10 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
         $this->_customer->faddress = $this->customerdetail->editfaddress->getText();
         $this->_customer->laddress = $this->customerdetail->editladdress->getText();
         $this->_customer->bank = $this->customerdetail->editbank->getValue();
+        $this->_customer->bank2 = $this->customerdetail->editbank2->getValue();
         $this->_customer->cust_type = $this->customerdetail->cust_type->getValue();
         $this->_customer->bankaccount = $this->customerdetail->editbankaccount->getText();
+        $this->_customer->bankaccount2 = $this->customerdetail->editbankaccount2->getText();
 
         $this->_customer->Save();
         $this->customerdetail->setVisible(false);

@@ -77,6 +77,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $filter->onlymy = $this->filter->onlymy->isChecked();
         $filter->searchnumber = $this->filter->searchnumber->getText();
 
+        $this->doclist->setCurrentPage(1);
         $this->doclist->Reload();
     }
 
@@ -209,7 +210,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $docs = Document::find($this->getWhere(), "created ", "desc", $count, $start);
+        $docs = Document::find($this->getWhere(), "document_date ", "desc", $count, $start);
 
         //$l = Traversable::from($docs);
         //$l = $l->where(function ($doc) {return $doc->document_id == 169; }) ;

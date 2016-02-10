@@ -5,13 +5,13 @@
 
             <tr style="font-weight: bolder;">
                 <td  >
-                   Списание торговой  наценки {$document_number}
+                   Списание торговой  наценки {{document_number}}
                 </td>
                 <td >
-                    от  {$date}
+                    от  {{date}}
                 </td>
             </tr>
-            <tr><td colspan="2">Магазин: {$storename}</td></tr>
+            <tr><td colspan="2">Магазин: {{storename}}</td></tr>
         </table>
         <br> <br>
     </body>

@@ -31,7 +31,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();
-    private $_itemtype = array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ');
+    private $_itemtype = array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ', 15 => 'Необоротные активы');
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
@@ -49,6 +49,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new CheckBox('isnds'))->setChangeHandler($this, 'onIsnds');
         $this->docform->add(new CheckBox('cash'));
+        $this->docform->add(new CheckBox('prepayment'))->setChecked(true);
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
@@ -75,6 +76,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
             $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
             $this->docform->cash->setChecked($this->_doc->headerdata['cash']);
+            $this->docform->prepayment->setChecked($this->_doc->headerdata['prepayment']);
             $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
             $this->docform->customer->setText($this->_doc->headerdata['customername']);
@@ -101,6 +103,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
                         foreach ($basedoc->detaildata as $_item) {
                             $item = new Item($_item);
+                            $item['type'] = 281;
                             $this->_itemlist[$item->item_id] = $item;
                         }
                     }
@@ -215,6 +218,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
             'contractnumber' => $this->docform->contract->getText(),
             'isnds' => $this->docform->isnds->isChecked(),
             'cash' => $this->docform->cash->isChecked(),
+            'prepayment' => $this->docform->prepayment->isChecked(),
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
@@ -284,13 +288,14 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
-            return false;
         }
         if ($this->docform->customer->getKey() <= 0) {
             $this->setError("Не выбран  поставщик");
-            return false;
         }
-        return true;
+        if ($this->docform->cash->isChecked() && $this->docform->prepayment->isChecked()) {
+            $this->setError("Должно  быть либо  предоплата либо  оплата  наличными");
+        }
+        return !$this->isError();
     }
 
     public function beforeRender()
@@ -356,7 +361,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
     public function OnAutoItem($sender)
     {
         $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type =" . Item::ITEM_TYPE_STUFF);
+        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type = " . Item::ITEM_TYPE_STUFF);
     }
 
 }

@@ -20,8 +20,8 @@ class Entry extends \ZCL\DB\Entity
     /**
      * Создает  и  записывает  бухгалтерскую  проводку
      *
-     * @param mixed $acc_d  id или  код дебетового  счета
-     * @param mixed $acc_c  id или  код кредитового  счета
+     * @param mixed $acc_d     код дебетового  счета или 0
+     * @param mixed $acc_c     код кредитового  счета или 0
      * @param mixed $amount  Сумма (в копейках)  Отрицательное  значение выполняет сторнирование.
      * @param mixed $document_id  документ-основание
      * @param mixed $document_date  дата  документа
@@ -43,10 +43,14 @@ class Entry extends \ZCL\DB\Entity
         if ($ct == false && $acc_c > 0) {
             return "Неверный код  счета '{$acc_c}'";
         }
+        if ($ct == false && $dt == false) {
+            return "Должен быть задан хотя бы  один  счет'";
+        }
+
         $entry = new Entry();
 
-        $entry->acc_d = $acc_d == -1 ? 0 : $dt->acc_code; //дебетовый счет
-        $entry->acc_c = $acc_c == -1 ? 0 : $ct->acc_code; //кредитовый счет
+        $entry->acc_d = $dt == false ? 0 : $dt->acc_code; //дебетовый счет
+        $entry->acc_c = $ct == false ? 0 : $ct->acc_code; //кредитовый счет
         $entry->amount = $amount;
         $entry->document_id = $document_id;
         $entry->document_date = $document_date;

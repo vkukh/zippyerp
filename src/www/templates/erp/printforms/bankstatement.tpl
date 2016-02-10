@@ -4,16 +4,16 @@
             <tr >
 
                 <td colspan="3" width="160">
-                    Дата: <b>{$date} </b>
+                    Дата: <b>{{date}} </b>
                 </td>
                 <td width="340" align="right">
-                    Счет:<b> {$bankaccount}</b>
+                    Счет:<b> {{bankaccount}}</b>
                 </td>
             </tr>
 
             <tr >
                 <td style="font-weight: bolder;font-size: larger;"  align="center" colspan="4" >
-                    Банковская выписка  № {$document_number}
+                    Банковская выписка  № {{document_number}}
                     <br><br> </td>
             </tr>
 
@@ -24,9 +24,9 @@
                 <td width="50" style="border-bottom: 1px solid #000000">Сумма</td>
                 <td style="border-bottom: 1px solid #000000">Примечание </td>
             </tr>
-            {foreach $_detail as $item}
-                <tr ><td>{$item.type}</td><td>{$item.cust}</td><td  align="right">{$item.amount}</td><td>{$item.comment} </td></tr>
-                    {/foreach}
+            {{#_detail}}
+                <tr ><td>{{type}}</td><td>{{cust}}</td><td  align="right">{{amount}}</td><td>{{comment}} </td></tr>
+                    {{/_detail}}
         </table>
 
         <br>

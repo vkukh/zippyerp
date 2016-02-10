@@ -7,8 +7,8 @@
         "ircmaxell/password-compat": "dev-master",
         "nesbot/Carbon": "*",
          "fenom/fenom": "dev-master",
-         "timetoogo/pinq": "~3.2"
-
+         "timetoogo/pinq": "~3.2",
+         "mustache/mustache": "dev-master"
     },
     "config": {
     }

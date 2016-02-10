@@ -23,7 +23,7 @@ use Zippy\Html\Form\DropDownChoice;
 use \ZippyERP\ERP\Helper as H;
 
 /**
- * Виджет для  просмотра  документов 
+ * Виджет для  просмотра  документов
  */
 class DocView extends \Zippy\Html\PageFragment
 {
@@ -73,10 +73,7 @@ class DocView extends \Zippy\Html\PageFragment
     public function setDoc(\ZippyERP\ERP\Entity\Doc\Document $doc)
     {
         $this->_doc = $doc;
-        //  получение  екзамеляра  конкретного  документа   с  данными
-        $type = Helper::getMetaType($doc->type_id);
-        $class = "\\ZippyERP\\ERP\\Entity\\Doc\\" . $type['meta_name'];
-        $doc = $class::load($doc->document_id);
+        $doc = $this->_doc->cast();
 
         // проверяем  поддержку  экспорта
         $exportlist = $doc->supportedExport();
@@ -84,53 +81,33 @@ class DocView extends \Zippy\Html\PageFragment
         $this->excel->setVisible(in_array(Document::EX_EXCEL, $exportlist));
         $this->xml->setVisible(in_array(Document::EX_XML_GNAU, $exportlist));
 
-        // генерация  печатной   формы                
-        $html = $doc->generateReport();
-        if (strlen($html) == 0) {
-            //  $this->owner->setError("Не найден шаблон печатной формы");
-            // return;
-            $html = "<h4>Печатная форма  не  задана</h4>";
-            $this->print->setVisible(false);
-            $this->html->setVisible(false);
-            $this->word->setVisible(false);
-            $this->excel->setVisible(false);
-        }
-
-        $this->preview->setText($html, true);
-
-        Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
-        $filename = $type['meta_name'];
-
-        //экспорт  в  xml формат
-        $xml = $doc->export(Document::EX_XML_GNAU);
-        if (is_array($xml) > 0) {
-            Session::getSession()->xmlform = $xml['content'];
-            $filename = $xml['filename'];
-        }
         $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
 
-
+        $this->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/" . $doc->document_id);
 
         $this->print->pagename = $reportpage;
-        $this->print->params = array('print', $filename);
+        $this->print->params = array('print', $doc->document_id);
         $this->html->pagename = $reportpage;
-        $this->html->params = array('html', $filename);
+        $this->html->params = array('html', $doc->document_id);
         $this->word->pagename = $reportpage;
-        $this->word->params = array('doc', $filename);
+        $this->word->params = array('doc', $doc->document_id);
         $this->excel->pagename = $reportpage;
-        $this->excel->params = array('xls', $filename);
+        $this->excel->params = array('xls', $doc->document_id);
         $this->xml->pagename = $reportpage;
-        $this->xml->params = array('xml', $filename);
+        $this->xml->params = array('xml', $doc->document_id);
 
+        //список связаных  документов
         $this->updateDocs();
         $this->_entries = \ZippyERP\ERP\Entity\Entry::find('document_id=' . $this->_doc->document_id);
         $this->dw_entrylist->Reload();
         $this->_statelist = $this->_doc->getLogList();
         $this->dw_statelist->Reload();
 
+        //список приатасеных  файлов
         $this->updateFiles();
         $this->updateMessages();
 
+        //общие данные
         $this->detuser->setText($this->_doc->userlogin);
         $this->detcreated->setText(date('Y-m-d H:i', $this->_doc->created));
         $this->detupdated->setText(date('Y-m-d H:i', $this->_doc->updated));
@@ -161,7 +138,7 @@ class DocView extends \Zippy\Html\PageFragment
         $this->updateDocs();
     }
 
-    //открыть связанный документ   
+    //открыть связанный документ
     public function detailDocOnClick($sender)
     {
         $id = $sender->owner->getDataItem()->document_id;
@@ -189,7 +166,7 @@ class DocView extends \Zippy\Html\PageFragment
 
     /**
      * добавление  связанного  документа
-     * 
+     *
      * @param mixed $sender
      */
     public function OnReldocSubmit($sender)
@@ -222,7 +199,7 @@ class DocView extends \Zippy\Html\PageFragment
 
     /**
      * добавление прикрепленного файла
-     * 
+     *
      * @param mixed $sender
      */
     public function OnFileSubmit($sender)
@@ -268,7 +245,7 @@ class DocView extends \Zippy\Html\PageFragment
 
     /**
      * добавление коментария
-     * 
+     *
      * @param mixed $sender
      */
     public function OnMsgSubmit($sender)

@@ -34,7 +34,7 @@ class SupplierOrder extends Document
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
-            "customername" => $this->suppliername,
+            "customername" => $this->headerdata['suppliername'],
             "document_number" => $this->document_number,
             "timeline" => date('d.m.Y', $this->headerdata['timeline']),
             "total" => H::fm($total));

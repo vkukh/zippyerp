@@ -87,6 +87,19 @@ class ManualEntry extends Document
                 $sc->save();
             }
         }
+
+        //ОС
+        $caarr = unserialize(base64_decode($this->headerdata['ca']));
+        if (is_array($caarr)) {
+
+            foreach ($caarr as $item) {
+                $acc = explode('_', $item->op);
+                $sc = new SubConto($this, $acc[0], $acc[1] == 'd' ? ($item->qty) / 1000 * $item->price : 0 - ($item->qty) / 1000 * $item->price);
+                $sc->setAsset($item->item_id);
+                $sc->setQuantity($acc[1] == 'd' ? $item->qty : 0 - $item->qty);
+                $sc->save();
+            }
+        }
     }
 
     public function generateReport()
@@ -107,7 +120,8 @@ class ManualEntry extends Document
                 "acc_c" => $entry->acc_c,
                 "amount" => H::fm($entry->amount));
         }
-        $detail['entry'] = $arr;
+        $header['entry?'] = count($arr);
+        $header['entry'] = $arr;
 
         //ТМЦ
         $arr = array();
@@ -123,7 +137,9 @@ class ManualEntry extends Document
                 "price" => H::fm($item->price),
                 "amount" => H::fm($item->price * ($item->qty / 1000)));
         }
-        $detail['item'] = $arr;
+        $header['item?'] = count($arr);
+        $header['item'] = $arr;
+
         //Сотрудники
         $arr = array();
         $itemarr = unserialize(base64_decode($this->headerdata['emp']));
@@ -136,7 +152,8 @@ class ManualEntry extends Document
                 "name" => $item->fullname,
                 "amount" => H::fm($item->val));
         }
-        $detail['emp'] = $arr;
+        $header['emp?'] = count($arr);
+        $header['emp'] = $arr;
 
         //Контрагенты
         $arr = array();
@@ -150,7 +167,8 @@ class ManualEntry extends Document
                 "name" => $item->customer_name,
                 "amount" => H::fm($item->val));
         }
-        $detail['c'] = $arr;
+        $header['c?'] = count($arr);
+        $header['c'] = $arr;
 
         //Денежные  счета
         $arr = array();
@@ -164,12 +182,29 @@ class ManualEntry extends Document
                 "name" => $item->title,
                 "amount" => H::fm($item->val));
         }
-        $detail['f'] = $arr;
+        $header['f?'] = count($arr);
+        $header['f'] = $arr;
+
+        //Основные средства
+        $arr = array();
+        $itemarr = unserialize(base64_decode($this->headerdata['ca']));
+        foreach ($itemarr as $item) {
+            $op = str_replace('_d', ' Дебет', $item->op);
+            $op = str_replace('_c', ' Кредит', $op);
+
+            $arr[] = array("no" => $i++,
+                "opname" => $op,
+                "name" => $item->itemname,
+                "cnt" => $item->qty / 1000,
+                "price" => H::fm($item->price));
+        }
+        $header['ca?'] = count($arr);
+        $header['ca'] = $arr;
 
 
         $report = new \ZippyERP\ERP\Report('manualentry.tpl');
 
-        $html = $report->generate($header, $detail);
+        $html = $report->generate($header);
 
         return $html;
     }

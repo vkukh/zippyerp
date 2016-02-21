@@ -19,6 +19,12 @@ class Customer extends \ZCL\DB\Entity
 
     public $code, $city, $zip, $address, $url, $phone;
 
+
+    protected function init()
+    {
+        $this->customer_id = 0;
+    }
+
     protected function beforeSave()
     {
         parent::beforeSave();

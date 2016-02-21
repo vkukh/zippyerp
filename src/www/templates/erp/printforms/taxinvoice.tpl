@@ -6,232 +6,167 @@
 
 
             <tr>
-                <td colspan="3" style="border: #000000 1px solid;font-size: 6pt;">Складається оператором інвестору за багатосторонньою угодою про розподіл продукції</td>
+                <td colspan="3" style="border: #000000 1px solid;font-size: 6pt;">Зведена податкова накладна</td>
                 <td style="border: #000000 1px solid;font-size: 6pt;">&nbsp;</td>
-                <td colspan="7">&nbsp;</td>
-                <td colspan="3" style="font-size: 6pt;">ЗАТВЕРДЖЕНО <br>Наказ Міністерства фінансів України</td>
+                <td colspan="4">&nbsp;</td>
+                <td  colspan="2" style="font-size: 6pt;">ЗАТВЕРДЖЕНО</td>
             </tr>
             <tr>
-                <td colspan="3" style="border: #000000 1px solid;font-size: 6pt;">Не видається покупцю(тип причини)</td>
+                <td colspan="3" style="border: #000000 1px solid;font-size: 6pt;">Складена на операції, звільнені від оподаткування</td>
                 <td style="border: #000000 1px solid;font-size: 6pt;">&nbsp;</td>
-                <td colspan="7">&nbsp;</td>
-                <td colspan="3" style="font-size: 6pt;">22 вересня 2014 року № 957(у редакції наказу Міністерства фінансів України</td>
+                <td colspan="4">&nbsp;</td>
+                <td  colspan="2"  style="font-size: 6pt;"> Наказ Міністерства фінансів України </td>
             </tr>
             <tr>
-                <td colspan="3" style="text-align: center; font-size: 6pt;">(потрібне виділити поміткою "Х")</td>
+                <td colspan="3" style="border: #000000 1px solid;font-size: 6pt;">Не підлягає наданню отримувачу (покупцю) з причини   <br>  (зазначається відповідний тип причини)          </td>
+                <td style="border: #000000 1px solid;font-size: 6pt;">&nbsp;</td>
+                <td colspan="4">&nbsp;</td>
+                <td  colspan="2"  style="font-size: 6pt;">   31.12.2015  № 1307</td>
+            </tr>
+             <tr><td colspan="10">&nbsp;</td></tr>
+
+            <tr>
+
+                <td colspan="4" style="font-weight: bold; font-size:12pt;text-align: right;">ПОДАТКОВА НАКЛАДНА</td>
                 <td >&nbsp;</td>
-                <td colspan="7" style="font-weight: bold; font-size:12pt;text-align: center;">ПОДАТКОВА НАКЛАДНА</td>
-                <td colspan="3" style="font-size: 6pt;">від __________2014 року №____)</td>
+                <td colspan="2" style="font-size: 10pt; white-space:nowrap   ">{{document_date}}</td>
+                <td >&nbsp;</td>
+                <td colspan="2" style="font-size: 10pt;white-space:nowrap ">{{document_number}}</td>
+
+            </tr>
+           <tr>
+
+                <td colspan="5"   > </td>
+
+                <td colspan="2" style="font-size: 6pt;"> Дата складання </td>
+                <td >&nbsp;</td>
+                <td colspan="2" style="font-size: 6pt;"> Порядковий номер </td>
+
             </tr>
 
-            <tr><td colspan="13">&nbsp;</td></tr>
+ <tr><td colspan="10" >&nbsp;</td></tr>
+   <tr>
+
+         <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;border-top: solid black 1px;font-weight: bolder;font-size: 6pt; ">&nbsp;  Постачальник (продавець) </td>
+        <td >&nbsp;</td>
+        <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;border-top: solid black 1px;font-weight: bolder;font-size: 6pt; ">&nbsp; Отримувач (покупець) </td>
+
+    </tr>
+  <tr>
+
+         <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px; font-size: 12pt; ">&nbsp; {{firmname}} </td>
+        <td >&nbsp;</td>
+        <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px; font-size: 12pt; ">&nbsp; {{customername}}  </td>
+
+    </tr>
             <tr>
+                <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;font-size: 6pt;text-align: center; ">&nbsp; (найменування; прізвище, ім'я, по батькові - для фізичної особи - підприємця) </td>
+                <td >&nbsp;</td>
+                <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;font-size: 6pt;text-align: center; ">&nbsp; (найменування; прізвище, ім'я, по батькові - для фізичної особи - підприємця) </td>
+
+            </tr>
+
+
+         <tr>
+                <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;font-size: 10pt;  ">&nbsp; {{firmcode}}</td>
+                <td >&nbsp;</td>
+                <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;font-size: 10pt;  ">&nbsp; {{customercode}} </td>
+
+            </tr>
+          <tr>
+                <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;border-bottom: solid black 1px;font-size: 6pt;  ">&nbsp; (індивідуальний податковий номер) </td>
+                <td >&nbsp;</td>
+                <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;border-bottom: solid black 1px;font-size: 6pt;  ">&nbsp; (індивідуальний податковий номер) </td>
+
+            </tr>
+
+            <tr><td colspan="10" >&nbsp;</td></tr>
+            <tr><td colspan="10" style="font-size: 8pt;border: #000000 1px solid">Розділ A</td></tr>
+
+
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">I</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Загальна сума коштів, що підлягають сплаті з урахуванням податку на додану вартість          </td><td  style="text-align: right; font-size: 6pt;border: #000000 1px solid;">{{totalall}}</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">II</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Загальна сума податку на додану вартість, у тому числі:</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">{{totalnds}}</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">III</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> загальна сума податку на додану вартість за основною ставкою</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">IV</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> загальна сума податку на додану вартість за  ставкою 7%</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">V</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання за основною ставкою (код ставки 20)</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">VI</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання за ставкою 7% (код ставки 7)   </td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">VII</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання при експорті товарів за ставкою 0% (код ставки 901)   </td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">VIII</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання на митній території України за ставкою 0% (код ставки 902) </td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">IX</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги операцій, звільнених від оподаткування (код ставки 903)        </td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">X</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Дані щодо зворотної (заставної) тари   </td><td  style="font-size: 6pt;border: #000000 1px solid;">&nbsp;</td></tr>
+
+            <tr><td colspan="10" style="font-size: 8pt;">Розділ Б</td></tr>
+
             <tr>
-                <td colspan="3" style="text-align: right; font-size: 6pt;vertical-align: middle;">Дата складання податкової накладної</td>
-                <td colspan="3" style="border: #000000 1px solid;text-align: right; font-size: 12pt;letter-spacing:4px;">{{date}}  </td>
-                <td colspan="3" style="border: #fff 0px ;text-align: right;vertical-align: middle; font-size: 7pt;">Порядковий номер</td>
-                <td colspan="3" style="border: #000000 1px solid;text-align: right; font-size: 12pt;letter-spacing:4px;">{{document_number}}</td>
-                <td style="text-align: left;border: #000000 1px solid; font-size: 10pt;letter-spacing:4px;">/ </td>
-            </tr>
-            <tr><td colspan="13">&nbsp;</td></tr>
-            <tr>
-                <td colspan="2" style="text-align: right; font-size: 7pt;">Особа (платникподатку) - продавець </td>
-                <td colspan="4" style="border: #000000 1px solid; font-size: 9pt;vertical-align: middle;">{{firmname}} </td>
-                <td colspan="3" style="text-align: right; font-size: 7pt;">Особа (платник податку) – покупець</td>
-                <td colspan="5" style="border: #000000 1px solid; font-size: 9pt;vertical-align: middle;">{{customername}}</td>
-
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: right; font-size: 7pt;">&nbsp;</td>
-                <td colspan="4" style=" font-size: 6pt;">(найменування; прізвище, ім'я, по батькові - для фізичної особи-підприємця) </td>
-                <td colspan="3" style="text-align: right; font-size: 7pt;">&nbsp;</td>
-                <td colspan="5" style="font-size: 6pt;">(найменування; прізвище, ім'я, по батькові - для фізичної особи-підприємця)</td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: right; font-size: 7pt;"></td>
-                <td colspan="4" style=" font-size: 10pt;border: #000000 1px solid;">{{firmcode}}</td>
-                <td colspan="3" style="text-align: right; font-size: 7pt;">&nbsp;</td>
-                <td colspan="5" style="font-size: 10pt;border: #000000 1px solid;">{{customercode}}</td>
-            <tr>
-                <td colspan="2" style="text-align: right; font-size: 7pt;">&nbsp;</td>
-                <td colspan="4" style=" font-size: 6pt;">(індивідуальний податковий номер продавця) </td>
-                <td colspan="3" style="text-align: right; font-size: 7pt;">&nbsp;</td>
-                <td colspan="5" style="font-size: 6pt;">(індивідуальний податковий номер покупця)</td>
-            </tr>
-
-            <tr style="margin-bottom: 4px;">
-                <td colspan="2" style="text-align: right; font-size: 7pt;">Місцезнаходження (податкова адреса) продавця </td>
-                <td colspan="4" style="border-bottom: #000000 1px solid; font-size: 9pt;">{{saddress}}</td>
-                <td colspan="3" style="text-align: right; font-size: 7pt;">Місцезнаходження (податкова адреса) покупця</td>
-                <td colspan="5" style="border-bottom: #000000 1px solid; font-size: 9pt;">{{baddress}}</td>
-
-            </tr>
-            <tr><td colspan="13">&nbsp;</td></tr>
-            <tr>
-            <tr style="margin-bottom: 4px;">
-                <td colspan="2" style="text-align: right; font-size: 7pt;">Номер телефону</td>
-                <td colspan="4" style="border: #000000 1px solid; font-size: 9pt;">{{sphone}}</td>
-                <td colspan="3" style="text-align: right; font-size: 7pt;">Номер телефону</td>
-                <td colspan="5" style="border: #000000 1px solid; font-size: 9pt;">{{bphone}}</td>
-
-            </tr>
-            <tr><td colspan="13">&nbsp;</td></tr>
-            <tr style="margin-bottom: 4px;">
-                <td colspan="2" style="text-align: right; font-size: 7pt;">Вид  цивільно-правового договору </td>
-                <td colspan="6" style="border-bottom: #000000 1px solid; font-size: 8pt;">{{contractname}}</td>
-                <td style="text-align: right; font-size: 7pt;">від </td>
-                <td colspan="2" style=" font-size: 7pt;">{{contractdate}}</td>
-                <td colspan="3" style="font-size: 8pt;">№ {{contractnumber}}</td>
-
-            </tr>
-            <tr >
-                <td colspan="2" > </td>
-                <td colspan="7" style="font-size: 6pt;"> (вид договору)</td>
-                <td colspan="4" >&nbsp;</td>
-            </tr>
-
-            <tr >
-                <td colspan="2" style="text-align: right; font-size: 7pt;">Форма проведених розрахунків</td>
-                <td colspan="7" style="border-bottom: #000000 1px solid; font-size: 8pt;">{{paytype}} </td>
-                <td colspan="4" >&nbsp;</td>
-
-
-            </tr>
-            <tr >
-                <td colspan="2" > </td>
-                <td colspan="7" style="font-size: 6pt;"> (бартер, готівка, оплата з поточного рахунку, чек тощо)</td>
-                <td colspan="4" >&nbsp;</td>
-            </tr>
-
-            <tr><td colspan="13">&nbsp;</td></tr>
-            <tr>
-            <tr>
-                <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Розділ</td>
-                <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Дата виникнення податкового зобов’язання (постачання (оплати²)) </td>
+                <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >№</td>
                 <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Номенклатура товарів/послуг продавця</td>
                 <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Код товару згідно з УКТ ЗЕД</td>
                 <td colspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Одиниця виміру товару/ послуги</td>
                 <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Кількість (об'єм, обсяг)</td>
                 <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Ціна постачання одиниці товару/ послуги без урахування ПДВ</td>
-                <td colspan="5" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Обсяги постачання (база оподаткування) без урахування ПДВ, що підлягають оподаткуванню за ставками</td>
-                <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;"  >Загальна сума коштів, що підлягає сплаті</td>
+                <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Код ставки</td>
+                <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;"  >Код пільги</td>
+                <td rowspan="2" style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;"  >Обсяги постачання (база оподаткування) без урахування податку на додану вартість</td>
             </tr>
             <tr>
+
                 <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >умовне позначення (укр.)</td>
-                <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >Код</td>
-                <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >основна ставка</td>
-                <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >7%</td>
-                <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >0% (постачання на митній території України)</td>
-                <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >0% (експорт)</td>
-                <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >звільнення від ПДВ**</td>
+                <td style="text-align: center; vertical-align: top;border: #000000 1px solid;  font-size: 6pt;" >код</td>
+
             </tr>
             <tr>
                 <td style="width:40px;text-align: center;font-size: 6pt; border: #000000 1px solid;">1</td>
-                <td style="width:60px;text-align: center;font-size: 6pt; border: #000000 1px solid;">2</td>
-                <td style="width:200px;text-align: center;font-size: 6pt; border: #000000 1px solid;">3</td>
+                <td style="width:200px;text-align: center;font-size: 6pt; border: #000000 1px solid;">2</td>
+                <td style="width:40px;text-align: center;font-size: 6pt; border: #000000 1px solid;">3</td>
                 <td style="width:40px;text-align: center;font-size: 6pt; border: #000000 1px solid;">4</td>
-                <td style="width:50px;text-align: center;font-size: 6pt; border: #000000 1px solid;">5.1</td>
-                <td style="width:30px;text-align: center;font-size: 6pt; border: #000000 1px solid;">5.2</td>
+                <td style="width:30px;text-align: center;font-size: 6pt; border: #000000 1px solid;">5</td>
                 <td style="width:60px;text-align: center;font-size: 6pt; border: #000000 1px solid;">6</td>
                 <td style="width:60px;text-align: center;font-size: 6pt; border: #000000 1px solid;">7</td>
                 <td style="width:40px;text-align: center;font-size: 6pt; border: #000000 1px solid;">8</td>
                 <td style="width:20px;text-align: center;font-size: 6pt; border: #000000 1px solid;">9</td>
-                <td style="width:50px;text-align: center;font-size: 6pt; border: #000000 1px solid;">10</td>
-                <td style="width:30px;text-align: center;font-size: 6pt; border: #000000 1px solid;">11</td>
-                <td style="width:30px;text-align: center;font-size: 6pt; border: #000000 1px solid;">12</td>
-                <td style="width:60px;text-align: center;font-size: 6pt; border: #000000 1px solid;">13</td>
+                <td style="width:75px;text-align: center;font-size: 6pt; border: #000000 1px solid;">10</td>
+
             </tr>
             {{#_detail}}
             <tr>
-                <td style="text-align: center;font-size: 6pt; border-left: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{date}}</td>
+                <td style="text-align: center;font-size: 6pt; border : #000000 1px solid;">{{no}}</td>
                 <td style="text-align: left;font-size: 6pt; border: #000000 1px solid;">{{tovar_name}}</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{tovar_code}}</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{measure_name}}</td>
                 <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">{{measure_code}}</td>
                 <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{quantity}}</td>
                 <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{price}}</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;"> &nbsp;</td>
+                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;"> &nbsp;</td>
                 <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{amount}}</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border-right: #000000 1px solid;border-bottom: #000000 1px solid;">{{amount}}</td>
+
+
+
             </tr>
             {{/_detail}}
-            <tr>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td colspan="2" style="font-size: 6pt; border: #000000 1px solid;">Усього за розділом I</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{total}}</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">II</td>
-                <td colspan="2" style="font-size: 6pt; border: #000000 1px solid;">Зворотна (заставна) тара</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">III</td>
-                <td colspan="2" style="font-size: 6pt; border: #000000 1px solid;">Податок на додану вартість</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalnds}}</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">0</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">0</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalnds}}</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">IV</td>
-                <td colspan="2" style="font-size: 6pt; border: #000000 1px solid;">Загальна сума з ПДВ</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">X</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalall}}</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: center;font-size: 6pt; border: #000000 1px solid;">&nbsp;</td>
-                <td style="text-align: right;font-size: 6pt; border: #000000 1px solid;">{{totalall}}</td>
-            </tr>
+
 
 
             <tr>
-                <td colspan="12" style="font-size: 6pt;">Суми ПДВ, нараховані (сплачені) у зв'язку з постачанням товарів/послуг, зазначених у цій накладній, визначені правильно, відповідають сумі податкових зобов'язань продавця і включені до реєстру виданих та отриманих податкових накладних.</td>
-                <td colspan="2"> </td>
+                <td colspan="19" style="font-size: 6pt;">Суми ПДВ, нараховані (сплачені) у зв'язку з постачанням товарів/послуг, зазначених у цій накладній, визначені правильно, відповідають сумі податкових зобов'язань продавця і включені до реєстру виданих та отриманих податкових накладних.</td>
+                <td  > </td>
             </tr>
-            <tr><td colspan="3">&nbsp;</td>
-                <td colspan="8" style="border-bottom: #000 solid 1px;font-size: 8pt;">{{author}}</td>
-                <td colspan="3">&nbsp;</td>
+            <tr><td  colspan="4" style="font-size: 8pt;">Посадова (уповноважена) особа/фізична особа </td>
+                <td colspan="3" style="border-bottom: #000 solid 1px;font-size: 8pt;">{{author}}</td>
+                <td   >&nbsp;</td>
+                <td  colspan="3" style="border-bottom: #000 solid 1px;font-size: 8pt;">&nbsp;</td>
             </tr>
-            <tr><td colspan="3">&nbsp;</td>
-                <td colspan="8" style="font-size: 6pt;">(ініціали та прізвище особи, яка склала податкову накладну)</td>
-                <td colspan="3">&nbsp;</td>
+            <tr><td colspan="4">&nbsp;</td>
+                <td colspan="3" style="font-size: 6pt;">(ініціали та прізвище особи, яка склала податкову накладну)</td>
+                <td   >&nbsp;</td>
+                <td  colspan="3" style="font-size: 6pt;">(реєстраційний номер облікової картки платника податків оба номер паспорту)</td>
+
+            </tr>
+             <tr><td colspan="10">&nbsp;</td></tr>
+           <tr><td colspan="7" style="font-size: 8pt;">Директор Департаменту податкової, митної політики та методології бухгалтерського обліку</td>
+                <td   >&nbsp;</td>
+                <td  colspan="2" style="font-size: 8pt;">Ю. П. Романюк</td>
+
             </tr>
 
 

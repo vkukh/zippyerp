@@ -31,7 +31,7 @@ class TaxInvoice extends Document
                 "measure_code" => $value['measure_code'],
                 "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
-                "pricends" => H::fm($value['pricends']),
+                "nds" => H::fm($value['pricends'] - $value['price']),
                 "amount" => H::fm(($value['quantity'] / 1000) * $value['price'])
             );
             $total += ($value['quantity'] / 1000) * $value['price'];
@@ -58,7 +58,8 @@ class TaxInvoice extends Document
             "contractdate" => H::addSpaces($contractdate),
             "contractnumber" => $contractnumber,
             "paytype" => $this->headerdata["paytype"],
-            "document_number" => $this->document_number,
+            "document_number" => H::addSpaces($this->document_number) ,
+            "document_date" => H::addSpaces(date('Ymd',$this->document_date)),
             "totalnds" => H::fm($this->headerdata["totalnds"]),
             "total" => H::fm($total),
             "totalall" => H::fm($total + $this->headerdata["totalnds"])
@@ -73,7 +74,7 @@ class TaxInvoice extends Document
 
     public function Execute()
     {
-        
+
     }
 
     /**
@@ -171,11 +172,6 @@ class TaxInvoice extends Document
         return array(self::EX_EXCEL, self::EX_XML_GNAU);
     }
 
-    public function getRelationBased()
-    {
-        $list = array();
-        $list['TaxInvoice2'] = 'Додаток 2';
-        return $list;
-    }
+
 
 }

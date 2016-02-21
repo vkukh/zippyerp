@@ -285,14 +285,45 @@ class Helper
      *
      * @param mixed $data
      */
-    public static function addSpaces($data)
+    public static function addSpaces($string)
     {
         $_data = "";
-        for ($i = 0; $i < strlen($data); $i++) {
-            $_data .= (" " . $data[$i]);
+        $strlen = mb_strlen($string);
+        while ($strlen) {
+            $_data .= (" " . mb_substr($string, 0, 1, 'UTF-8'));  ;
+            $string = mb_substr($string, 1, $strlen, 'UTF-8');
+            $strlen = mb_strlen($string, 'UTF-8');
         }
 
         return trim($_data);
+    }
+
+    /**
+    * вовращает  список  лет
+    */
+    public  static function  getYears(){
+      $list = array();
+      for($i=2016;$i<=2030;$i++) $list[$i]= $i;
+      return  $list;
+    }
+   /**
+    * вовращает  список  месяцев
+    */
+    public  static function  getMonth(){
+      $list = array();
+      $list[1] = "Январь";
+      $list[2] = "Февраль";
+      $list[3] = "Март";
+      $list[4] = "Апрель";
+      $list[5] = "Май";
+      $list[6] = "Июнь";
+      $list[7] = "Июль";
+      $list[8] = "Август";
+      $list[9] = "Сентябрь";
+      $list[10] = "Октябрь";
+      $list[11] = "Ноябрь";
+      $list[12] = "Декабрь";
+      return  $list;
     }
 
 }

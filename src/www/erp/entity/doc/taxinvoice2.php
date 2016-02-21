@@ -73,7 +73,7 @@ class TaxInvoice2 extends Document
 
     public function Execute()
     {
-        
+
     }
 
     /**
@@ -171,11 +171,6 @@ class TaxInvoice2 extends Document
         return array(self::EX_EXCEL, self::EX_XML_GNAU);
     }
 
-    public function getRelationBased()
-    {
-        $list = array();
-        $list['TaxInvoice2'] = 'Додаток 2';
-        return $list;
-    }
+
 
 }

@@ -5,7 +5,7 @@ Zippy ERP
 
 Домашняя страница:  [http://zippy.com.ua/](http://zippy.com.ua/)
 
-[Скачать](https://github.com/leon-mbs/zippyerp/releases/download/v0.9.0beta/erp-full.zip) дистрибутив  в  сборе   
+[Скачать](https://zippy.com.ua/download/erp-full.zip) дистрибутив  в  сборе   
 
 Требования: PHP5.4+
 

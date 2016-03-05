@@ -23,111 +23,70 @@ INSERT INTO erp_moneyfunds(id, title, bank, bankaccount, ftype) VALUES(3, 'До�
 -- настройки
 INSERT INTO `system_options` (`optname`, `optvalue`) VALUES('common', 's:84:"a:4:{s:10:"closeddate";b:0;s:3:"nds";s:2:"20";s:6:"hasnds";b:0;s:9:"simpletax";b:0;}";');
 INSERT INTO `system_options` (`optname`, `optvalue`) VALUES('firmdetail', 's:263:"a:9:{s:4:"name";s:19:"Наша фирма";s:4:"code";s:11:"11111111111";s:3:"inn";s:11:"22222222222";s:4:"city";s:17:"Наш город";s:6:"street";s:20:"Наша  улица";s:7:"manager";s:0:"";s:9:"accounter";s:0:"";s:6:"рhone";s:0:"";s:5:"email";s:0:"";}";');
+INSERT INTO `system_options` (`optname`, `optvalue`) VALUES('tax', 'a:5:{s:9:"minsalary";s:4:"1378";s:3:"nds";s:2:"20";s:6:"onetax";s:2:"10";s:6:"ecbfot";s:2:"22";s:5:"taxfl";s:2:"18";}');
 
  -- Суммовой учет
 INSERT INTO `erp_item` (`item_id`, `itemname`, `description`, `measure_id`, `group_id`, `detail`, `item_code`, `item_type`) 
 VALUES(1, 'Суммовой учет', NULL, '1', NULL, '1', NULL, 6);
 
 -- план счетов
+ 
+ 
+
+ 
+ 
+
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(20, 'Виробничі запаси', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(22, 'МШП', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(23, 'Виробництво', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(26, 'Готова продукція', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(28, 'Товари', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(30, 'Каса', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(31, 'Рахунки в банках', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(36, 'Розрахунки з покупцями ', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(37, 'Розрахунки з рiзними дебiторами', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(40, 'Статутний капiтал', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(63, 'Розрахунки з постачальниками', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(64, 'Розрахунки за податками й платежами', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(66, 'Розрахунки зa виплатами працівникам', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(70, 'Доходи від реалізації', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(79, 'Фінансові результати', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(90, 'Собівартість реалізації', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(91, 'Загальновиробничі витрати', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(92, 'Адміністративні витрати', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(93, 'Витрати на збут', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(94, 'Інші витрати операційної діяльності', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(201, 'Сировина й матеріали', 20);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(281, 'Товари на складі', 28);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(282, 'Товари в торгівлі', 28);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(285, 'Торгова націнка', 28);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(372, 'Розрахунки з пiдзвiтними особами', 37);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(641, 'Розрахунки за податками', 64);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(642, 'Розрахунки за платежами', 64);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(643, 'Податкові зобов’язання', 64);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(644, 'Податковий кредит', 64);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(98, 'Податок на прибуток', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(701, 'Дохід від реалізації готової продукції', 70);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(702, 'Дохід від реалізації товарів', 70);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(703, 'Дохід від реалізації робіт і послуг', 70);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(901, 'Собівартість реалізованої готової продукції', 90);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(902, 'Собівартість реалізованих товарів', 90);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(903, 'Собівартість реалізованих робіт і послуг', 90);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(97, 'Iншi витриати', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(65, 'Розрахунки за страхуванням', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(15, 'Капітальні інвестиції', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(71, 'Доходи операційної діяльності', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(1001, 'МЦ. Забалансовий', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(12, 'Нематеріальні активи', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(13, 'Знос необоротних активів', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(371, 'Розрахунки за виданими авансами', 37);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(68, 'Розрахунки за iншми операцiями', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(681, 'Розрахунки за отриманими авансами', 68);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(11, 'Iншi необоротнi активи', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(10, 'Основнi засоби', 0);
+INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(25, 'Напiвфабрикати', 0);
   
-
-
-
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(20, 'Виробничі запаси', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(22, 'МШП', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(23, 'Виробництво', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(26, 'Готова продукція', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(28, 'Товари', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(30, 'Каса', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(31, 'Рахунки в банках', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(36, 'Розрахунки з покупцями ', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(37, 'Розрахунки з рiзними дебiторами', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(40, 'Статутний капiтал', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(63, 'Розрахунки з постачальниками', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(64, 'Розрахунки за податками й платежами', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(66, 'Розрахунки зa виплатами працівникам', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(70, 'Доходи від реалізації', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(79, 'Фінансові результати', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(90, 'Собівартість реалізації', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(91, 'Загальновиробничі витрати', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(92, 'Адміністративні витрати', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(93, 'Витрати на збут', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(94, 'Інші витрати операційної діяльності', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(201, 'Сировина й матеріали', 20);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(281, 'Товари на складі', 28);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(282, 'Товари в торгівлі', 28);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(285, 'Торгова націнка', 28);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(372, 'Розрахунки з пiдзвiтними особами', 37);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(641, 'Розрахунки за податками', 64);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(642, 'Розрахунки за платежами', 64);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(643, 'Податкові зобов’язання', 64);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(644, 'Податковий кредит', 64);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(661, 'Розрахунки за заробітною платою', 66);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(701, 'Дохід від реалізації готової продукції', 70);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(702, 'Дохід від реалізації товарів', 70);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(703, 'Дохід від реалізації робіт і послуг', 70);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(901, 'Собівартість реалізованої готової продукції', 90);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(902, 'Собівартість реалізованих товарів', 90);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(903, 'Собівартість реалізованих робіт і послуг', 90);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(97, 'Iншi витрати', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(15, 'Капітальні інвестиції', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(1001, 'МЦ. Забалансовий', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(12, 'Нематеріальні активи', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(13, 'Знос необоротних активів', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(371, 'Розрахунки за виданими авансами', 37);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(68, 'Розрахунки за iншми операцiями', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(681, 'Розрахунки за отриманими авансами', 68);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(11, 'Iншi необоротнi активи', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(10, 'Основнi засоби', 0);
-INSERT INTO erp_account_plan(acc_code, acc_name, acc_pid) VALUES
-(25, 'Напiвфабрикати', 0);
-
+ 
 -- метаданные
 
   

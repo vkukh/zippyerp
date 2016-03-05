@@ -210,7 +210,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $docs = Document::find($this->getWhere(), "document_date ", "desc", $count, $start);
+        $docs = Document::find($this->getWhere(), "document_date desc,document_id desc", "", $count, $start);
 
         //$l = Traversable::from($docs);
         //$l = $l->where(function ($doc) {return $doc->document_id == 169; }) ;

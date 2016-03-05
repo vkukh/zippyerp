@@ -7,6 +7,7 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="active"><a href="#commontab" data-toggle="tab">Общие</a></li>
                     <li ><a href="#attrtab" data-toggle="tab">Реквизиты  предприятия</a></li>
+                    <li ><a href="#taxtab" data-toggle="tab">Налоги и  отчисления</a></li>
                 </ul>
                 <div class="tab-content">
                     <div  id="commontab" class="tab-pane  active" >
@@ -17,10 +18,7 @@
                                 <label for="closeddate"  >Дата  закрытия периода</label>
                                 <input type="text" class="form-control " zippy="closeddate" >
                             </div>
-                            <div class="form-group">
-                                <label for="nds"  >НДС %</label>
-                                <input type="text" class="form-control " zippy="nds" >
-                            </div>
+
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" zippy="hasnds"> Плательщик НДС
@@ -146,7 +144,49 @@
 
 
                     </div>
+       <div  id="taxtab" class="tab-pane  " >
 
+                        <form zippy="tax" method="post"   role="form"  >
+                            <div class="row">
+                            <div class="col-xs-3">
+                               <div class="form-group ">
+                                <label for="minsalary" class="  control-label">Мин. зарплата </label>
+                                <input type="text" class="form-control " zippy="minsalary"  >
+                               </div>
+                               <div class="form-group ">
+                                <label for="nds" class="  control-label">НДС % </label>
+                                <input type="text" class="form-control " zippy="nds" value="0">
+                               </div>
+                          <div class="form-group">
+                            <label for="onetax" class=" control-label">Единый  налог </label>
+
+                                <input type="text" class="form-control " zippy="onetax" value="0">
+
+                           </div>
+
+                            </div>
+                            <div class="col-xs-3">
+
+                           <div class="form-group">
+                            <label for="ecbfot" class=" -label">ЕСВ ФОТ </label>
+
+                                <input type="text" class="form-control " zippy="ecbfot" value="0">
+
+                           </div>
+                           <div class="form-group">
+                            <label for="taxfl" class=" control-label">Подоходный ФЛ </label>
+
+                                <input type="text" class="form-control " zippy="taxfl" value="0">
+
+                           </div>
+
+                       </div>
+                 </div>
+
+
+                            <input zippy="taxsave" type="submit" value="Сохранить" class="btn btn-default ">
+
+                        </form>
                 </div>
             </div>
 

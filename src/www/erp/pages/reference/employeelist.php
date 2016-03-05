@@ -7,6 +7,7 @@ use \Zippy\Html\DataList\DataView;
 use \Zippy\Html\Label;
 use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Form\TextInput;
+use \Zippy\Html\Form\Date;
 use \Zippy\Html\Form\AutocompleteTextInput;
 use \Zippy\Html\Form\TextArea;
 use \Zippy\Html\Form\SubmitButton;
@@ -40,6 +41,13 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->add(new DropDownChoice('editdepartment', Department::findArray('department_name', '', 'department_name')));
         $this->employeedetail->add(new DropDownChoice('editposition', Position::findArray('position_name', '', 'position_name')));
         $this->employeedetail->add(new TextInput('editlogin'));
+        $this->employeedetail->add(new DropDownChoice('editsalarytype'))->setValue(1);
+        $this->employeedetail->add(new DropDownChoice('editexptype'))->setValue(91);
+        $this->employeedetail->add(new TextInput('editsalary'));
+        $this->employeedetail->add(new TextInput('editavans'));
+        $this->employeedetail->add(new Date('editfiredate'));
+        $this->employeedetail->add(new Date('edithiredate'));
+        $this->employeedetail->add(new CheckBox('editcombined'));
         $this->employeedetail->add(new ClickLink('opencontact'))->setClickHandler($this, 'OpenOnClick');
         $this->employeedetail->add(new ClickLink('showcontact'))->setClickHandler($this, 'ShowOnClick');
         $this->employeedetail->add(new ClickLink('addcontact'))->setClickHandler($this, 'AddContactOnClick');
@@ -77,6 +85,15 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->editcontact->setAttribute('readonly', 'readonly');
         $this->employeedetail->editposition->setValue($this->_employee->position_id);
         $this->employeedetail->editdepartment->setValue($this->_employee->department_id);
+        $this->employeedetail->editsalarytype->setValue($this->_employee->salarytype);
+        $this->employeedetail->editexptype->setValue($this->_employee->exptype);
+        $this->employeedetail->editsalary->setText($this->_employee->salary);
+        $this->employeedetail->editavans->setText($this->_employee->avans);
+        $this->employeedetail->editcombined->setChecked($this->_employee->combined);
+        $this->employeedetail->editfiredate->setDate($this->_employee->firedate);
+        if ($this->_employee->hiredate > 0)
+            $this->employeedetail->edithiredate->setDate($this->_employee->hiredate);
+
         $this->employeedetail->opencontact->setVisible(true);
         $this->employeedetail->showcontact->setVisible(true);
         $this->employeedetail->addcontact->setVisible(false);
@@ -89,6 +106,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         // Очищаем  форму
         $this->employeedetail->clean();
         $this->employeedetail->editcontact->setAttribute('readonly', null);
+        $this->employeedetail->editfiredate->setDate(time());
 
         $this->_employee = new Employee();
         $this->employeedetail->opencontact->setVisible(false);
@@ -124,6 +142,13 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
             }
         }
         $this->_employee->login = $login;
+        $this->_employee->salarytype = $this->employeedetail->editsalarytype->getValue();
+        $this->_employee->exptype = $this->employeedetail->editexptype->getValue();
+        $this->_employee->salary = $this->employeedetail->editsalary->getText();
+        $this->_employee->avans = $this->employeedetail->editavans->getText();
+        $this->_employee->combined = $this->employeedetail->editcombined->isChecked();
+        $this->_employee->firedate = $this->employeedetail->editfiredate->getDate();
+        $this->_employee->hiredate = $this->employeedetail->edithiredate->getDate();
 
         $this->_employee->Save();
 

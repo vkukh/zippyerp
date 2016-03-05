@@ -4,10 +4,10 @@
 
     <body>
         <div class="row">
-            <div class="col-xs-8">
 
-                <div class="row">
-                    <div zippy="employeetable">
+
+
+                    <div zippy="employeetable"  class="col-xs-10">
                         <h3>Справочник сотрудников </h3>
                         <a zippy="addnew" class="btn btn-default btn-xs">Добавить</a>
                         <table class="table table-bordered   table-condensed" class="col-xs-10">
@@ -32,8 +32,12 @@
 
 
                     </div>
+        </div>
 
-                    <form zippy="employeedetail" method="post" class="col-xs-6">
+              <div class="row">
+                    <form zippy="employeedetail" method="post" >
+                    <div class="col-xs-4">
+
                         <div class="form-group">
                             <label for="editfirstname">Имя контакта</label>
                             <a zippy="opencontact" title="Редактировать данные   контакта"><i class="icon-edit"></i></a>
@@ -55,24 +59,71 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="edithiredate">Принят</label>
+                            <input  style="width:110px;"   zippy="edithiredate" class="form-control">
+
+                        </div>
+                     <div class="form-group">
+                            <label for="editfiredate">Уволен</label>
+                            <input  style="width:110px;"   zippy="editfiredate" class="form-control">
+
+                        </div>
+                        <div class="form-group">
                             <label for="editlogin">Логин</label>
-                            <input  pattern= "[a-zA-Z0-9]+" zippy="editlogin" class="form-control">
+                            <input   style="width:110px;" pattern= "[a-zA-Z0-9]+" zippy="editlogin" class="form-control">
 
                         </div>
 
-                        <input zippy="save" type="submit" value="Сохранить" class="btn btn-default btn-xs">&nbsp;&nbsp;
-                        <input zippy="cancel" type="button" value="Отменить" class="btn btn-default btn-xs"></td>
-
-                    </form>
-
+                        <input zippy="save" type="submit" value="Сохранить" class="btn btn-default  ">&nbsp;&nbsp;
+                        <input zippy="cancel" type="button" value="Отменить" class="btn btn-default  ">
                 </div>
+                  <div class="col-xs-3">
+                      <div class="form-group">
+                            <label for="editsalarytype">Оплата</label>
+                            <select zippy="editsalarytype" class="form-control">
+                                <option value="1">Ставка</option>
+                                <option value="2">Почасовая</option>
+                                <option value="3">Сдельная</option>
+                            </select>
+                        </div>
+                         <div class="form-group">
+                            <label for="editsalary">Зарплата</label>
+                            <input    zippy="editsalary" class="form-control">
+
+                        </div>
+                       <div class="form-group">
+                            <label for="editavans">Аванс</label>
+                            <input    zippy="editavans" class="form-control">
+
+                        </div>
+                          
+                        <div class="form-group">
+                            <label for="editexptype">Тип затрат</label>
+                            <select zippy="editexptype" class="form-control">
+                                <option value="91">Общепроизводственные затраты"</option>
+                                <option value="92">Административные затраты"</option>
+                                <option value="23">Прямые производственные затраты</option>
+                            </select>
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                              <input type="checkbox" zippy="editcombined"> Совместитель
+                            </label>
+                          </div>
+ 
+                </div>
+                    </form>
+                  <hr>
+                </div>
+                  <div class="row">
                 <div zippy="contactdetail">
 
                 </div>
                 <div zippy="contactview">
                 </div>
             </div>
-        </div>
+
 
     </body>
 </html>

@@ -13,6 +13,7 @@ use \Zippy\Html\Form\TextArea;
 use \Zippy\Html\Form\SubmitButton;
 use \Zippy\Html\Form\Button;
 use \Zippy\Html\Form\DropDownChoice;
+use \ZippyERP\System\System;
 
 class Options extends \ZippyERP\System\Pages\AdminBase
 {
@@ -47,15 +48,24 @@ class Options extends \ZippyERP\System\Pages\AdminBase
 
         $this->add(new Form('common'));
         $this->common->add(new Date('closeddate'));
-        $this->common->add(new TextInput('nds'));
+
         $this->common->add(new CheckBox('hasnds'));
         $this->common->add(new CheckBox('simpletax'));
         $this->common->add(new CheckBox('juridical'));
         $this->common->add(new SubmitButton('commonsave'))->setClickHandler($this, 'saveCommonOnClick');
         $this->common->add(new DropDownChoice('basestore', \ZippyERP\ERP\Entity\Store::findArray('storename', '')));
 
+        $this->add(new Form('tax'));
+        $this->tax->add(new SubmitButton('taxsave'))->setClickHandler($this, 'saveTaxOnClick');
+        $this->tax->add(new TextInput('minsalary'));
+        $this->tax->add(new TextInput('nds'));
+        $this->tax->add(new TextInput('onetax'));
+  
+        $this->tax->add(new TextInput('ecbfot'));
+        $this->tax->add(new TextInput('taxfl'));
 
-        $detail = \ZippyERP\System\System::getOptions("firmdetail");
+
+        $detail =  System::getOptions("firmdetail");
 
         if (!is_array($detail))
             $detail = array();
@@ -88,15 +98,25 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $this->detail->bankaccount2->setText($f->bankaccount);
         }
 
-        $common = \ZippyERP\System\System::getOptions("common");
+        $common = System::getOptions("common");
         if (!is_array($common))
             $common = array();
         $this->common->closeddate->setDate($common['closeddate']);
-        $this->common->nds->setText($common['nds']);
         $this->common->hasnds->setChecked($common['hasnds']);
         $this->common->simpletax->setChecked($common['simpletax']);
         $this->common->juridical->setChecked($common['juridical']);
         $this->common->basestore->setValue($common['basestore']);
+
+        $tax =  System::getOptions("tax");
+        if (!is_array($tax))
+            $tax = array();
+
+        $this->tax->minsalary->setText($tax['minsalary']);
+        $this->tax->nds->setText($tax['nds']);
+        $this->tax->onetax->setText($tax['onetax']);
+ 
+        $this->tax->ecbfot->setText($tax['ecbfot']);
+        $this->tax->taxfl->setText($tax['taxfl']);
     }
 
     public function saveDetailOnClick($sender)
@@ -135,7 +155,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
             $f->save();
         }
 
-        \ZippyERP\System\System::setOptions("firmdetail", $detail);
+        System::setOptions("firmdetail", $detail);
         $this->setSuccess('Настройки сохранены');
     }
 
@@ -148,7 +168,21 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $common['simpletax'] = $this->common->simpletax->isChecked();
         $common['juridical'] = $this->common->juridical->isChecked();
         $common['basestore'] = $this->common->basestore->getValue();
-        \ZippyERP\System\System::setOptions("common", $common);
+        System::setOptions("common", $common);
+        $this->setSuccess('Настройки сохранены');
+    }
+
+    public function saveTaxOnClick($sender)
+    {
+        $tax = array();
+
+        $tax['minsalary'] = $this->tax->minsalary->getText();
+        $tax['nds'] = $this->tax->nds->getText();
+        $tax['onetax'] = $this->tax->onetax->getText();
+         $tax['ecbfot'] = $this->tax->ecbfot->getText();
+        $tax['taxfl'] = $this->tax->taxfl->getText();
+
+        System::setOptions("tax", $tax);
         $this->setSuccess('Настройки сохранены');
     }
 

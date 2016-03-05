@@ -68,7 +68,7 @@ class BankStatement extends Document
             // оплата  поставщику
             if ($value['optype'] == self::OUT) {
                 $acc = 63;
-                if ($value['prepayment'] == true) {  //предоплата
+                if ($value['prepayment'] == 'true') {  //предоплата
                     $acc = 371;
                 }
 
@@ -92,7 +92,7 @@ class BankStatement extends Document
             if ($value['optype'] == self::IN) {
 
                 $acc = 36;
-                if ($value['prepayment'] == true) {  //предоплата
+                if ($value['prepayment'] == 'true') {  //предоплата
                     $acc = 681;
                 }
 
@@ -114,13 +114,17 @@ class BankStatement extends Document
             // оплата  налогов
             if ($value['optype'] == self::TAX) {
 
-                Entry::AddEntry('641', "31", $value['amount'], $this->document_id, $this->document_date);
+                $acc = 641;
+                if ($value['tax'] > 200)
+                    $acc = 651;
+                Entry::AddEntry($acc, "31", $value['amount'], $this->document_id, $this->document_date);
 
-                $sc = new SubConto($this, 641, $value['amount']);
+                $sc = new SubConto($this, $acc, $value['amount']);
                 $sc->setExtCode($value['tax']); // код налога
                 $sc->save();
                 $sc = new SubConto($this, 31, 0 - $value['amount']);
                 $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->setExtCode($value['tax']); // код налога
                 $sc->save();
             }
 

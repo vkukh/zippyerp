@@ -260,7 +260,8 @@ class Helper
      */
     public static function fm_t1($value)
     {
-        if(abs($value) < 1000) $value =0;
+        if (abs($value) < 1000)
+            $value = 0;
         return number_format($value / 100000, 1, '.', '');
     }
 
@@ -271,11 +272,11 @@ class Helper
      */
     public static function nds($revert = false)
     {
-        $common = System::getOptions("common");
+        $tax = System::getOptions("tax");
         //
-        $nds = $common['nds'] / 100;
+        $nds = $tax['nds'] / 100;
         if ($revert) {
-            $nds = 1 - 100 / (100 + $common['nds']);
+            $nds = 1 - 100 / (100 + $tax['nds']);
         }
         return $nds;
     }
@@ -290,7 +291,8 @@ class Helper
         $_data = "";
         $strlen = mb_strlen($string);
         while ($strlen) {
-            $_data .= (" " . mb_substr($string, 0, 1, 'UTF-8'));  ;
+            $_data .= (" " . mb_substr($string, 0, 1, 'UTF-8'));
+            ;
             $string = mb_substr($string, 1, $strlen, 'UTF-8');
             $strlen = mb_strlen($string, 'UTF-8');
         }
@@ -299,31 +301,35 @@ class Helper
     }
 
     /**
-    * вовращает  список  лет
-    */
-    public  static function  getYears(){
-      $list = array();
-      for($i=2016;$i<=2030;$i++) $list[$i]= $i;
-      return  $list;
+     * вовращает  список  лет
+     */
+    public static function getYears()
+    {
+        $list = array();
+        for ($i = 2016; $i <= 2030; $i++)
+            $list[$i] = $i;
+        return $list;
     }
-   /**
-    * вовращает  список  месяцев
-    */
-    public  static function  getMonth(){
-      $list = array();
-      $list[1] = "Январь";
-      $list[2] = "Февраль";
-      $list[3] = "Март";
-      $list[4] = "Апрель";
-      $list[5] = "Май";
-      $list[6] = "Июнь";
-      $list[7] = "Июль";
-      $list[8] = "Август";
-      $list[9] = "Сентябрь";
-      $list[10] = "Октябрь";
-      $list[11] = "Ноябрь";
-      $list[12] = "Декабрь";
-      return  $list;
+
+    /**
+     * вовращает  список  месяцев
+     */
+    public static function getMonth()
+    {
+        $list = array();
+        $list[1] = "Январь";
+        $list[2] = "Февраль";
+        $list[3] = "Март";
+        $list[4] = "Апрель";
+        $list[5] = "Май";
+        $list[6] = "Июнь";
+        $list[7] = "Июль";
+        $list[8] = "Август";
+        $list[9] = "Сентябрь";
+        $list[10] = "Октябрь";
+        $list[11] = "Ноябрь";
+        $list[12] = "Декабрь";
+        return $list;
     }
 
 }

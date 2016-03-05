@@ -128,6 +128,15 @@ class Document extends \ZCL\DB\Entity
             $_row = array();
             foreach ($row->children() as $item) {
                 $_row[(string) $item->getName()] = (string) $item;
+                if (((string) $item) == 'true') {
+                    $_row[(string) $item->getName()] = true;
+                }
+                if (((string) $item) == 'false') {
+                    $_row[(string) $item->getName()] = false;
+                }
+                if (is_integer((string) $item)) {
+                    $_row[(string) $item->getName()] = (int) $item;
+                }
             }
             $this->detaildata[] = $_row;
         }

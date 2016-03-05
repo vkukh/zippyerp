@@ -86,7 +86,7 @@ class RegisterReceipt extends Document
 
         //налоговые  обязательства
         if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("702", "643", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+            Entry::AddEntry("643", "702", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
         }
         return true;
     }

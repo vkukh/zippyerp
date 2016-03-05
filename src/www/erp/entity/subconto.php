@@ -147,7 +147,7 @@ class SubConto extends \ZCL\DB\Entity
         $conn = \ZCL\DB\DB::getConnect();
         $where = "   1=1";
         if ($date > 0) {
-            $where = $where . "   date(document_date) <= " . $conn->DBDate($date);
+            $where = $where . " and  date(document_date) <= " . $conn->DBDate($date);
         }
         if ($acc > 0) {
             $where = $where . " and account_id= " . $acc;

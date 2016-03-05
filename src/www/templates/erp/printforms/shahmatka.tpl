@@ -2,21 +2,21 @@
 
     <body>
 
-        <h3 style="font-size: 16px;">Шахматка c {{from}}}}  по  {{to}}}}</h3>
+        <h3 style="font-size: 16px;">Шахматка c {{from}}   по  {{to}} </h3>
         <br>
         <table   class="ctable"  cellspacing="0" cellpadding="1" border="1">
 
 
-            {{#_detail}}}}
+            {{#_detail}} 
 
                 <tr>
-                    {{#row}}}}
-                        <td {{#bold}}}}style="font-weight: bolder;"{{/bold}}}} {{^right}}}} align="right" {{/right}}}} >{{cell}}}}</td>
+                    {{#row}} 
+                        <td {{#bold}}}}style="font-weight: bolder;"{{/bold}}  {{^right}}  align="right" {{/right}}}} >{{cell}}  </td>
 
-                    {{/row}}}}
+                    {{/row}} 
 
                 </tr>
-            {{/_detail}}}}
+            {{/_detail}} 
 
         </table>
 

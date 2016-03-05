@@ -120,14 +120,13 @@ class GoodsIssue extends Document
             $sc = new SubConto($this, 681, $this->headerdata["total"]);
             $sc->setCustomer($this->headerdata["customer"]);
             $sc->save();
-            if ($this->headerdata['isnds'] > 0) {
-                Entry::AddEntry("643", "36", $this->headerdata["totalnds"], $this->document_id, $this->document_date);
-                $sc = new SubConto($this, 36, 0 - $this->headerdata['totalnds']);
-                $sc->setCustomer($this->headerdata["customer"]);
-                $sc->save();
-            }
         }
-
+        if ($this->headerdata['isnds'] > 0) {
+            Entry::AddEntry("643", "36", $this->headerdata["totalnds"], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 36, 0 - $this->headerdata['totalnds']);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+        }
 
         $sc = new SubConto($this, 36, $this->headerdata["total"]);
         $sc->setCustomer($this->headerdata["customer"]);

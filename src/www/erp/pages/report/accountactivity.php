@@ -93,16 +93,17 @@ class AccountActivity extends \ZippyERP\ERP\Pages\Base
         $startct = $data['startct'];
 
         foreach ($rs as $row) {
-            $amount = 0;
+            $amountdt = 0;
+            $amountct = 0;
             $enddt = 0;
             $endct = 0;
             if ($row['ad'] > 0) {
-                $amount = $row['ad'];
+                $amountdt = $row['ad'];
                 $enddt = $startdt + $row['ad'];
                 $endct = $startct;
             }
             if ($row['ac'] > 0) {
-                $amount = 0 - $row['ac'];
+                $amountct = $row['ac'];
                 $endct = $startct + $row['ac'];
                 $enddt = $startdt;
             }
@@ -118,7 +119,8 @@ class AccountActivity extends \ZippyERP\ERP\Pages\Base
             $detail[] = array(
                 "date" => date("d.m.Y", strtotime($row['document_date'])),
                 "doc" => $row['document_number'],
-                "amount" => H::fm($amount),
+                "amountdt" => H::fm($amountdt),
+                "amountct" => H::fm($amountct),
                 "startdt" => H::fm($startdt),
                 "startct" => H::fm($startct),
                 "enddt" => H::fm($enddt),

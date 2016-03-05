@@ -705,8 +705,8 @@ SPAN></TD>
 <TD CLASS="R23C3"><SPAN></SPAN></TD>
 <TD CLASS="R23C3"><SPAN></SPAN></TD>
 <TD CLASS="R23C5"><SPAN STYLE="white-space:nowrap;">1005</SPAN></TD>
-<TD CLASS="R23C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b0203}}</SPAN></TD>
-<TD CLASS="R23C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{b0204}}</SPAN></TD>
+<TD CLASS="R23C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1005}}</SPAN></TD>
+<TD CLASS="R23C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1005}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -722,8 +722,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R24C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; ">Основні засоби:</TD>
 <TD CLASS="R24C5"><SPAN STYLE="white-space:nowrap;">1010</SPAN></TD>
-<TD CLASS="R24C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b0303}}</SPAN></TD>
-<TD CLASS="R24C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{b0304}}</SPAN></TD>
+<TD CLASS="R24C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1010}}</SPAN></TD>
+<TD CLASS="R24C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1010}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -739,8 +739,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R24C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; ">     первiсна вартiсть </TD>
 <TD CLASS="R24C5"><SPAN STYLE="white-space:nowrap;">1011</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b0313}}</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{b0314}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1011}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1011}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -756,8 +756,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R24C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; ">     знос</TD>
 <TD CLASS="R24C5"><SPAN STYLE="white-space:nowrap;">1012</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b0323}}</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{b0324}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1012}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1012}}</SPAN></TD>
 <TD CLASS="R26C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R26C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -824,8 +824,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R30C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; "><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN STYLE="white-space:nowrap;">Усього&nbsp;за&nbsp;роздiлом&nbsp;I</SPAN></TD>
 <TD CLASS="R30C5"><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN STYLE="white-space:nowrap;">1095</SPAN></TD>
-<TD CLASS="R30C6" COLSPAN=3><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN STYLE="white-space:nowrap;">{{b0803}}</SPAN></TD>
-<TD CLASS="R30C6" COLSPAN=2><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN STYLE="white-space:nowrap;">{{b0804}}</SPAN></TD>
+<TD CLASS="R30C6" COLSPAN=3><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN STYLE="white-space:nowrap;">{{b1095}}</SPAN></TD>
+<TD CLASS="R30C6" COLSPAN=2><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN STYLE="white-space:nowrap;">{{e1095}}</SPAN></TD>
 <TD><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN></SPAN></DIV></TD>
 <TD><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN></SPAN></DIV></TD>
 <TD><DIV STYLE="width:100%;height:17px;overflow:hidden;"><SPAN></SPAN></DIV></TD>
@@ -910,8 +910,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R23C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Дебіторська&nbsp;заборгованість&nbsp;за&nbsp;товари,&nbsp;роботи,&nbsp;послуги:</SPAN></TD>
 <TD CLASS="R27C5"><SPAN STYLE="white-space:nowrap;">1125</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1125}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1125}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -927,8 +927,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R23C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Дебіторська&nbsp;заборгованість&nbsp;за&nbsp;розрахунками&nbsp;з&nbsp;бюджетом</SPAN></TD>
 <TD CLASS="R27C5"><SPAN STYLE="white-space:nowrap;">1135</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1135}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1135}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -944,8 +944,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R23C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;у&nbsp;тому&nbsp;числі&nbsp;з&nbsp;податку&nbsp;на&nbsp;прибуток</SPAN></TD>
 <TD CLASS="R27C5"><SPAN STYLE="white-space:nowrap;">1136</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1136}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1136}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -961,8 +961,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R23C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Інша&nbsp;поточна&nbsp;дебіторська&nbsp;заборгованість</SPAN></TD>
 <TD CLASS="R27C5"><SPAN STYLE="white-space:nowrap;">1155</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1155}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1155}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -995,8 +995,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R23C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Гроші&nbsp;та&nbsp;їх&nbsp;еквіваленти</SPAN></TD>
 <TD CLASS="R27C5"><SPAN STYLE="white-space:nowrap;">1165</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{e1165}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1165}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1029,8 +1029,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R23C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Інші&nbsp;оборотні&nbsp;активи</SPAN></TD>
 <TD CLASS="R27C5"><SPAN STYLE="white-space:nowrap;">1190</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1190}}</SPAN></TD>
+<TD CLASS="R25C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1190}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1046,8 +1046,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R30C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; "><SPAN STYLE="white-space:nowrap;">Усього&nbsp;за&nbsp;роздiлом&nbsp;II</SPAN></TD>
 <TD CLASS="R30C5"><SPAN STYLE="white-space:nowrap;">1195</SPAN></TD>
-<TD CLASS="R30C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R30C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R30C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1195}}</SPAN></TD>
+<TD CLASS="R30C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1195}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1080,8 +1080,8 @@ SPAN></TD>
 <TR CLASS=R4>
 <TD CLASS="R30C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; "><SPAN STYLE="white-space:nowrap;">Баланс</SPAN></TD>
 <TD CLASS="R45C5"><SPAN STYLE="white-space:nowrap;">1300</SPAN></TD>
-<TD CLASS="R30C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R30C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R30C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1300}}</SPAN></TD>
+<TD CLASS="R30C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1300}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1150,8 +1150,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R49C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; ">Зареєстрований (пайовий) капітал</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">1400</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1400}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1400}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1201,8 +1201,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R49C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; ">Нерозподiлений прибуток  (непокритий збиток)</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">1420</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1420}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{b1420}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1235,8 +1235,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R54C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Усього&nbsp;за&nbsp;роздiлом&nbsp;I</SPAN></TD>
 <TD CLASS="R54C5"><SPAN STYLE="white-space:nowrap;">1495</SPAN></TD>
-<TD CLASS="R54C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R54C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R54C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1495}}</SPAN></TD>
+<TD CLASS="R54C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{b1495}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1322,8 +1322,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R49C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; ">     товари, роботи, послуги</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">1615</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1615}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1615}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1339,8 +1339,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R60C0" COLSPAN=5 STYLE=" border-left-style: none;">     розрахунками з бюджетом</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">1620</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1620}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1620}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1356,8 +1356,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R60C0" COLSPAN=5 STYLE=" border-left-style: none;">          у тому числі з податку на прибуток</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">1621</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1621}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1621}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1390,8 +1390,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R49C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; ">     розрахунками з оплати праці</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">1630</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1630}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1630}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1424,8 +1424,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R60C0" COLSPAN=5 STYLE=" border-left-style: none;">Iншi поточні зобов'язання</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">1690</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1690}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1690}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1442,8 +1442,8 @@ SPAN></TD>
 <TD CLASS="R66C0" COLSPAN=3 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Усього&nbsp;за&nbsp;роздiлом&nbsp;III</SPAN></TD>
 <TD CLASS="R49C1" COLSPAN=2 STYLE="border-right: #000000 1px solid; "><SPAN></SPAN></TD>
 <TD CLASS="R66C5"><SPAN STYLE="white-space:nowrap;">1695</SPAN></TD>
-<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R66C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1695}}</SPAN></TD>
+<TD CLASS="R66C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1695}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1476,8 +1476,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R68C0" COLSPAN=5 STYLE=" border-left-style: none;border-right: #000000 1px solid; "><SPAN STYLE="white-space:nowrap;">Баланс</SPAN></TD>
 <TD CLASS="R68C5"><SPAN STYLE="white-space:nowrap;">1900</SPAN></TD>
-<TD CLASS="R68C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R68C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R68C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b1900}}</SPAN></TD>
+<TD CLASS="R68C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e1900}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1647,8 +1647,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R77C0" COLSPAN=5 STYLE=" border-left-style: none;">Чистий дохід від реалізації продукції (товарів, робіт, послуг)</TD>
 <TD CLASS="R77C5"><SPAN STYLE="white-space:nowrap;">2000</SPAN></TD>
-<TD CLASS="R77C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R77C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R77C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2000}}</SPAN></TD>
+<TD CLASS="R77C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2000}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1664,8 +1664,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R49C0" COLSPAN=5 STYLE=" border-left-style: none;">Інші операційні доходи </TD>
 <TD CLASS="R78C5"><SPAN STYLE="white-space:nowrap;">2120</SPAN></TD>
-<TD CLASS="R78C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R78C9" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R78C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2120}}</SPAN></TD>
+<TD CLASS="R78C9" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2120}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1681,8 +1681,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R56C5" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Інші&nbsp;доходи</SPAN></TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">2240</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2240}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2240}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1698,8 +1698,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R80C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Разом&nbsp;доходи&nbsp;(2000&nbsp;+&nbsp;2120&nbsp;+&nbsp;2240)</SPAN></TD>
 <TD CLASS="R66C5"><SPAN STYLE="white-space:nowrap;">2280</SPAN></TD>
-<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R66C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2280}}</SPAN></TD>
+<TD CLASS="R66C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2280}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1715,8 +1715,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R60C0" COLSPAN=5 STYLE=" border-left-style: none;">Собівартість реалізованої продукції (товарів, робіт, послуг)</TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">2050</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2050}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2050}}</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1732,8 +1732,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R49C0" COLSPAN=5 STYLE=" border-left-style: none;">Інші операційні витрати </TD>
 <TD CLASS="R78C5"><SPAN STYLE="white-space:nowrap;">2180</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2180}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2180}}</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1749,8 +1749,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R56C5" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Інші&nbsp;витрати</SPAN></TD>
 <TD CLASS="R49C5"><SPAN STYLE="white-space:nowrap;">2270</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2270}}</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2270}}</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1766,8 +1766,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R84C0" COLSPAN=5 STYLE=" border-left-style: none;">Разом витрати (2050 + 2180 + 2270)</TD>
 <TD CLASS="R84C5"><SPAN STYLE="white-space:nowrap;">2285</SPAN></TD>
-<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R84C9" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2285}}</SPAN></TD>
+<TD CLASS="R84C9" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2285}}</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1783,16 +1783,16 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R77C0" COLSPAN=5 STYLE=" border-left-style: none;">Фінансовий результат до оподаткування (2280 - 2285)</TD>
 <TD CLASS="R77C5"><SPAN STYLE="white-space:nowrap;">2290</SPAN></TD>
-<TD CLASS="R85C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R85C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R85C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2290}}</SPAN></TD>
+<TD CLASS="R85C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2290}}</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R53C11" COLSPAN=10><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 </TR>
 <TR CLASS=R0>
 <TD CLASS="R49C0" COLSPAN=5 STYLE=" border-left-style: none;">Податок на прибуток</TD>
 <TD CLASS="R78C5"><SPAN STYLE="white-space:nowrap;">2300</SPAN></TD>
-<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R78C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R49C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2300}}</SPAN></TD>
+<TD CLASS="R78C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2300}}</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD><SPAN></SPAN></TD>
@@ -1808,8 +1808,8 @@ SPAN></TD>
 <TR CLASS=R0>
 <TD CLASS="R66C0" COLSPAN=5 STYLE=" border-left-style: none;"><SPAN STYLE="white-space:nowrap;">Чистий&nbsp;прибуток&nbsp;(збиток)&nbsp;(2290&nbsp;-&nbsp;2300)</SPAN></TD>
 <TD CLASS="R84C5"><SPAN STYLE="white-space:nowrap;">2350</SPAN></TD>
-<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
-<TD CLASS="R66C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
+<TD CLASS="R66C6" COLSPAN=3><SPAN STYLE="white-space:nowrap;">{{b2350}}</SPAN></TD>
+<TD CLASS="R66C6" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{e2350}}</SPAN></TD>
 <TD CLASS="R53C11"><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 <TD CLASS="R53C11" COLSPAN=10><SPAN STYLE="white-space:nowrap;">-</SPAN></TD>
 </TR>

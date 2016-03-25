@@ -327,7 +327,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
 
         $file = $this->docform->import->getFile();
         $data = file_get_contents($file['tmp_name']);
-        $doc = \ZippyERP\ERP\Entity\Doc\TaxInvoiceIncome::import($data);
+        $doc = \ZippyERP\ERP\Entity\Doc\TaxInvoiceIncome::importGNAU($data);
 
         if ($doc instanceof \ZippyERP\ERP\Entity\Doc\TaxInvoiceIncome) {
             $this->_doc = $doc;

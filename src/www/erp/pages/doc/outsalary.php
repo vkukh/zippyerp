@@ -37,7 +37,6 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
-        $this->docform->add(new CheckBox('avans'));
         $this->docform->add(new Date('document_date'))->setDate(time());
 
 
@@ -67,8 +66,6 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_number->setText($this->_doc->document_number);
 
             $this->docform->document_date->setDate($this->_doc->document_date);
-            $this->docform->avans->setChecked($this->_doc->headerdata['avans']);
-
 
             $this->docform->year->setValue($this->_doc->headerdata['year']);
             $this->docform->month->setValue($this->_doc->headerdata['month']);
@@ -122,11 +119,8 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $list = Employee::find(" hiredate is not null ", "fullname");
         $this->_emplist = array();
         foreach ($list as $emp) {
-            if ($this->docform->avans->isChecked()) {
-                $emp->amount = $emp->avans;
-            } else {
-                $emp->amount = abs($emp->getForPayed($this->docform->document_date->getDate()));
-            }
+
+            $emp->amount = abs($emp->getForPayed($this->docform->document_date->getDate()));
 
             $emp->payed = $emp->amount;
             if ($emp->payed == 0)
@@ -215,20 +209,22 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-            'avans' => $this->docform->avans->isChecked(),
             'year' => $this->docform->year->getValue(),
             'month' => $this->docform->month->getValue()
         );
+        $amount = 0;
         $this->_doc->detaildata = array();
         foreach ($this->_emplist as $emp) {
             if ($emp->payed > 0) {
                 $this->_doc->detaildata[] = $emp->getData();
+                $amount += $emp->payed;
             }
         }
 
 
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->document_date->getDate();
+        $this->_doc->amount = $amount;
         $isEdited = $this->_doc->document_id > 0;
 
 

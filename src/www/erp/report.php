@@ -29,10 +29,11 @@ class Report
      * @param mixed $detail    Двумерный массив  табличной  части
      * @param mixed $summary   Список  полей  по  которым  вычисляются  итоговые  данные табличной части
      */
-    public function generate(array $header, array $detail = array())
+    public function generate(array $header, array $detail = array(), array $detail2 = array())
     {
 
         $header['_detail'] = $detail;
+        $header['_detail2'] = $detail2;
 
         $template = @file_get_contents(_ROOT . 'templates/erp/printforms/' . $this->_template);
         if (strlen($template) == 0) {

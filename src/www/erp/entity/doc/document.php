@@ -421,29 +421,6 @@ class Document extends \ZCL\DB\Entity
     }
 
     /**
-     *   Экспорт  во  внешние  форматы  данных
-     *
-     * @param mixed $type    тип  экспорта
-     * @return mixed  Возвращает  строку  с данными  или  false
-     */
-    public function export($type)
-    {
-        return null;
-    }
-
-    /**
-     * Импорт докумета   из  внешнего  источника.
-     *
-     * @param mixed $data  содержание файла
-     * @return mixed   Возвращает  документ  или  строку   с  ошибкой
-     */
-    public static function import($data)
-    {
-
-        return "";
-    }
-
-    /**
      * Возвращает  список  типов экспорта
      * Перегружается  дочерними  для  добавление  специфических  типов
      *
@@ -451,6 +428,39 @@ class Document extends \ZCL\DB\Entity
     public function supportedExport()
     {
         return array(self::EX_EXCEL);
+    }
+
+    /**
+     * Поиск  документа
+     *
+     * @param mixed $type   имя или id типа
+     * @param mixed $from   начало  периода  или  null
+     * @param mixed $to     конец  периода  или  null
+     * @param mixed $header значения заголовка
+     */
+    public static function search($type, $from, $to, $header = array())
+    {
+        $conn = $conn = \ZCL\DB\DB::getConnect();
+        ;
+        $where = "state= " . Document::STATE_EXECUTED;
+
+        if (strlen($type) > 0) {
+            if ($type > 0) {
+                $where = $where . " and  type_id ={$type}";
+            } else {
+                $where = $where . " and  meta_name='{$type}'";
+            }
+        }
+
+        if ($from > 0)
+            $where = $where . " and  document_date >= " . $conn->DBDate($from);
+        if ($to > 0)
+            $where = $where . " and  document_date <= " . $conn->DBDate($to);
+        foreach ($header as $key => $value) {
+            $where = $where . " and  content like '%<{$key}>{$value}</{$key}>%'";
+        }
+
+        return Document::find($where);
     }
 
 }

@@ -58,8 +58,8 @@ class TaxInvoice extends Document
             "contractdate" => H::addSpaces($contractdate),
             "contractnumber" => $contractnumber,
             "paytype" => $this->headerdata["paytype"],
-            "document_number" => H::addSpaces($this->document_number) ,
-            "document_date" => H::addSpaces(date('Ymd',$this->document_date)),
+            "document_number" => H::addSpaces($this->document_number),
+            "document_date" => H::addSpaces(date('Ymd', $this->document_date)),
             "totalnds" => H::fm($this->headerdata["totalnds"]),
             "total" => H::fm($total),
             "totalall" => H::fm($total + $this->headerdata["totalnds"])
@@ -74,13 +74,13 @@ class TaxInvoice extends Document
 
     public function Execute()
     {
-
+        
     }
 
     /**
      * Експорт  в  ГНАУ  формат XML
      */
-    public function export($type)
+    public function exportGNAU()
     {
 
 
@@ -107,9 +107,9 @@ class TaxInvoice extends Document
         $xml .="<C_REG>" . substr($firm['gni'], 0, 2) . "</C_REG> ";
         $xml .="<C_RAJ>" . substr($firm['gni'], 2, 2) . "</C_RAJ>";
 
-        $xml .= "<PERIOD_MONTH>" . date(m) . "</PERIOD_MONTH>";
+        $xml .= "<PERIOD_MONTH>" . date('m', $this->docoment_date) . "</PERIOD_MONTH>";
         $xml .= "<PERIOD_TYPE>1</PERIOD_TYPE>";
-        $xml .= "<PERIOD_YEAR>" . date('Y') . "</PERIOD_YEAR>";
+        $xml .= "<PERIOD_YEAR>" . date('Y', $this->docoment_date) . "</PERIOD_YEAR>";
         $xml .= "<C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>";
         $xml .= "<C_DOC_STAN>1</C_DOC_STAN>";
         $xml .= "<D_FILL>" . (string) date('dmY') . "</D_FILL>";
@@ -171,7 +171,5 @@ class TaxInvoice extends Document
     {
         return array(self::EX_EXCEL, self::EX_XML_GNAU);
     }
-
-
 
 }

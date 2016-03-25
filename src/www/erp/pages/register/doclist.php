@@ -20,8 +20,6 @@ use \ZippyERP\System\System;
 use \ZippyERP\System\Session;
 use \Zippy\Html\DataList\Paginator;
 
-//use Pinq\ITraversable ;
-
 /**
  * журнал  докуметов
  */

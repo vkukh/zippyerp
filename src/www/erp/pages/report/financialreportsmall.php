@@ -33,36 +33,37 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
         $this->add(new Panel('detail'))->setVisible(false);
         $this->detail->add(new RedirectLink('print', ""));
         $this->detail->add(new RedirectLink('html', ""));
-        $this->detail->add(new RedirectLink('word', ""));
+        $this->detail->add(new RedirectLink('xml', ""));
         $this->detail->add(new RedirectLink('excel', ""));
         $this->detail->add(new Label('preview'));
     }
 
     public function OnSubmit($sender)
     {
+        $header = $this->getHeaderData();
 
-        $html = $this->generateReport();
+        $html = $this->generateReport($header);
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "finreport25";
 
-        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
-
-
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
+        \ZippyERP\System\Session::getSession()->printxml = $this->exportGNAU($header);
+
+        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
 
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', $reportname);
         $this->detail->html->pagename = $reportpage;
         $this->detail->html->params = array('html', $reportname);
-        $this->detail->word->pagename = $reportpage;
-        $this->detail->word->params = array('doc', $reportname);
         $this->detail->excel->pagename = $reportpage;
         $this->detail->excel->params = array('xls', $reportname);
+        $this->detail->xml->pagename = $reportpage;
+        $this->detail->xml->params = array('xml', $reportname);
 
         $this->detail->setVisible(true);
     }
 
-    private function generateReport()
+    private function getHeaderData()
     {
 
 
@@ -292,6 +293,7 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
             'kodu' => (string) sprintf("%10d", $firm['kodu']),
             'kved' => (string) sprintf("%10s", $firm['kved']),
             'address' => $firm->dtreet . ' ' . $firm->city . ', ' . $firm->phone,
+            'firmname' => $firm['name'],
             'b1005' => H::fm_t1($b1005),
             'e1005' => H::fm_t1($e1005),
             'b1010' => H::fm_t1($b1010),
@@ -367,35 +369,182 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
         );
 
 
+        return $header;
+    }
+
+    public function generateReport($header)
+    {
+
+
 
         $report = new \ZippyERP\ERP\Report('financialreportsmall.tpl');
 
-        $html = $report->generate($header, $detail);
+
+
+        $html = $report->generate($header, array());
 
         return $html;
     }
 
+    public function exportGNAU($header)
+    {
+        $common = System::getOptions("common");
+        $firm = System::getOptions("firmdetail");
+        $jf = ($common['juridical'] == true ? "J" : "F" ) . "1201004";
+
+        $edrpou = (string) sprintf("%10d", $firm['edrpou']);
+        //2301 0011111111 F0901004 1 00 0000045 1 03 2015 2301.xml
+        $number = (string) sprintf('%07d', 1);
+        $filename = $firm['gni'] . $edrpou . $jf . "100{$number}1" . date('mY', time()) . $firm['gni'] . ".xml";
+        $filename = str_replace(' ', '0', $filename);
+
+        $xml = "<?xml version=\"1.0\" encoding=\"windows-1251\" ?>
+  <DECLAR xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"J0901106.xsd\">
+  <DECLARHEAD>
+  <TIN>{$firm['edrpou']}</TIN>
+  <C_DOC>J09</C_DOC>
+  <C_DOC_SUB>011</C_DOC_SUB>
+  <C_DOC_VER>6</C_DOC_VER>
+  <C_DOC_TYPE>0</C_DOC_TYPE>
+  <C_DOC_CNT>1</C_DOC_CNT>
+  <C_REG>" . substr($firm['gni'], 0, 2) . "</C_REG>
+  <C_RAJ>" . substr($firm['gni'], 2, 2) . "</C_RAJ>
+  <PERIOD_MONTH>12</PERIOD_MONTH>
+  <PERIOD_TYPE>5</PERIOD_TYPE>
+  <PERIOD_YEAR>" . $this->filter->yr->getValue() . "</PERIOD_YEAR>
+  <C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>
+  <C_DOC_STAN>1</C_DOC_STAN>
+  <LINKED_DOCS xsi:nil=\"true\" />
+  <D_FILL>" . (string) date('dmY') . "</D_FILL>
+  <SOFTWARE>Zippy ERP</SOFTWARE>
+  </DECLARHEAD>
+  <DECLARBODY>
+  <HFILL>" . (string) date('dmY') . "</HFILL>
+  <HNAME>{$firm['name']}<</HNAME>
+  <HTIN>{$firm['inn']}</HTIN>
+  <HKOATUU_S xsi:nil=\"true\" />
+  <HKOATUU />
+  <HKOPFG_S xsi:nil=\"true\" />
+  <HKOPFG xsi:nil=\"true\" />
+  <HKVED_S xsi:nil=\"true\" />
+  <HKVED xsi:nil=\"true\" />
+  <HKIL xsi:nil=\"true\" />
+  <HLOC xsi:nil=\"true\" />
+  <HTEL xsi:nil=\"true\" />
+  <HPERIOD />
+  <HZY>" . $this->filter->yr->getValue() . "</HZY>
+  <R1005G3 xsi:nil=\"true\" />
+  <R1005G4 xsi:nil=\"true\" />
+  <R1010G3 xsi:nil=\"true\" />
+  <R1010G4 xsi:nil=\"true\" />
+  <R1011G3 xsi:nil=\"true\" />
+  <R1011G4 xsi:nil=\"true\" />
+  <R1012G3 xsi:nil=\"true\" />
+  <R1012G4 xsi:nil=\"true\" />
+  <R1020G3 xsi:nil=\"true\" />
+  <R1020G4 xsi:nil=\"true\" />
+  <R1030G3 xsi:nil=\"true\" />
+  <R1030G4 xsi:nil=\"true\" />
+  <R1090G3 xsi:nil=\"true\" />
+  <R1090G4 xsi:nil=\"true\" />
+  <R1095G3 xsi:nil=\"true\" />
+  <R1095G4 xsi:nil=\"true\" />
+  <R1100G3>1000.0</R1100G3>
+  <R1100G4>2000.0</R1100G4>
+  <R1103G3 xsi:nil=\"true\" />
+  <R1103G4 xsi:nil=\"true\" />
+  <R1110G3 xsi:nil=\"true\" />
+  <R1110G4 xsi:nil=\"true\" />
+  <R1125G3 xsi:nil=\"true\" />
+  <R1125G4 xsi:nil=\"true\" />
+  <R1135G3 xsi:nil=\"true\" />
+  <R1135G4 xsi:nil=\"true\" />
+  <R1136G3 xsi:nil=\"true\" />
+  <R1136G4 xsi:nil=\"true\" />
+  <R1155G3 xsi:nil=\"true\" />
+  <R1155G4 xsi:nil=\"true\" />
+  <R1160G3 xsi:nil=\"true\" />
+  <R1160G4 xsi:nil=\"true\" />
+  <R1165G3 xsi:nil=\"true\" />
+  <R1165G4 xsi:nil=\"true\" />
+  <R1170G3 xsi:nil=\"true\" />
+  <R1170G4 xsi:nil=\"true\" />
+  <R1190G3 xsi:nil=\"true\" />
+  <R1190G4 xsi:nil=\"true\" />
+  <R1195G3>1000.0</R1195G3>
+  <R1195G4>2000.0</R1195G4>
+  <R1200G3 xsi:nil=\"true\" />
+  <R1200G4 xsi:nil=\"true\" />
+  <R1300G3>1000.0</R1300G3>
+  <R1300G4>2000.0</R1300G4>
+  <R1400G3 xsi:nil=\"true\" />
+  <R1400G4 xsi:nil=\"true\" />
+  <R1410G3 xsi:nil=\"true\" />
+  <R1410G4 xsi:nil=\"true\" />
+  <R1415G3 xsi:nil=\"true\" />
+  <R1415G4 xsi:nil=\"true\" />
+  <R1420G3 xsi:nil=\"true\" />
+  <R1420G4 xsi:nil=\"true\" />
+  <R1425G3 xsi:nil=\"true\" />
+  <R1425G4 xsi:nil=\"true\" />
+  <R1495G3 xsi:nil=\"true\" />
+  <R1495G4 xsi:nil=\"true\" />
+  <R1595G3 xsi:nil=\"true\" />
+  <R1595G4 xsi:nil=\"true\" />
+  <R1600G3 xsi:nil=\"true\" />
+  <R1600G4 xsi:nil=\"true\" />
+  <R1610G3 xsi:nil=\"true\" />
+  <R1610G4 xsi:nil=\"true\" />
+  <R1615G3 xsi:nil=\"true\" />
+  <R1615G4 xsi:nil=\"true\" />
+  <R1620G3 xsi:nil=\"true\" />
+  <R1620G4 xsi:nil=\"true\" />
+  <R1621G3 xsi:nil=\"true\" />
+  <R1621G4 xsi:nil=\"true\" />
+  <R1625G3 xsi:nil=\"true\" />
+  <R1625G4 xsi:nil=\"true\" />
+  <R1630G3 xsi:nil=\"true\" />
+  <R1630G4 xsi:nil=\"true\" />
+  <R1665G3 xsi:nil=\"true\" />
+  <R1665G4 xsi:nil=\"true\" />
+  <R1690G3 xsi:nil=\"true\" />
+  <R1690G4 xsi:nil=\"true\" />
+  <R1695G3 xsi:nil=\"true\" />
+  <R1695G4 xsi:nil=\"true\" />
+  <R1700G3 xsi:nil=\"true\" />
+  <R1700G4 xsi:nil=\"true\" />
+  <R1900G3>1000.0</R1900G3>
+  <R1900G4>2000.0</R1900G4>
+  <HPERIOD1 />
+  <HZY1 />
+  <R2000G3 xsi:nil=\"true\" />
+  <R2000G4 xsi:nil=\"true\" />
+  <R2120G3 xsi:nil=\"true\" />
+  <R2120G4 xsi:nil=\"true\" />
+  <R2240G3 xsi:nil=\"true\" />
+  <R2240G4 xsi:nil=\"true\" />
+  <R2280G3 xsi:nil=\"true\" />
+  <R2280G4 xsi:nil=\"true\" />
+  <R2050G3 xsi:nil=\"true\" />
+  <R2050G4 xsi:nil=\"true\" />
+  <R2180G3 xsi:nil=\"true\" />
+  <R2180G4 xsi:nil=\"true\" />
+  <R2270G3 xsi:nil=\"true\" />
+  <R2270G4 xsi:nil=\"true\" />
+  <R2285G3 xsi:nil=\"true\" />
+  <R2285G4 xsi:nil=\"true\" />
+  <R2290G3 xsi:nil=\"true\" />
+  <R2290G4 xsi:nil=\"true\" />
+  <R2300G3 xsi:nil=\"true\" />
+  <R2300G4 xsi:nil=\"true\" />
+  <R2350G3 xsi:nil=\"true\" />
+  <R2350G4 xsi:nil=\"true\" />
+  <HBOS />
+  <HBUH xsi:nil=\"true\" />
+  </DECLARBODY>
+  </DECLAR>";
+
+        return $xml;
+    }
+
 }
-
-/*
-     П20003=    Итоги.КО("70.1") + Итоги.КО("70.2") + Итоги.КО("70.3")
-     -   Итоги.ОБ("70", "64.1") - Итоги.ОБ("70", "64.3") - Итоги.ОБ("70", "64.2")
-     -  Итоги.ОБ("70", "36") - Итоги.ОБ("70", "30") - Итоги.ОБ("70", "31")
-     - Итоги.ОБ("70", "68.5") +  Итоги.ОБ("30", "70.4") + Итоги.ОБ("31", "70.4")
-            +Итоги.ОБ("64.3", "70.4");
-            +Итоги.ОБ("64.4", "70.4");
-            - Итоги.ОБ("70.4", "63")
-     */
-
-
-
-
-
-
-
-
-
-
-
-
-

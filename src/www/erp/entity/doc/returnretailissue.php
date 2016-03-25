@@ -63,7 +63,6 @@ class ReturnRetailIssue extends Document
             $sc = new SubConto($this, 282, ($value['quantity'] / 1000) * $stock->price);
             $sc->setStock($stock->stock_id);
             $sc->setQuantity($value['quantity']);
-
             $sc->save();
         }
         // списываем  наценку

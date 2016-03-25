@@ -35,6 +35,11 @@ class ShowReport extends \Zippy\Html\WebPage
             header("Content-Disposition: attachment;Filename={$filename}.html");
             header("Content-Transfer-Encoding: binary");
         }
+        if ($type == "xml") {
+            header("Content-type: text/xml");
+            header("Content-Disposition: attachment;Filename={$filename}.xml");
+            header("Content-Transfer-Encoding: binary");
+        }
 
         echo $html;
 

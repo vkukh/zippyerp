@@ -11,6 +11,7 @@ use \Zippy\Html\Label;
 use \Zippy\Html\Form\AutocompleteTextInput;
 use \Zippy\Html\Form\Button;
 use \Zippy\Html\Form\SubmitButton;
+use \ZippyERP\ERP\Consts;
 use \ZippyERP\System\System;
 use \ZippyERP\System\Application as App;
 use \ZippyERP\ERP\Entity\Doc\Document;
@@ -72,37 +73,47 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
     public function optypeOnChange($sender)
     {
         $optype = $this->docform->optype->getValue();
-        if ($optype == CRIN::TYPEOP_CUSTOMER) {
+        if ($optype == Consts::TYPEOP_CUSTOMER_IN) {
             $this->docform->lblopdetail->setText('Покупатель');
         }
-        if ($optype == CRIN::TYPEOP_BANK) {
-            $this->docform->lblopdetail->setText('Р/счет');
+        if ($optype == Consts::TYPEOP_CUSTOMER_IN_BACK) {
+            $this->docform->lblopdetail->setText('Поставщик');
         }
-        if ($optype == CRIN::TYPEOP_CASH) {
+
+        if ($optype == Consts::TYPEOP_CASH_IN) {
             $this->docform->lblopdetail->setText('Сотрудник');
         }
-        if ($optype == CRIN::TYPEOP_RET) {
+        if ($optype == Consts::TYPEOP_RET_IN) {
             $this->docform->lblopdetail->setText('Магазины');
         }
-        $this->docform->nds->setVisible($optype == CRIN::TYPEOP_CUSTOMER);
+        $this->docform->nds->setVisible($optype == Consts::TYPEOP_CUSTOMER_IN);
         $this->docform->opdetail->setKey(0);
         $this->docform->opdetail->setText('');
+        if ($optype == Consts::TYPEOP_BANK_IN) {
+            $this->docform->lblopdetail->setText('Р/счет');
+            $acc = MoneyFund::getFirst('ftype=' . MoneyFund::MF_BANK);
+            $this->docform->opdetail->setKey($acc->id);
+            $this->docform->opdetail->setText($acc->title);
+        }
     }
 
     public function opdetailOnAutocomplete($sender)
     {
         $text = $sender->getValue();
         $optype = $this->docform->optype->getValue();
-        if ($optype == CRIN::TYPEOP_CUSTOMER) {
+        if ($optype == Consts::TYPEOP_CUSTOMER_IN) {
             return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
         }
-        if ($optype == CRIN::TYPEOP_BANK) {
+        if ($optype == Consts::TYPEOP_CUSTOMER_IN_BACK) {
+            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
+        }
+        if ($optype == Consts::TYPEOP_BANK_IN) {
             return MoneyFund::findArray('title', "title like '%{$text}%' ");
         }
-        if ($optype == CRIN::TYPEOP_CASH) {
+        if ($optype == Consts::TYPEOP_CASH_IN) {
             return Employee::findArray('fullname', "fullname like '%{$text}%' ");
         }
-        if ($optype == CRIN::TYPEOP_RET) {
+        if ($optype == Consts::TYPEOP_RET_IN) {
             return Store::findArray('storename', "storename like '%{$text}%' and (store_type = " . Store::STORE_TYPE_RET . ' or store_type=' . Store::STORE_TYPE_RET_SUM . ") ");
         }
     }

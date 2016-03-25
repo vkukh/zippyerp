@@ -7,6 +7,7 @@ use ZippyERP\ERP\Entity\Entry;
 use ZippyERP\ERP\Entity\Customer;
 use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Entity\SubConto;
+use \ZippyERP\ERP\Consts as C;
 
 /**
  * Класс-сущность  документ банковская выписка
@@ -20,6 +21,9 @@ class BankStatement extends Document
     const CASHIN = 3;      // приходный кассовый  ордер
     const CASHOUT = 4;     // расходный кассовый  ордер
     const TAX = 5;   // Оплата  налогов
+    const IN_BACK = 6; //возврат от поставщика
+    const OUT_BACK = 7; //возврат покупателю
+    const OUT_COMMON = 8; //Общие накладные расходы
 
     public function generateReport()
     {
@@ -74,11 +78,18 @@ class BankStatement extends Document
 
 
                 Entry::AddEntry($acc, 31, $value['amount'], $this->document_id, $this->document_date);
+
                 $sc = new SubConto($this, $acc, $value['amount']);
                 $sc->setCustomer($value['customer']);
                 $sc->save();
                 $sc = new SubConto($this, 31, 0 - $value['amount']);
                 $sc->setMoneyfund($this->headerdata['bankaccount']);
+                if ($value['prepayment'] == 'true') {
+                    $sc->setExtCode(C::TYPEOP_CUSTOMER_OUT_PREV);
+                } else {
+                    $sc->setExtCode(C::TYPEOP_CUSTOMER_OUT);
+                }
+
                 $sc->save();
 
                 if ($value['nds'] > 0) {
@@ -88,6 +99,21 @@ class BankStatement extends Document
                     $sc->save();
                 }
             }
+            // возврат  от поставщика
+            if ($value['optype'] == self::IN_BACK) {
+                $acc = 63;
+
+                Entry::AddEntry($acc, 31, 0 - $value['amount'], $this->document_id, $this->document_date);
+
+                $sc = new SubConto($this, $acc, 0 - $value['amount']);
+                $sc->setCustomer($value['customer']);
+                $sc->save();
+                $sc = new SubConto($this, 31, $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->setExtCode(C::TYPEOP_CUSTOMER_IN_BACK);
+                $sc->save();
+            }
+
             // оплата  от покупателя
             if ($value['optype'] == self::IN) {
 
@@ -102,6 +128,12 @@ class BankStatement extends Document
                 $sc->save();
                 $sc = new SubConto($this, 31, $value['amount']);
                 $sc->setMoneyfund($this->headerdata['bankaccount']);
+                if ($value['prepayment'] == 'true') {
+                    $sc->setExtCode(C::TYPEOP_CUSTOMER_IN_PREV);
+                } else {
+                    $sc->setExtCode(C::TYPEOP_CUSTOMER_IN);
+                }
+
                 $sc->save();
 
                 if ($value['nds'] > 0) {
@@ -111,6 +143,23 @@ class BankStatement extends Document
                     $sc->save();
                 }
             }
+
+            // возврат покупателю
+            if ($value['optype'] == self::OUT_BACK) {
+
+                $acc = 36;
+
+
+                Entry::AddEntry('31', $acc, 0 - $value['amount'], $this->document_id, $this->document_date);
+                $sc = new SubConto($this, $acc, $value['amount']);
+                $sc->setCustomer($value['customer']);
+                $sc->save();
+                $sc = new SubConto($this, 31, 0 - $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->setExtCode(C::TYPEOP_CUSTOMER_OUT_BACK);
+                $sc->save();
+            }
+
             // оплата  налогов
             if ($value['optype'] == self::TAX) {
 
@@ -128,12 +177,31 @@ class BankStatement extends Document
                 $sc->save();
             }
 
+            //накладные  расходы
+            if ($value['optype'] == self::OUT_COMMON) {
+
+
+                Entry::AddEntry(94, "31", $value['amount'], $this->document_id, $this->document_date);
+
+                $sc = new SubConto($this, 94, $value['amount']);
+                $sc->save();
+                $sc = new SubConto($this, 31, 0 - $value['amount']);
+                $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->setExtCode(C::TYPEOP_COMMON_EXPENCES);
+                $sc->save();
+            }
+
             // снятие  наличности
             if ($value['optype'] == self::CASHIN) {
-                //$cash = MoneyFund::getCash();
+                $cash = MoneyFund::getCash();
                 Entry::AddEntry('30', "31", $value['amount'], $this->document_id, $this->document_date);
                 $sc = new SubConto($this, 31, 0 - $value['amount']);
                 $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->setExtCode(C::TYPEOP_BANK_IN);
+                $sc->save();
+                $sc = new SubConto($this, 30, $value['amount']);
+                $sc->setMoneyfund($cash->id);
+                $sc->setExtCode(C::TYPEOP_BANK_IN);
                 $sc->save();
             }
             // опприходование  наличности
@@ -142,6 +210,11 @@ class BankStatement extends Document
                 Entry::AddEntry('31', "30", $value['amount'], $this->document_id, $this->document_date);
                 $sc = new SubConto($this, 31, $value['amount']);
                 $sc->setMoneyfund($this->headerdata['bankaccount']);
+                $sc->setExtCode(C::TYPEOP_BANK_OUT);
+                $sc->save();
+                $sc = new SubConto($this, 30, 0 - $value['amount']);
+                $sc->setMoneyfund($cash->id);
+                $sc->setExtCode(C::TYPEOP_BANK_IN);
                 $sc->save();
             }
 
@@ -161,6 +234,9 @@ class BankStatement extends Document
         $list[self::CASHIN] = "Поступление наличности";
         $list[self::CASHOUT] = "Снятие наличности";
         $list[self::TAX] = "Оплата  налогов";
+        $list[self::IN_BACK] = "Возврат от  поставщика";
+        $list[self::OUT_BACK] = "Возврат покупателю";
+        $list[self::OUT_COMMON] = "Общие накладные расходы";
         return $list;
     }
 

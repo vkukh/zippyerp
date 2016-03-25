@@ -252,7 +252,14 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->editdetail->editdoc->setVisible(false);
             $this->editdetail->editcustomer->setVisible(false);
             $this->editdetail->editprepayment->setVisible(false);
-         }
+        }
+        if ($sender->getValue() == BS::OUT_COMMON) {
+            $this->editdetail->editnds->setVisible(false);
+            $this->editdetail->editdoc->setVisible(false);
+            $this->editdetail->editcustomer->setVisible(false);
+            $this->editdetail->editprepayment->setVisible(false);
+            $this->editdetail->editpayment->setVisible(false);
+        }
         $this->editdetail->editcustomer->setKey(0);
 
         $this->editdetail->editcustomer->setText('');
@@ -264,12 +271,20 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $text = $sender->getValue();
         $where = "";
         if ($type == BS::IN) {
-            //если  приход то  продавцы
+            //если  приход то  продавца
+            $where = "  and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+        }
+        if ($type == BS::IN_BACK) {
+            //если  возврат от  покупателя
             $where = "  and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+        }
+        if ($type == BS::OUT_BACK) {
+            //если  возврат продавцу
+            $where = "  and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
         }
         if ($type == BS::OUT) {
             //если  расход  то  покупатели
-            $where = "  and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "  and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
         }
         if ($type == BS::TAX) {
             // оплата  налогов  и  сборов

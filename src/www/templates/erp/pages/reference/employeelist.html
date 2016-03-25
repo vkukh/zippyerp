@@ -88,15 +88,15 @@
                         </div>
                          <div class="form-group">
                             <label for="editsalary">Зарплата</label>
-                            <input    zippy="editsalary" class="form-control">
+                            <input    zippy="editsalary" class="form-control" pattern= "[0-9\.]+" >
 
                         </div>
                        <div class="form-group">
                             <label for="editavans">Аванс</label>
-                            <input    zippy="editavans" class="form-control">
+                            <input    zippy="editavans" class="form-control" pattern= "[0-9\.]+" >
 
                         </div>
-                          
+
                         <div class="form-group">
                             <label for="editexptype">Тип затрат</label>
                             <select zippy="editexptype" class="form-control">
@@ -111,7 +111,12 @@
                               <input type="checkbox" zippy="editcombined"> Совместитель
                             </label>
                           </div>
- 
+                       <div class="checkbox">
+                            <label>
+                              <input type="checkbox" zippy="editinvalid"> Инвалид
+                            </label>
+                          </div>
+
                 </div>
                     </form>
                   <hr>

@@ -30,6 +30,7 @@ class Employee extends \ZCL\DB\Entity
         $this->detail .= "<salary>{$this->salary}</salary>";
         $this->detail .= "<avans>{$this->avans}</avans>";
         $this->detail .= "<combined>{$this->combined}</combined>";
+        $this->detail .= "<invalid>{$this->invalid}</invalid>";
         $this->detail .= "</detail>";
 
         return true;
@@ -49,6 +50,7 @@ class Employee extends \ZCL\DB\Entity
         $this->salary = (int) ($xml->salary[0]);
         $this->avans = (int) ($xml->avans[0]);
         $this->combined = (int) ($xml->combined[0]);
+        $this->invalid = (int) ($xml->invalid[0]);
 
 
         parent::afterLoad();

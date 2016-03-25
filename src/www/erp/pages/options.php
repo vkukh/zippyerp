@@ -57,15 +57,19 @@ class Options extends \ZippyERP\System\Pages\AdminBase
 
         $this->add(new Form('tax'));
         $this->tax->add(new SubmitButton('taxsave'))->setClickHandler($this, 'saveTaxOnClick');
-        $this->tax->add(new TextInput('minsalary'));
-        $this->tax->add(new TextInput('nds'));
-        $this->tax->add(new TextInput('onetax'));
-  
-        $this->tax->add(new TextInput('ecbfot'));
-        $this->tax->add(new TextInput('taxfl'));
+        $this->tax->add(new TextInput('minsalary', 0));
+        $this->tax->add(new TextInput('minnsl', 0));
+        $this->tax->add(new TextInput('nsl', 0));
+        $this->tax->add(new TextInput('nds', 0));
+        $this->tax->add(new TextInput('onetax', 0));
+
+        $this->tax->add(new TextInput('ecbfot', 0));
+        $this->tax->add(new TextInput('ecbinv', 0));
+        $this->tax->add(new TextInput('taxfl', 0));
+        $this->tax->add(new TextInput('military', 0));
 
 
-        $detail =  System::getOptions("firmdetail");
+        $detail = System::getOptions("firmdetail");
 
         if (!is_array($detail))
             $detail = array();
@@ -107,16 +111,20 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->common->juridical->setChecked($common['juridical']);
         $this->common->basestore->setValue($common['basestore']);
 
-        $tax =  System::getOptions("tax");
+        $tax = System::getOptions("tax");
         if (!is_array($tax))
             $tax = array();
 
+        $this->tax->minnsl->setText($tax['minnsl']);
+        $this->tax->nsl->setText($tax['nsl']);
         $this->tax->minsalary->setText($tax['minsalary']);
         $this->tax->nds->setText($tax['nds']);
         $this->tax->onetax->setText($tax['onetax']);
- 
+
         $this->tax->ecbfot->setText($tax['ecbfot']);
+        $this->tax->ecbinv->setText($tax['ecbinv']);
         $this->tax->taxfl->setText($tax['taxfl']);
+        $this->tax->military->setText($tax['military']);
     }
 
     public function saveDetailOnClick($sender)
@@ -177,10 +185,14 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $tax = array();
 
         $tax['minsalary'] = $this->tax->minsalary->getText();
+        $tax['nsl'] = $this->tax->nsl->getText();
+        $tax['minnsl'] = $this->tax->minnsl->getText();
         $tax['nds'] = $this->tax->nds->getText();
         $tax['onetax'] = $this->tax->onetax->getText();
-         $tax['ecbfot'] = $this->tax->ecbfot->getText();
+        $tax['ecbfot'] = $this->tax->ecbfot->getText();
+        $tax['ecbinv'] = $this->tax->ecbinv->getText();
         $tax['taxfl'] = $this->tax->taxfl->getText();
+        $tax['military'] = $this->tax->military->getText();
 
         System::setOptions("tax", $tax);
         $this->setSuccess('Настройки сохранены');

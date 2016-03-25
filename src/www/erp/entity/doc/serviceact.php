@@ -56,7 +56,6 @@ class ServiceAct extends Document
         $total = $this->headerdata['total'];
         $customer_id = $this->headerdata["customer"];
 
-        // \ZippyERP\ERP\Entity\Customer::AddActivity($customer_id, 0 - $total, $this->document_id);
 
         if ($this->headerdata['cash'] == true) {
 

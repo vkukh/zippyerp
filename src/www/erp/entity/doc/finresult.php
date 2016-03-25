@@ -69,6 +69,9 @@ class FinResult extends Document
         $acc94 = Account::load("94");
         $s94 = $acc94->getSaldo($this->document_date);
         Entry::AddEntry(79, 94, abs($s94), $this->document_id, $this->document_date);
+        $acc97 = Account::load("97");
+        $s97 = $acc97->getSaldo($this->document_date);
+        Entry::AddEntry(79, 97, abs($s97), $this->document_id, $this->document_date);
 
         return true;
     }

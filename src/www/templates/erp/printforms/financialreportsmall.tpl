@@ -336,7 +336,7 @@ SPAN></TD>
 <COL WIDTH=34>
 <TR CLASS=R4>
 <TD CLASS="R5C0" COLSPAN=2 STYLE=" border-left-style: none;">Підприємство </TD>
-<TD CLASS="R5C2" COLSPAN=5>ТОВ "Добро"</TD>
+<TD CLASS="R5C2" COLSPAN=5>{{firmname}}</TD>
 <TD CLASS="R5C8" COLSPAN=2><SPAN STYLE="white-space:nowrap;">за&nbsp;ЄДРПОУ</SPAN></TD>
 <TD CLASS="R5C9" COLSPAN=2><SPAN STYLE="white-space:nowrap;">{{edrpou}}</SPAN></TD>
 <TD><SPAN></SPAN></TD>

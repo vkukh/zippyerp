@@ -73,13 +73,13 @@ class TaxInvoice2 extends Document
 
     public function Execute()
     {
-
+        
     }
 
     /**
      * Експорт  в  ГНАУ  формат XML
      */
-    public function export($type)
+    public function exportGNAU()
     {
 
 
@@ -170,7 +170,5 @@ class TaxInvoice2 extends Document
     {
         return array(self::EX_EXCEL, self::EX_XML_GNAU);
     }
-
-
 
 }

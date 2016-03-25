@@ -29,7 +29,7 @@ class GoodsIssue extends Document
             if (isset($detail[$value['item_id']])) {
                 $detail[$value['item_id']]['quantity'] += $value['quantity'];
             } else {
-                $detail[$value['item_id']] = array("no" => $i++,
+                $detail[] = array("no" => $i++,
                     "tovar_name" => $value['itemname'],
                     "measure" => $value['measure_name'],
                     "quantity" => $value['quantity'] / 1000,
@@ -73,6 +73,8 @@ class GoodsIssue extends Document
             $sc = new SubConto($this, $item['type'], 0 - $item['partion'] * ($item['quantity'] / 1000));
             $sc->setStock($stock->stock_id);
             $sc->setQuantity(0 - $item['quantity']);
+            $sc->setExtCode($item['price'] - $item['partion']); //Для АВС
+
             $sc->save();
 
             //группируем по синтетическим счетам

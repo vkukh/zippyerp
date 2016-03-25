@@ -66,6 +66,7 @@ class RegisterReceipt extends Document
             $sc = new SubConto($this, 282, $return == 1 ? 0 - ($value['quantity'] / 1000) * $stock->price : ($value['quantity'] / 1000) * $stock->price);
             $sc->setStock($stock->stock_id);
             $sc->setQuantity($return == 1 ? 0 - $value['quantity'] : $value['quantity']);
+            $sc->setExtCode($stock->price - $stock->partion);  //Для АВС
             $sc->save();
         }
 

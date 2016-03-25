@@ -1,3 +1,10 @@
+--
+-- Скрипт сгенерирован Devart dbForge Studio for MySQL, Версия 6.3.358.0
+-- Домашняя страница продукта: http://www.devart.com/ru/dbforge/mysql/studio
+-- Дата скрипта: 25.03.2016 13:50:45
+-- Версия сервера: 5.1.41-community
+-- Версия клиента: 4.1
+--
 
 
 --
@@ -16,7 +23,7 @@ CREATE TABLE IF NOT EXISTS erp_account_entry (
   INDEX document_id (document_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 365
+AUTO_INCREMENT = 125
 AVG_ROW_LENGTH = 24
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -32,7 +39,7 @@ CREATE TABLE IF NOT EXISTS erp_account_plan (
   PRIMARY KEY (acc_code)
 )
 ENGINE = MYISAM
-AVG_ROW_LENGTH = 56
+AVG_ROW_LENGTH = 57
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -60,7 +67,7 @@ CREATE TABLE IF NOT EXISTS erp_account_subconto (
   INDEX stock_id (stock_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 522
+AUTO_INCREMENT = 175
 AVG_ROW_LENGTH = 48
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -121,8 +128,8 @@ CREATE TABLE IF NOT EXISTS erp_customer (
   INDEX contact_id (contact_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 26
-AVG_ROW_LENGTH = 288
+AUTO_INCREMENT = 27
+AVG_ROW_LENGTH = 289
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -161,8 +168,8 @@ CREATE TABLE IF NOT EXISTS erp_document (
   INDEX document_date (document_date)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 70
-AVG_ROW_LENGTH = 1260
+AUTO_INCREMENT = 25
+AVG_ROW_LENGTH = 673
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -182,8 +189,8 @@ CREATE TABLE IF NOT EXISTS erp_document_update_log (
   INDEX user_id (user_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 402
-AVG_ROW_LENGTH = 38
+AUTO_INCREMENT = 117
+AVG_ROW_LENGTH = 37
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -304,8 +311,8 @@ CREATE TABLE IF NOT EXISTS erp_metadata (
   PRIMARY KEY (meta_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 77
-AVG_ROW_LENGTH = 106
+AUTO_INCREMENT = 88
+AVG_ROW_LENGTH = 107
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -324,7 +331,7 @@ CREATE TABLE IF NOT EXISTS erp_metadata_access (
   PRIMARY KEY (metadata_access_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 23
+AUTO_INCREMENT = 43
 AVG_ROW_LENGTH = 17
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -370,18 +377,17 @@ CREATE TABLE IF NOT EXISTS erp_staff_employee (
   employee_id int(11) NOT NULL AUTO_INCREMENT,
   position_id int(11) NOT NULL,
   department_id int(11) NOT NULL,
-  salary_type int(11) NOT NULL,
-  salary int(11) NOT NULL,
-  hireday date DEFAULT NULL,
-  fireday date DEFAULT NULL,
   login varchar(64) DEFAULT NULL,
   contact_id int(11) NOT NULL COMMENT 'физ. лицо',
+  detail text DEFAULT NULL,
+  hiredate date NOT NULL,
+  firedate date DEFAULT NULL,
   PRIMARY KEY (employee_id),
   INDEX contact_id (contact_id)
 )
 ENGINE = MYISAM
 AUTO_INCREMENT = 23
-AVG_ROW_LENGTH = 22
+AVG_ROW_LENGTH = 92
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -431,7 +437,7 @@ CREATE TABLE IF NOT EXISTS erp_store_stock (
   PRIMARY KEY (stock_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 23
+AUTO_INCREMENT = 5
 AVG_ROW_LENGTH = 22
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -506,7 +512,7 @@ CREATE TABLE IF NOT EXISTS system_options (
   UNIQUE INDEX optname (optname)
 )
 ENGINE = MYISAM
-AVG_ROW_LENGTH = 252
+AVG_ROW_LENGTH = 258
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -542,7 +548,7 @@ CREATE TABLE IF NOT EXISTS system_session (
   INDEX sess2_expiry (expiry)
 )
 ENGINE = MYISAM
-AVG_ROW_LENGTH = 78988
+AVG_ROW_LENGTH = 91273
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -584,7 +590,7 @@ COLLATE utf8_general_ci;
 --
 -- Скрипт сгенерирован Devart dbForge Studio for MySQL, Версия 6.3.358.0
 -- Домашняя страница продукта: http://www.devart.com/ru/dbforge/mysql/studio
--- Дата скрипта: 05.02.2016 14:42:10
+-- Дата скрипта: 25.03.2016 13:52:13
 -- Версия сервера: 5.1.41-community
 -- Версия клиента: 4.1
 --
@@ -593,7 +599,7 @@ COLLATE utf8_general_ci;
 --
 -- Описание для представления erp_contact_view
 --
-DROP VIEW IF EXISTS erp_contact_view  ;
+DROP VIEW IF EXISTS erp_contact_view CASCADE;
 CREATE
 VIEW erp_contact_view
 AS
@@ -618,7 +624,7 @@ FROM ((`erp_contact`
 --
 -- Описание для представления erp_customer_view
 --
-DROP VIEW IF EXISTS erp_customer_view  ;
+DROP VIEW IF EXISTS erp_customer_view CASCADE;
 CREATE
 VIEW erp_customer_view
 AS
@@ -634,7 +640,7 @@ FROM `erp_customer` `c`;
 --
 -- Описание для представления erp_document_view
 --
-DROP VIEW IF EXISTS erp_document_view  ;
+DROP VIEW IF EXISTS erp_document_view CASCADE;
 CREATE
 VIEW erp_document_view
 AS
@@ -662,7 +668,7 @@ FROM ((`erp_document` `d`
 --
 -- Описание для представления erp_item_view
 --
-DROP VIEW IF EXISTS erp_item_view  ;
+DROP VIEW IF EXISTS erp_item_view CASCADE;
 CREATE
 VIEW erp_item_view
 AS
@@ -686,7 +692,7 @@ FROM ((`erp_item` `t`
 --
 -- Описание для представления erp_message_view
 --
-DROP VIEW IF EXISTS erp_message_view  ;
+DROP VIEW IF EXISTS erp_message_view CASCADE;
 CREATE
 VIEW erp_message_view
 AS
@@ -705,7 +711,7 @@ FROM (`erp_message`
 --
 -- Описание для представления erp_metadata_access_view
 --
-DROP VIEW IF EXISTS erp_metadata_access_view  ;
+DROP VIEW IF EXISTS erp_metadata_access_view CASCADE;
 CREATE
 VIEW erp_metadata_access_view
 AS
@@ -726,7 +732,7 @@ FROM ((`erp_metadata_access` `a`
 --
 -- Описание для представления erp_staff_employee_view
 --
-DROP VIEW IF EXISTS erp_staff_employee_view  ;
+DROP VIEW IF EXISTS erp_staff_employee_view CASCADE;
 CREATE
 VIEW erp_staff_employee_view
 AS
@@ -734,11 +740,8 @@ SELECT
   `e`.`employee_id` AS `employee_id`,
   `e`.`position_id` AS `position_id`,
   `e`.`department_id` AS `department_id`,
-  `e`.`salary_type` AS `salary_type`,
-  `e`.`salary` AS `salary`,
-  `e`.`hireday` AS `hireday`,
-  `e`.`fireday` AS `fireday`,
   `e`.`login` AS `login`,
+  `e`.`detail` AS `detail`,
   `c`.`firstname` AS `firstname`,
   `c`.`lastname` AS `lastname`,
   `c`.`middlename` AS `middlename`,
@@ -746,7 +749,9 @@ SELECT
   `p`.`position_name` AS `position_name`,
   `e`.`contact_id` AS `contact_id`,
   CONCAT_WS(' ', `c`.`lastname`, `c`.`firstname`, `c`.`middlename`) AS `fullname`,
-  CONCAT_WS(' ', `c`.`lastname`, `c`.`firstname`) AS `shortname`
+  CONCAT_WS(' ', `c`.`lastname`, `c`.`firstname`) AS `shortname`,
+  `e`.`firedate` AS `firedate`,
+  `e`.`hiredate` AS `hiredate`
 FROM (((`erp_staff_employee` `e`
   JOIN `erp_contact` `c`
     ON ((`e`.`contact_id` = `c`.`contact_id`)))
@@ -758,7 +763,7 @@ FROM (((`erp_staff_employee` `e`
 --
 -- Описание для представления erp_task_project_view
 --
-DROP VIEW IF EXISTS erp_task_project_view  ;
+DROP VIEW IF EXISTS erp_task_project_view CASCADE;
 CREATE
 VIEW erp_task_project_view
 AS
@@ -776,7 +781,7 @@ FROM `erp_task_project`;
 --
 -- Описание для представления erp_account_entry_view
 --
-DROP VIEW IF EXISTS erp_account_entry_view ;
+DROP VIEW IF EXISTS erp_account_entry_view CASCADE;
 CREATE
 VIEW erp_account_entry_view
 AS
@@ -788,7 +793,7 @@ SELECT
   `e`.`document_id` AS `document_id`,
   `doc`.`document_number` AS `document_number`,
   `doc`.`meta_desc` AS `meta_desc`,
-  `doc`.`type_id` AS `type_id`,
+  `doc`.`meta_name` AS `meta_name`,
   `doc`.`document_date` AS `document_date`
 FROM (`erp_account_entry` `e`
   JOIN `erp_document_view` `doc`
@@ -797,7 +802,7 @@ FROM (`erp_account_entry` `e`
 --
 -- Описание для представления erp_stock_view
 --
-DROP VIEW IF EXISTS erp_stock_view  ;
+DROP VIEW IF EXISTS erp_stock_view CASCADE;
 CREATE
 VIEW erp_stock_view
 AS
@@ -823,7 +828,7 @@ WHERE COALESCE((`erp_item_view`.`item_type` <> 3));
 --
 -- Описание для представления erp_task_task_view
 --
-DROP VIEW IF EXISTS erp_task_task_view  ;
+DROP VIEW IF EXISTS erp_task_task_view CASCADE;
 CREATE
 VIEW erp_task_task_view
 AS
@@ -850,3 +855,54 @@ FROM (((`erp_task_task` `t`
     ON ((`t`.`createdby` = `u`.`user_id`)))
   LEFT JOIN `erp_staff_employee_view` `a`
     ON ((`t`.`assignedto` = `a`.`employee_id`)));
+
+--
+-- Описание для представления erp_account_subconto_view
+--
+DROP VIEW IF EXISTS erp_account_subconto_view CASCADE;
+CREATE
+VIEW erp_account_subconto_view
+AS
+SELECT
+  `sc`.`subconto_id` AS `subconto_id`,
+  `sc`.`account_id` AS `account_id`,
+  `sc`.`document_id` AS `document_id`,
+  `sc`.`document_date` AS `document_date`,
+  CAST((`sc`.`amount` / 100) AS decimal(10, 2)) AS `amount`,
+  CAST((`sc`.`quantity` / 1000) AS decimal(10, 2)) AS `quantity`,
+  `sc`.`customer_id` AS `customer_id`,
+  `sc`.`employee_id` AS `employee_id`,
+  `sc`.`asset_id` AS `asset_id`,
+  `sc`.`extcode` AS `extcode`,
+  `sc`.`stock_id` AS `stock_id`,
+  `sc`.`moneyfund_id` AS `moneyfund_id`,
+  `dc`.`document_number` AS `document_number`,
+  `dc`.`meta_desc` AS `meta_desc`,
+  `cs`.`customer_name` AS `customer_name`,
+  (CASE WHEN (`sc`.`employee_id` > 0) THEN `em`.`shortname` ELSE NULL END) AS `employee_name`,
+  `mf`.`title` AS `moneyfundname`,
+  `it`.`itemname` AS `osname`,
+  `st`.`itemname` AS `itemname`,
+  CAST((`st`.`partion` / 100) AS decimal(10, 2)) AS `partion`,
+  `st`.`storename` AS `storename`,
+  `st`.`item_id` AS `item_id`,
+  `st`.`store_id` AS `store_id`,
+  (CASE WHEN (`sc`.`amount` >= 0) THEN `sc`.`amount` ELSE 0 END) AS `da`,
+  (CASE WHEN (`sc`.`amount` < 0) THEN (0 - `sc`.`amount`) ELSE 0 END) AS `ca`,
+  (CASE WHEN (`sc`.`quantity` >= 0) THEN `sc`.`quantity` ELSE 0 END) AS `dq`,
+  (CASE WHEN (`sc`.`quantity` < 0) THEN (0 - `sc`.`quantity`) ELSE 0 END) AS `cq`
+FROM ((((((`erp_account_subconto` `sc`
+  JOIN `erp_document_view` `dc`
+    ON ((`sc`.`document_id` = `dc`.`document_id`)))
+  LEFT JOIN `erp_customer` `cs`
+    ON ((`sc`.`customer_id` = `cs`.`customer_id`)))
+  LEFT JOIN `erp_staff_employee_view` `em`
+    ON ((`sc`.`employee_id` = `em`.`employee_id`)))
+  LEFT JOIN `erp_moneyfunds` `mf`
+    ON ((`sc`.`moneyfund_id` = `mf`.`id`)))
+  LEFT JOIN `erp_item` `it`
+    ON ((`sc`.`asset_id` = `it`.`item_id`)))
+  LEFT JOIN `erp_stock_view` `st`
+    ON ((`sc`.`stock_id` = `st`.`stock_id`)));
+	
+	

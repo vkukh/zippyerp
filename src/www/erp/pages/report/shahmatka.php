@@ -126,9 +126,6 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
     {
         $html = $this->generateReport();
 
-
-        //  $html ="<h1>ddd</h1>";
-
         $this->detail->preview->setText($html, true);
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
 

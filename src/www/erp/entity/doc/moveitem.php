@@ -21,6 +21,9 @@ class MoveItem extends Document
 
     public function Execute()
     {
+
+        $store = Store::load($this->headerdata['storeto']);
+
         $conn = \ZCL\DB\DB::getConnect();
         $conn->StartTrans();
 
@@ -33,10 +36,12 @@ class MoveItem extends Document
             $sc = new SubConto($this, $value['type'], 0 - ($value['quantity'] / 1000) * $stockfrom->partion);
             $sc->setStock($stockfrom->stock_id);
             $sc->setQuantity(0 - $value['quantity']);
+            if ($store->store_type == Store::STORE_TYPE_RET_SUM) {
+                $sc->setExtCode($value['price'] - $value['partion']);   //Для АВС
+            }
             $sc->save();
 
 
-            $store = Store::load($this->headerdata['storeto']);
             if ($store->store_type == Store::STORE_TYPE_OPT) {    //оптовый
                 $stockto = Stock::getStock($this->headerdata['storeto'], $value['item_id'], $value['price'], true);
 
@@ -88,7 +93,7 @@ class MoveItem extends Document
             Entry::AddEntry(282, 281, $amount - $ret, $this->document_id, $this->document_date);
             Entry::AddEntry(282, 285, $ret, $this->document_id, $this->document_date);
             $sc = new SubConto($this, 285, 0 - $ret);
-            $sc->setExtCode($store->store_id);  //запоминаем на  каком  магащине  сколько наценки
+            $sc->setExtCode($store->store_id);  //запоминаем на  каком  магазине  сколько наценки
 
             $sc->save();
         }

@@ -64,6 +64,8 @@ class RetailIssue extends Document
             $sc = new SubConto($this, 282, 0 - ($value['quantity'] / 1000) * $stock->price);
             $sc->setStock($stock->stock_id);
             $sc->setQuantity(0 - $value['quantity']);
+            $sc->setExtCode($value['price'] - $value['partion']);   //Для АВС
+
             $sc->save();
         }
         // списываем  наценку

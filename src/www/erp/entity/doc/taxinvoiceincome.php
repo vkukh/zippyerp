@@ -71,7 +71,7 @@ class TaxInvoiceIncome extends Document
      * @param mixed $data
      * @return {mixed|TaxInvoiceIncome}    Документ  или  строку  с ошибкой
      */
-    public static function import($data)
+    public static function importGNAU($data)
     {
         if (strpos($data, "<DECLARHEAD>") == false) {
             return "Неверный формат";

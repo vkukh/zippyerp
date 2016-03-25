@@ -6,7 +6,6 @@
         "monolog/monolog": "1.6.0",
         "ircmaxell/password-compat": "dev-master",
         "nesbot/Carbon": "*",
-         "fenom/fenom": "dev-master",
          "timetoogo/pinq": "~3.2",
          "mustache/mustache": "dev-master"
     },

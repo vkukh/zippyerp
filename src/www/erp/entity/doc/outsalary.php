@@ -56,15 +56,12 @@ class OutSalary extends Document
             $sc = new SubConto($this, 66, $emp['payed']);
             $a66 += $emp['payed'];
             $sc->setEmployee($emp['employee_id']);
-            if ($this->headerdata["avans"] == true) {
-                $sc->setExtCode(\ZippyERP\ERP\Consts::SAL_AVANS);
-            }
             $sc->save();
         }
         $sc = new SubConto($this, 30, 0 - $a66);
 
         $sc->setMoneyfund(MoneyFund::getCash()->id);
-
+        $sc->setExtCode(\ZippyERP\ERP\Consts::TYPEOP_CASH_SALARY);
         $sc->save();
 
         Entry::AddEntry("66", "30", $a66, $this->document_id, $this->document_date);

@@ -7,6 +7,7 @@ use \Zippy\Html\Form\TextInput;
 use \Zippy\Html\Form\Date;
 use \Zippy\Html\Form\DropDownChoice;
 use \Zippy\Html\Label;
+use \ZippyERP\ERP\Consts;
 use \Zippy\Html\Form\AutocompleteTextInput;
 use \Zippy\Html\Form\Button;
 use \Zippy\Html\Form\SubmitButton;
@@ -69,13 +70,16 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
     public function optypeOnChange($sender)
     {
         $optype = $this->docform->optype->getValue();
-        if ($optype == CROUT::TYPEOP_CUSTOMER) {
+        if ($optype == Consts::TYPEOP_CUSTOMER_OUT) {
             $this->docform->lblopdetail->setText('Покупатель');
         }
-        if ($optype == CROUT::TYPEOP_BANK) {
+        if ($optype == Consts::TYPEOP_CUSTOMER_OUT_BACK) {
+            $this->docform->lblopdetail->setText('Поставщик');
+        }
+        if ($optype == Consts::TYPEOP_BANK_OUT) {
             $this->docform->lblopdetail->setText('Р/счет');
         }
-        if ($optype == CROUT::TYPEOP_CASH) {
+        if ($optype == Consts::TYPEOP_CASH_OUT) {
             $this->docform->lblopdetail->setText('Сотрудник');
         }
         $this->docform->opdetail->setKey(0);
@@ -86,13 +90,16 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
         $optype = $this->docform->optype->getValue();
-        if ($optype == CROUT::TYPEOP_CUSTOMER) {
+        if ($optype == Consts::TYPEOP_CUSTOMER_OUT) {
             return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
         }
-        if ($optype == CROUT::TYPEOP_BANK) {
+        if ($optype == Consts::TYPEOP_CUSTOMER_OUT_BACK) {
+            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
+        }
+        if ($optype == Consts::TYPEOP_BANK_OUT) {
             return MoneyFund::findArray('title', "title like '%{$text}%' ");
         }
-        if ($optype == CROUT::TYPEOP_CASH) {
+        if ($optype == Consts::TYPEOP_CASH_OUT) {
             return Employee::findArray('fullname', "fullname like '%{$text}%' ");
         }
     }

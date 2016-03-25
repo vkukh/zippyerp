@@ -48,6 +48,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->add(new Date('editfiredate'));
         $this->employeedetail->add(new Date('edithiredate'));
         $this->employeedetail->add(new CheckBox('editcombined'));
+        $this->employeedetail->add(new CheckBox('editinvalid'));
         $this->employeedetail->add(new ClickLink('opencontact'))->setClickHandler($this, 'OpenOnClick');
         $this->employeedetail->add(new ClickLink('showcontact'))->setClickHandler($this, 'ShowOnClick');
         $this->employeedetail->add(new ClickLink('addcontact'))->setClickHandler($this, 'AddContactOnClick');
@@ -90,6 +91,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->editsalary->setText($this->_employee->salary);
         $this->employeedetail->editavans->setText($this->_employee->avans);
         $this->employeedetail->editcombined->setChecked($this->_employee->combined);
+        $this->employeedetail->editinvalid->setChecked($this->_employee->invalid);
         $this->employeedetail->editfiredate->setDate($this->_employee->firedate);
         if ($this->_employee->hiredate > 0)
             $this->employeedetail->edithiredate->setDate($this->_employee->hiredate);
@@ -147,6 +149,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->_employee->salary = $this->employeedetail->editsalary->getText();
         $this->_employee->avans = $this->employeedetail->editavans->getText();
         $this->_employee->combined = $this->employeedetail->editcombined->isChecked();
+        $this->_employee->invalid = $this->employeedetail->editinvalid->isChecked();
         $this->_employee->firedate = $this->employeedetail->editfiredate->getDate();
         $this->_employee->hiredate = $this->employeedetail->edithiredate->getDate();
 

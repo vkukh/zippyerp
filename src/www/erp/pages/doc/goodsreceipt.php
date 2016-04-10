@@ -54,6 +54,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
         $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
+        $this->docform->add(new CheckBox('plan'));
 
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
@@ -76,6 +77,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
             $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
             $this->docform->cash->setChecked($this->_doc->headerdata['cash']);
+            $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
             $this->docform->prepayment->setChecked($this->_doc->headerdata['prepayment']);
             $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
@@ -218,6 +220,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
             'contractnumber' => $this->docform->contract->getText(),
             'isnds' => $this->docform->isnds->isChecked(),
             'cash' => $this->docform->cash->isChecked(),
+            'plan' => $this->docform->plan->isChecked(),
             'prepayment' => $this->docform->prepayment->isChecked(),
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100

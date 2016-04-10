@@ -23,7 +23,7 @@
                 <td colspan="4">&nbsp;</td>
                 <td  colspan="2"  style="font-size: 6pt;">   31.12.2015  № 1307</td>
             </tr>
-             <tr><td colspan="10">&nbsp;</td></tr>
+            <tr><td colspan="10">&nbsp;</td></tr>
 
             <tr>
 
@@ -34,7 +34,7 @@
                 <td colspan="2" style="font-size: 10pt;white-space:nowrap ">{{document_number}}</td>
 
             </tr>
-           <tr>
+            <tr>
 
                 <td colspan="5"   > </td>
 
@@ -44,21 +44,21 @@
 
             </tr>
 
- <tr><td colspan="10" >&nbsp;</td></tr>
-   <tr>
+            <tr><td colspan="10" >&nbsp;</td></tr>
+            <tr>
 
-         <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;border-top: solid black 1px;font-weight: bolder;font-size: 6pt; ">&nbsp;  Постачальник (продавець) </td>
-        <td >&nbsp;</td>
-        <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;border-top: solid black 1px;font-weight: bolder;font-size: 6pt; ">&nbsp; Отримувач (покупець) </td>
+                <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;border-top: solid black 1px;font-weight: bolder;font-size: 6pt; ">&nbsp;  Постачальник (продавець) </td>
+                <td >&nbsp;</td>
+                <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;border-top: solid black 1px;font-weight: bolder;font-size: 6pt; ">&nbsp; Отримувач (покупець) </td>
 
-    </tr>
-  <tr>
+            </tr>
+            <tr>
 
-         <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px; font-size: 12pt; ">&nbsp; {{firmname}} </td>
-        <td >&nbsp;</td>
-        <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px; font-size: 12pt; ">&nbsp; {{customername}}  </td>
+                <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px; font-size: 12pt; ">&nbsp; {{firmname}} </td>
+                <td >&nbsp;</td>
+                <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px; font-size: 12pt; ">&nbsp; {{customername}}  </td>
 
-    </tr>
+            </tr>
             <tr>
                 <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;font-size: 6pt;text-align: center; ">&nbsp; (найменування; прізвище, ім'я, по батькові - для фізичної особи - підприємця) </td>
                 <td >&nbsp;</td>
@@ -67,13 +67,13 @@
             </tr>
 
 
-         <tr>
+            <tr>
                 <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;font-size: 10pt;  ">&nbsp; {{firmcode}}</td>
                 <td >&nbsp;</td>
                 <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;font-size: 10pt;  ">&nbsp; {{customercode}} </td>
 
             </tr>
-          <tr>
+            <tr>
                 <td colspan="4" style="border-left: solid black 1px;border-right: solid black 1px;border-bottom: solid black 1px;font-size: 6pt;  ">&nbsp; (індивідуальний податковий номер) </td>
                 <td >&nbsp;</td>
                 <td colspan="5" style="border-left: solid black 1px;border-right: solid black 1px;border-bottom: solid black 1px;font-size: 6pt;  ">&nbsp; (індивідуальний податковий номер) </td>
@@ -86,9 +86,9 @@
 
             <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">I</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Загальна сума коштів, що підлягають сплаті з урахуванням податку на додану вартість          </td><td  style="text-align: right; font-size: 6pt;border: #000000 1px solid;">{{totalall}}</td></tr>
             <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">II</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Загальна сума податку на додану вартість, у тому числі:</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">{{totalnds}}</td></tr>
-            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">III</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> загальна сума податку на додану вартість за основною ставкою</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">III</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> загальна сума податку на додану вартість за основною ставкою</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">{{totalnds}}</td></tr>
             <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">IV</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> загальна сума податку на додану вартість за  ставкою 7%</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
-            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">V</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання за основною ставкою (код ставки 20)</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
+            <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">V</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання за основною ставкою (код ставки 20)</td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">{{total}}</td></tr>
             <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">VI</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання за ставкою 7% (код ставки 7)   </td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
             <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">VII</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання при експорті товарів за ставкою 0% (код ставки 901)   </td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
             <tr><td  style="font-size: 6pt;border: #000000 1px solid;text-align: center; vertical">VIII</td><td colspan="8" style="font-size: 6pt;border: #000000 1px solid;"> Усього обсяги постачання на митній території України за ставкою 0% (код ставки 902) </td><td  style="font-size: 6pt;border: #000000 1px solid;text-align: right;">&nbsp;</td></tr>
@@ -162,8 +162,8 @@
                 <td  colspan="3" style="font-size: 6pt;">(реєстраційний номер облікової картки платника податків оба номер паспорту)</td>
 
             </tr>
-             <tr><td colspan="10">&nbsp;</td></tr>
-           <tr><td colspan="7" style="font-size: 8pt;">Директор Департаменту податкової, митної політики та методології бухгалтерського обліку</td>
+            <tr><td colspan="10">&nbsp;</td></tr>
+            <tr><td colspan="7" style="font-size: 8pt;">Директор Департаменту податкової, митної політики та методології бухгалтерського обліку</td>
                 <td   >&nbsp;</td>
                 <td  colspan="2" style="font-size: 8pt;">Ю. П. Романюк</td>
 

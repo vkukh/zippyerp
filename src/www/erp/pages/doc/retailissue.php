@@ -11,6 +11,7 @@ use Zippy\Html\Form\TextInput;
 use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
+use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
 use Zippy\Html\Panel;
@@ -40,6 +41,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
+        $this->docform->add(new CheckBox('plan'));
 
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->setChangeHandler($this, 'OnChangeStore');
         $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
@@ -69,7 +71,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
             $this->docform->totalnds->setText(H::fm($this->_doc->headerdata['totalnds']));
             $this->docform->document_date->setDate($this->_doc->document_date);
-
+            $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
@@ -191,6 +193,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
             'customer' => $this->docform->customer->getKey(),
             'customername' => $this->docform->customer->getText(),
             'store' => $this->docform->store->getValue(),
+            'plan' => $this->docform->plan->isChecked(),
             'total' => $this->docform->total->getText() * 100,
             'totalnds' => $this->docform->totalnds->getText() * 100
         );

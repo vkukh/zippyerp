@@ -390,12 +390,12 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
     {
         $common = System::getOptions("common");
         $firm = System::getOptions("firmdetail");
-        $jf = ($common['juridical'] == true ? "J" : "F" ) . "1201004";
+        $jf = ($common['juridical'] == true ? "J" : "F" ) . "0901106";
 
         $edrpou = (string) sprintf("%10d", $firm['edrpou']);
-        //2301 0011111111 F0901004 1 00 0000045 1 03 2015 2301.xml
+        //2301 0011111111 J0901106 1 00 0000045 1 03 2015 2301.xml
         $number = (string) sprintf('%07d', 1);
-        $filename = $firm['gni'] . $edrpou . $jf . "100{$number}1" . date('mY', time()) . $firm['gni'] . ".xml";
+        $filename = $firm['gni'] . $edrpou . "J0901106" . "100{$number}1" . date('mY', time()) . $firm['gni'] . ".xml";
         $filename = str_replace(' ', '0', $filename);
 
         $xml = "<?xml version=\"1.0\" encoding=\"windows-1251\" ?>
@@ -421,124 +421,97 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
   <DECLARBODY>
   <HFILL>" . (string) date('dmY') . "</HFILL>
   <HNAME>{$firm['name']}<</HNAME>
-  <HTIN>{$firm['inn']}</HTIN>
+  <HTIN>{$firm['edrpou']}</HTIN>
   <HKOATUU_S xsi:nil=\"true\" />
-  <HKOATUU />
+  <HKOATUU  >{$firm['koatuu']}</HKOATUU  >
   <HKOPFG_S xsi:nil=\"true\" />
-  <HKOPFG xsi:nil=\"true\" />
+  <HKOPFG  >{$firm['kopfg']}</HKOPFG  >
   <HKVED_S xsi:nil=\"true\" />
-  <HKVED xsi:nil=\"true\" />
+  <HKVED  >{$firm['kved']}</HKVED  >
   <HKIL xsi:nil=\"true\" />
   <HLOC xsi:nil=\"true\" />
   <HTEL xsi:nil=\"true\" />
-  <HPERIOD />
-  <HZY>" . $this->filter->yr->getValue() . "</HZY>
-  <R1005G3 xsi:nil=\"true\" />
-  <R1005G4 xsi:nil=\"true\" />
-  <R1010G3 xsi:nil=\"true\" />
-  <R1010G4 xsi:nil=\"true\" />
-  <R1011G3 xsi:nil=\"true\" />
-  <R1011G4 xsi:nil=\"true\" />
-  <R1012G3 xsi:nil=\"true\" />
-  <R1012G4 xsi:nil=\"true\" />
-  <R1020G3 xsi:nil=\"true\" />
-  <R1020G4 xsi:nil=\"true\" />
-  <R1030G3 xsi:nil=\"true\" />
-  <R1030G4 xsi:nil=\"true\" />
-  <R1090G3 xsi:nil=\"true\" />
-  <R1090G4 xsi:nil=\"true\" />
-  <R1095G3 xsi:nil=\"true\" />
-  <R1095G4 xsi:nil=\"true\" />
-  <R1100G3>1000.0</R1100G3>
-  <R1100G4>2000.0</R1100G4>
-  <R1103G3 xsi:nil=\"true\" />
-  <R1103G4 xsi:nil=\"true\" />
-  <R1110G3 xsi:nil=\"true\" />
-  <R1110G4 xsi:nil=\"true\" />
-  <R1125G3 xsi:nil=\"true\" />
-  <R1125G4 xsi:nil=\"true\" />
-  <R1135G3 xsi:nil=\"true\" />
-  <R1135G4 xsi:nil=\"true\" />
-  <R1136G3 xsi:nil=\"true\" />
-  <R1136G4 xsi:nil=\"true\" />
-  <R1155G3 xsi:nil=\"true\" />
-  <R1155G4 xsi:nil=\"true\" />
-  <R1160G3 xsi:nil=\"true\" />
-  <R1160G4 xsi:nil=\"true\" />
-  <R1165G3 xsi:nil=\"true\" />
-  <R1165G4 xsi:nil=\"true\" />
-  <R1170G3 xsi:nil=\"true\" />
-  <R1170G4 xsi:nil=\"true\" />
-  <R1190G3 xsi:nil=\"true\" />
-  <R1190G4 xsi:nil=\"true\" />
-  <R1195G3>1000.0</R1195G3>
-  <R1195G4>2000.0</R1195G4>
-  <R1200G3 xsi:nil=\"true\" />
-  <R1200G4 xsi:nil=\"true\" />
-  <R1300G3>1000.0</R1300G3>
-  <R1300G4>2000.0</R1300G4>
-  <R1400G3 xsi:nil=\"true\" />
-  <R1400G4 xsi:nil=\"true\" />
-  <R1410G3 xsi:nil=\"true\" />
-  <R1410G4 xsi:nil=\"true\" />
-  <R1415G3 xsi:nil=\"true\" />
-  <R1415G4 xsi:nil=\"true\" />
-  <R1420G3 xsi:nil=\"true\" />
-  <R1420G4 xsi:nil=\"true\" />
-  <R1425G3 xsi:nil=\"true\" />
-  <R1425G4 xsi:nil=\"true\" />
-  <R1495G3 xsi:nil=\"true\" />
-  <R1495G4 xsi:nil=\"true\" />
-  <R1595G3 xsi:nil=\"true\" />
-  <R1595G4 xsi:nil=\"true\" />
-  <R1600G3 xsi:nil=\"true\" />
-  <R1600G4 xsi:nil=\"true\" />
-  <R1610G3 xsi:nil=\"true\" />
-  <R1610G4 xsi:nil=\"true\" />
-  <R1615G3 xsi:nil=\"true\" />
-  <R1615G4 xsi:nil=\"true\" />
-  <R1620G3 xsi:nil=\"true\" />
-  <R1620G4 xsi:nil=\"true\" />
-  <R1621G3 xsi:nil=\"true\" />
-  <R1621G4 xsi:nil=\"true\" />
-  <R1625G3 xsi:nil=\"true\" />
-  <R1625G4 xsi:nil=\"true\" />
-  <R1630G3 xsi:nil=\"true\" />
-  <R1630G4 xsi:nil=\"true\" />
-  <R1665G3 xsi:nil=\"true\" />
-  <R1665G4 xsi:nil=\"true\" />
-  <R1690G3 xsi:nil=\"true\" />
-  <R1690G4 xsi:nil=\"true\" />
-  <R1695G3 xsi:nil=\"true\" />
-  <R1695G4 xsi:nil=\"true\" />
-  <R1700G3 xsi:nil=\"true\" />
-  <R1700G4 xsi:nil=\"true\" />
-  <R1900G3>1000.0</R1900G3>
-  <R1900G4>2000.0</R1900G4>
   <HPERIOD1 />
-  <HZY1 />
-  <R2000G3 xsi:nil=\"true\" />
-  <R2000G4 xsi:nil=\"true\" />
-  <R2120G3 xsi:nil=\"true\" />
-  <R2120G4 xsi:nil=\"true\" />
-  <R2240G3 xsi:nil=\"true\" />
-  <R2240G4 xsi:nil=\"true\" />
-  <R2280G3 xsi:nil=\"true\" />
-  <R2280G4 xsi:nil=\"true\" />
-  <R2050G3 xsi:nil=\"true\" />
-  <R2050G4 xsi:nil=\"true\" />
-  <R2180G3 xsi:nil=\"true\" />
-  <R2180G4 xsi:nil=\"true\" />
-  <R2270G3 xsi:nil=\"true\" />
-  <R2270G4 xsi:nil=\"true\" />
-  <R2285G3 xsi:nil=\"true\" />
-  <R2285G4 xsi:nil=\"true\" />
-  <R2290G3 xsi:nil=\"true\" />
-  <R2290G4 xsi:nil=\"true\" />
-  <R2300G3 xsi:nil=\"true\" />
-  <R2300G4 xsi:nil=\"true\" />
-  <R2350G3 xsi:nil=\"true\" />
-  <R2350G4 xsi:nil=\"true\" />
+  <HZY>" . $this->filter->yr->getValue() . "</HZY>
+  <R1005G3>{$header['b1005']}</R1005G3>
+  <R1005G4>{$header['e1005']}</R1005G4>
+  <R1010G3>{$header['b1010']}</R1010G3>
+  <R1010G4>{$header['e1010']}</R1010G4>
+  <R1011G3>{$header['b1011']}</R1011G3>
+  <R1011G4>{$header['e1011']}</R1011G4>
+  <R1012G3>{$header['b1012']}</R1012G3>
+  <R1012G4>{$header['e1012']}</R1012G4>
+  <R1095G3>{$header['b1095']}</R1095G3>
+  <R1095G4>{$header['e1095']}</R1095G4>
+  <R1100G3>{$header['b1100']}</R1100G3>
+  <R1100G4>{$header['e1100']}</R1100G4>
+  <R1103G3>{$header['b1103']}</R1103G3>
+  <R1103G4>{$header['e1103']}</R1103G4>
+  <R1125G3>{$header['b1125']}</R1125G3>
+  <R1125G4>{$header['e1125']}</R1125G4>
+  <R1135G3>{$header['b1135']}</R1135G3>
+  <R1135G4>{$header['e1135']}</R1135G4>
+  <R1136G3>{$header['b1126']}</R1136G3>
+  <R1136G4>{$header['e1126']}</R1136G4>
+  <R1155G3>{$header['b1155']}</R1155G3>
+  <R1155G4>{$header['e1155']}</R1155G4>
+  <R1165G3>{$header['b1165']}</R1165G3>
+  <R1165G4>{$header['e1165']}</R1165G4>
+  <R1190G3>{$header['b1190']}</R1190G3>
+  <R1190G4>{$header['e1190']}</R1190G4>
+  <R1195G3>{$header['b1195']}</R1195G3>
+  <R1195G4>{$header['e1195']}</R1195G4>
+  <R1300G3>{$header['b1300']}</R1300G3>
+  <R1300G4>{$header['e1300']}</R1300G4>
+  <R1400G3>{$header['b1400']}</R1400G3>
+  <R1400G4>{$header['e1400']}</R1400G4>
+  <R1420G3>{$header['b1420']}</R1420G3>
+  <R1420G4>{$header['e1420']}</R1420G4>
+  <R1495G3>{$header['b1495']}</R1495G3>
+  <R1495G4>{$header['e1495']}</R1495G4>
+  <R1615G3>{$header['b1615']}</R1615G3>
+  <R1615G4>{$header['e1615']}</R1615G4>
+  <R1620G3>{$header['b1620']}</R1620G3>
+  <R1620G4>{$header['e1620']}</R1620G4>
+  <R1621G3>{$header['b1621']}</R1621G3>
+  <R1621G4>{$header['e1621']}</R1621G4>
+  <R1630G3>{$header['b1630']}</R1630G3>
+  <R1630G4>{$header['e1630']}</R1630G4>
+  <R1690G3>{$header['b1690']}</R1690G3>
+  <R1690G4>{$header['e1690']}</R1690G4>
+  <R1695G3>{$header['b1695']}</R1695G3>
+  <R1695G4>{$header['e1695']}</R1695G4>
+  <R1900G3>{$header['b1900']}</R1900G3>
+  <R1900G4>{$header['e1900']}</R1900G4>
+  <R2000G3>{$header['b2000']}</R2000G3>
+  <R2000G4>{$header['e2000']}</R2000G4>
+  <R2120G3>{$header['b2120']}</R2120G3>
+  <R2120G4>{$header['e2120']}</R2120G4>
+  <R2240G3>{$header['b2240']}</R2240G3>
+  <R2240G4>{$header['e2240']}</R2240G4>
+  <R2280G3>{$header['b2280']}</R2280G3>
+  <R2280G4>{$header['e2280']}</R2280G4>
+  <R2050G3>{$header['b2050']}</R2050G3>
+  <R2050G4>{$header['e2050']}</R2050G4>
+  <R2180G3>{$header['b2180']}</R2180G3>
+  <R2180G4>{$header['e2180']}</R2180G4>
+  <R2270G3>{$header['b2270']}</R2270G3>
+  <R2270G4>{$header['e2270']}</R2270G4>
+  <R2285G3>{$header['b2285']}</R2285G3>
+  <R2285G4>{$header['e2285']}</R2285G4>
+  <R2290G3>{$header['b2290']}</R2290G3>
+  <R2290G4>{$header['e2290']}</R2290G4>
+  <R2300G3>{$header['b2300']}</R2300G3>
+  <R2300G4>{$header['e2300']}</R2300G4>
+  <R2350G3>{$header['b2350']}</R2350G3>
+  <R2350G4>{$header['e2350']}</R2350G4>
+
+
+
+
+
+
+
   <HBOS />
   <HBUH xsi:nil=\"true\" />
   </DECLARBODY>

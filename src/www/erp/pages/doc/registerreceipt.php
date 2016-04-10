@@ -24,7 +24,7 @@ use ZippyERP\ERP\Entity\Stock;
 use \ZippyERP\ERP\Helper as H;
 
 /**
- * Страница  ввода  розничной  накладной
+ * Страница  ввода  товарного чека
  */
 class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 {

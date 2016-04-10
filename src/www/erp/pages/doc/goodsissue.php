@@ -45,6 +45,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
 
         $this->docform->add(new Date('document_date'))->setDate(time());
+        $this->docform->add(new CheckBox('plan'));
 
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->setChangeHandler($this, 'OnChangeStore');
         $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
@@ -52,7 +53,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new CheckBox('cash'));
         $this->docform->add(new CheckBox('prepayment'))->setChecked(true);
         $this->docform->add(new AutocompleteTextInput('contract'))->setAutocompleteHandler($this, "OnAutoContract");
-
+        $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
 
         $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
@@ -238,6 +239,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             'contractnumber' => $this->docform->contract->getText(),
             'isnds' => $this->docform->isnds->isChecked(),
             'cash' => $this->docform->cash->isChecked(),
+            'plan' => $this->docform->plan->isChecked(),
             'prepayment' => $this->docform->prepayment->isChecked(),
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100

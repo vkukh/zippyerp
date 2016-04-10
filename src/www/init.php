@@ -3,8 +3,6 @@
 define('_ROOT', __DIR__ . '/');
 $http = $_SERVER["HTTPS"] == 'on' ? 'https' : 'http';
 define('_BASEURL', $http . "://" . $_SERVER["HTTP_HOST"] . '/');
-define('_ZIPPY', _ROOT . 'zippy/');
-
 
 define('UPLOAD_USERS', 'uploads/users/');
 
@@ -13,14 +11,13 @@ date_default_timezone_set('Europe/Kiev');
 
 require_once _ROOT . 'vendor/autoload.php';
 include_once _ROOT . "vendor/adodb/adodb-php/adodb-exceptions.inc.php";
+$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+$ADODB_QUOTE_FIELDNAMES = true;
 
 //чтение  конфигурации
 $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
 
 //  phpQuery::$debug = true;
-// Подключение  фреймворка
-require_once _ZIPPY . 'zippy.inc.php';
-
 
 //Параметры   соединения  с  БД
 \ZCL\DB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);

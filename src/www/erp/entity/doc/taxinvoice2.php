@@ -73,7 +73,7 @@ class TaxInvoice2 extends Document
 
     public function Execute()
     {
-        
+
     }
 
     /**
@@ -106,9 +106,9 @@ class TaxInvoice2 extends Document
         $xml .="<C_REG>" . substr($firm['gni'], 0, 2) . "</C_REG> ";
         $xml .="<C_RAJ>" . substr($firm['gni'], 2, 2) . "</C_RAJ>";
 
-        $xml .= "<PERIOD_MONTH>" . date(m) . "</PERIOD_MONTH>";
+        $xml .= "<PERIOD_MONTH>" . date(m, $this->document_date) . "</PERIOD_MONTH>";
         $xml .= "<PERIOD_TYPE>1</PERIOD_TYPE>";
-        $xml .= "<PERIOD_YEAR>" . date('Y') . "</PERIOD_YEAR>";
+        $xml .= "<PERIOD_YEAR>" . date('Y', $this->document_date) . "</PERIOD_YEAR>";
         $xml .= "<C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>";
         $xml .= "<C_DOC_STAN>1</C_DOC_STAN>";
         $xml .= "<D_FILL>" . (string) date('dmY') . "</D_FILL>";

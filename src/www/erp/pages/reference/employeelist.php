@@ -45,6 +45,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->add(new DropDownChoice('editexptype'))->setValue(91);
         $this->employeedetail->add(new TextInput('editsalary'));
         $this->employeedetail->add(new TextInput('editavans'));
+        $this->employeedetail->add(new TextInput('editinn'));
         $this->employeedetail->add(new Date('editfiredate'));
         $this->employeedetail->add(new Date('edithiredate'));
         $this->employeedetail->add(new CheckBox('editcombined'));
@@ -89,6 +90,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->editsalarytype->setValue($this->_employee->salarytype);
         $this->employeedetail->editexptype->setValue($this->_employee->exptype);
         $this->employeedetail->editsalary->setText($this->_employee->salary);
+        $this->employeedetail->editinn->setText($this->_employee->inn);
         $this->employeedetail->editavans->setText($this->_employee->avans);
         $this->employeedetail->editcombined->setChecked($this->_employee->combined);
         $this->employeedetail->editinvalid->setChecked($this->_employee->invalid);
@@ -147,6 +149,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->_employee->salarytype = $this->employeedetail->editsalarytype->getValue();
         $this->_employee->exptype = $this->employeedetail->editexptype->getValue();
         $this->_employee->salary = $this->employeedetail->editsalary->getText();
+        $this->_employee->inn = $this->employeedetail->editinn->getText();
         $this->_employee->avans = $this->employeedetail->editavans->getText();
         $this->_employee->combined = $this->employeedetail->editcombined->isChecked();
         $this->_employee->invalid = $this->employeedetail->editinvalid->isChecked();

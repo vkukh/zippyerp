@@ -74,7 +74,7 @@ class TaxInvoice extends Document
 
     public function Execute()
     {
-        
+
     }
 
     /**
@@ -86,10 +86,10 @@ class TaxInvoice extends Document
 
         $common = System::getOptions("common");
         $firm = System::getOptions("firmdetail");
-        $jf = ($common['juridical'] == true ? "J" : "F" ) . "1201004";
+        $jf = ($common['juridical'] == true ? "J" : "F" ) . "1201008";
 
         $edrpou = (string) sprintf("%10d", $firm['edrpou']);
-        //2301 0011111111 F1201004 1 00 0000045 1 03 2015 2301.xml
+        //2301 0011111111 F1201008 1 00 0000045 1 03 2015 2301.xml
         $number = (string) sprintf('%07d', 1);
         $filename = $firm['gni'] . $edrpou . $jf . "100{$number}1" . date('mY', $this->document_date) . $firm['gni'] . ".xml";
         $filename = str_replace(' ', '0', $filename);
@@ -107,9 +107,9 @@ class TaxInvoice extends Document
         $xml .="<C_REG>" . substr($firm['gni'], 0, 2) . "</C_REG> ";
         $xml .="<C_RAJ>" . substr($firm['gni'], 2, 2) . "</C_RAJ>";
 
-        $xml .= "<PERIOD_MONTH>" . date('m', $this->docoment_date) . "</PERIOD_MONTH>";
+        $xml .= "<PERIOD_MONTH>" . date('m', $this->document_date) . "</PERIOD_MONTH>";
         $xml .= "<PERIOD_TYPE>1</PERIOD_TYPE>";
-        $xml .= "<PERIOD_YEAR>" . date('Y', $this->docoment_date) . "</PERIOD_YEAR>";
+        $xml .= "<PERIOD_YEAR>" . date('Y', $this->document_date) . "</PERIOD_YEAR>";
         $xml .= "<C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>";
         $xml .= "<C_DOC_STAN>1</C_DOC_STAN>";
         $xml .= "<D_FILL>" . (string) date('dmY') . "</D_FILL>";
@@ -138,24 +138,28 @@ class TaxInvoice extends Document
 
         foreach ($this->detaildata as $value) {
             $num++;
-            $xml .="<RXXXXG4S ROWNUM=\"{$num}\">{$value['measure_name']}</RXXXXG4S>";
+
+            $xml .="<RXXXXG4S   ROWNUM=\"{$num}\">{$value['measure_name']}</RXXXXG4S>";
             $xml .="<RXXXXG105_2S  ROWNUM=\"{$num}\">{$value['measure_code']}</RXXXXG105_2S>";
             if (strlen($value['uktzed'] > 0))
                 $xml .="<RXXXXG4  ROWNUM=\"{$num}\">{$value['uktzed']}</RXXXXG4>";
             $xml .="<RXXXXG3S ROWNUM=\"{$num}\">{$value['itemname']}</RXXXXG3S>";
             $xml .="<RXXXXG5  ROWNUM=\"{$num}\">{$value['quantity']}</RXXXXG5>";
             $xml .="<RXXXXG6  ROWNUM=\"{$num}\">" . H::fm($value['price']) . "</RXXXXG6>";
-            $xml .="<RXXXXG7  ROWNUM=\"{$num}\">" . H::fm($value['quantity'] * $value['price']) . "</RXXXXG7>";
+            $xml .="<RXXXXG010   ROWNUM=\"{$num}\">" . H::fm($value['quantity'] * $value['price']) . "</RXXXXG010 >";
         }
         $total = H::fm($this->headerdata["total"]);
         $totalnds = H::fm($this->headerdata["totalnds"]);
-        $all = $total + $totalnds;
-        $xml .="<R01G7>" . ($total - $totalnds) . "</R01G7>";
-        $xml .="<R01G11>{$total}</R01G11>";
-        $xml .="<R03G7>{$totalnds}</R03G7>";
-        $xml .="<R03G11>{$totalnds}</R03G11>";
-        $xml .="<R04G7>" . ($total) . "</R04G7>";
-        $xml .="<R04G11>" . ($total) . "</R04G11>";
+        $totalall = $total + $totalnds;
+
+     $xml .="<R04G11>{$totalall}</R04G11>";
+   $xml .="<R03G11>{$totalnds}</R03G11>";
+   $xml .="<R03G7>{$totalnds}</R03G7>";
+
+   $xml .="<R01G7>{$total}</R01G7>";
+
+
+
         $xml .="</DECLARBODY>";
         $xml .="</DECLAR>";
 

@@ -1,13 +1,12 @@
 {
     "require": {
-        "coderockr/php-query": "dev-master",
-        "adodb/adodb-php": "dev-master",
+
         "swiftmailer/swiftmailer": "v5.0.1",
         "monolog/monolog": "1.6.0",
         "ircmaxell/password-compat": "dev-master",
         "nesbot/Carbon": "*",
          "timetoogo/pinq": "~3.2",
-         "mustache/mustache": "dev-master"
+        "leon-mbs/zippy": "dev-master"
     },
     "config": {
     }

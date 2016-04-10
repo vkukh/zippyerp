@@ -9,6 +9,7 @@ use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
 use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
@@ -38,6 +39,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date', time()));
+        $this->docform->add(new CheckBox('plan'));
         $this->docform->add(new DropDownChoice('storefrom'))->setChangeHandler($this, 'OnChangeStore');
         $this->docform->add(new DropDownChoice('storeto'))->setChangeHandler($this, 'OnChangeStore');
         $this->docform->storefrom->setOptionList(Store::findArray("storename", "store_type=" . Store::STORE_TYPE_OPT));
@@ -67,6 +69,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->storefrom->setValue($this->_doc->headerdata['storefrom']);
             $this->docform->storeto->setValue($this->_doc->headerdata['storeto']);
+            $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
 
 
             foreach ($this->_doc->detaildata as $item) {
@@ -183,6 +186,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
 
 
         $this->_doc->headerdata = array(
+            'plan' => $this->docform->plan->isChecked(),
             'storefrom' => $this->docform->storefrom->getValue(),
             'storeto' => $this->docform->storeto->getValue()
         );

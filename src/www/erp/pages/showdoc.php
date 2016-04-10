@@ -61,10 +61,10 @@ class ShowDoc extends \Zippy\Html\WebPage
             if ($type == "xml") {
                 $xml = $doc->exportGNAU();
                 header("Content-type: text/xml");
-                header("Content-Disposition: attachment;Filename={$filename}");
+                header("Content-Disposition: attachment;Filename={$xml['filename']}");
                 header("Content-Transfer-Encoding: binary");
 
-                echo $xml;
+                echo $xml['content'];
             }
             /*  if ($type == "pdf") {
 

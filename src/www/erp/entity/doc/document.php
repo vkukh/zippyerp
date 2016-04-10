@@ -86,6 +86,8 @@ class Document extends \ZCL\DB\Entity
         $this->content = "<doc><header>";
 
         foreach ($this->headerdata as $key => $value) {
+            if ($key > 0)
+                continue;
             if (strlen($value) > 10) {
                 $value = "<![CDATA[" . $value . "]]>";
             }
@@ -95,6 +97,8 @@ class Document extends \ZCL\DB\Entity
         foreach ($this->detaildata as $row) {
             $this->content .= "<row>";
             foreach ($row as $key => $value) {
+                if ($key > 0)
+                    continue;
                 if (strlen($value) > 10) {
                     $value = "<![CDATA[" . $value . "]]>";
                 }

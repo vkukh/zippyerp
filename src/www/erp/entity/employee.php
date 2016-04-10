@@ -28,6 +28,7 @@ class Employee extends \ZCL\DB\Entity
         $this->detail .= "<salarytype>{$this->salarytype}</salarytype>";
         $this->detail .= "<exptype>{$this->exptype}</exptype>";
         $this->detail .= "<salary>{$this->salary}</salary>";
+        $this->detail .= "<inn>{$this->inn}</inn>";
         $this->detail .= "<avans>{$this->avans}</avans>";
         $this->detail .= "<combined>{$this->combined}</combined>";
         $this->detail .= "<invalid>{$this->invalid}</invalid>";
@@ -48,6 +49,7 @@ class Employee extends \ZCL\DB\Entity
         $this->salarytype = (int) ($xml->salarytype[0]);
         $this->exptype = (int) ($xml->exptype[0]);
         $this->salary = (int) ($xml->salary[0]);
+        $this->inn = (string) ($xml->inn[0]);
         $this->avans = (int) ($xml->avans[0]);
         $this->combined = (int) ($xml->combined[0]);
         $this->invalid = (int) ($xml->invalid[0]);

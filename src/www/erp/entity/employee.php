@@ -84,4 +84,13 @@ class Employee extends \ZCL\DB\Entity
         return Subconto::getAmount($date, 0, 0, 0, $this->employee_id, 0, 0, 0);
     }
 
+    /**
+     * возвращает контакт, связанный с  сотрудником
+     *
+     */
+    public function getContact()
+    {
+        return Contact::load($this->contact);
+    }
+
 }

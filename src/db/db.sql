@@ -878,6 +878,7 @@ SELECT
   `sc`.`moneyfund_id` AS `moneyfund_id`,
   `dc`.`document_number` AS `document_number`,
   `dc`.`meta_desc` AS `meta_desc`,
+  dc.meta_name AS meta_name,
   `cs`.`customer_name` AS `customer_name`,
   (CASE WHEN (`sc`.`employee_id` > 0) THEN `em`.`shortname` ELSE NULL END) AS `employee_name`,
   `mf`.`title` AS `moneyfundname`,

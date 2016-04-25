@@ -388,14 +388,19 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
 
     public function exportGNAU($header)
     {
+        $year = $this->filter->yr->getValue();
+        $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
         $common = System::getOptions("common");
         $firm = System::getOptions("firmdetail");
         $jf = ($common['juridical'] == true ? "J" : "F" ) . "0901106";
 
         $edrpou = (string) sprintf("%10d", $firm['edrpou']);
         //2301 0011111111 J0901106 1 00 0000045 1 03 2015 2301.xml
+        //1 - місяць, 2 - квартал, 3 - півріччя, 4 - 9 місяців, 5 - рік
+
         $number = (string) sprintf('%07d', 1);
-        $filename = $firm['gni'] . $edrpou . "J0901106" . "100{$number}1" . date('mY', time()) . $firm['gni'] . ".xml";
+        $filename = $firm['gni'] . $edrpou . "J0901106" . "100{$number}2" . $pm . $year . $firm['gni'] . ".xml";
+
         $filename = str_replace(' ', '0', $filename);
 
         $xml = "<?xml version=\"1.0\" encoding=\"windows-1251\" ?>
@@ -409,9 +414,9 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
   <C_DOC_CNT>1</C_DOC_CNT>
   <C_REG>" . substr($firm['gni'], 0, 2) . "</C_REG>
   <C_RAJ>" . substr($firm['gni'], 2, 2) . "</C_RAJ>
-  <PERIOD_MONTH>12</PERIOD_MONTH>
-  <PERIOD_TYPE>5</PERIOD_TYPE>
-  <PERIOD_YEAR>" . $this->filter->yr->getValue() . "</PERIOD_YEAR>
+  <PERIOD_MONTH>{$pm}</PERIOD_MONTH>
+  <PERIOD_TYPE>2</PERIOD_TYPE>
+  <PERIOD_YEAR>{$year}</PERIOD_YEAR>
   <C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>
   <C_DOC_STAN>1</C_DOC_STAN>
   <LINKED_DOCS xsi:nil=\"true\" />
@@ -432,7 +437,7 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
   <HLOC xsi:nil=\"true\" />
   <HTEL xsi:nil=\"true\" />
   <HPERIOD1 />
-  <HZY>" . $this->filter->yr->getValue() . "</HZY>
+  <HZY>{$year}</HZY>
   <R1005G3>{$header['b1005']}</R1005G3>
   <R1005G4>{$header['e1005']}</R1005G4>
   <R1010G3>{$header['b1010']}</R1010G3>

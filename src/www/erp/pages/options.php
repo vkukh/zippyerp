@@ -13,6 +13,7 @@ use \Zippy\Html\Form\TextArea;
 use \Zippy\Html\Form\SubmitButton;
 use \Zippy\Html\Form\Button;
 use \Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\AutocompleteTextInput;
 use \ZippyERP\System\System;
 
 class Options extends \ZippyERP\System\Pages\AdminBase
@@ -34,8 +35,7 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->detail->add(new TextInput('city'));
         $this->detail->add(new TextInput('street'));
         $this->detail->add(new TextInput('phone'));
-        $this->detail->add(new TextInput('manager'));
-        $this->detail->add(new TextInput('accounter'));
+
         $this->detail->add(new TextInput('email'));
         $this->detail->add(new DropDownChoice('bank', \ZippyERP\ERP\Entity\Bank::findArray('bank_name', '', 'bank_name')));
         $this->detail->add(new DropDownChoice('bank2', \ZippyERP\ERP\Entity\Bank::findArray('bank_name', '', 'bank_name')));
@@ -51,9 +51,17 @@ class Options extends \ZippyERP\System\Pages\AdminBase
 
         $this->common->add(new CheckBox('hasnds'));
         $this->common->add(new CheckBox('simpletax'));
-        $this->common->add(new CheckBox('juridical'));
+        $this->common->add(new CheckBox('juridical'))->setChangeHandler($this, "OnJFChange");
         $this->common->add(new SubmitButton('commonsave'))->setClickHandler($this, 'saveCommonOnClick');
         $this->common->add(new DropDownChoice('basestore', \ZippyERP\ERP\Entity\Store::findArray('storename', '')));
+        $this->common->add(new AutocompleteTextInput('manager'))->setAutocompleteHandler($this, "OnAutoEmployee");
+        $this->common->add(new AutocompleteTextInput('accounter'))->setAutocompleteHandler($this, "OnAutoEmployee");
+        $this->common->add(new AutocompleteTextInput('ownerfiz'))->setAutocompleteHandler($this, "OnAutoContact");
+        $this->common->ownerfiz->setVisible(true);
+        ;
+        $this->common->manager->setVisible(false);
+        ;
+
 
         $this->add(new Form('tax'));
         $this->tax->add(new SubmitButton('taxsave'))->setClickHandler($this, 'saveTaxOnClick');
@@ -84,8 +92,6 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->detail->inn->setText($detail['inn']);
         $this->detail->city->setText($detail['city']);
         $this->detail->street->setText($detail['street']);
-        $this->detail->manager->setText($detail['manager']);
-        $this->detail->accounter->setText($detail['accounter']);
         $this->detail->phone->setText($detail['phone']);
         $this->detail->email->setText($detail['email']);
 
@@ -110,6 +116,13 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->common->simpletax->setChecked($common['simpletax']);
         $this->common->juridical->setChecked($common['juridical']);
         $this->common->basestore->setValue($common['basestore']);
+        $this->common->manager->setKey($common['manager']);
+        $this->common->manager->setText($common['managername']);
+        $this->common->accounter->setKey($common['accounter']);
+        $this->common->accounter->setText($common['accountername']);
+        $this->common->ownerfiz->setKey($common['owner']);
+        $this->common->ownerfiz->setText($common['ownername']);
+
 
         $tax = System::getOptions("tax");
         if (!is_array($tax))
@@ -145,8 +158,6 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $detail['inn'] = $this->detail->inn->getText();
         $detail['city'] = $this->detail->city->getText();
         $detail['street'] = $this->detail->street->getText();
-        $detail['manager'] = $this->detail->manager->getText();
-        $detail['accounter'] = $this->detail->accounter->getText();
         $detail['phone'] = $this->detail->phone->getText();
         $detail['email'] = $this->detail->email->getText();
 
@@ -171,11 +182,17 @@ class Options extends \ZippyERP\System\Pages\AdminBase
     {
         $common = array();
         $common['closeddate'] = $this->common->closeddate->getDate();
-        $common['nds'] = $this->common->nds->getText();
         $common['hasnds'] = $this->common->hasnds->isChecked();
         $common['simpletax'] = $this->common->simpletax->isChecked();
         $common['juridical'] = $this->common->juridical->isChecked();
         $common['basestore'] = $this->common->basestore->getValue();
+        $common['manager'] = $this->common->manager->getKey();
+        $common['managername'] = $this->common->manager->getText();
+        $common['accounter'] = $this->common->accounter->getKey();
+        $common['accountername'] = $this->common->accounter->getText();
+        $common['owner'] = $this->common->ownerfiz->getKey();
+        $common['ownername'] = $this->common->ownerfiz->getText();
+
         System::setOptions("common", $common);
         $this->setSuccess('Настройки сохранены');
     }
@@ -196,6 +213,37 @@ class Options extends \ZippyERP\System\Pages\AdminBase
 
         System::setOptions("tax", $tax);
         $this->setSuccess('Настройки сохранены');
+    }
+
+    public function OnAutoEmployee($sender)
+    {
+        $text = $sender->getValue();
+        return \ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null and  fullname  like '%{$text}%' ");
+    }
+
+    public function OnAutoContact($sender)
+    {
+        $text = $sender->getValue();
+        return \ZippyERP\ERP\Entity\Contact::findArray("fullname", "    fullname  like '%{$text}%' ");
+    }
+
+    public function OnJFChange($sender)
+    {
+        if ($sender->isChecked()) {
+            $this->common->ownerfiz->setVisible(false);
+            ;
+            $this->common->manager->setKey(0);
+            $this->common->manager->setText('');
+            $this->common->manager->setVisible(true);
+            ;
+        } else {
+            $this->common->ownerfiz->setVisible(true);
+            ;
+            $this->common->ownerfiz->setKey(0);
+            $this->common->ownerfiz->setText('');
+            $this->common->manager->setVisible(false);
+            ;
+        }
     }
 
 }

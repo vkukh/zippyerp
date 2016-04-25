@@ -39,6 +39,7 @@ class ShowReport extends \Zippy\Html\WebPage
             header("Content-type: text/xml");
             header("Content-Disposition: attachment;Filename={$filename}.xml");
             header("Content-Transfer-Encoding: binary");
+            $html = \ZippyERP\System\Session::getSession()->printxml;
         }
 
         echo $html;

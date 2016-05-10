@@ -90,7 +90,7 @@ class CashBook extends \ZippyERP\ERP\Pages\Base
 
         $curamount = $a30->getSaldo($from);
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $sql = "SELECT  v.acc_d,v.acc_c,v.document_id FROM  erp_account_entry_view v  
               WHERE  v.meta_name IN ('CashReceiptIn','CashReceiptOut')

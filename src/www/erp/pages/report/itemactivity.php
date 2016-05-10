@@ -91,7 +91,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
 
         $i = 1;
         $detail = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $sql = "
             SELECT

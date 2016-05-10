@@ -44,7 +44,7 @@ class Base extends \Zippy\Html\WebPage
 
     protected function beforeRender()
     {
-      //  $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
+        $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
     }
     protected function afterRender()
     {

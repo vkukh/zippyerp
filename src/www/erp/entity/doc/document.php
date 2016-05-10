@@ -174,7 +174,7 @@ class Document extends \ZCL\DB\Entity
      */
     protected function Cancel()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->StartTrans();
         // если  метод не переопределен  в  наследнике удаляем  документ  со  всех  движений
         //   $conn->Execute("delete from erp_stock_activity where document_id =" . $this->document_id);
@@ -200,7 +200,7 @@ class Document extends \ZCL\DB\Entity
     {
         $arr = explode("\\", $classname);
         $classname = $arr[count($arr) - 1];
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select meta_id from  erp_metadata where meta_type=1 and meta_name='{$classname}'";
         $meta = $conn->GetRow($sql);
         $classname = '\ZippyERP\ERP\Entity\Doc\\' . $classname;
@@ -224,7 +224,7 @@ class Document extends \ZCL\DB\Entity
 
     protected function beforeDelete()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->Execute("delete from erp_document_update_log  where document_id =" . $this->document_id);
         $conn->Execute("update erp_document set  state=" . self::STATE_DELETED . " where  document_id =" . $this->document_id);
 
@@ -251,7 +251,7 @@ class Document extends \ZCL\DB\Entity
     public function AddConnectedDoc($id)
     {
         if ($id > 0) {
-            $conn = \ZCL\DB\DB::getConnect();
+            $conn = \ZDB\DB\DB::getConnect();
             $conn->Execute("delete from erp_docrel  where (doc1={$this->document_id} and doc2={$id} )  or (doc2={$this->document_id} and doc1={$id})");
             $conn->Execute("insert  into erp_docrel (doc1,doc2) values({$id},{$this->document_id})");
         }
@@ -265,7 +265,7 @@ class Document extends \ZCL\DB\Entity
     public function RemoveConnectedDoc($id)
     {
         if ($id > 0) {
-            $conn = \ZCL\DB\DB::getConnect();
+            $conn = \ZDB\DB\DB::getConnect();
             $conn->Execute("delete from erp_docrel  where (doc1={$this->document_id} and doc2={$id} )  or (doc2={$this->document_id} and doc1={$id})");
         }
     }
@@ -289,7 +289,7 @@ class Document extends \ZCL\DB\Entity
     {
 
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $rs = $conn->Execute("select l.*,u.userlogin from erp_document_update_log l left join system_users u on l.user_id = u.user_id where document_id={$this->document_id}");
         $list = array();
         foreach ($rs as $row) {
@@ -327,7 +327,7 @@ class Document extends \ZCL\DB\Entity
         }
         $this->state = $state;
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $host = $conn->qstr($_SERVER["REMOTE_ADDR"]);
         $user = \ZippyERP\System\System::getUser()->getUserID();
         $sql = "insert into erp_document_update_log (document_id,user_id,document_state,updatedon,hostname) values ({$this->document_id},{$user},{$this->state},now(),{$host})";
@@ -415,7 +415,7 @@ class Document extends \ZCL\DB\Entity
      */
     public function checkDeleted()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $cnt = $conn->GetOne("select  count(*) from erp_docrel where  doc1 = {$this->document_id}  or  doc2 = {$this->document_id}");
         if ($cnt > 0)
@@ -444,7 +444,7 @@ class Document extends \ZCL\DB\Entity
      */
     public static function search($type, $from, $to, $header = array())
     {
-        $conn = $conn = \ZCL\DB\DB::getConnect();
+        $conn = $conn = \ZDB\DB\DB::getConnect();
         ;
         $where = "state= " . Document::STATE_EXECUTED;
 

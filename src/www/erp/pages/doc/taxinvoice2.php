@@ -250,7 +250,7 @@ class TaxInvoice2 extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

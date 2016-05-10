@@ -54,7 +54,7 @@ class ExpenseReport extends Document
 
     public function Execute()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->StartTrans();
 
         $employee_id = $this->headerdata["employee"];

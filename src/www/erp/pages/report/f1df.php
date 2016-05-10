@@ -152,7 +152,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
     {
         $this->detail->setVisible(false);
         $this->_emplist = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $year = $this->filter->yr->getValue();
         $qw = $this->filter->qw->getValue();
 

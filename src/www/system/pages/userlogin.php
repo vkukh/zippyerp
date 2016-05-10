@@ -66,6 +66,8 @@ class UserLogin extends Base
 
     public function beforeRequest()
     {
+        parent::beforeRequest();
+        
         if (System::getUser()->user_id > 0) {
             App::RedirectHome();
         }

@@ -118,7 +118,7 @@ class DocCODataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $filter = Filter::getFilter("CustomerOrderList");
         $where = " meta_name ='CustomerOrder' ";
 

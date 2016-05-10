@@ -302,7 +302,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         $isEdited = $this->_doc->document_id > 0;
 
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

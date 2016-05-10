@@ -11,8 +11,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require_once _ROOT . 'vendor/autoload.php';
 include_once _ROOT . "vendor/adodb/adodb-php/adodb-exceptions.inc.php";
-$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-$ADODB_QUOTE_FIELDNAMES = true;
+
 
 //чтение  конфигурации
 $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
@@ -20,22 +19,16 @@ $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
 //  phpQuery::$debug = true;
 
 //Параметры   соединения  с  БД
-\ZCL\DB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
+\ZDB\DB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
 
-//Настройка   сессии   в  БД
-if ($_config["common"]["sessiondb"] == "1") {
-    include_once _ROOT . "vendor/adodb/adodb-php/session/adodb-session2.php";
-    \ADODB_Session::config('mysqli', $_config['db']['host'], $_config['db']['user'], $_config['db']['pass'], $_config['db']['name'], array('table' => 'system_session'));
-    \ADODB_Session::Persist($connectMode = false);
-}
-
+ 
 
 //подключение  ядра системмы
 require_once _ROOT . 'system/start.inc.php';
 require_once _ROOT . 'erp/start.inc.php';
 
 
-//загружаем  модули                  
+//загружаем  модули
 $modules = array();
 /*
   $modulespath = _ROOT . 'modules/';

@@ -52,7 +52,7 @@ class InventoryLost extends Document
 
     public function Execute()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->StartTrans();
 
         $types = array();

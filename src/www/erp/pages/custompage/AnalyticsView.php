@@ -189,7 +189,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     private function getSQL()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         if ($this->page->filter->viewtype->getValue() == 1) {
             $sql = " from erp_account_subconto_view where document_date >= " . $conn->DBDate($this->page->filter->from->getDate()) . " and  document_date <= " . $conn->DBDate($this->page->filter->to->getDate());
@@ -281,7 +281,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItemCount()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         if ($this->page->filter->viewtype->getValue() == 1) {
             $sql = "select count(*) as cnt " . $this->getSQL();
         } else {
@@ -294,7 +294,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         if ($this->page->filter->viewtype->getValue() == 1) {
             $sql = "select  document_id,document_date,extcode,meta_desc,document_number,partion," . $this->getFields() . "

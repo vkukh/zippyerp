@@ -56,7 +56,7 @@ class System
         if(isset(self::$_options[$group])){
             return self::$_options[$group]; 
         }
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $rs = $conn->GetOne("select optvalue from system_options where optname='{$group}' ");
         if (strlen($rs) > 0) {
@@ -75,7 +75,7 @@ class System
     public static function setOptions($group, $options)
     {
         $options = serialize($options);
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $conn->Execute(" delete from system_options where  optname='{$group}' ");
         $conn->Execute(" insert into system_options (optname,optvalue) values ('{$group}'," . $conn->qstr($options) . " ) ");

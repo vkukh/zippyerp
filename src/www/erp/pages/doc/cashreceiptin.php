@@ -122,7 +122,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
         $answer = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%' and document_id <> {$this->_doc->document_id} order  by document_id desc  limit 0,20";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {
@@ -158,7 +158,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
 
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
 

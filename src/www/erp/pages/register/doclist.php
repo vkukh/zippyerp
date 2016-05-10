@@ -185,7 +185,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $filter = Filter::getFilter("doclist");
         $where = " date(document_date) >= " . $conn->DBDate($filter->from) . " and  date(document_date) <= " . $conn->DBDate($filter->to);
 
@@ -208,7 +208,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $docs = Document::find($this->getWhere(), "document_date desc,document_id desc", "", $count, $start);
+        $docs = Document::find($this->getWhere(), "document_date desc,document_id desc",   $count, $start);
 
         //$l = Traversable::from($docs);
         //$l = $l->where(function ($doc) {return $doc->document_id == 169; }) ;

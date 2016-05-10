@@ -75,7 +75,7 @@ class UserDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $desc = true)
     {
-        return User::find('', $sortfield . ($desc === true ? ' desc' : ''), null, $count, $start);
+        return User::find('', $sortfield . ($desc === true ? ' desc' : ''),  $count, $start);
     }
 
     public function getItem($id)

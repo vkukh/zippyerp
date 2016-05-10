@@ -173,7 +173,7 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
         $answer = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%'  order  by document_id desc  limit 0,20";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {

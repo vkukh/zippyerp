@@ -73,7 +73,7 @@ class TaxInvoice2 extends Document
 
     public function Execute()
     {
-
+        
     }
 
     /**

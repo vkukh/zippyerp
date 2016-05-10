@@ -67,7 +67,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
     {
         $customer = $sender->getOwner()->getDataItem();
         $this->doclist->custname1->setText($customer->customer_name);
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select  sc.document_id,sum(sc.amount) as amount,meta_desc,document_number,sc.document_date
                 from  erp_account_subconto sc  join erp_document_view dc on sc.document_id = dc.document_id
                 where customer_id = {$customer->customer_id} and (account_id = 371 or account_id = 681)
@@ -161,7 +161,7 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select  coalesce(sum(sc.amount ),0) as  saldo,sc.customer_id ,c.customer_name
                 from  erp_account_subconto sc join erp_customer c on sc.customer_id = c.customer_id
                 where  account_id = 371 or account_id = 681

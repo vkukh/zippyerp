@@ -246,7 +246,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->_doc->datatag = $this->docform->customer->getKey();
 
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

@@ -1,6 +1,7 @@
 <?php
 
 
+
 require_once 'init.php';
 
 try {
@@ -29,7 +30,7 @@ try {
 } catch (Exception $e) {
     if($e  instanceof ADODB_Exception){
 
-       \ZCL\DB\DB::getConnect()->CompleteTrans(false); // откат транзакции
+       \ZDB\DB\DB::getConnect()->CompleteTrans(false); // откат транзакции
     }
     $msg =    $e->getMessage() ;
     $logger->error($e);

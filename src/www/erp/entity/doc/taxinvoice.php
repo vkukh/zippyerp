@@ -74,7 +74,7 @@ class TaxInvoice extends Document
 
     public function Execute()
     {
-
+        
     }
 
     /**
@@ -152,11 +152,11 @@ class TaxInvoice extends Document
         $totalnds = H::fm($this->headerdata["totalnds"]);
         $totalall = $total + $totalnds;
 
-     $xml .="<R04G11>{$totalall}</R04G11>";
-   $xml .="<R03G11>{$totalnds}</R03G11>";
-   $xml .="<R03G7>{$totalnds}</R03G7>";
+        $xml .="<R04G11>{$totalall}</R04G11>";
+        $xml .="<R03G11>{$totalnds}</R03G11>";
+        $xml .="<R03G7>{$totalnds}</R03G7>";
 
-   $xml .="<R01G7>{$total}</R01G7>";
+        $xml .="<R01G7>{$total}</R01G7>";
 
 
 

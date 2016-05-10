@@ -48,7 +48,7 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
     {
         $employee = $sender->getOwner()->getDataItem();
         $this->doclist->empname1->setText($employee->shortname);
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select  sc.amount , sc.document_id,sc.document_date,d.document_number
                 from  erp_account_subconto sc join erp_document d  on sc.document_id = d.document_id
                 where  account_id = 372 order by sc.document_date ";
@@ -116,7 +116,7 @@ class APDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select coalesce(sum(sc.amount),0) as  saldo, sc.employee_id,shortname
                 from  erp_account_subconto sc join erp_staff_employee_view  e on sc.employee_id = e.employee_id
                 where  account_id = 372

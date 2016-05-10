@@ -82,7 +82,7 @@ class IEBook extends \ZippyERP\ERP\Pages\Base
         $to = $this->filter->to->getDate();
 
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $sql = "SELECT v.document_date,
               sum( case when extcode in(" . C::TYPEOP_CUSTOMER_IN . "," . C::TYPEOP_RET_IN . ")   then  amount else 0 end   ) as income ,

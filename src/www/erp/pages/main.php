@@ -115,7 +115,7 @@ class Main extends Base
 
 
 
-        $conn = $conn = \ZCL\DB\DB::getConnect();
+        $conn = $conn = \ZDB\DB\DB::getConnect();
 
 
         // список  запланированных документов
@@ -198,7 +198,7 @@ class Main extends Base
                 $prev = $row['quantity'];
                 for ($i = 1; $i <= 5; $i++) {
                     $it = new DataItem($row);
-                    $it->quantity = $prev - $avr['quantity'] ;
+                    $it->quantity = $prev - $avr['quantity'];
                     $it->date = Carbon::now()->addDays($i)->startOfDay()->timestamp;
 
                     if (isset($planned[$row['item_id'] . '_' . $row['store_id'] . '_' . $it->date])) {

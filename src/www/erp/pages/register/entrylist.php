@@ -84,7 +84,7 @@ class EntryDataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $filter = Filter::getFilter("entrylist");
 

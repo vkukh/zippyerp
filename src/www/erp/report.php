@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP;
 
-use \ZCL\DB\DB;
+use \ZDB\DB\DB;
 
 /**
  * Класс  для  рендеринга  печатных  форм

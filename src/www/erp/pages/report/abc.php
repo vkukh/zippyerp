@@ -112,7 +112,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     private function find1()
     {
         $list = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "SELECT * FROM (
                     SELECT itemname as name, SUM( ABS( extcode ) ) AS value
                     FROM  `erp_account_subconto_view`
@@ -135,7 +135,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     private function find2()
     {
         $list = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "SELECT * FROM (
                     SELECT customer_name as name, SUM( ABS( amount ) ) AS value
                     FROM  `erp_account_subconto_view`
@@ -158,7 +158,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     private function find3()
     {
         $list = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "SELECT * FROM (
                     SELECT customer_name as name, SUM( ABS( amount ) ) AS value
                     FROM  `erp_account_subconto_view`
@@ -180,7 +180,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
 
     private function find4()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         //выбираем  по  Акту выполненых работ
         $where = "  meta_name ='ServiceAct'
                    AND document_date >= " . $conn->DBDate($this->filter->from->getDate()) . "

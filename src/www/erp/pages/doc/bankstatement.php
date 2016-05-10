@@ -188,7 +188,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['bankaccount'] = $this->docform->bankaccount->getValue();
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -297,7 +297,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
         $answer = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%' and document_id <> {$this->_doc->document_id} and state = " . Document::STATE_EXECUTED . "  order  by document_id desc  limit 0,20";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {

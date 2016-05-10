@@ -80,7 +80,7 @@ class Stock extends \ZCL\DB\Entity
         if ($date == null) {
             $date = strtotime('+10 year', time(0));
         }
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $where = "   stock_id = {$stock_id} and date(document_date) <= " . $conn->DBDate($date);
         if ($acc > 0) {
             $where = $where . " and account_id= " . $acc;
@@ -99,7 +99,7 @@ class Stock extends \ZCL\DB\Entity
      */
     public static function getQuantityFuture($stock_id, $date, $acc = 0)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $where = "    stock_id = {$stock_id} and date(document_date) > " . $conn->DBDate($date);
         if ($acc > 0) {
             $where = $where . " and account_id= " . $acc;

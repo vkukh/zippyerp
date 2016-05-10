@@ -84,21 +84,21 @@ class Account extends \ZCL\DB\Entity
      * Возвращает сальдо  с   учетом субсчетов
      * Положительное  значение  сальдо  по  дебету,  отрицательное - по  кредиту.
      * @param mixed $date    На дату
-      */
-    public function getSaldo($date = null )
+     */
+    public function getSaldo($date = null)
     {
         $saldo = 0;
         $children = Account::find("acc_pid=" . $this->acc_code);
         if (count($children) > 0) { // если   есть  субсчета
             foreach ($children as $child) {
-                $saldo += $child->getSaldo($date );
+                $saldo += $child->getSaldo($date);
             }
             return $saldo;
         }
 
 
         $conn = DB::getConnect();
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_d=" . $this->acc_code  ;
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_d=" . $this->acc_code;
 
         if ($date > 0) {
             $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_d=" . $this->acc_code . "  and date(document_date) <= " . $conn->DBDate($date);
@@ -106,7 +106,7 @@ class Account extends \ZCL\DB\Entity
 
 
         $deb = $conn->GetOne($sql);
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_c =" . $this->acc_code  ;
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_c =" . $this->acc_code;
         if ($date > 0) {
             $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  acc_c =" . $this->acc_code . "  and date(document_date) <= " . $conn->DBDate($date);
         }
@@ -116,28 +116,26 @@ class Account extends \ZCL\DB\Entity
         return $deb - $cr;
     }
 
-
     /**
-    * Дебетовое  сальдо
-    *
-    * @param mixed $date
-    */
-    public function getSaldoD($date = null )
+     * Дебетовое  сальдо
+     *
+     * @param mixed $date
+     */
+    public function getSaldoD($date = null)
     {
         $a = $this->getSaldo($date);
-        return $a > 0 ?$a:0 ;
-
+        return $a > 0 ? $a : 0;
     }
+
     /**
-    * Кредитовое  сальдо
-    *
-    * @param mixed $date
-    */
-    public function getSaldoC($date = null )
+     * Кредитовое  сальдо
+     *
+     * @param mixed $date
+     */
+    public function getSaldoC($date = null)
     {
         $a = $this->getSaldo($date);
-        return $a < 0 ?0-$a:0 ;
-
+        return $a < 0 ? 0 - $a : 0;
     }
 
     /**
@@ -148,12 +146,12 @@ class Account extends \ZCL\DB\Entity
      * @param mixed $from
      * @param mixed $to
      */
-    public static function getObBetweenAccount($acc_d, $acc_c, $from, $to )
+    public static function getObBetweenAccount($acc_d, $acc_c, $from, $to)
     {
 
 
         $conn = DB::getConnect();
-        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  (acc_d= {$acc_d} or acc_d in(select acc_code from erp_account_plan p1 where  p1.acc_pid= {$acc_d}))  and (acc_c={$acc_c} or acc_c in(select acc_code from erp_account_plan p2 where  p2.acc_pid= {$acc_c})) and date(document_date) >= " . $conn->DBDate($from) . " and date(document_date) <= " . $conn->DBDate($to)  ;
+        $sql = "select coalesce(sum(amount),0) from  erp_account_entry where  (acc_d= {$acc_d} or acc_d in(select acc_code from erp_account_plan p1 where  p1.acc_pid= {$acc_d}))  and (acc_c={$acc_c} or acc_c in(select acc_code from erp_account_plan p2 where  p2.acc_pid= {$acc_c})) and date(document_date) >= " . $conn->DBDate($from) . " and date(document_date) <= " . $conn->DBDate($to);
         return $conn->GetOne($sql);
     }
 

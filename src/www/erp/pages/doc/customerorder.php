@@ -137,7 +137,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = $this->docform->document_date->getDate();
         $this->_doc->order_state = $this->docform->orderstate->getValue();
         $this->_doc->tagcode = $this->docform->customer->getKey();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

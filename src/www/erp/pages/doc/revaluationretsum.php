@@ -81,7 +81,7 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['actual'] = 100 * $this->docform->actual->getText();
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

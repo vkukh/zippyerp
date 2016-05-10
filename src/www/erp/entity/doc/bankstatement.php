@@ -93,8 +93,8 @@ class BankStatement extends Document
                 $sc->save();
 
                 if ($value['nds'] > 0) {
-                    Entry::AddEntry(644, 63, $value['nds'], $this->document_id, $this->document_date);
-                    $sc = new SubConto($this, 63, 0 - $value['nds']);
+                    Entry::AddEntry(644, $acc, $value['nds'], $this->document_id, $this->document_date);
+                    $sc = new SubConto($this, $acc, 0 - $value['nds']);
                     $sc->setCustomer($value['customer']);
                     $sc->save();
                 }

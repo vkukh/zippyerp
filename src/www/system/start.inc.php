@@ -75,6 +75,7 @@ function Route($uri)
             }
         }
         $xml = '<?xml version="1.0" encoding="utf-8"?>' . $response;
+        
         header(`Content-Type: text/xml; charset=utf-8`);
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

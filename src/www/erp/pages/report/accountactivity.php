@@ -78,7 +78,7 @@ class AccountActivity extends \ZippyERP\ERP\Pages\Base
         $detail = array();
 
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $data = $acc->getSaldoAndOb($from, $to);  //получаем остатки  и  обороты  на  период
 

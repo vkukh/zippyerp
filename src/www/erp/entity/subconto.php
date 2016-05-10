@@ -100,7 +100,7 @@ class SubConto extends \ZCL\DB\Entity
      */
     public static function getQuantity($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $where = "   1=1";
         if ($date > 0) {
             $where = $where . "   date(document_date) <= " . $conn->DBDate($date);
@@ -144,7 +144,7 @@ class SubConto extends \ZCL\DB\Entity
      */
     public static function getAmount($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $where = "   1=1";
         if ($date > 0) {
             $where = $where . " and  date(document_date) <= " . $conn->DBDate($date);

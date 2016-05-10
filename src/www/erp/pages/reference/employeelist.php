@@ -177,7 +177,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
 
-        return Contact::findArray("fullname", " employee = 0 and customer = 0  and  fullname  like '%{$text}%' ", "fullname", null, 20);
+        return Contact::findArray("fullname", " employee = 0 and customer = 0  and  fullname  like '%{$text}%' ", "fullname",  20);
     }
 
     //редактирование  контакта

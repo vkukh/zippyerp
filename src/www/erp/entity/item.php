@@ -79,7 +79,7 @@ class Item extends \ZCL\DB\Entity
      */
     public static function getQuantity($item_id, $date)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $where = "   stock_id IN( select stock_id from erp_store_stock st join erp_store sr on st.store_id = sr.store_id  where item_id= {$item_id} and store_type = " . Store::STORE_TYPE_OPT . " )  and date(document_date) <= " . $conn->DBDate($date);
         $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_account_subconto  where " . $where;
         return $conn->GetOne($sql);

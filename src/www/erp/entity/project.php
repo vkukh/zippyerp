@@ -20,7 +20,7 @@ class Project extends \ZCL\DB\Entity
 
     protected function beforeDelete()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         // $conn->Execute("delete from erp_document_update_log  where document_id =" . $this->document_id);
 
         return true;

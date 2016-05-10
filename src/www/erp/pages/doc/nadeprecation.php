@@ -57,7 +57,7 @@ class NADeprecation extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['tax'] = $this->docform->tax->isChecked();
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

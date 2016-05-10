@@ -13,7 +13,7 @@ class GroupItem extends \ZCL\DB\Entity
 
     protected function beforeDelete()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->Execute("update erp_item set  group_id = 0 ");
 
         return true;

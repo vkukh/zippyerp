@@ -132,7 +132,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
 
         $this->_doc->datatag = $this->docform->supplier->getKey();
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

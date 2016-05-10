@@ -128,7 +128,7 @@ class TaxListDataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $filter = Filter::getFilter("taxinvoicelist");
         $where = " document_date >= " . $conn->DBDate($filter->from) . " and  document_date <= " . $conn->DBDate($filter->to);
         $where .= " and  (meta_name = 'TaxInvoice' or meta_name = 'TaxInvoiceIncome' )";

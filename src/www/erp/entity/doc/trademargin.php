@@ -36,7 +36,7 @@ class TradeMargin extends Document
 
     public function Execute()
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $store_id = $this->headerdata['store_id'];
         $item = \ZippyERP\ERP\Entity\Item::getSumItem();

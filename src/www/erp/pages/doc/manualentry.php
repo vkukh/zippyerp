@@ -451,7 +451,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['f'] = base64_encode(serialize($this->_farr));
         $this->_doc->headerdata['description'] = $this->docform->description->getText();
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();

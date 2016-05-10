@@ -85,7 +85,7 @@ class User extends Entity
      */
     public static function getByLogin($login)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         return User::getFirst('userlogin = ' . $conn->qstr($login));
     }
 
@@ -115,7 +115,7 @@ class User extends Entity
      */
     public static function getByHash($md5hash)
     {
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $arr = User::find('md5hash=' . Entity::qstr($md5hash));
         if (count($arr) == 0) {
             return null;

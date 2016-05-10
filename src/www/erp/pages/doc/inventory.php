@@ -209,7 +209,7 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
         $isEdited = $this->_doc->document_id > 0;
 
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -242,7 +242,7 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
     public function loadOnClick($sender)
     {
         $this->_itemlist = array();
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
 
         $store_id = $this->docform->store->getValue();
         $account_id = $this->docform->itemtype->getValue();

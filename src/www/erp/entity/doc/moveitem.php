@@ -24,7 +24,7 @@ class MoveItem extends Document
 
         $store = Store::load($this->headerdata['storeto']);
 
-        $conn = \ZCL\DB\DB::getConnect();
+        $conn = \ZDB\DB\DB::getConnect();
         $conn->StartTrans();
 
         $ret = 0;    // торговая  наценка

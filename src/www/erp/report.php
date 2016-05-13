@@ -2,8 +2,6 @@
 
 namespace ZippyERP\ERP;
 
-use \ZDB\DB\DB;
-
 /**
  * Класс  для  рендеринга  печатных  форм
  */
@@ -25,9 +23,9 @@ class Report
     /**
      * Генерация  простой формы
      *
-     * @param mixed $header    Массив  с даннымы  шапки
-     * @param mixed $detail    Двумерный массив  табличной  части
-     * @param mixed $summary   Список  полей  по  которым  вычисляются  итоговые  данные табличной части
+     * @param mixed $header Массив  с даннымы  шапки
+     * @param mixed $detail Двумерный массив  табличной  части
+     * @param mixed $summary Список  полей  по  которым  вычисляются  итоговые  данные табличной части
      */
     public function generate(array $header, array $detail = array(), array $detail2 = array())
     {
@@ -41,7 +39,6 @@ class Report
         }
         $m = new \Mustache_Engine();
         $html = $m->render($template, $header);
-
 
 
         $html = str_replace("\n", "", $html);

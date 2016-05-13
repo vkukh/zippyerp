@@ -2,11 +2,11 @@
 
 namespace ZippyERP\ERP\Pages;
 
-use \ZippyERP\ERP\Helper;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Application as App;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\ERP\Helper;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\System;
 
 //базовая страница
 class Base extends \Zippy\Html\WebPage
@@ -37,7 +37,6 @@ class Base extends \Zippy\Html\WebPage
         }
 
 
-
         $user = System::getUser();
         if ($user->user_id == 0) {
             App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
@@ -46,7 +45,7 @@ class Base extends \Zippy\Html\WebPage
 
     public function setError($msg)
     {
-        $this->_errormsg = $this->_errormsg . ('<li>' . $msg . '</li>' );
+        $this->_errormsg = $this->_errormsg . ('<li>' . $msg . '</li>');
         $this->errormessage->setVisible(true);
     }
 

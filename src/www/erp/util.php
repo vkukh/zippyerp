@@ -2,8 +2,6 @@
 
 namespace ZippyERP\ERP;
 
-use \ZDB\DB\DB;
-
 /**
  * Класс   со  вспомагательными   функциями
  */
@@ -12,7 +10,7 @@ class Util
 
     /**
      * Выводит  сумму  прописью
-     * 
+     *
      * @param mixed $number
      */
     public static function money2str($number)
@@ -23,7 +21,7 @@ class Util
 
     /**
      *     Преобразование  спервого  символа   в   верхний  регистр
-     * 
+     *
      * @param mixed $str
      */
     public static function ucfirst($str)
@@ -77,7 +75,7 @@ function money2str_ru($money, $options = 0)
 
 // each group contais 3 digits, except copecks, containing of 2 digits
         $grp = ($i != 0) ? dec_digits_group($money, $i - 1, 3) :
-                dec_digits_group($money, -1, 2);
+            dec_digits_group($money, -1, 2);
 
 // process the group if not empty
         if ($grp != 0) {
@@ -98,28 +96,24 @@ function money2str_ru($money, $options = 0)
                             $dig = dec_digits_group($grp, 0, 2);
                             $ret .= $numbers_m[$dig] . ' ';
                             break;
-                        }
-
-// thousands and copecks are Feminine gender in Russian
+                        } // thousands and copecks are Feminine gender in Russian
                         elseif (($i == 2 || $i == 0) && $j == 0 && ($dig == 1 || $dig == 2))
                             $ret .= $numbers_f[$dig] . ' ';
 
 // the main case
                         else
-                            $ret .= $numbers_m[(int) ($dig * pow(10, $j))] . ' ';
+                            $ret .= $numbers_m[(int)($dig * pow(10, $j))] . ' ';
                     }
                 }
             $ret .= $units_ru[$i][sk_plural_form($dig)] . ' ';
-        }
-
-// roubles should be named in case of empty roubles group too
+        } // roubles should be named in case of empty roubles group too
         elseif ($i == 1 && $ret != '')
             $ret .= $units_ru[1][2] . ' ';
 
 // mandatory copecks
         elseif ($i == 0 && ($options & M2S_KOPS_MANDATORY))
             $ret .= (($options & M2S_KOPS_DIGITS) ? '00' : 'ноль') .
-                    ' ' . $units_ru[0][2];
+                ' ' . $units_ru[0][2];
     }
 
     return trim($ret);
@@ -128,7 +122,7 @@ function money2str_ru($money, $options = 0)
 // service function to select the group of digits
 function dec_digits_group($number, $power, $digits = 1)
 {
-    return (int) bcmod(bcdiv($number, bcpow(10, $power * $digits, 8)), bcpow(10, $digits, 8));
+    return (int)bcmod(bcdiv($number, bcpow(10, $power * $digits, 8)), bcpow(10, $digits, 8));
 }
 
 // service function to get plural form for the number

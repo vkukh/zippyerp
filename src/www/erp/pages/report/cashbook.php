@@ -2,21 +2,18 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Account;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Consts;
-use \ZippyERP\System\System;
-use \Carbon\Carbon;
+use Carbon\Carbon;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\RedirectLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Consts;
+use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\System;
 
 /**
  * Отчет кассовая книга
@@ -70,8 +67,7 @@ class CashBook extends \ZippyERP\ERP\Pages\Base
 
 
         $header['header'] = $this->filter->phead->isChecked();
-        $header['firm'] = $firm['name'];
-        ;
+        $header['firm'] = $firm['name'];;
         $header['code'] = $firm['edrpou'];
         $mn = H::getMonth();
         $codes = Consts::getCodesList();
@@ -85,12 +81,11 @@ class CashBook extends \ZippyERP\ERP\Pages\Base
         $to = $date->endOfMonth()->timestamp;
 
 
-
         $a30 = Account::load(30);
 
         $curamount = $a30->getSaldo($from);
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         $sql = "SELECT  v.acc_d,v.acc_c,v.document_id FROM  erp_account_entry_view v  
               WHERE  v.meta_name IN ('CashReceiptIn','CashReceiptOut')
@@ -139,7 +134,6 @@ class CashBook extends \ZippyERP\ERP\Pages\Base
             }
 
 
-
             $lines[] = $line;
         }
 
@@ -148,9 +142,6 @@ class CashBook extends \ZippyERP\ERP\Pages\Base
             $page['end'] = H::fm($curamount);
             $detail[] = $page;
         }
-
-
-
 
 
         $html = $report->generate($header, $detail);

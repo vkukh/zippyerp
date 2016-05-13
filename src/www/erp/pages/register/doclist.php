@@ -2,23 +2,20 @@
 
 namespace ZippyERP\ERP\Pages\Register;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Filter;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Session;
-use \Zippy\Html\DataList\Paginator;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\DataList\Paginator;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Filter;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\System;
 
 /**
  * журнал  докуметов
@@ -28,7 +25,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
 
     /**
      *
-     * @param mixed $docid  Документ  должен  быть  показан  в  просмотре
+     * @param mixed $docid Документ  должен  быть  показан  в  просмотре
      * @return DocList
      */
     public function __construct($docid = 0)
@@ -115,9 +112,8 @@ class DocList extends \ZippyERP\ERP\Pages\Base
             $list = "";
             foreach ($basedonlist as $doctype => $docname) {
                 $list .= "<li><a href=\"/?p=ZippyERP/ERP/Pages/Doc/" . $doctype . "&arg=/0/{$item->document_id}\">{$docname}</a></li>";
-            }
-            ;
-            $basedon = $row->add(new Label('basedlist'))->setText($list, true);
+            };
+            //$basedon = $row->add(new Label('basedlist'))->setText($list, true);
         }
 
 
@@ -185,7 +181,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $filter = Filter::getFilter("doclist");
         $where = " date(document_date) >= " . $conn->DBDate($filter->from) . " and  date(document_date) <= " . $conn->DBDate($filter->to);
 
@@ -208,7 +204,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $docs = Document::find($this->getWhere(), "document_date desc,document_id desc",   $count, $start);
+        $docs = Document::find($this->getWhere(), "document_date desc,document_id desc", $count, $start);
 
         //$l = Traversable::from($docs);
         //$l = $l->where(function ($doc) {return $doc->document_id == 169; }) ;
@@ -218,7 +214,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItem($id)
     {
-        
+
     }
 
 }

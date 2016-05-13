@@ -1,64 +1,61 @@
 <html>
 
-    <body>
-        <h4>Приходный кассовый ордер</h4>
+<body>
+<h4>Приходный кассовый ордер</h4>
 
 
+<form zippy="docform">
+    <div class="row">
 
-        <form zippy="docform">
-            <div class="row">
-
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <label for="document_number" class="  control-label">Номер документа</label>
-                        <input class="form-control" type="text" zippy="document_number" required="required"     >
-                    </div>
-                    <div class="form-group">
-                        <label for="optype" class="  control-label"> Тип  операции</label>
-                        <select class="form-control" zippy="optype" >       </select>
-                    </div>
-                    <div class="form-group">
-                        <label zippy="lblopdetail" for="opdetail" class="  control-label"> </label>
-                        <input class="form-control" type="text" zippy="opdetail"   placeholder="Начните ввод"      >
-                    </div>
-                    <div class="form-group">
-                        <label  for="basedoc" class="  control-label"> Документ - основание</label>
-                        <input class="form-control" type="text" zippy="basedoc"         >
-                    </div>
-
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <label   for="document_date" class="  control-label"> Дата</label>
-                        <input class="form-control" type="text" zippy="document_date" required="required"       >
-                    </div>
-                    <div class="form-group">
-                        <label   for="amount" class="  control-label"> Сумма</label>
-                        <input class="form-control" type="text" zippy="amount" required="required"   pattern= "[0-9\.]+" >
-                    </div>
-                    <div class="form-group">
-                        <label   for="nds"  data-label="nds" class="  control-label">В т.ч. НДС</label>
-                        <input class="form-control" type="text" zippy="nds"    pattern= "[0-9\.]+" >
-                    </div>
-                    <div class="form-group">
-                        <label   for="notes" class="  control-label"> Примечание</label>
-                        <textarea class="form-control"  zippy="notes"     ></textarea>
-                    </div>
-                </div>
+        <div class="col-xs-4">
+            <div class="form-group">
+                <label for="document_number" class="  control-label">Номер документа</label>
+                <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
-            <div  class="row">
-                <div  class="col-xs-6">
-                    <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-                    &nbsp;<input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default  ">
-                    &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default  ">
-
-                </div>
+            <div class="form-group">
+                <label for="optype" class="  control-label"> Тип операции</label>
+                <select class="form-control" zippy="optype"> </select>
+            </div>
+            <div class="form-group">
+                <label zippy="lblopdetail" for="opdetail" class="  control-label"> </label>
+                <input class="form-control" type="text" zippy="opdetail" placeholder="Начните ввод">
+            </div>
+            <div class="form-group">
+                <label for="basedoc" class="  control-label"> Документ - основание</label>
+                <input class="form-control" type="text" zippy="basedoc">
             </div>
 
-        </form>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group">
+                <label for="document_date" class="  control-label"> Дата</label>
+                <input class="form-control" type="text" zippy="document_date" required="required">
+            </div>
+            <div class="form-group">
+                <label for="amount" class="  control-label"> Сумма</label>
+                <input class="form-control" type="text" zippy="amount" required="required" pattern="[0-9\.]+">
+            </div>
+            <div class="form-group">
+                <label for="nds" data-label="nds" class="  control-label">В т.ч. НДС</label>
+                <input class="form-control" type="text" zippy="nds" pattern="[0-9\.]+">
+            </div>
+            <div class="form-group">
+                <label for="notes" class="  control-label"> Примечание</label>
+                <textarea class="form-control" zippy="notes"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
+            &nbsp;<input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default  ">
+
+        </div>
+    </div>
+
+</form>
 
 
-
-
-    </body>
+</body>
 </html>

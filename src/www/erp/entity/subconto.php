@@ -14,9 +14,9 @@ class SubConto extends \ZCL\DB\Entity
     /**
      *
      *
-     * @param mixed $document    Ссылка  на  документ
-     * @param mixed $account_id  Синтетический  счет
-     * @param mixed $amount      Сумма. Отрицательная если  счет  идет по  кредиту
+     * @param mixed $document Ссылка  на  документ
+     * @param mixed $account_id Синтетический  счет
+     * @param mixed $amount Сумма. Отрицательная если  счет  идет по  кредиту
      */
     public function __construct($document, $account_id, $amount)
     {
@@ -89,18 +89,18 @@ class SubConto extends \ZCL\DB\Entity
      * Получение  количества   по  комбинации измерений
      * неиспользуемые значения  заполняются  нулем
      *
-     * @param mixed $date       дата на  конец дня
-     * @param mixed $acc        синтетичкеский счет
-     * @param mixed $stock      товар (партия)
-     * @param mixed $customer   контрашент
-     * @param mixed $emp        сотрудник
-     * @param mixed $mf         денежный счет
-     * @param mixed $asset      необоротный актив
-     * @param mixed $code       универсальное поле
+     * @param mixed $date дата на  конец дня
+     * @param mixed $acc синтетичкеский счет
+     * @param mixed $stock товар (партия)
+     * @param mixed $customer контрашент
+     * @param mixed $emp сотрудник
+     * @param mixed $mf денежный счет
+     * @param mixed $asset необоротный актив
+     * @param mixed $code универсальное поле
      */
     public static function getQuantity($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $where = "   1=1";
         if ($date > 0) {
             $where = $where . "   date(document_date) <= " . $conn->DBDate($date);
@@ -133,18 +133,18 @@ class SubConto extends \ZCL\DB\Entity
      * Получение  суммы   по  комбинации измерений
      * неиспользуемые значения  заполняются  нулем
      *
-     * @param mixed $date       дата на  конец дня
-     * @param mixed $acc        синтетичкеский счет
-     * @param mixed $stock      товар (партия)
-     * @param mixed $customer   контрашент
-     * @param mixed $emp        сотрудник
-     * @param mixed $mf         денежный счет
-     * @param mixed $asset      необоротный актив
-     * @param mixed $code       универсальное поле
+     * @param mixed $date дата на  конец дня
+     * @param mixed $acc синтетичкеский счет
+     * @param mixed $stock товар (партия)
+     * @param mixed $customer контрашент
+     * @param mixed $emp сотрудник
+     * @param mixed $mf денежный счет
+     * @param mixed $asset необоротный актив
+     * @param mixed $code универсальное поле
      */
     public static function getAmount($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $where = "   1=1";
         if ($date > 0) {
             $where = $where . " and  date(document_date) <= " . $conn->DBDate($date);
@@ -163,7 +163,7 @@ class SubConto extends \ZCL\DB\Entity
         }
 
         if ($stock > 0) {
-            $where = $where . " and stock_id= " . $store;
+            $where = $where . " and stock_id= " . $stock;
         }
         if ($customer > 0) {
             $where = $where . " and customer_id= " . $customer;

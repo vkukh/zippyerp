@@ -2,11 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Util;
 
 /**
  * Класс-сущность  документ возвратная розничная  накладая
@@ -41,7 +40,7 @@ class ReturnRetailIssue extends Document
             "document_number" => $this->document_number,
             "total" => H::fm($this->headerdata["total"]),
             "totalnds" => H::fm($this->headerdata["totalnds"]),
-            "summa" => Util::ucfirst(Util::money2str($total + $this->headerdata["nds"] / 100, '.', ''))
+            "summa" => Util::ucfirst(Util::money2str($this->headerdata["total"] + $this->headerdata["nds"] / 100))
         );
 
         $report = new \ZippyERP\ERP\Report('retailissue.tpl');

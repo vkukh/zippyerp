@@ -1,43 +1,44 @@
 <html>
-    <head>
-    </head>
+<head>
+</head>
 
-    <body>
-        <div class="row">
-            <div class="col-xs-12">
-                <div zippy="groupitemtable">
-                    <h3>Справочник групп товаров </h3>
-                    <a zippy="addnew" class="btn btn-default  ">Добавить</a>
-                    <table class="table table-bordered   table-condensed" style="width:400px">
-                        <tr>
-                            <th >Наименование</th>
+<body>
+<div class="row">
+    <div class="col-xs-12">
+        <div zippy="groupitemtable">
+            <h3>Справочник групп товаров </h3>
+            <a zippy="addnew" class="btn btn-default  ">Добавить</a>
+            <table class="table table-bordered   table-condensed" style="width:400px">
+                <tr>
+                    <th>Наименование</th>
 
-                            <th > </th>
-                        </tr>
-                        <tr zippy="groupitemlist">
-                            <td zippy="groupitem_name"></td>
-
-
-                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><i class="icon-edit"></i></a> <a zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table>
+                    <th></th>
+                </tr>
+                <tr zippy="groupitemlist">
+                    <td zippy="groupitem_name"></td>
 
 
-                </div>
-
-                <form class="col-xs-4" zippy="groupitemdetail" method="post" >
-                    <div class="form-group">
-                        <label for="editgroupitemname">Наименование</label>
-                        <input class="form-control" zippy="editgroupitemname" />
-                    </div>
+                    <td style="width:52px"><a zippy="edit" title="Редактирование"><i class="icon-edit"></i></a> <a
+                            zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
 
 
-                    <input zippy="save" type="submit" value="Сохранить" class="btn btn-default  ">&nbsp;&nbsp;
-                    <input zippy="cancel" type="button" value="Отменить" class="btn btn-default  "></td>
-
-                </form>
-            </div>
         </div>
 
-    </body>
+        <form class="col-xs-4" zippy="groupitemdetail" method="post">
+            <div class="form-group">
+                <label for="editgroupitemname">Наименование</label>
+                <input class="form-control" zippy="editgroupitemname"/>
+            </div>
+
+
+            <input zippy="save" type="submit" value="Сохранить" class="btn btn-default  ">&nbsp;&nbsp;
+            <input zippy="cancel" type="button" value="Отменить" class="btn btn-default  "></td>
+
+        </form>
+    </div>
+</div>
+
+</body>
 </html>

@@ -2,20 +2,14 @@
 
 namespace ZippyERP\ERP\Pages;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\System\Application as App;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\DataList\ArrayDataSource;
-use \Zippy\Html\Label;
-use \Carbon\Carbon;
-use \ZippyERP\ERP\Entity\Doc\Document;
+use Carbon\Carbon;
+use Zippy\Html\DataList\ArrayDataSource;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Label;
+use ZippyERP\ERP\DataItem;
+use ZippyERP\ERP\Entity\Doc\Document;
 
-;
-
-use \ZippyERP\ERP\DataItem;
-
-;
+;;
 
 class Main extends Base
 {
@@ -112,10 +106,7 @@ class Main extends Base
         $data = array();
 
 
-
-
-
-        $conn = $conn = \ZDB\DB\DB::getConnect();
+        $conn = $conn = \ZDB\DB::getConnect();
 
 
         // список  запланированных документов
@@ -151,8 +142,6 @@ class Main extends Base
         }
 
 
-
-
         // планируемые  закупки  на следующую неделю
 
         $planned = array();
@@ -181,7 +170,6 @@ class Main extends Base
                 where item_id >0 and   document_date <  " . $conn->DBDate(time()) . "
                 group  by  item_id,  store_id,itemname,storename
                 order  by  itemname ";
-
 
 
         $rs = $conn->Execute($sql);
@@ -224,32 +212,32 @@ class Main extends Base
         }
 
         $lowitems = \Pinq\Traversable::from($lowitems)
-                        ->orderByAscending(function($row) {
-                            return $row->date;
-                        })
-                        ->thenByAscending(function($row) {
-                            return $row->itemname;
-                        })
-                        ->thenByAscending(function($row) {
-                            return $row->storename;
-                        })
-                        ->select(function($row) {
-                            return $row;
-                        })->asArray();
+            ->orderByAscending(function ($row) {
+                return $row->date;
+            })
+            ->thenByAscending(function ($row) {
+                return $row->itemname;
+            })
+            ->thenByAscending(function ($row) {
+                return $row->storename;
+            })
+            ->select(function ($row) {
+                return $row;
+            })->asArray();
 
         $highitems = \Pinq\Traversable::from($highitems)
-                        ->orderByAscending(function($row) {
-                            return $row->date;
-                        })
-                        ->thenByAscending(function($row) {
-                            return $row->itemname;
-                        })
-                        ->thenByAscending(function($row) {
-                            return $row->storename;
-                        })
-                        ->select(function($row) {
-                            return $row;
-                        })->asArray();
+            ->orderByAscending(function ($row) {
+                return $row->date;
+            })
+            ->thenByAscending(function ($row) {
+                return $row->itemname;
+            })
+            ->thenByAscending(function ($row) {
+                return $row->storename;
+            })
+            ->select(function ($row) {
+                return $row;
+            })->asArray();
 
 
         $data['lowitems'] = $lowitems;

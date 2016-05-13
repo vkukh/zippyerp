@@ -2,30 +2,28 @@
 
 namespace ZippyERP\ERP\Pages\Doc;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\TextArea;
-use \Zippy\Html\Form\AutocompleteTextInput;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\DataList\ArrayDataSource;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Link\SubmitLink;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\RadioButton;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Html\Form\Date;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \ZippyERP\ERP\Entity\Account;
-use \ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Entity\Customer;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\ERP\Helper as H;
-use \Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Html\DataList\ArrayDataSource;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
+use Zippy\Html\Form\TextArea;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Entity\Customer;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Entity\Employee;
+use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Entity\Store;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Документ для ручных  операций
@@ -132,7 +130,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         $row->add(new Label('acccodec', $entry->acc_c == -1 ? "" : $entry->acc_c));
         $row->add(new Label('acccoded', $entry->acc_d == -1 ? "" : $entry->acc_d));
-        $row->add(new Label('accvalue', H::fm($entry->amount) . " " . $item->dc));
+        $row->add(new Label('accvalue', H::fm($entry->amount) . " " . $entry->dc));
         $row->add(new ClickLink('delacc'))->setClickHandler($this, 'delaccOnClick');
     }
 
@@ -414,8 +412,6 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
-
         $item->qty = 1000 * $this->docform->e_caquantity->getText();
         $item->price = 100 * $this->docform->e_caprice->getText();
         if ($item->price == 0) {
@@ -451,7 +447,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['f'] = base64_encode(serialize($this->_farr));
         $this->_doc->headerdata['description'] = $this->docform->description->getText();
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -465,10 +461,10 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 

@@ -26,7 +26,7 @@ class Stock extends \ZCL\DB\Entity
             $orderbydir = "asc";
         }
 
-        $entitylist = self::find($criteria, $orderbyfield, $orderbydir, $count, $offset);
+        $entitylist = self::find($criteria, $orderbyfield,   $count, $offset);
 
         $list = array();
         foreach ($entitylist as $key => $value) {
@@ -40,10 +40,10 @@ class Stock extends \ZCL\DB\Entity
     /**
      * Возвращает запись  со  склада по  цене (партии  для  оптового)  товара.
      *
-     * @param mixed $store_id  Склад
-     * @param mixed $tovar_id  Товар
-     * @param mixed $price     Цена
-     * @param mixed $create    Создать  если  не   существует
+     * @param mixed $store_id Склад
+     * @param mixed $tovar_id Товар
+     * @param mixed $price Цена
+     * @param mixed $create Создать  если  не   существует
      */
     public static function getStock($store_id, $item_id, $price, $create = false)
     {
@@ -57,12 +57,11 @@ class Stock extends \ZCL\DB\Entity
             $stock->partion = $price;
 
 
-
-            $stock->Save();
+            $stock->save();
         }
         if ($stock->closed == 1) {
             $stock->closed == 0;
-            $stock->Save();     //enable partion
+            $stock->save();     //enable partion
         }
         return $stock;
     }
@@ -78,9 +77,9 @@ class Stock extends \ZCL\DB\Entity
     public static function getQuantity($stock_id, $date = null, $acc = 0)
     {
         if ($date == null) {
-            $date = strtotime('+10 year', time(0));
+            $date = strtotime('+10 year', time());
         }
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $where = "   stock_id = {$stock_id} and date(document_date) <= " . $conn->DBDate($date);
         if ($acc > 0) {
             $where = $where . " and account_id= " . $acc;
@@ -95,11 +94,11 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $stock_id
      * @param mixed $date
      * @param mixed $acc Синтетический счет
-     * @return Массив с  двумя  значениями 'r'  и 'w'
+     * @return mixed Массив с  двумя  значениями 'r'  и 'w'
      */
     public static function getQuantityFuture($stock_id, $date, $acc = 0)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $where = "    stock_id = {$stock_id} and date(document_date) > " . $conn->DBDate($date);
         if ($acc > 0) {
             $where = $where . " and account_id= " . $acc;

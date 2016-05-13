@@ -20,18 +20,18 @@ class Entry extends \ZCL\DB\Entity
     /**
      * Создает  и  записывает  бухгалтерскую  проводку
      *
-     * @param mixed $acc_d     код дебетового  счета или 0
-     * @param mixed $acc_c     код кредитового  счета или 0
-     * @param mixed $amount  Сумма (в копейках)  Отрицательное  значение выполняет сторнирование.
-     * @param mixed $document_id  документ-основание
-     * @param mixed $document_date  дата  документа
+     * @param mixed $acc_d код дебетового  счета или 0
+     * @param mixed $acc_c код кредитового  счета или 0
+     * @param mixed $amount Сумма (в копейках)  Отрицательное  значение выполняет сторнирование.
+     * @param mixed $document_id документ-основание
+     * @param mixed $document_date дата  документа
      *
-     * @return  возвращает  сообщение  об  ошибке  иначе   пустую  строку
+     * @return  mixed возвращает  сообщение  об  ошибке  иначе   пустую  строку
      */
     public static function AddEntry($acc_d, $acc_c, $amount, $document_id, $document_date)
     {
         if ($amount == 0)
-            return;
+            return null;
 
         $dt = Account::load($acc_d);
 
@@ -55,7 +55,7 @@ class Entry extends \ZCL\DB\Entity
         $entry->document_id = $document_id;
         $entry->document_date = $document_date;
 
-        $entry->Save();
+        $entry->save();
 
         return "";
     }

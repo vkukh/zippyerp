@@ -1,63 +1,64 @@
 <html>
-    <body>
-        <div class="row">
-            <div class="col-xs-10">
+<body>
+<div class="row">
+    <div class="col-xs-10">
 
 
-                <h3>Реестр налоговых накладных </h3>
+        <h3>Реестр налоговых накладных </h3>
 
-                <form zippy="filter"  class="navbar-form ">
-                    <div class="form-group">
-                        <label for="from">С</label>
-                        <input type="text"  class="form-control" zippy="from"  style="width:100px">
-                    </div>
-                    <div class="form-group">
-                        <label for="to">по</label>
-                        <input type="text"  class="form-control" style="width:100px" zippy="to"  >
-                    </div>                    
-                    <div class="form-group">
-                        <label for="notchecked">Не проверенные </label>
-                        <input class="form-control" type="checkbox" zippy="notchecked">
-                    </div>                    
-                    <div class="form-group">
+        <form zippy="filter" class="navbar-form ">
+            <div class="form-group">
+                <label for="from">С</label>
+                <input type="text" class="form-control" zippy="from" style="width:100px">
+            </div>
+            <div class="form-group">
+                <label for="to">по</label>
+                <input type="text" class="form-control" style="width:100px" zippy="to">
+            </div>
+            <div class="form-group">
+                <label for="notchecked">Не проверенные </label>
+                <input class="form-control" type="checkbox" zippy="notchecked">
+            </div>
+            <div class="form-group">
 
-                        <input type="submit" class="  btn btn-default  " value="Ввод">
-                    </div>                    
-
-
-                </form>
+                <input type="submit" class="  btn btn-default  " value="Ввод">
+            </div>
 
 
-                <table class="table table-striped  table-condensed ">
-                    <tr>
-                        <th >Наименование</th>
-                        <th >Номер</th>
-                        <th >Дата документа</th>
-                        <th >Сумма</th>
-                        <th style="width:20px">ЕРНН</th>
-                        <th > </th>
+        </form>
 
 
-                    </tr>
-                    <tr zippy="doclist">
-                        <td zippy="name"></td>
-                        <td zippy="number" ></td>
-                        <td zippy="date" ></td>
-                        <td zippy="amount" align="right"></td>
-                        <td align="center"><i  zippy="ernn" class="icon-ok"></i></td>
+        <table class="table table-striped  table-condensed ">
+            <tr>
+                <th>Наименование</th>
+                <th>Номер</th>
+                <th>Дата документа</th>
+                <th>Сумма</th>
+                <th style="width:20px">ЕРНН</th>
+                <th></th>
 
-                        <td>
-                            <a zippy="show"  title="Просмотр"><i class="icon-preview"></i></a>
-                            <a zippy="edit"  title="Редактировать"><i class="icon-edit"></i></a>
-                            <a zippy="cancel"  title="Отменить"><i class="icon-undo"></i></a>
 
-                        </td>
+            </tr>
+            <tr zippy="doclist">
+                <td zippy="name"></td>
+                <td zippy="number"></td>
+                <td zippy="date"></td>
+                <td zippy="amount" align="right"></td>
+                <td align="center"><i zippy="ernn" class="icon-ok"></i></td>
 
-                    </tr>
-                </table>
-                <br>
-                <div zippy="docview"></div>
+                <td>
+                    <a zippy="show" title="Просмотр"><i class="icon-preview"></i></a>
+                    <a zippy="edit" title="Редактировать"><i class="icon-edit"></i></a>
+                    <a zippy="cancel" title="Отменить"><i class="icon-undo"></i></a>
 
-            </div>   </div>
-    </body>
+                </td>
+
+            </tr>
+        </table>
+        <br>
+        <div zippy="docview"></div>
+
+    </div>
+</div>
+</body>
 </html>

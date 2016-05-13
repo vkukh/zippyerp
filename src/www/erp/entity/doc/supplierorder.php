@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Документ - заказ  поставщику
@@ -48,10 +48,7 @@ class SupplierOrder extends Document
 
     public function Execute()
     {
-
-
-        return true;
-        ;
+         return true;
     }
 
     //список состояний  для   выпадающих списков

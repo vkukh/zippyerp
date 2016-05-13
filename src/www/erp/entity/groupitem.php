@@ -4,7 +4,7 @@ namespace ZippyERP\ERP\Entity;
 
 /**
  * Клас-сущность  группа  ТМЦ
- * 
+ *
  * @table=erp_item_group
  * @keyfield=group_id
  */
@@ -13,7 +13,7 @@ class GroupItem extends \ZCL\DB\Entity
 
     protected function beforeDelete()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->Execute("update erp_item set  group_id = 0 ");
 
         return true;
@@ -21,7 +21,7 @@ class GroupItem extends \ZCL\DB\Entity
 
     /**
      * Возвращает  список  для   комбо
-     * 
+     *
      */
     public static function getList()
     {

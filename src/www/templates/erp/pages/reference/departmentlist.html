@@ -1,43 +1,44 @@
 <html>
-    <head>
-    </head>
+<head>
+</head>
 
-    <body>
-        <div class="row">
-            <div class="col-xs-12">
-                <div zippy="departmenttable">
-                    <h3>Справочник подразделений </h3>
-                    <a zippy="addnew" class="btn btn-default  ">Добавить</a>
-                    <table class="table table-bordered   table-condensed" style="width:400px">
-                        <tr>
-                            <th >Наименование</th>
+<body>
+<div class="row">
+    <div class="col-xs-12">
+        <div zippy="departmenttable">
+            <h3>Справочник подразделений </h3>
+            <a zippy="addnew" class="btn btn-default  ">Добавить</a>
+            <table class="table table-bordered   table-condensed" style="width:400px">
+                <tr>
+                    <th>Наименование</th>
 
-                            <th > </th>
-                        </tr>
-                        <tr zippy="departmentlist">
-                            <td zippy="department_name"></td>
-
-
-                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><i class="icon-edit"></i></a> <a zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table>
+                    <th></th>
+                </tr>
+                <tr zippy="departmentlist">
+                    <td zippy="department_name"></td>
 
 
-                </div>
-
-                <form class="col-xs-4" zippy="departmentdetail" method="post" >
-                    <div class="form-group">
-                        <label for="editdepartmentname">Наименование</label>
-                        <input class="form-control" zippy="editdepartmentname" />
-                    </div>
+                    <td style="width:52px"><a zippy="edit" title="Редактирование"><i class="icon-edit"></i></a> <a
+                            zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
 
 
-                    <input zippy="save" type="submit" value="Сохранить" class="btn btn-default ">&nbsp;&nbsp;
-                    <input zippy="cancel" type="button" value="Отменить" class="btn btn-default  ">
-
-                </form>
-            </div>
         </div>
 
-    </body>
+        <form class="col-xs-4" zippy="departmentdetail" method="post">
+            <div class="form-group">
+                <label for="editdepartmentname">Наименование</label>
+                <input class="form-control" zippy="editdepartmentname"/>
+            </div>
+
+
+            <input zippy="save" type="submit" value="Сохранить" class="btn btn-default ">&nbsp;&nbsp;
+            <input zippy="cancel" type="button" value="Отменить" class="btn btn-default  ">
+
+        </form>
+    </div>
+</div>
+
+</body>
 </html>

@@ -2,13 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\Account;
-use \Carbon\Carbon;
+use Carbon\Carbon;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ списание  торговой наценки
@@ -19,7 +16,6 @@ class TradeMargin extends Document
 
     public function generateReport()
     {
-
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -36,12 +32,12 @@ class TradeMargin extends Document
 
     public function Execute()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         $store_id = $this->headerdata['store_id'];
         $item = \ZippyERP\ERP\Entity\Item::getSumItem();
 
-        $stock = \ZippyERP\ERP\Entity\Stock::getStock($store_id, $item->item_id, 1, true);
+        //$stock = \ZippyERP\ERP\Entity\Stock::getStock($store_id, $item->item_id, 1, true);
 
         $discont = 0; //скидки  704  счет
         $date = new Carbon();
@@ -59,15 +55,14 @@ class TradeMargin extends Document
         $ost = $ost * $row['price'];
 
         if ($ost == 0)
-            return;
+            return null;
 
         //выручка
         $sql = " select coalesce(abs(sum(amount)),0) from erp_account_subconto where amount < 0  and account_id=702 and  extcode  = {$store_id} and date(document_date) <= " . $conn->DBDate($end) . " and date(document_date) >= " . $conn->DBDate($begin);
         $saled = $conn->GetOne($sql);  //выручка сданная в кассу
 
         $k = ($tm - $discont) / ($ost - $discont);
-        $sb = (1 - $k) * $saled;
-        ; //себестоимость
+        $sb = (1 - $k) * $saled;; //себестоимость
         // списываем  наценку
         Entry::AddEntry("285", "282", $saled - $sb, $this->document_id, $this->document_date);
         // себестоимость реализации
@@ -86,8 +81,6 @@ class TradeMargin extends Document
         // НДС
         $nds = H::nds(true);
         Entry::AddEntry("702", "641", $saled * $nds, $this->document_id, $this->document_date);
-
-
 
 
         return true;

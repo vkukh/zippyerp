@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP\Pages;
 
-use \ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Entity\Doc\Document;
 
 //страница  для  загрузки  файла экпорта
 class ShowDoc extends \Zippy\Html\WebPage
@@ -28,13 +28,12 @@ class ShowDoc extends \Zippy\Html\WebPage
         if (strlen($html) > 0) {
 
 
-
             if ($type == "preview") {
-                Header("Content-Type: text/html;charset=UTF-8");
+                header("Content-Type: text/html;charset=UTF-8");
                 echo $html;
             }
             if ($type == "print") {
-                Header("Content-Type: text/html;charset=UTF-8");
+                header("Content-Type: text/html;charset=UTF-8");
                 echo $html;
             }
             if ($type == "doc") {
@@ -77,7 +76,7 @@ class ShowDoc extends \Zippy\Html\WebPage
               $pdf->Output("{$filename}.pdf", 'D');
               } */
         } else {
-            $html = "<h4>Печатная форма  не  задана</h4>";
+            //$html = "<h4>Печатная форма  не  задана</h4>";
         }
 
         if ($type == "metaie") { //todo экспорт  файлов  метаобьекта
@@ -88,7 +87,7 @@ class ShowDoc extends \Zippy\Html\WebPage
             header("Content-Disposition: attachment;Filename={$filename}");
             header("Content-Transfer-Encoding: binary");
 
-            echo $zip;
+           // echo $zip;
         }
         die;
     }

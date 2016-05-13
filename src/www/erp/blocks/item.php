@@ -2,14 +2,13 @@
 
 namespace ZippyERP\ERP\Blocks;
 
-use \Zippy\Html\Form\Form;
-use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextArea;
-use \Zippy\Html\Label;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Html\Form\DropDownChoice;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\Form\TextInput;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Виджет для  редатирования  товара
@@ -22,9 +21,9 @@ class Item extends \Zippy\Html\PageFragment
     /**
      * put your comment there...
      *
-     * @param mixed $id    id компонента
-     * @param mixed $caller   ссылка на  класс  вызвавшей  страницы
-     * @param mixed $callback  имя функции  к  вызвавшей странице  для возврата
+     * @param mixed $id id компонента
+     * @param mixed $caller ссылка на  класс  вызвавшей  страницы
+     * @param mixed $callback имя функции  к  вызвавшей странице  для возврата
      */
     public function __construct($id, $caller, $callback)
     {
@@ -55,7 +54,6 @@ class Item extends \Zippy\Html\PageFragment
         $this->item->itemname = $this->itemdetail->editname->getText();
         $this->item->priceret = 100 * $this->itemdetail->editpriceret->getText();
         $this->item->priceopt = 100 * $this->itemdetail->editpriceopt->getText();
-
 
 
         $this->item->code = $this->itemdetail->editcode->getText();

@@ -2,22 +2,17 @@
 
 namespace ZippyERP\ERP\Pages;
 
-use \ZippyERP\System\System;
-use \ZippyERP\System\Application as App;
-use \Zippy\Html\Panel;
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Link\RedirectLink;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Image;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\TextArea;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Form\DropDownChoice;
-use \ZippyERP\ERP\Helper;
-use \ZippyERP\ERP\ACL;
-use \Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\TextArea;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\ACL;
 
 class MetaData extends \ZippyERP\System\Pages\AdminBase
 {
@@ -43,7 +38,7 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
         $this->listpan->add(new ClickLink('addnew'))->setClickHandler($this, 'addnewOnClick');
         $this->listpan->add(new DataView('metarow', $this->metadatads, $this, 'metarowOnRow'))->Reload();
 
-        $this->add(new Panel('editpan'))->setvisible(false);
+        $this->add(new Panel('editpan'))->setVisible(false);
         $this->editpan->add(new Form('editform'))->setSubmitHandler($this, 'editformOnSubmit');
         $this->editpan->editform->add(new TextInput('meta_id'));
         $this->editpan->editform->add(new TextInput('edit_description'));

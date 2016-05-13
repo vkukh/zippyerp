@@ -29,9 +29,9 @@ class Application extends \Zippy\WebApplication
     {
 
         $templatepath = _ROOT . 'templates/';
-        $path = '';
+ 
         $name = ltrim($name, '\\');
-        $arr = explode('\\', $name);
+        //$arr = explode('\\', $name);
 
 
         $path = \ZippyERP\System\getTemplate($templatepath, $name, $layout);
@@ -53,7 +53,7 @@ class Application extends \Zippy\WebApplication
           }
           } */
 
-        if (file_exists(strtolower($path))== false) {
+        if (file_exists(strtolower($path)) == false) {
             throw new \ZippyERP\System\Exception('Invalid template path: ' . strtolower($path));
         }
         $template = @file_get_contents(strtolower($path));
@@ -92,17 +92,15 @@ class Application extends \Zippy\WebApplication
         }
     }
 
-    
 
     /**
      * Редирект на  страницу с  ошибкой
-     * 
+     *
      */
     public static function RedirectError($message)
     {
         self::$app->getResponse()->Redirect("\\ZippyERP\\Pages\\Error", $message);
     }
 
-  
 
 }

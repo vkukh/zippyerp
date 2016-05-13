@@ -2,12 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ приходная  накладая
@@ -42,7 +40,6 @@ class GoodsReceipt extends Document
             "totalnds" => H::fm($this->headerdata["totalnds"]),
             "total" => H::fm($this->headerdata["total"])
         );
-
 
 
         $report = new \ZippyERP\ERP\Report('goodsreceipt.tpl');
@@ -107,10 +104,6 @@ class GoodsReceipt extends Document
             $sc->setCustomer($this->headerdata["customer"]);
             $sc->save();
         }
-
-
-
-
 
 
         return true;

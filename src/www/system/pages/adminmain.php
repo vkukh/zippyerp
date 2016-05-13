@@ -2,9 +2,6 @@
 
 namespace ZippyERP\System\Pages;
 
-use \ZippyERP\System\System;
-use \ZippyERP\System\Application as App;
-
 class AdminMain extends AdminBase
 {
 

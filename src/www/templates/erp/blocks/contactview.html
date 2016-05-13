@@ -1,56 +1,61 @@
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
 
-    </head>
-    <body>
-        <div class="row">
-            <h4 zippy="contentname"></h4>
-            <h5 zippy="contentdescription" style="font-style: italic;"></h5>
-            <div class="row">
-                <div class="col-xs-4"> 
-                    <h5><b>Коментарии</b></h5>
-                    <table   class="ctable">
-                        <tr zippy="dw_msglist"><td><span zippy="msgdate"></span>, <span style="color:navy" zippy="msguser"></span>:
-                                <p  zippy="msgdata"></p>
-                            </td><td valign="top" style="width: 30px;"><a zippy="delmsg"><i class="icon-remove"></i></a></td></tr>
-                    </table>
-                    <hr>
-                    <form zippy="addmsgform">
-                        <div class="form-group">
-                            <label for="addmsg">Коментарий</label>
-                            <textarea required="required" class="form-control"  zippy="addmsg" style="width:200px;height:120px;"></textarea>
-                        </div>                             
-                        <input class="btn btn-default btn-xsall" type="submit" value="Добавить">
-                    </form>                    
+</head>
+<body>
+<div class="row">
+    <h4 zippy="contentname"></h4>
+    <h5 zippy="contentdescription" style="font-style: italic;"></h5>
+    <div class="row">
+        <div class="col-xs-4">
+            <h5><b>Коментарии</b></h5>
+            <table class="ctable">
+                <tr zippy="dw_msglist">
+                    <td><span zippy="msgdate"></span>, <span style="color:navy" zippy="msguser"></span>:
+                        <p zippy="msgdata"></p>
+                    </td>
+                    <td valign="top" style="width: 30px;"><a zippy="delmsg"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <hr>
+            <form zippy="addmsgform">
+                <div class="form-group">
+                    <label for="addmsg">Коментарий</label>
+                    <textarea required="required" class="form-control" zippy="addmsg"
+                              style="width:200px;height:120px;"></textarea>
                 </div>
-                <div class="col-xs-4"> 
-                    <h5><b>Прикрепленные файлы</b></h5>
-                    <table   class="ctable">
-                        <tr zippy="dw_files" style="font-size: smaller ">
-                            <td ><a zippy="filename" target="_blank" ></a></td>
-                            <td  style="width: 30px;"><a zippy="delfile"><i class="icon-remove"></i></a></td></tr>
-                    </table>
-                    <hr>
-                    <form zippy="addfileform"  enctype="multipart/form-data" >
-                        <div class="form-group">
-                            <label for="addfile">Выбрать файл</label>
-                            <input type="file" class="form-control" required="required" zippy="addfile">
+                <input class="btn btn-default btn-xsall" type="submit" value="Добавить">
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <h5><b>Прикрепленные файлы</b></h5>
+            <table class="ctable">
+                <tr zippy="dw_files" style="font-size: smaller ">
+                    <td><a zippy="filename" target="_blank"></a></td>
+                    <td style="width: 30px;"><a zippy="delfile"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <hr>
+            <form zippy="addfileform" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="addfile">Выбрать файл</label>
+                    <input type="file" class="form-control" required="required" zippy="addfile">
 
-                        </div> 
-
-                        <div class="form-group">
-                            <label for="adddescfile">Описание</label>
-                            <input class="form-control" zippy="adddescfile"  class="form-control">  
-                        </div> 
-
-
-                        <input class="btn btn-default btn-xs" type="submit" value="Добавить">
-
-                    </form>                     
                 </div>
 
-            </div>
-        </div>                
-    </body>
+                <div class="form-group">
+                    <label for="adddescfile">Описание</label>
+                    <input class="form-control" zippy="adddescfile" class="form-control">
+                </div>
+
+
+                <input class="btn btn-default btn-xs" type="submit" value="Добавить">
+
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
 </html>

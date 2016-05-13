@@ -2,12 +2,11 @@
 
 namespace ZippyERP\System\Pages;
 
-use \Zippy\Html\Form\TextInput as TextInput;
-use \ZippyERP\System\Helper;
-use \ZippyERP\System\User;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Html\Form\TextInput as TextInput;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\Helper;
+use ZippyERP\System\User;
 
 class Registration extends AdminBase
 {
@@ -33,25 +32,25 @@ class Registration extends AdminBase
         if ($this->_login == '') {
             $this->setError('Введите логин');
         } else
-        if ($this->_password == '') {
-            $this->setError('Введите пароль');
-        } else
-        if ($this->_confirm == '') {
-            $this->setError('Подтвердите пароль');
-        } else
-        if ($this->_confirm != $this->_password) {
-            $this->setError('Неверное подтверждение');
-        } else
-        if ($user = Helper::login($this->_login) != false) {
-            $this->setError('Логин уже существует');
-        }
+            if ($this->_password == '') {
+                $this->setError('Введите пароль');
+            } else
+                if ($this->_confirm == '') {
+                    $this->setError('Подтвердите пароль');
+                } else
+                    if ($this->_confirm != $this->_password) {
+                        $this->setError('Неверное подтверждение');
+                    } else
+                        if ($user = Helper::login($this->_login) != false) {
+                            $this->setError('Логин уже существует');
+                        }
 
         if (!$this->isError()) {
             $user = new User();
             $user->userlogin = $this->_login;
 
             $user->userpass = (\password_hash($this->_password, PASSWORD_DEFAULT));
-            $user->Save();
+            $user->save();
 
             App::Redirect('\\ZippyERP\\System\\Pages\\UserInfo', $user->user_id);
         }

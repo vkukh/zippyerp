@@ -2,24 +2,20 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\AutocompleteTextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\Button;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Link\SubmitLink;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Entity\Account;
-use \ZippyERP\ERP\Entity\SubConto;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\System\System;
-use \Carbon\Carbon;
+use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Link\RedirectLink;
+use Zippy\Html\Link\SubmitLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Employee;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\System;
 
 /**
  * Отчет форма 1ДФ
@@ -45,8 +41,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
 
         $this->listp->add(new \Zippy\Html\DataList\DataView('list', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_emplist')), $this, 'detailOnRow'));
 
-        $this->add(new Form('editemp'))->setVisible(false);
-        ;
+        $this->add(new Form('editemp'))->setVisible(false);;
         $this->editemp->add(new AutocompleteTextInput('editemployee'))->setAutocompleteHandler($this, "OnAutoEmp");
         $this->editemp->add(new TextInput('editincome'));
         $this->editemp->add(new TextInput('editoutcome'));
@@ -114,7 +109,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
     {
         $emp = $sender->owner->getDataItem();
 
-        $this->_emplist = array_diff_key($this->_emplist, array($emp->employee_id => $this->_emplist[$temp->employee_id]));
+        $this->_emplist = array_diff_key($this->_emplist, array($emp->employee_id => $this->_emplist[$emp->employee_id]));
 
         $this->listp->list->Reload();
     }
@@ -127,7 +122,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не выбран сотрудник");
             return;
         }
-        $emp = employee::load($id);
+        $emp = Employee::load($id);
 
         $emp->income = 100 * $this->editemp->editincome->getText();
         $emp->outcome = 100 * $this->editemp->editoutcome->getText();
@@ -152,7 +147,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
     {
         $this->detail->setVisible(false);
         $this->_emplist = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $year = $this->filter->yr->getValue();
         $qw = $this->filter->qw->getValue();
 
@@ -164,7 +159,6 @@ class F1df extends \ZippyERP\ERP\Pages\Base
 
         $where = "select employee_id from erp_account_subconto where account_id =66 and  document_date >= " . $conn->DBDate($from) . "  and document_date <= " . $conn->DBDate($to);
         $list = Employee::find("employee_id in({$where})", "fullname");
-
 
 
         foreach ($list as $emp) {
@@ -225,9 +219,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
     {
 
 
-
         $report = new \ZippyERP\ERP\Report('f1df.tpl');
-
 
 
         $html = $report->generate($header, $header['details']);
@@ -241,7 +233,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $header['details'] = array();
 
         $year = $this->filter->yr->getValue();
-        $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
+        $pm = (string)sprintf('%02d', 3 * $this->filter->qw->getValue());
 
         $common = System::getOptions("common");
 
@@ -284,9 +276,9 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         foreach ($this->_emplist as $emp) {
             $_mps[$emp->employee_id] = 1;
             if ($emp->combined > 0)
-                $header['R00G021'] ++;
+                $header['R00G021']++;
             else
-                $header['R00G011'] ++;
+                $header['R00G011']++;
             $header['details'][] = array('number' => $num++,
                 'RXXXXG02' => $emp->inn,
                 'RXXXXG02_' => H::addSpaces($emp->inn),
@@ -311,26 +303,23 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $header['MIL'] = H::fm($this->_mil);
 
 
-
-
-
         return $header;
     }
 
     public function exportGNAU($header)
     {
         $year = $this->filter->yr->getValue();
-        $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
+        $pm = (string)sprintf('%02d', 3 * $this->filter->qw->getValue());
 
         $common = System::getOptions("common");
         $firm = System::getOptions("firmdetail");
-        $jf = ($common['juridical'] == true ? "J" : "F" ) . "0500102";
+        $jf = ($common['juridical'] == true ? "J" : "F") . "0500102";
         $hjhf = ($common['juridical'] == true) ? "<HJ>1</HJ>" : "<HF>1</HF>";
 
-        $edrpou = (string) sprintf("%10d", $firm['edrpou']);
+        $edrpou = (string)sprintf("%10d", $firm['edrpou']);
         $tin = $common['juridical'] == true ? $firm['edrpou'] : $firm['inn'];
 
-        $number = (string) sprintf('%07d', 1);
+        $number = (string)sprintf('%07d', 1);
         $filename = $firm['gni'] . $edrpou . $jf . "100{$number}2" . $pm . $year . $firm['gni'] . ".xml";
         $filename = str_replace(' ', '0', $filename);
 
@@ -364,11 +353,11 @@ class F1df extends \ZippyERP\ERP\Pages\Base
   <C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>
   <C_DOC_STAN>1</C_DOC_STAN>
   <LINKED_DOCS xsi:nil=\"true\" />
-  <D_FILL>" . (string) date('dmY') . "</D_FILL>
+  <D_FILL>" . (string)date('dmY') . "</D_FILL>
   <SOFTWARE>Zippy ERP</SOFTWARE>
   </DECLARHEAD>
   <DECLARBODY>
-  <HFILL>" . (string) date('dmY') . "</HFILL>
+  <HFILL>" . (string)date('dmY') . "</HFILL>
   <HNAME>{$header['HNAME']}</HNAME>
   <HTIN>{$tin}</HTIN>
 

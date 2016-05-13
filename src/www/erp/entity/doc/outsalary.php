@@ -2,13 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  *   документ выплаита зарплаты
@@ -65,7 +62,6 @@ class OutSalary extends Document
         $sc->save();
 
         Entry::AddEntry("66", "30", $a66, $this->document_id, $this->document_date);
-
 
 
         return true;

@@ -2,13 +2,11 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Util;
 
 /**
  * Класс-сущность  документ возвратная  накладая
@@ -46,7 +44,7 @@ class ReturnGoodsIssue extends Document
             "document_number" => $this->document_number,
             "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"]),
-            "summa" => Util::ucfirst(Util::money2str($this->headerdata["total"] / 100, '.', ''))
+            "summa" => Util::ucfirst(Util::money2str($this->headerdata["total"] / 100))
         );
 
         $report = new \ZippyERP\ERP\Report('returngoodsissue.tpl');
@@ -58,7 +56,7 @@ class ReturnGoodsIssue extends Document
 
     public function Execute()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
         $types = array();
@@ -111,8 +109,8 @@ class ReturnGoodsIssue extends Document
         if ($this->headerdata['cash'] == true) {
 
             $cash = MoneyFund::getCash();
-            \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", 0 - $total, $this->document_id, $cash->id, $customer_id);
-            $sc = new SubConto($this, 36, $total);
+            \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", 0 - $this->headerdata['total'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 36, $this->headerdata['total']);
             $sc->setCustomer($this->headerdata["customer"]);
 
             $sc->save();

@@ -4,7 +4,7 @@ namespace ZippyERP\System;
 
 /**
  * Класс  для  хранения  в сессии  пользовательских  данных
- * 
+ *
  */
 class Session
 {
@@ -12,10 +12,10 @@ class Session
     private $values = array();
     public $filter = array();
     public $printform;
-    
+
     public function __construct()
     {
-        
+
     }
 
     public function __set($name, $value)

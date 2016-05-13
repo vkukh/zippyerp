@@ -1,96 +1,96 @@
 <html>
-    <head>
+<head>
 
-    </head>
-    <body>
+</head>
+<body>
 
-                <form zippy="docform">
-                  <h4>Переоценка   в  рознице</h4>
-           <div class="row">
-             <div class="col-xs-3">
-                    <div class="form-group">
-                        <label for="document_number" class="  control-label">Номер документа</label>
-                        <input class="form-control" type="text" zippy="document_number" required="required"     >
-                    </div>
-                   <div class="form-group">
-                        <label   for="document_date" class="  control-label"> Дата</label>
-                        <input class="form-control" type="text" zippy="document_date" required="required"       >
-                    </div>
-                     <div class="form-group  ">
-                        <label for="store" class="  control-label">Магазин</label>
-                        <select  class="form-control" zippy="store" >
-                        </select>
-                    </div>
-
-                 </div>
-
-            </div>
-               <div  class="row">
-                <div  class="col-xs-8">
-
-                    <a zippy="addrow">Добавить товар</a>
-                    <table    class="ctable"  >
-                        <tr >
-                            <th >Наименование </th>
-                            <th width="50">Ед.изм.</th>
-                            <th width="40">Кол.</th>
-                            <th width="80">Цена</th>
-                            <th width="90">Новая цена</th>
-                            <th width="50"> </th>
-                        </tr>
-                        <tr zippy="detail">
-                            <td zippy="item"></td>
-                            <td zippy="measure"></td>
-                            <td zippy="quantity" align="right"></td>
-                            <td zippy="price" align="right"></td>
-                            <td zippy="newprice" align="right"></td>
-                            <td><a  zippy="edit"><i class="icon-edit"></i> <a  zippy="delete"><i class="icon-remove"></i></a> </td>
-                        </tr>
-                    </table>
-
-                 </div>
-            </div>
-         <div  class="row">
-                <div  class="col-xs-6">
-                       <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-                        <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default  ">
-                        &nbsp;<input zippy="execdoc" type="submit"  value="Провести"  class="btn btn-default ">
-
-                </div>
-            </div>
-
-                </form>
-                <form zippy="editdetail">
-                    <h4>Ввод  ТМЦ  </h4>
-         <div class="row">
-                <div class="col-xs-4">
-                      <div class="form-group">
-                        <label for="edititem" class="  control-label">Наименование</label>
-                        <input class="form-control" type="text" zippy="edititem" required="required" placeholder="Начните вводить наименование"      >
-                       Наличие  : <span zippy="qtystock" ></span>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="editprice" class="  control-label">Новая цена</label>
-                        <input class="form-control" type="text" zippy="editprice" required="required" pattern= "[0-9\.]+"   style="width: 70px;"  >
-
-                    </div>
+<form zippy="docform">
+    <h4>Переоценка в рознице</h4>
+    <div class="row">
+        <div class="col-xs-3">
             <div class="form-group">
-                        <input type="submit" zippy="saverow" value="Сохранить" class="btn btn-default ">
-                        &nbsp; <input type="button" zippy="cancelrow" value="Отменить"  class="btn btn-default ">
-                    </div>
-
-
-
-                </div>
+                <label for="document_number" class="  control-label">Номер документа</label>
+                <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
-                </form>
+            <div class="form-group">
+                <label for="document_date" class="  control-label"> Дата</label>
+                <input class="form-control" type="text" zippy="document_date" required="required">
+            </div>
+            <div class="form-group  ">
+                <label for="store" class="  control-label">Магазин</label>
+                <select class="form-control" zippy="store">
+                </select>
+            </div>
 
-    </body>
-    <script>
-        $(document).ready(function()
-        {
+        </div>
 
-        });
-    </script>
+    </div>
+    <div class="row">
+        <div class="col-xs-8">
+
+            <a zippy="addrow">Добавить товар</a>
+            <table class="ctable">
+                <tr>
+                    <th>Наименование</th>
+                    <th width="50">Ед.изм.</th>
+                    <th width="40">Кол.</th>
+                    <th width="80">Цена</th>
+                    <th width="90">Новая цена</th>
+                    <th width="50"></th>
+                </tr>
+                <tr zippy="detail">
+                    <td zippy="item"></td>
+                    <td zippy="measure"></td>
+                    <td zippy="quantity" align="right"></td>
+                    <td zippy="price" align="right"></td>
+                    <td zippy="newprice" align="right"></td>
+                    <td><a zippy="edit"><i class="icon-edit"></i> <a zippy="delete"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
+            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default ">
+
+        </div>
+    </div>
+
+</form>
+<form zippy="editdetail">
+    <h4>Ввод ТМЦ </h4>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <label for="edititem" class="  control-label">Наименование</label>
+                <input class="form-control" type="text" zippy="edititem" required="required"
+                       placeholder="Начните вводить наименование">
+                Наличие : <span zippy="qtystock"></span>
+
+            </div>
+            <div class="form-group">
+                <label for="editprice" class="  control-label">Новая цена</label>
+                <input class="form-control" type="text" zippy="editprice" required="required" pattern="[0-9\.]+"
+                       style="width: 70px;">
+
+            </div>
+            <div class="form-group">
+                <input type="submit" zippy="saverow" value="Сохранить" class="btn btn-default ">
+                &nbsp; <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default ">
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
+</body>
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
 </html>

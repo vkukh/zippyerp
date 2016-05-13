@@ -2,14 +2,9 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\Stock;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  *   документ ввод МЦ в  эксплуатацию
@@ -35,7 +30,7 @@ class MZInMaintenance extends Document
             );
         }
 
-        $firm = \ZippyERP\System\System::getOptions("firmdetail");
+        //$firm = \ZippyERP\System\System::getOptions("firmdetail");
         // $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
@@ -92,7 +87,6 @@ class MZInMaintenance extends Document
         Entry::AddEntry($this->headerdata["expenses"], "13", $a15, $this->document_id, $this->document_date);
         Entry::AddEntry(1001, -1, $a22, $this->document_id, $this->document_date);
         Entry::AddEntry(1001, -1, $a15, $this->document_id, $this->document_date);
-
 
 
         return true;

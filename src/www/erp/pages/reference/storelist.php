@@ -2,20 +2,20 @@
 
 namespace ZippyERP\ERP\Pages\Reference;
 
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Panel;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\TextArea;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Entity\Stock;
-use \Zippy\Html\DataList\Paginator;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\DataList\Paginator;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
+use Zippy\Html\Form\TextArea;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\Store;
+use ZippyERP\ERP\Helper as H;
 
 class StoreList extends \ZippyERP\ERP\Pages\Base
 {
@@ -68,7 +68,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
     public function storedeleteOnClick($sender)
     {
         try {
-            $b = Store::delete($sender->owner->getDataItem()->store_id);
+            Store::delete($sender->owner->getDataItem()->store_id);
         } catch (\Exception $e) {
             $this->setError("Нельзя удалить этот  склад");
         }
@@ -111,7 +111,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
     public function showitemOnClick($sender)
     {
         $store = $sender->owner->getDataItem();
-        $this->storetable->storelist->setSelectedRow($item->store_id);
+        $this->storetable->storelist->setSelectedRow($store->store_id);
         $this->storetable->storelist->Reload();
         $this->_store = $store;
         $this->itemtable->setVisible(true);
@@ -166,7 +166,7 @@ class StockDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Stock::find("closed  <> 1 and store_id=" . $this->page->_store->store_id, "itemname", "asc", $count, $start);
+        return Stock::find("closed  <> 1 and store_id=" . $this->page->_store->store_id, "itemname asc", $count, $start);
     }
 
     public function getItem($id)

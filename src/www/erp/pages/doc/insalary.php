@@ -3,24 +3,22 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\CheckBox;
-use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use Zippy\Html\Panel;
-use ZippyERP\System\Application as App;
-use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Helper as H;
-use \Carbon\Carbon;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\System;
 
 /**
  * Страница    начисление зарплаты
@@ -40,7 +38,6 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new CheckBox('isavans'))->setChangeHandler($this, "onAvans");
         $this->docform->add(new Date('document_date'))->setDate(time());
-
 
 
         $this->docform->add(new DropDownChoice('year', H::getYears(), date('Y')));
@@ -115,7 +112,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
 
     public function onAvans($sender)
     {
-        
+
     }
 
     public function deleteOnClick($sender)
@@ -202,7 +199,6 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
         $salary = 100 * $this->editdetail->basesalary->getText();
         $salary += 100 * $this->editdetail->vacation->getText();
         $salary += 100 * $this->editdetail->sick->getText();
@@ -247,7 +243,6 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
         $emp = Employee::load($id);
 
         $emp->salary = 100 * $this->editdetail->basesalary->getText();
@@ -259,7 +254,6 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         $emp->taxfot = 100 * $this->editdetail->taxfot->getText();
 
         $emp->amount = $emp->salary - $emp->taxfl - $emp->taxmil;
-
 
 
         unset($this->_emplist[$this->_rowid]);
@@ -302,7 +296,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         $isEdited = $this->_doc->document_id > 0;
 
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -316,10 +310,10 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 
@@ -329,7 +323,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
      */
     private function calcTotal()
     {
-        
+
     }
 
     /**
@@ -342,7 +336,6 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         if (count($this->_emplist) == 0) {
             $this->setError("Не введен ни один  сотрудник");
         }
-
 
 
         return !$this->isError();
@@ -372,7 +365,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
             return;
         $id = $sender->getKey();
         $emp = Employee::load($id);
-        $amount = 0;
+        //$amount = 0;
 
 
         if ($this->docform->isavans->isChecked()) {
@@ -382,7 +375,6 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
                 $this->editdetail->basesalary->setText(H::fm($emp->salary - $emp->avans));
             }
         }
-
 
 
         $this->updateAjax(array('basesalary'));

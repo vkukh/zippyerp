@@ -2,13 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\System;
 
 /**
  *   документ начисление зарплаты
@@ -70,8 +67,6 @@ class InSalary extends Document
         $a641 = 0;
         $a642 = 0;
         $a65 = 0;
-
-
 
 
         foreach ($this->detaildata as $emp) {

@@ -2,8 +2,6 @@
 
 namespace ZippyERP\ERP\Entity;
 
-use ZippyERP\ERP\Consts;
-
 /**
  * Клас-сущность  основные средства
  *
@@ -18,19 +16,18 @@ class CapitalAsset extends \ZCL\DB\Entity
     {
 
 
-
         $xml = @simplexml_load_string($this->detail);
-        $this->typeos = (int) ($xml->typeos[0]);
-        $this->expenses = (int) ($xml->expenses[0]);
-        $this->datemaint = (int) ($xml->datemaint[0]);
-        $this->depreciation = (string) ($xml->depreciation[0]);
+        $this->typeos = (int)($xml->typeos[0]);
+        $this->expenses = (int)($xml->expenses[0]);
+        $this->datemaint = (int)($xml->datemaint[0]);
+        $this->depreciation = (string)($xml->depreciation[0]);
 
-        $this->inventory = (string) ($xml->inventory[0]);
-        $this->cancelvalue = (string) ($xml->cancelvalue[0]);
-        $this->value = (string) ($xml->value[0]);
-        $this->term = (string) ($xml->term[0]);
-        $this->group = (int) ($xml->group[0]);
-        $this->norma = (string) ($xml->norma[0]);
+        $this->inventory = (string)($xml->inventory[0]);
+        $this->cancelvalue = (string)($xml->cancelvalue[0]);
+        $this->value = (string)($xml->value[0]);
+        $this->term = (string)($xml->term[0]);
+        $this->group = (int)($xml->group[0]);
+        $this->norma = (string)($xml->norma[0]);
 
         parent::afterLoad();
     }
@@ -43,7 +40,6 @@ class CapitalAsset extends \ZCL\DB\Entity
         $list[10] = 'ОС';
         $list[11] = 'Прочие необоротные средства';
         $list[12] = 'Нематериальные активы';
-
 
 
         return $list;

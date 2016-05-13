@@ -2,11 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\Customer;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Consts as C;
+use ZippyERP\ERP\Consts as C;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Entity\SubConto;
 
 /**
  * Класс-сущность  документ  расходный кассовый  ордер
@@ -53,7 +52,7 @@ class CashReceiptOut extends Document
         $mf = MoneyFund::getCash();
         $optype = $this->headerdata['optype'];
         if ($optype == C::TYPEOP_CUSTOMER_OUT) {
-            $ret = Entry::AddEntry(63, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            Entry::AddEntry(63, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 63, $this->headerdata['amount']);
             $sc->setCustomer($this->headerdata['opdetail']);
             $sc->save();
@@ -64,7 +63,7 @@ class CashReceiptOut extends Document
         }
         if ($optype == C::TYPEOP_CUSTOMER_OUT_BACK) {
             //сторно
-            $ret = Entry::AddEntry(30, 36, 0 - $this->headerdata['amount'], $this->document_id, $this->document_date);
+            Entry::AddEntry(30, 36, 0 - $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 36, $this->headerdata['amount']);
             $sc->setCustomer($this->headerdata['opdetail']);
             $sc->save();
@@ -74,7 +73,7 @@ class CashReceiptOut extends Document
             $sc->save();
         }
         if ($optype == C::TYPEOP_CASH_OUT) {
-            $ret = Entry::AddEntry(372, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            Entry::AddEntry(372, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 372, $this->headerdata['amount']);
             $sc->setEmployee($this->headerdata['opdetail']);
             $sc->save();
@@ -84,7 +83,7 @@ class CashReceiptOut extends Document
             $sc->save();
         }
         if ($optype == C::TYPEOP_COMMON_EXPENCES) {
-            $ret = Entry::AddEntry(94, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+             Entry::AddEntry(94, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 94, $this->headerdata['amount']);
             $sc->save();
             $sc = new SubConto($this, 30, 0 - $this->headerdata['amount']);
@@ -93,7 +92,7 @@ class CashReceiptOut extends Document
             $sc->save();
         }
         if ($optype == C::TYPEOP_BANK_OUT) {
-            $ret = Entry::AddEntry(31, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+             Entry::AddEntry(31, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 31, $this->headerdata['amount']);
             $sc->setMoneyfund($this->headerdata['opdetail']);
             $sc->setExtCode(C::TYPEOP_BANK_OUT);

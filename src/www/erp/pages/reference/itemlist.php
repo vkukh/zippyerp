@@ -2,18 +2,15 @@
 
 namespace ZippyERP\ERP\Pages\Reference;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\TextArea;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\GroupItem;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\GroupItem;
+use ZippyERP\ERP\Entity\Item;
 
 class ItemList extends \ZippyERP\ERP\Pages\Base
 {
@@ -118,7 +115,7 @@ class ItemDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Item::find($this->getWhere(), "itemname", "asc", $count, $start);
+        return Item::find($this->getWhere(), "itemname asc" , $count, $start);
     }
 
     public function getItem($id)

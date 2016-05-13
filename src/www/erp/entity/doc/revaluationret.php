@@ -2,14 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\Account;
-use \ZippyERP\ERP\Entity\Stock;
-use \ZippyERP\ERP\Entity\SubConto;
-use Carbon\Carbon;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ переоценка  в  рознице
@@ -20,7 +16,6 @@ class RevaluationRet extends Document
 
     public function generateReport()
     {
-
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -70,8 +65,7 @@ class RevaluationRet extends Document
         }
 
 
-
-        Entry::AddEntry("282", "285", $diffall, $this->document_id, $cash->id, $customer_id);
+        Entry::AddEntry("282", "285", $diffall, $this->document_id, $this->document_date);
 
         $sc = new SubConto($this, 285, 0 - $diffall);
         $sc->setExtCode($this->headerdata["store"]);

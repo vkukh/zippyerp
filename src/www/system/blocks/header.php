@@ -2,14 +2,11 @@
 
 namespace ZippyERP\System\Blocks;
 
-use \ZippyERP\System\Application as App;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Binding\PropertyBinding as Bind;
-use \ZippyERP\System\System;
-use \ZippyERP\System\User;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\System;
+use ZippyERP\System\User;
 
 class Header extends \Zippy\Html\PageFragment
 {
@@ -20,7 +17,6 @@ class Header extends \Zippy\Html\PageFragment
     public function __construct($id)
     {
         parent::__construct($id);
-
 
 
         $form = new \Zippy\Html\Panel('welcomform');
@@ -56,7 +52,7 @@ class Header extends \Zippy\Html\PageFragment
         parent::beforeRender();
         $user = System::getUser();
 
-        $this->welcomform->SetVisible($user->isLogined());
+        $this->welcomform->setVisible($user->isLogined());
         $this->welcomform->username->setText($user->userlogin);
         $this->welcomform->adminmenu->SetVisible($user->userlogin == 'admin');
     }
@@ -70,9 +66,7 @@ class Header extends \Zippy\Html\PageFragment
 
         //$page = $this->getOwnerPage();
         //  $page = get_class($page)  ;
-        App::RedirectHome();
-        ;
-        ;
+        App::RedirectHome();;;
         //    App::$app->getresponse()->toBack();
     }
 

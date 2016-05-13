@@ -5,25 +5,21 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
-use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
-use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use Zippy\Html\Panel;
-use Zippy\Html\Form\CheckBox;
-use ZippyERP\System\Application as App;
-use ZippyERP\System\System;
+use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
-use ZippyERP\ERP\Entity\GroupItem;
-use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Страница  ввода  счета входящего
@@ -67,8 +63,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editpricends'));
 
 
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->setAutocompleteHandler($this, "OnAutoItem");
-        ;
+        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->setAutocompleteHandler($this, "OnAutoItem");;
 
         $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->setClickHandler($this, 'saverowOnClick');
@@ -246,7 +241,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->_doc->datatag = $this->docform->customer->getKey();
 
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -267,10 +262,10 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 

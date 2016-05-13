@@ -2,32 +2,27 @@
 
 namespace ZippyERP\ERP\Pages\Register;
 
-use \Zippy\Html\Panel;
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\DataList\DataView;
-use \ZCL\DB\EntityDataSource;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Link\RedirectLink;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\TextArea;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\File;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Html\Form\AutocompleteTextInput;
-use \ZCL\DB\EntityDataSource as EDS;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Session;
-use \ZippyERP\ERP\Entity\Project;
-use \ZippyERP\ERP\Entity\Task;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \Zippy\Binding\PropertyBinding as Prop;
-use \Zippy\Html\DataList\ArrayDataSource;
-use \ZippyERP\ERP\Helper;
+use ZCL\DB\EntityDataSource as EDS;
+use Zippy\Binding\PropertyBinding as Prop;
+use Zippy\Html\DataList\ArrayDataSource;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\File;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
+use Zippy\Html\Form\TextArea;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Entity\Project;
+use ZippyERP\ERP\Entity\Task;
+use ZippyERP\ERP\Helper;
+use ZippyERP\System\System;
 
 class ProjectList extends \ZippyERP\ERP\Pages\Base
 {
@@ -173,7 +168,7 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
         $answer = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%'  order  by document_id desc  limit 0,20";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {

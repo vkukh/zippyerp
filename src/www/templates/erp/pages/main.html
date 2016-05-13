@@ -1,90 +1,99 @@
-<html >
-    <body >
+<html>
+<body>
 
-        <div class="row">
-            <div class="col-xs-5">
+<div class="row">
+    <div class="col-xs-5">
 
-            {{#planned}}
+        {{#planned}}
 
-            <span style="font-size:16px ">Запланированные документы</span> 
-             <span class="glyphicon glyphicon-info-sign "  data-toggle="popover" data-placement="top" data-content="Документы, введеные  предварительно и ожидающие  окончательного проведения с  конечными данными"></span>
-            <table class="table   table-condensed ">
-              <tr><th>Номер</th>
-              <th>Тип</th>
-              <th>Дата</th>
-              </tr>
-              <tr zippy="pdoclist">
+        <span style="font-size:16px ">Запланированные документы</span>
+        <span class="glyphicon glyphicon-info-sign " data-toggle="popover" data-placement="top"
+              data-content="Документы, введеные  предварительно и ожидающие  окончательного проведения с  конечными данными"></span>
+        <table class="table   table-condensed ">
+            <tr>
+                <th>Номер</th>
+                <th>Тип</th>
+                <th>Дата</th>
+            </tr>
+            <tr zippy="pdoclist">
                 <td zippy="number"></td>
                 <td zippy="type"></td>
                 <td zippy="date"></td>
-              </tr>
-            </table>
-          {{/planned}}
-          <br>
-            {{#noliq}}
+            </tr>
+        </table>
+        {{/planned}}
+        <br>
+        {{#noliq}}
 
-             <span style="font-size:16px ">Неликвидные товары</span> 
-            <span class="glyphicon glyphicon-info-sign "  data-toggle="popover" data-placement="top" data-content="Товары, не  имеющие за  месяц ни  одной продажи"></span>
-            <table class="table   table-condensed ">
-              <tr><th>Склад</th>
-              <th>Товар</th>
-              <th>Всего</th>
-              </tr>
-              <tr zippy="noliqlist">
-                 <td zippy="noliqitem"></td>
-                 <td zippy="noliqstore"></td>
-                 <td zippy="now" align="right"></td>
-              </tr>
-            </table>
-          {{/noliq}}
-            </div>
-            <div class="col-xs-7">
-               {{#lowitems}}
+        <span style="font-size:16px ">Неликвидные товары</span>
+        <span class="glyphicon glyphicon-info-sign " data-toggle="popover" data-placement="top"
+              data-content="Товары, не  имеющие за  месяц ни  одной продажи"></span>
+        <table class="table   table-condensed ">
+            <tr>
+                <th>Склад</th>
+                <th>Товар</th>
+                <th>Всего</th>
+            </tr>
+            <tr zippy="noliqlist">
+                <td zippy="noliqitem"></td>
+                <td zippy="noliqstore"></td>
+                <td zippy="now" align="right"></td>
+            </tr>
+        </table>
+        {{/noliq}}
+    </div>
+    <div class="col-xs-7">
+        {{#lowitems}}
 
-             <span style="font-size:16px ">Недостаточное количество товаров</span> 
-            <span class="glyphicon glyphicon-info-sign "  data-toggle="popover" data-placement="top" data-content="Товары,  количество  которых на  дату недостаточно  для  удовлетворения среднего спроса."></span>
-              
-            <table class="table   table-condensed ">
+        <span style="font-size:16px ">Недостаточное количество товаров</span>
+        <span class="glyphicon glyphicon-info-sign " data-toggle="popover" data-placement="top"
+              data-content="Товары,  количество  которых на  дату недостаточно  для  удовлетворения среднего спроса."></span>
 
-              <tr><th>Дата</th>
-              <th>Товар</th>
-              <th>Склад</th>
-              <th>Всего</th>
-              <th>Норма</th>
-              </tr>
-              <tr zippy="lowlist">
-                 <td zippy="lowdate"></td>
-                 <td zippy="lowitem"></td>
-                 <td zippy="lowstore"></td>
-                 <td zippy="lowqty" align="right"></td>
-                 <td zippy="lowneed" align="right"></td>
-              </tr>
-            </table>
-          {{/lowitems}}
-           <br>
-            {{#highitems}}
+        <table class="table   table-condensed ">
 
-            <span style="font-size:16px "> Излишнее количество товаров</span> 
-     <span class="glyphicon glyphicon-info-sign "  data-toggle="popover" data-placement="top" data-content="Товары,  количество  которых на  дату излишне и приводит  к  затовариванию место хранения."></span>        <table class="table   table-condensed ">
+            <tr>
+                <th>Дата</th>
+                <th>Товар</th>
+                <th>Склад</th>
+                <th>Всего</th>
+                <th>Норма</th>
+            </tr>
+            <tr zippy="lowlist">
+                <td zippy="lowdate"></td>
+                <td zippy="lowitem"></td>
+                <td zippy="lowstore"></td>
+                <td zippy="lowqty" align="right"></td>
+                <td zippy="lowneed" align="right"></td>
+            </tr>
+        </table>
+        {{/lowitems}}
+        <br>
+        {{#highitems}}
 
-              <tr><th>Дата</th>
-              <th>Товар</th>
-              <th>Склад</th>
-              <th>Всего</th>
-              <th>Норма</th>
-              </tr>
-              <tr zippy="highlist">
-                 <td zippy="highdate"></td>
-                 <td zippy="highitem"></td>
-                 <td zippy="highstore"></td>
-                 <td zippy="highqty" align="right"></td>
-                 <td zippy="highneed" align="right"></td>
-              </tr>
-            </table>
-          {{/highitems}}
-            </div>
-        </div>
+        <span style="font-size:16px "> Излишнее количество товаров</span>
+        <span class="glyphicon glyphicon-info-sign " data-toggle="popover" data-placement="top"
+              data-content="Товары,  количество  которых на  дату излишне и приводит  к  затовариванию место хранения."></span>
+        <table class="table   table-condensed ">
+
+            <tr>
+                <th>Дата</th>
+                <th>Товар</th>
+                <th>Склад</th>
+                <th>Всего</th>
+                <th>Норма</th>
+            </tr>
+            <tr zippy="highlist">
+                <td zippy="highdate"></td>
+                <td zippy="highitem"></td>
+                <td zippy="highstore"></td>
+                <td zippy="highqty" align="right"></td>
+                <td zippy="highneed" align="right"></td>
+            </tr>
+        </table>
+        {{/highitems}}
+    </div>
+</div>
 
 
-    </body>
+</body>
 </html>

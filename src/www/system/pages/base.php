@@ -2,7 +2,7 @@
 
 namespace ZippyERP\System\Pages;
 
-use \Zippy\Binding\PropertyBinding;
+use Zippy\Binding\PropertyBinding;
 
 class Base extends \Zippy\Html\WebPage
 {
@@ -26,7 +26,8 @@ class Base extends \Zippy\Html\WebPage
     {
         $this->_errormsg = $msg;
     }
-     public function setWarn($msg)
+
+    public function setWarn($msg)
     {
         $this->_warnmsg = $msg;
         $this->warnmessage->setVisible(true);
@@ -37,6 +38,7 @@ class Base extends \Zippy\Html\WebPage
         $this->_successmsg = $msg;
         $this->successmessage->setVisible(true);
     }
+
     final protected function isError()
     {
         return strlen($this->_errormsg) > 0;
@@ -46,6 +48,7 @@ class Base extends \Zippy\Html\WebPage
     {
         $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
     }
+
     protected function afterRender()
     {
         $this->errormessage->setVisible(false);

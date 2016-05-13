@@ -1,391 +1,385 @@
 <html>
-    <body>
-        <h3>Ручная хоз. операция</h3>
-        <form zippy="docform" class="form-horizontal">
+<body>
+<h3>Ручная хоз. операция</h3>
+<form zippy="docform" class="form-horizontal">
+    <div class="form-group">
+        <label for="document_number" class="col-xs-2 control-label">Номер док.</label>
+        <div class="col-xs-3 ">
+            <input class="form-control" type="text" zippy="document_number" required="required">
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="document_date" class="col-xs-2 control-label">Дата</label>
+        <div class="col-xs-3">
+            <input class="form-control" type="text" zippy="document_date" required="required">
+
+        </div>
+    </div>
+    <div class="form-group ">
+        <label for="description" class="col-xs-2 control-label">Примечание</label>
+        <div class="col-xs-3">
+            <textarea class="form-control" zippy="description"></textarea>
+        </div>
+    </div>
+
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#entrytab" data-toggle="tab">Бух. проводки</a></li>
+        <li><a href="#itemstab" data-toggle="tab">ТМЦ</a></li>
+        <li><a href="#employeetab" data-toggle="tab">Сотрудники</a></li>
+        <li><a href="#contragenttab" data-toggle="tab">Контрагенты</a></li>
+        <li><a href="#mftab" data-toggle="tab">Денежные счета</a></li>
+        <li><a href="#catab" data-toggle="tab">Необоротные активы</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div id="entrytab" class="tab-pane  active">
+            <table style="width:160px;" class="table table-condensed">
+                <tr>
+
+                    <th>Дебет</th>
+                    <th>Кредит</th>
+
+                    <th>Сумма</th>
+                    <th style="width:32px;"></th>
+                </tr>
+                <tr zippy="acctable">
+                    <td zippy="acccoded"></td>
+                    <td zippy="acccodec"></td>
+                    <td zippy="accvalue" align="right"></td>
+                    <td><a zippy="delacc"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <a name="a1"></a>
             <div class="form-group">
-                <label for="document_number" class="col-xs-2 control-label">Номер док.</label>
-                <div class="col-xs-3 ">
-                    <input class="form-control" type="text" zippy="document_number" required="required" >
-
+                <label for="e_acclistd" class="col-xs-2 control-label">Дебет</label>
+                <div class="col-xs-3">
+                    <select class="form-control" type zippy="e_acclistd">
+                        <option value="-1">--</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">
-                <label for="document_date" class="col-xs-2 control-label">Дата</label>
+                <label for="e_acclistc" class="col-xs-2 control-label">Кредит</label>
                 <div class="col-xs-3">
-                    <input class="form-control" type="text" zippy="document_date" required="required"  >
-
+                    <select class="form-control" type zippy="e_acclistc">
+                        <option value="-1">--</option>
+                    </select>
                 </div>
             </div>
-            <div class="form-group ">
-                <label for="description" class="col-xs-2 control-label">Примечание</label>
+            <div class="form-group">
+                <label for="e_acclistc" class="col-xs-2 control-label">Сумма</label>
                 <div class="col-xs-3">
-                    <textarea  class="form-control" zippy="description"></textarea>
+                    <input class="form-control" pattern="[0-9\.]+" type="text" zippy="e_accsumma">
                 </div>
             </div>
-
-
-
-
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#entrytab" data-toggle="tab">Бух. проводки</a></li>
-                <li><a href="#itemstab" data-toggle="tab">ТМЦ</a></li>
-                <li><a href="#employeetab" data-toggle="tab">Сотрудники</a></li>
-                <li><a href="#contragenttab" data-toggle="tab">Контрагенты</a></li>
-                <li><a href="#mftab" data-toggle="tab">Денежные счета</a></li>
-                <li><a href="#catab" data-toggle="tab">Необоротные активы</a></li>
-            </ul>
-
-            <div class="tab-content" >
-
-                <div  id="entrytab" class="tab-pane  active" >
-                    <table style="width:160px;" class="table table-condensed">
-                        <tr>
-
-                            <th >Дебет</th>
-                            <th >Кредит</th>
-
-                            <th >Сумма</th>
-                            <th style="width:32px;"> </th>
-                        </tr>
-                        <tr zippy="acctable">
-                            <td zippy="acccoded"> </td>
-                            <td zippy="acccodec"> </td>
-                            <td zippy="accvalue" align="right"></td>
-                            <td><a zippy="delacc"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table> <a name="a1"></a>
-                    <div class="form-group">
-                        <label for="e_acclistd" class="col-xs-2 control-label">Дебет</label>
-                        <div class="col-xs-3">
-                            <select class="form-control" type zippy="e_acclistd"><option value="-1">--</option></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="e_acclistc" class="col-xs-2 control-label">Кредит</label>
-                        <div class="col-xs-3">
-                            <select class="form-control" type zippy="e_acclistc"><option value="-1">--</option></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="e_acclistc" class="col-xs-2 control-label">Сумма</label>
-                        <div class="col-xs-3">
-                            <input class="form-control"  pattern= "[0-9\.]+"    type="text" zippy="e_accsumma">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="e_acclistc" class="col-xs-2 control-label"> </label>
-                        <div class="col-xs-3">
-                            <input zippy="addaccbtn" type="submit"  value="Добавить" class="btn btn-default btn-xs">
-                        </div>
-                    </div>
+            <div class="form-group">
+                <label for="e_acclistc" class="col-xs-2 control-label"> </label>
+                <div class="col-xs-3">
+                    <input zippy="addaccbtn" type="submit" value="Добавить" class="btn btn-default btn-xs">
                 </div>
-
-
-                <div  id="itemstab" class="tab-pane " >
-                    <table style="width:700px;" class="table table-condensed">
-                        <tr>
-                            <th >Счет</th>
-
-                            <th>Склад</th>
-                            <th>Наименование</th>
-                            <th style="width:50px;">Кол.</th>
-                            <th style="width:100px;">Цена</th>
-                            <th style="width:32px;"> </th>
-                        </tr>
-                        <tr zippy="itemtable">
-                            <td zippy="itemop"></td>
-
-                            <td zippy="store"></td>
-                            <td zippy="itemname"></td>
-                            <td zippy="itemcnt" align="right"></td>
-                            <td zippy="itemprice" align="right"></td>
-                            <td><a zippy="delitem"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table> <a name="a2"></a>
-
-                    <div class="form-group row">
-                        <label for="e_itemop" class="col-xs-2 control-label">Счет</label>
-                        <div class="col-xs-3">
-                            <select  class="form-control "  zippy="e_itemop">
-                                <option value="0">Выбрать</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="e_storelist" class="col-xs-2 control-label">Склад</label>
-                        <div class="col-xs-3">
-                            <select class="form-control"  zippy="e_storelist">
-                                <option value="0">Выбрать</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="e_itemlist" class="col-xs-2 control-label">ТМЦ</label>
-                        <div class="col-xs-3">
-                            <input  class="form-control" type="text" zippy="e_itemlist" placeholder="Начните вводить">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="e_quantity" class="col-xs-2 control-label">Количество</label>
-                        <div class="col-xs-3">
-                            <input class="form-control" type="text" zippy="e_quantity"  pattern= "[0-9\.]+" >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="e_price" class="col-xs-2 control-label">Цена</label>
-                        <div class="col-xs-3">
-                            <input class="form-control" type="text" zippy="e_price"  pattern= "[0-9\.]+" >
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label   class="col-xs-2 control-label"> </label>
-                        <div class="col-xs-3">
-                            <input   zippy="additembtn" type="submit"  value="Добавить" class="btn btn-default  ">
-                        </div>
-                    </div>
-
-
-
-
-
-                </div>
-
-                <div  id="employeetab" class="tab-pane" >
-                    <table style="width:600px;" class="table table-condensed">
-                        <tr>
-                            <th >Счет</th>
-                            <th>ФИО</th>
-                            <th style="width:100px;"  align="right">Сумма</th>
-                            <th style="width:32px;"> </th>
-                        </tr>
-                        <tr zippy="emptable">
-                            <td zippy="empop"></td>
-                            <td zippy="empname"></td>
-                            <td zippy="empamount"></td>
-                            <td><a zippy="delemp"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table>
-                              <div class="form-group row">
-                        <label for="e_itemop" class="col-xs-2 control-label">Счет</label>
-                        <div class="col-xs-3">
-                            <select  class="form-control "  zippy="e_empop">
-                                <option value="0">Выбрать</option>
-                            </select>
-                        </div>
-                    </div>
-                                 <div class="form-group row">
-                        <label for="e_emplist" class="col-xs-2 control-label">ФИО</label>
-                        <div class="col-xs-3">
-
-                            <input class="form-control" type="text" zippy="e_emplist" placeholder="Начните вводить">
-
-                        </div>
-                    </div>
-                                <div class="form-group row">
-                        <label for="e_empamount" class="col-xs-2 control-label">Сумма</label>
-                        <div class="col-xs-3">
-                            <input class="form-control " zippy="e_empamount" type="text"   >
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label   class="col-xs-2 control-label"> </label>
-                        <div class="col-xs-3">
-                            <input   zippy="addempbtn" type="submit"  value="Добавить" class="btn btn-default  ">
-                        </div>
-                    </div>
-                </div>
-                <div  id="contragenttab" class="tab-pane" >
-                    <table style="width:600px;" class="table table-condensed">
-                        <tr>
-                            <th >Счет</th>
-                            <th>Наименование</th>
-                            <th style="width:100px;"  align="right">Сумма</th>
-                            <th style="width:32px;"> </th>
-                        </tr>
-                        <tr zippy="ctable">
-                            <td align="center" zippy="cop"></td>
-                            <td zippy="сname"></td>
-                            <td zippy="сamount"></td>
-                            <td><a zippy="delс"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table>
-                                <div class="form-group row">
-                        <label for="e_cop" class="col-xs-2 control-label">Счет</label>
-                        <div class="col-xs-3">
-                            <select  class="form-control "  zippy="e_cop">
-                                <option value="0">Выбрать</option>
-                            </select>
-                        </div>
-                    </div>
-
-                         <div class="form-group row">
-                        <label for="e_сlist" class="col-xs-2 control-label">Наименование</label>
-                        <div class="col-xs-3">
-
-                            <input class="form-control" type="text" zippy="e_сlist" placeholder="Начните вводить">
-
-                        </div>
-                    </div>
-                                <div class="form-group row">
-                        <label for="e_сamount" class="col-xs-2 control-label">Сумма</label>
-                        <div class="col-xs-3">
-                            <input class="form-control " zippy="e_сamount" type="text"   >
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label   class="col-xs-2 control-label"> </label>
-                        <div class="col-xs-3">
-                            <input   zippy="addсbtn" type="submit"  value="Добавить" class="btn btn-default  ">
-                        </div>
-                    </div>
-
-                </div>
-                <div  id="mftab" class="tab-pane" >
-                    <table style="width:600px;" class="table table-condensed">
-                        <tr>
-                            <th   >Счет</th>
-                            <th>Денежный счет</th>
-                            <th style="width:100px;"  align="right">Сумма</th>
-                            <th style="width:32px;"> </th>
-                        </tr>
-                        <tr zippy="ftable">
-                            <td align="center" zippy="fop"></td>
-                            <td zippy="fname"></td>
-                            <td zippy="famount"></td>
-                            <td><a zippy="delf"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table>
-                               <div class="form-group row">
-                        <label for="e_foper" class="col-xs-2 control-label">Счет</label>
-                        <div class="col-xs-3">
-                            <select  class="form-control "  zippy="e_foper">
-                                <option value="0">Выбрать</option>
-                            </select>
-                        </div>
-                    </div>
-                               <div class="form-group row">
-                        <label for="e_flist" class="col-xs-2 control-label">Денежный счет</label>
-                        <div class="col-xs-3">
-                            <select class="form-control " zippy="e_flist"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="e_famount" class="col-xs-2 control-label">Сумма</label>
-                        <div class="col-xs-3">
-                            <input class="form-control " zippy="e_famount" type="text"   >
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label   class="col-xs-2 control-label"> </label>
-                        <div class="col-xs-3">
-                            <input   zippy="addfbtn" type="submit"  value="Добавить" class="btn btn-default  ">
-                        </div>
-                    </div>
-                </div>
-
-             <div  id="catab" class="tab-pane " >
-                    <table style="width:700px;" class="table table-condensed">
-                        <tr>
-                            <th >Счет</th>
-
-                        
-                            <th>Наименование</th>
-                            <th style="width:50px;">Кол.</th>
-                            <th style="width:100px;">Цена</th>
-                            <th style="width:32px;"> </th>
-                        </tr>
-                        <tr zippy="catable">
-                            <td zippy="caop"></td>
-                        
-                            <td zippy="caname"></td>
-                            <td zippy="cacnt" align="right"></td>
-                            <td zippy="caprice" align="right"></td>
-                            <td><a zippy="delca"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table> <a name="a2"></a>
-
-                    <div class="form-group row">
-                        <label for="e_caop" class="col-xs-2 control-label">Счет</label>
-                        <div class="col-xs-3">
-                            <select  class="form-control "  zippy="e_caop">
-                                <option value="0">Выбрать</option>
-                            </select>
-                        </div>
-                    </div>
-             
-                    <div class="form-group row">
-                        <label for="e_calist" class="col-xs-2 control-label">ТМЦ</label>
-                        <div class="col-xs-3">
-                            <input  class="form-control" type="text" zippy="e_calist" placeholder="Начните вводить">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="e_caquantity" class="col-xs-2 control-label">Количество</label>
-                        <div class="col-xs-3">
-                            <input class="form-control" type="text" zippy="e_caquantity"  pattern= "[0-9\.]+" >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="e_caprice" class="col-xs-2 control-label">Цена</label>
-                        <div class="col-xs-3">
-                            <input class="form-control" type="text" zippy="e_caprice"  pattern= "[0-9\.]+" >
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label   class="col-xs-2 control-label"> </label>
-                        <div class="col-xs-3">
-                            <input   zippy="addcabtn" type="submit"  value="Добавить" class="btn btn-default  ">
-                        </div>
-                    </div>
-
-
-
-
-
-                </div>
-
             </div>
+        </div>
 
 
+        <div id="itemstab" class="tab-pane ">
+            <table style="width:700px;" class="table table-condensed">
+                <tr>
+                    <th>Счет</th>
 
+                    <th>Склад</th>
+                    <th>Наименование</th>
+                    <th style="width:50px;">Кол.</th>
+                    <th style="width:100px;">Цена</th>
+                    <th style="width:32px;"></th>
+                </tr>
+                <tr zippy="itemtable">
+                    <td zippy="itemop"></td>
+
+                    <td zippy="store"></td>
+                    <td zippy="itemname"></td>
+                    <td zippy="itemcnt" align="right"></td>
+                    <td zippy="itemprice" align="right"></td>
+                    <td><a zippy="delitem"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <a name="a2"></a>
+
+            <div class="form-group row">
+                <label for="e_itemop" class="col-xs-2 control-label">Счет</label>
+                <div class="col-xs-3">
+                    <select class="form-control " zippy="e_itemop">
+                        <option value="0">Выбрать</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_storelist" class="col-xs-2 control-label">Склад</label>
+                <div class="col-xs-3">
+                    <select class="form-control" zippy="e_storelist">
+                        <option value="0">Выбрать</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_itemlist" class="col-xs-2 control-label">ТМЦ</label>
+                <div class="col-xs-3">
+                    <input class="form-control" type="text" zippy="e_itemlist" placeholder="Начните вводить">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_quantity" class="col-xs-2 control-label">Количество</label>
+                <div class="col-xs-3">
+                    <input class="form-control" type="text" zippy="e_quantity" pattern="[0-9\.]+">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_price" class="col-xs-2 control-label">Цена</label>
+                <div class="col-xs-3">
+                    <input class="form-control" type="text" zippy="e_price" pattern="[0-9\.]+">
+                </div>
+            </div>
             <div class="form-group  row">
-                <hr style="border: solid 1px #aaa;">
-
-
-                <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default ">
-                &nbsp;   <input zippy="savedoc" type="submit"  value="Сохранить" class="btn btn-default ">
-                &nbsp;   <input zippy="execdoc" type="submit"  value="Провести" class="btn btn-default">
-
+                <label class="col-xs-2 control-label"> </label>
+                <div class="col-xs-3">
+                    <input zippy="additembtn" type="submit" value="Добавить" class="btn btn-default  ">
+                </div>
             </div>
 
 
-        </form>
-        <script>
+        </div>
 
-            $(function() {
+        <div id="employeetab" class="tab-pane">
+            <table style="width:600px;" class="table table-condensed">
+                <tr>
+                    <th>Счет</th>
+                    <th>ФИО</th>
+                    <th style="width:100px;" align="right">Сумма</th>
+                    <th style="width:32px;"></th>
+                </tr>
+                <tr zippy="emptable">
+                    <td zippy="empop"></td>
+                    <td zippy="empname"></td>
+                    <td zippy="empamount"></td>
+                    <td><a zippy="delemp"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <div class="form-group row">
+                <label for="e_itemop" class="col-xs-2 control-label">Счет</label>
+                <div class="col-xs-3">
+                    <select class="form-control " zippy="e_empop">
+                        <option value="0">Выбрать</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_emplist" class="col-xs-2 control-label">ФИО</label>
+                <div class="col-xs-3">
 
-                $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                    $.cookie('tab_doc', $(e.target).attr('href'));
-                });
+                    <input class="form-control" type="text" zippy="e_emplist" placeholder="Начните вводить">
 
-                var lastTab = $.cookie('tab_doc');
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_empamount" class="col-xs-2 control-label">Сумма</label>
+                <div class="col-xs-3">
+                    <input class="form-control " zippy="e_empamount" type="text">
+                </div>
+            </div>
+            <div class="form-group  row">
+                <label class="col-xs-2 control-label"> </label>
+                <div class="col-xs-3">
+                    <input zippy="addempbtn" type="submit" value="Добавить" class="btn btn-default  ">
+                </div>
+            </div>
+        </div>
+        <div id="contragenttab" class="tab-pane">
+            <table style="width:600px;" class="table table-condensed">
+                <tr>
+                    <th>Счет</th>
+                    <th>Наименование</th>
+                    <th style="width:100px;" align="right">Сумма</th>
+                    <th style="width:32px;"></th>
+                </tr>
+                <tr zippy="ctable">
+                    <td align="center" zippy="cop"></td>
+                    <td zippy="сname"></td>
+                    <td zippy="сamount"></td>
+                    <td><a zippy="delс"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <div class="form-group row">
+                <label for="e_cop" class="col-xs-2 control-label">Счет</label>
+                <div class="col-xs-3">
+                    <select class="form-control " zippy="e_cop">
+                        <option value="0">Выбрать</option>
+                    </select>
+                </div>
+            </div>
 
-                if (lastTab) {
-                    $('ul.nav-tabs').children().removeClass('active');
-                    $('a[href=' + lastTab + ']').parents('li:first').addClass('active');
-                    $('div.tab-content').children().removeClass('active');
-                    $(lastTab).addClass('active');
-                }
+            <div class="form-group row">
+                <label for="e_сlist" class="col-xs-2 control-label">Наименование</label>
+                <div class="col-xs-3">
+
+                    <input class="form-control" type="text" zippy="e_сlist" placeholder="Начните вводить">
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_сamount" class="col-xs-2 control-label">Сумма</label>
+                <div class="col-xs-3">
+                    <input class="form-control " zippy="e_сamount" type="text">
+                </div>
+            </div>
+            <div class="form-group  row">
+                <label class="col-xs-2 control-label"> </label>
+                <div class="col-xs-3">
+                    <input zippy="addсbtn" type="submit" value="Добавить" class="btn btn-default  ">
+                </div>
+            </div>
+
+        </div>
+        <div id="mftab" class="tab-pane">
+            <table style="width:600px;" class="table table-condensed">
+                <tr>
+                    <th>Счет</th>
+                    <th>Денежный счет</th>
+                    <th style="width:100px;" align="right">Сумма</th>
+                    <th style="width:32px;"></th>
+                </tr>
+                <tr zippy="ftable">
+                    <td align="center" zippy="fop"></td>
+                    <td zippy="fname"></td>
+                    <td zippy="famount"></td>
+                    <td><a zippy="delf"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <div class="form-group row">
+                <label for="e_foper" class="col-xs-2 control-label">Счет</label>
+                <div class="col-xs-3">
+                    <select class="form-control " zippy="e_foper">
+                        <option value="0">Выбрать</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_flist" class="col-xs-2 control-label">Денежный счет</label>
+                <div class="col-xs-3">
+                    <select class="form-control " zippy="e_flist"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_famount" class="col-xs-2 control-label">Сумма</label>
+                <div class="col-xs-3">
+                    <input class="form-control " zippy="e_famount" type="text">
+                </div>
+            </div>
+            <div class="form-group  row">
+                <label class="col-xs-2 control-label"> </label>
+                <div class="col-xs-3">
+                    <input zippy="addfbtn" type="submit" value="Добавить" class="btn btn-default  ">
+                </div>
+            </div>
+        </div>
+
+        <div id="catab" class="tab-pane ">
+            <table style="width:700px;" class="table table-condensed">
+                <tr>
+                    <th>Счет</th>
 
 
+                    <th>Наименование</th>
+                    <th style="width:50px;">Кол.</th>
+                    <th style="width:100px;">Цена</th>
+                    <th style="width:32px;"></th>
+                </tr>
+                <tr zippy="catable">
+                    <td zippy="caop"></td>
+
+                    <td zippy="caname"></td>
+                    <td zippy="cacnt" align="right"></td>
+                    <td zippy="caprice" align="right"></td>
+                    <td><a zippy="delca"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <a name="a2"></a>
+
+            <div class="form-group row">
+                <label for="e_caop" class="col-xs-2 control-label">Счет</label>
+                <div class="col-xs-3">
+                    <select class="form-control " zippy="e_caop">
+                        <option value="0">Выбрать</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="e_calist" class="col-xs-2 control-label">ТМЦ</label>
+                <div class="col-xs-3">
+                    <input class="form-control" type="text" zippy="e_calist" placeholder="Начните вводить">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_caquantity" class="col-xs-2 control-label">Количество</label>
+                <div class="col-xs-3">
+                    <input class="form-control" type="text" zippy="e_caquantity" pattern="[0-9\.]+">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="e_caprice" class="col-xs-2 control-label">Цена</label>
+                <div class="col-xs-3">
+                    <input class="form-control" type="text" zippy="e_caprice" pattern="[0-9\.]+">
+                </div>
+            </div>
+            <div class="form-group  row">
+                <label class="col-xs-2 control-label"> </label>
+                <div class="col-xs-3">
+                    <input zippy="addcabtn" type="submit" value="Добавить" class="btn btn-default  ">
+                </div>
+            </div>
 
 
-            });
+        </div>
 
-        </script>
-
-
+    </div>
 
 
-    </body>
+    <div class="form-group  row">
+        <hr style="border: solid 1px #aaa;">
+
+
+        <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default ">
+        &nbsp; <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default ">
+        &nbsp; <input zippy="execdoc" type="submit" value="Провести" class="btn btn-default">
+
+    </div>
+
+
+</form>
+<script>
+
+    $(function () {
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $.cookie('tab_doc', $(e.target).attr('href'));
+        });
+
+        var lastTab = $.cookie('tab_doc');
+
+        if (lastTab) {
+            $('ul.nav-tabs').children().removeClass('active');
+            $('a[href=' + lastTab + ']').parents('li:first').addClass('active');
+            $('div.tab-content').children().removeClass('active');
+            $(lastTab).addClass('active');
+        }
+
+
+    });
+
+</script>
+
+
+</body>
 </html>

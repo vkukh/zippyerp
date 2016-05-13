@@ -2,13 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\CapitalAsset;
-use \ZippyERP\ERP\Entity\SubConto;
-use \Carbon\Carbon;
+use Carbon\Carbon;
+use ZippyERP\ERP\Entity\CapitalAsset;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
 
 /**
  * Класс-сущность  документ начсисление амортизации
@@ -57,7 +54,7 @@ class NADeprecation extends Document
 
             if ($this->headerdata['tax'] == 0) {
                 if ($ca->depreciation == 1 && $ca->term > 0) { //линейный метод
-                    $amount = (int) round(($ca->value - $ca->cancelvalue) / $ca->term);
+                    $amount = (int)round(($ca->value - $ca->cancelvalue) / $ca->term);
                 }
 
 

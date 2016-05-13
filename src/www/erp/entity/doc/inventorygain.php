@@ -2,14 +2,9 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\Stock;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  *   документ  оприходование  излишков
@@ -35,7 +30,7 @@ class InventoryGain extends Document
             );
         }
 
-        $firm = \ZippyERP\System\System::getOptions("firmdetail");
+        //$firm = \ZippyERP\System\System::getOptions("firmdetail");
         // $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
@@ -52,7 +47,7 @@ class InventoryGain extends Document
 
     public function Execute()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
         $types = array();

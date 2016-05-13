@@ -3,24 +3,23 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Form\CheckBox;
-use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use Zippy\Html\Panel;
-use ZippyERP\System\Application as App;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Stock;
 use ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Страница  ввода перемещения товаров
@@ -184,7 +183,6 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
         $this->_doc->headerdata = array(
             'plan' => $this->docform->plan->isChecked(),
             'storefrom' => $this->docform->storefrom->getValue(),
@@ -200,7 +198,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
 
@@ -214,10 +212,10 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 
@@ -273,7 +271,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
             $this->docform->detail->Reload();
         }
         if ($sender->id == 'storeto') {
-            
+
         }
     }
 

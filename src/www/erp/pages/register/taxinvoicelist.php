@@ -2,22 +2,16 @@
 
 namespace ZippyERP\ERP\Pages\Register;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Filter;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Session;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Filter;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Рееср налоговых накладных
@@ -80,7 +74,6 @@ class TaxInvoiceList extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
         //закрытый период
         if ($item->updated < strtotime("2013-01-01")) {
             $row->edit->setVisible(false);
@@ -128,7 +121,7 @@ class TaxListDataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $filter = Filter::getFilter("taxinvoicelist");
         $where = " document_date >= " . $conn->DBDate($filter->from) . " and  document_date <= " . $conn->DBDate($filter->to);
         $where .= " and  (meta_name = 'TaxInvoice' or meta_name = 'TaxInvoiceIncome' )";
@@ -152,7 +145,7 @@ class TaxListDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItem($id)
     {
-        
+
     }
 
 }

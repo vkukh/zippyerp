@@ -2,11 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ возврат поставщику
@@ -18,7 +17,7 @@ class ReturnGoodsReceipt extends Document
     public function generateReport()
     {
 
-        $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
+        //$customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
 
         $i = 1;
 
@@ -45,7 +44,6 @@ class ReturnGoodsReceipt extends Document
         );
 
 
-
         $report = new \ZippyERP\ERP\Report('returngoodsreceipt.tpl');
 
         $html = $report->generate($header, $detail);
@@ -55,6 +53,7 @@ class ReturnGoodsReceipt extends Document
 
     public function Execute()
     {
+        $types = array();
         //аналитика
         foreach ($this->detaildata as $item) {
             $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $item['item_id'], $item['price'], true);
@@ -99,13 +98,13 @@ class ReturnGoodsReceipt extends Document
 
         //налоговый кредит
         if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("644", "63", 0 - $this->headerdata['totalnds'], $this->document_id, 0, $customer_id);
+            Entry::AddEntry("644", "63", 0 - $this->headerdata['totalnds'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 63, $this->headerdata['totalnds']);
             $sc->setCustomer($this->headerdata["customer"]);
 
             $sc->save();
             $sc = new SubConto($this, 644, 0 - $this->headerdata['totalnds']);
-            $sc->setExtCode(TAX_NDS);
+            $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
 
             //$sc->save();
         }

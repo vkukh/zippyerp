@@ -2,21 +2,16 @@
 
 namespace ZippyERP\ERP\Blocks;
 
-use \Zippy\Html\Form\Form;
-use Zippy\Html\Form\TextInput;
+use Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Html\DataList\ArrayDataSource;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextArea;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Binding\PropertyBinding as Bind;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\DataList\ArrayDataSource;
-use \ZCL\DB\EntityDataSource as EDS;
-use \ZippyERP\ERP\Helper;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Session;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\ERP\Helper;
+use ZippyERP\System\System;
 
 /**
  * Виджет для  просмотра
@@ -29,8 +24,8 @@ class ContactView extends \Zippy\Html\PageFragment
     public $_msglist = array();
 
     /**
-     *  
-     * @param mixed $id    id компонента
+     *
+     * @param mixed $id id компонента
      */
     public function __construct($id)
     {
@@ -50,7 +45,7 @@ class ContactView extends \Zippy\Html\PageFragment
 
     /**
      * передает  данные для  редактирования
-     * 
+     *
      * @param mixed $item
      */
     public function open(\ZippyERP\ERP\Entity\Contact $item)
@@ -67,7 +62,7 @@ class ContactView extends \Zippy\Html\PageFragment
 
     /**
      * добавление прикрепленного файла
-     * 
+     *
      * @param mixed $sender
      */
     public function OnFileSubmit($sender)
@@ -113,7 +108,7 @@ class ContactView extends \Zippy\Html\PageFragment
 
     /**
      * добавление коментария
-     * 
+     *
      * @param mixed $sender
      */
     public function OnMsgSubmit($sender)

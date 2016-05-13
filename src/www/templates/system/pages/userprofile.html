@@ -1,35 +1,31 @@
 <html>
 
-    <body>
+<body>
 
 
+<div class="col-xs-2">
 
 
- 
-            <div class="col-xs-2">  
+    <form role="form" zippy="profileform">
+        <div class="form-group">
+            <label for="userlogin">Логин</label>
+            <span zippy="userlogin"></span>
+        </div>
+        <div class="form-group">
+            <label for="userpassword">Пароль</label>
+            <input type="password" class="form-control" zippy="userpassword" required="required">
+        </div>
+        <div class="form-group">
+            <label for="userpassword">Подтверждение</label>
+            <input type="password" class="form-control " zippy="confirmpassword" required="required">
+        </div>
+
+        <button type="submit" zippy="submitpass" class="btn btn-default">Сохранить</button>
+    </form>
+</div>
 
 
-
-                <form role="form" zippy="profileform">
-                    <div class="form-group">
-                        <label for="userlogin">Логин</label>
-                        <span zippy="userlogin"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="userpassword">Пароль</label>
-                        <input type="password" class="form-control" zippy="userpassword" required="required">
-                    </div>
-                    <div class="form-group">
-                        <label for="userpassword">Подтверждение</label>
-                        <input type="password" class="form-control " zippy="confirmpassword" required="required">
-                    </div>
-
-                    <button type="submit" zippy="submitpass" class="btn btn-default">Сохранить</button>
-                </form>      
-            </div>
-      
-       
-    </body>
+</body>
 
 </html>
 

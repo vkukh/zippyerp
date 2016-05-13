@@ -2,8 +2,6 @@
 
 namespace ZippyERP\System;
 
-use \ZippyERP\System\User;
-
 /**
  * Вспомагательный  класс  для  работы  с  бизнес-данными
  */
@@ -12,15 +10,15 @@ class Helper
 
     /**
      * Выполняет  логин  в  системму
-     * 
+     *
      * @param mixed $login
      * @param mixed $password
-     * @return  boolean 
+     * @return  boolean
      */
     public static function login($login, $password = null)
     {
 
-        $user = User::findOne("  userlogin=  ". User::qstr($login));
+        $user = User::findOne("  userlogin=  " . User::qstr($login));
 
         if ($user == null)
             return false;
@@ -35,12 +33,12 @@ class Helper
 
     /**
      * Проверка  существования логина
-     * 
+     *
      * @param mixed $login
      */
     public static function existsLogin($login)
     {
-        $list = \ZippyERP\System\User::find("  userlogin= ". User::qstr($login));
+        $list = \ZippyERP\System\User::find("  userlogin= " . User::qstr($login));
 
         return count($list) > 0;
     }
@@ -61,11 +59,11 @@ class Helper
 
     /**
      * Сохраняет  спписок  ролей для юзера
-     * 
+     *
      */
     public static function saveRoles($user_id, $roles)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->Execute('delete from system_user_role  where  user_id = ' . $user_id);
         foreach ($roles as $role_id) {
             $conn->Execute('insert into system_user_role (user_id,role_id) values(' . $user_id . ',' . $role_id . ')');

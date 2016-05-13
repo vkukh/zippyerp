@@ -2,12 +2,11 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Entity\Stock;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\Store;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  локумент перемещения товаров
@@ -21,7 +20,7 @@ class MoveBackItem extends Document
 
     public function Execute()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
         $ret = 0;    // торговая  наценка
@@ -56,9 +55,9 @@ class MoveBackItem extends Document
                 $item = \ZippyERP\ERP\Entity\Item::getSumItem();
 
                 $stockfrom = Stock::getStock($this->headerdata['storefrom'], $item->item_id, 1, true);
-                $sc = new SubConto($this, 282, 0 - ($value['quantity'] ) * $value['price']);  //цена  единицы  товара = 1 копейка.
+                $sc = new SubConto($this, 282, 0 - ($value['quantity']) * $value['price']);  //цена  единицы  товара = 1 копейка.
                 $sc->setStock($stockfrom->stock_id);
-                $sc->setQuantity(0 - ($value['quantity'] ) * $value['price']); //цена  единицы  товара - 1 копейка.
+                $sc->setQuantity(0 - ($value['quantity']) * $value['price']); //цена  единицы  товара - 1 копейка.
                 $sc->save();
 
                 $ret += ($value['quantity'] / 1000) * ($value['price'] - $value['partion']);
@@ -87,9 +86,7 @@ class MoveBackItem extends Document
             "document_number" => $this->document_number
         );
 
-        $reportgen = new \ZCL\RepGen\RepGen(_ROOT . 'templates/erp/printforms/moveitem.html', $header);
-
-        $i = 1;
+            $i = 1;
         $detail = array();
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,

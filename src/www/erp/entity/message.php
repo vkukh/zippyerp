@@ -3,8 +3,8 @@
 namespace ZippyERP\ERP\Entity;
 
 /**
- * Клас-сущность  коментари  
- * 
+ * Клас-сущность  коментари
+ *
  * @view=erp_message_view
  * @table=erp_message
  * @keyfield=message_id

@@ -3,23 +3,22 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
+use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use Zippy\Html\Panel;
-use ZippyERP\System\Application as App;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Stock;
 use ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Страница  ввода возврата  на  склад
@@ -126,7 +125,6 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editquantity->setText($stock->quantity / 1000);
 
 
-
         $this->editdetail->edititem->setKey($stock->stock_id);
         $this->editdetail->edititem->setText($stock->itemname);
 
@@ -192,7 +190,6 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
         $this->_doc->headerdata = array(
             'storefrom' => $this->docform->storefrom->getValue(),
             'storeto' => $this->docform->storeto->getValue()
@@ -208,7 +205,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $isEdited = $this->_doc->document_id > 0;
 
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -221,10 +218,10 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 
@@ -257,12 +254,12 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $stock = Stock::load($stock_id);
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
-            
+
         } else {
-            $item = Item::load($stock->item_id);
+            //$item = Item::load($stock->item_id);
         }
         if ($store->store_type == Store::STORE_TYPE_RET) {
-            
+
         }
     }
 
@@ -274,7 +271,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
             $this->docform->detail->Reload();
         }
         if ($sender->id == 'storeto') {
-            
+
         }
     }
 

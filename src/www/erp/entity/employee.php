@@ -45,14 +45,14 @@ class Employee extends \ZCL\DB\Entity
 
         //распаковываем  данные из detail
         $xml = simplexml_load_string($this->detail);
-        $this->login = (string) ($xml->login[0]);
-        $this->salarytype = (int) ($xml->salarytype[0]);
-        $this->exptype = (int) ($xml->exptype[0]);
-        $this->salary = (int) ($xml->salary[0]);
-        $this->inn = (string) ($xml->inn[0]);
-        $this->avans = (int) ($xml->avans[0]);
-        $this->combined = (int) ($xml->combined[0]);
-        $this->invalid = (int) ($xml->invalid[0]);
+        $this->login = (string)($xml->login[0]);
+        $this->salarytype = (int)($xml->salarytype[0]);
+        $this->exptype = (int)($xml->exptype[0]);
+        $this->salary = (int)($xml->salary[0]);
+        $this->inn = (string)($xml->inn[0]);
+        $this->avans = (int)($xml->avans[0]);
+        $this->combined = (int)($xml->combined[0]);
+        $this->invalid = (int)($xml->invalid[0]);
 
 
         parent::afterLoad();
@@ -81,7 +81,7 @@ class Employee extends \ZCL\DB\Entity
      */
     public function getForPayed($date)
     {
-        return Subconto::getAmount($date, 0, 0, 0, $this->employee_id, 0, 0, 0);
+        return SubConto::getAmount($date, 0, 0, 0, $this->employee_id, 0, 0, 0);
     }
 
     /**

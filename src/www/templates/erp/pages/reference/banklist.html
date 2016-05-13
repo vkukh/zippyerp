@@ -1,49 +1,51 @@
 <html>
-    <head>
-    </head>
+<head>
+</head>
 
-    <body>
+<body>
 
-        <div zippy="banktable">
-            <div class="row">
-                <div class="col-xs-6">
-                    <h3>Справочник банков </h3>
-                    <table class="table table-bordered   table-condensed" >
-                        <tr>
-                            <th >Название</th>
-                            <th > </th>
-                        </tr>
-                        <tr zippy="banklist">
-                            <td zippy="bankname"></td>
+<div zippy="banktable">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3>Справочник банков </h3>
+            <table class="table table-bordered   table-condensed">
+                <tr>
+                    <th>Название</th>
+                    <th></th>
+                </tr>
+                <tr zippy="banklist">
+                    <td zippy="bankname"></td>
 
-                            <td style="width:52px"> <a zippy="edit"  title="Редактирование"><i class="icon-edit"></i></a> <a zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
-                        </tr>
-                    </table>
-                    <a zippy="addnew" class="btn btn-default ">Добавить</a>
-                </div>
-            </div>   </div>
-        <form zippy="bankdetail" method="post" >
-            <div class="row">
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <label for="editbankname" class="  control-label"> Имя</label>
-                        <input class="form-control" type="text" zippy="editbankname" required="required"     >
-                    </div>
-                    <div class="form-group">
-                        <label for="editmfo" class="  control-label"> МФО</label>
-                        <input class="form-control" type="number" zippy="editmfo" required="required"     >
-                    </div>
-                    <div class="form-group">
-                        <input zippy="save" type="submit" value="Сохранить" class="btn btn-default ">
-                        &nbsp;   <input zippy="cancel" type="button" value="Отменить" class="btn btn-default">
+                    <td style="width:52px"><a zippy="edit" title="Редактирование"><i class="icon-edit"></i></a> <a
+                            zippy="delete" title="Удалить"><i class="icon-remove"></i></a></td>
+                </tr>
+            </table>
+            <a zippy="addnew" class="btn btn-default ">Добавить</a>
+        </div>
+    </div>
+</div>
+<form zippy="bankdetail" method="post">
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <label for="editbankname" class="  control-label"> Имя</label>
+                <input class="form-control" type="text" zippy="editbankname" required="required">
+            </div>
+            <div class="form-group">
+                <label for="editmfo" class="  control-label"> МФО</label>
+                <input class="form-control" type="number" zippy="editmfo" required="required">
+            </div>
+            <div class="form-group">
+                <input zippy="save" type="submit" value="Сохранить" class="btn btn-default ">
+                &nbsp; <input zippy="cancel" type="button" value="Отменить" class="btn btn-default">
 
-                    </div>
-
-
-                </div>   </div>
-        </form>
+            </div>
 
 
+        </div>
+    </div>
+</form>
 
-    </body>
+
+</body>
 </html>

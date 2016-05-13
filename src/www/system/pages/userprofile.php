@@ -2,15 +2,10 @@
 
 namespace ZippyERP\System\Pages;
 
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\UserMessage;
-use \Zippy\Html\Panel;
-use \Zippy\Html\Label;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Binding\PropertyBinding as Bind;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Link\RedirectLink;
+use Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use ZippyERP\System\System;
 
 class UserProfile extends UserBase
 {
@@ -43,12 +38,12 @@ class UserProfile extends UserBase
         if ($this->_userpass == '') {
             $this->setError('Введите пароль');
         } else
-        if ($this->_confirm == '') {
-            $this->setError('Подтвердите пароль');
-        } else
-        if ($this->_confirm != $this->_userpass) {
-            $this->setError('Неверное подтверждение');
-        }
+            if ($this->_confirm == '') {
+                $this->setError('Подтвердите пароль');
+            } else
+                if ($this->_confirm != $this->_userpass) {
+                    $this->setError('Неверное подтверждение');
+                }
 
 
         if (!$this->isError()) {
@@ -67,7 +62,7 @@ class UserProfile extends UserBase
 
         if (!$this->isError()) {
             $user = System::getUser();
-            $uploaddir = UPLOAD_USERS;
+            //$uploaddir = UPLOAD_USERS;
             // @mkdir($uploaddir) ;
 
             $user->save();
@@ -78,7 +73,7 @@ class UserProfile extends UserBase
     {
         parent::beforeRender();
 
-        $user = System::getUser();
+        //$user = System::getUser();
     }
 
 }

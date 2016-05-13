@@ -2,11 +2,8 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Entity\Entry;
 
 /**
  * Класс-сущность  документ финансовые  результаты
@@ -45,7 +42,6 @@ class FinResult extends Document
         $acc71 = Account::load("71");
         $s71 = $acc71->getSaldo($this->document_date);
         Entry::AddEntry(71, 79, abs($s71), $this->document_id, $this->document_date);
-
 
 
         $acc901 = Account::load("901");

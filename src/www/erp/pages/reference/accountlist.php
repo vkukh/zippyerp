@@ -2,11 +2,11 @@
 
 namespace ZippyERP\ERP\Pages\Reference;
 
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\DataList\ArrayDataSource;
-use \ZippyERP\ERP\Entity\Account;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\DataList\ArrayDataSource;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Label;
+use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс страницы плана счетов

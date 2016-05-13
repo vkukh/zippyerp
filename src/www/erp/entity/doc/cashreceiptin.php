@@ -2,12 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\Customer;
-use \ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Consts as C;
+use ZippyERP\ERP\Consts as C;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Entity\SubConto;
 
 /**
  * Класс-сущность  документ  приходный кассовый  ордер

@@ -2,18 +2,12 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\AutocompleteTextInput;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Entity\Item;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\RedirectLink;
+use Zippy\Html\Panel;
 
 class ABC extends \ZippyERP\ERP\Pages\Base
 {
@@ -101,7 +95,6 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         $detail = $this->calc($detail);
 
 
-
         $report = new \ZippyERP\ERP\Report('abc.tpl');
 
         $html = $report->generate($header, $detail);
@@ -112,7 +105,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     private function find1()
     {
         $list = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "SELECT * FROM (
                     SELECT itemname as name, SUM( ABS( extcode ) ) AS value
                     FROM  `erp_account_subconto_view`
@@ -135,7 +128,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     private function find2()
     {
         $list = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "SELECT * FROM (
                     SELECT customer_name as name, SUM( ABS( amount ) ) AS value
                     FROM  `erp_account_subconto_view`
@@ -158,7 +151,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     private function find3()
     {
         $list = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "SELECT * FROM (
                     SELECT customer_name as name, SUM( ABS( amount ) ) AS value
                     FROM  `erp_account_subconto_view`
@@ -180,7 +173,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
 
     private function find4()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         //выбираем  по  Акту выполненых работ
         $where = "  meta_name ='ServiceAct'
                    AND document_date >= " . $conn->DBDate($this->filter->from->getDate()) . "

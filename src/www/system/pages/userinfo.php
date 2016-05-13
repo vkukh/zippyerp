@@ -2,10 +2,9 @@
 
 namespace ZippyERP\System\Pages;
 
-use \Zippy\Html\Label as Label;
-use \ZippyERP\System\System;
-use \ZippyERP\System\User;
-use \ZippyERP\System\Role;
+use Zippy\Html\Label as Label;
+use ZippyERP\System\Role;
+use ZippyERP\System\System;
 
 class UserInfo extends AdminBase
 {
@@ -31,7 +30,7 @@ class UserInfo extends AdminBase
     {
         $item = $datarow->getDataItem();
         $datarow->add(new \Zippy\Html\Label("description", $item->description));
-        $role = $datarow->add(new \Zippy\Html\Form\CheckBox("role", new \Zippy\Binding\PropertyBinding($item, 'tag')))->setChecked($this->user->hasRole($item->rolename));
+        $datarow->add(new \Zippy\Html\Form\CheckBox("role", new \Zippy\Binding\PropertyBinding($item, 'tag')))->setChecked($this->user->hasRole($item->rolename));
     }
 
     //запись  ролей для  юзера

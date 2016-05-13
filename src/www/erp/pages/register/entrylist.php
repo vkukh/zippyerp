@@ -2,21 +2,15 @@
 
 namespace ZippyERP\ERP\Pages\Register;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Session;
-use \ZippyERP\ERP\Filter;
-use \Zippy\Html\Form\Date;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Filter;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс  страницы  журнала  проводок
@@ -84,7 +78,7 @@ class EntryDataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         $filter = Filter::getFilter("entrylist");
 
@@ -107,12 +101,12 @@ class EntryDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Entry::find($this->getWhere(), "document_date", "desc");
+        return Entry::find($this->getWhere(), "document_date  " . $asc,$count, $start);
     }
 
     public function getItem($id)
     {
-        
+
     }
 
 }

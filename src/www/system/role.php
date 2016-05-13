@@ -3,7 +3,7 @@
 namespace ZippyERP\System;
 
 /**
- * Класс,  инкапсулирующий  роль  юзера   в   системме                                         
+ * Класс,  инкапсулирующий  роль  юзера   в   системме
  */
 class Role extends \ZCL\DB\Entity
 {

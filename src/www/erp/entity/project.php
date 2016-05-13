@@ -4,7 +4,7 @@ namespace ZippyERP\ERP\Entity;
 
 /**
  * Клас-сущность  проект
- * 
+ *
  * @table=erp_task_project
  * @view=erp_task_project_view
  * @keyfield=project_id
@@ -20,7 +20,7 @@ class Project extends \ZCL\DB\Entity
 
     protected function beforeDelete()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        //$conn = \ZDB\DB::getConnect();
         // $conn->Execute("delete from erp_document_update_log  where document_id =" . $this->document_id);
 
         return true;

@@ -3,27 +3,24 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\Button;
-use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use Zippy\Html\Panel;
-use ZippyERP\System\Application as App;
-use ZippyERP\System\System;
+use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
-use ZippyERP\ERP\Entity\Customer;
-use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Entity\Stock;
-use Zippy\Html\Form\CheckBox;
-use ZippyERP\ERP\Entity\GroupItem;
+use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Страница  ввода  расходной  накладной
@@ -117,7 +114,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
                             //находим  последнюю партию по  первому складу
                             $options = $this->docform->store->getOptionList();
                             $keys = array_keys($options);
-                            $stock = Stock::getFirst("closed <> 1 and group_id={$item->group_id} and item_id={$item->item_id} and store_id=" . $keys[0], 'stock_id', 'desc');
+                            $stock = Stock::getFirst("closed <> 1 and group_id={$item->group_id} and item_id={$item->item_id} and store_id=" . $keys[0], 'stock_id desc');
                             if ($stock instanceof Stock) {
                                 $stock->quantity = $item->quantity;
                                 $stock->pricends = $item->pricends;
@@ -254,7 +251,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -271,10 +268,10 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 

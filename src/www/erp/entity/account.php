@@ -83,7 +83,7 @@ class Account extends \ZCL\DB\Entity
     /**
      * Возвращает сальдо  с   учетом субсчетов
      * Положительное  значение  сальдо  по  дебету,  отрицательное - по  кредиту.
-     * @param mixed $date    На дату
+     * @param mixed $date На дату
      */
     public function getSaldo($date = null)
     {
@@ -158,7 +158,7 @@ class Account extends \ZCL\DB\Entity
     //возвращает  список с  кодом  и  названием
     public static function findArrayEx($where = '', $orderbyfield = null, $orderbydir = null)
     {
-        $entitylist = self::find($where, $orderbyfield, $orderbydir);
+        $entitylist = self::find($where, $orderbyfield ." " .$orderbydir );
 
         $list = array();
         foreach ($entitylist as $key => $value) {

@@ -2,20 +2,18 @@
 
 namespace ZippyERP\ERP\Pages\Reference;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\TextArea;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Customer;
-use \ZippyERP\ERP\Entity\Contact;
-use \Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Contact;
+use ZippyERP\ERP\Entity\Customer;
 
 class CustomerList extends \ZippyERP\ERP\Pages\Base
 {
@@ -265,7 +263,7 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
 
-        return Contact::findArray("fullname", " employee = 0 and customer = 0  and  fullname  like '%{$text}%' ", "fullname",   20);
+        return Contact::findArray("fullname", " employee = 0 and customer = 0  and  fullname  like '%{$text}%' ", "fullname", 20);
     }
 
     public function OnAddNewcontact($sender)

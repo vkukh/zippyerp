@@ -2,9 +2,7 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ гарантийного талон

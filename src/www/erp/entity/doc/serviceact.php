@@ -2,11 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  локумент акт  о  выполненных работах
@@ -50,7 +49,7 @@ class ServiceAct extends Document
 
     public function Execute()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
         $total = $this->headerdata['total'];
@@ -60,7 +59,7 @@ class ServiceAct extends Document
         if ($this->headerdata['cash'] == true) {
 
             $cash = MoneyFund::getCash();
-            \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", $total, $this->document_id, $cash->id, $customer_id);
+            \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", $total, $this->document_id, $this->document_date);
             $sc = new SubConto($this, 36, 0 - $total);
             $sc->setCustomer($this->headerdata["customer"]);
 
@@ -92,7 +91,6 @@ class ServiceAct extends Document
         $sc->setCustomer($this->headerdata["customer"]);
 
         $sc->save();
-
 
 
         $conn->CompleteTrans();

@@ -1,96 +1,97 @@
 <html>
-    <body>
-        <div class="row">
-            <div class="col-xs-12">
+<body>
+<div class="row">
+    <div class="col-xs-12">
 
 
-                <h3>Журнал  документов </h3>
+        <h3>Журнал документов </h3>
 
-                <form zippy="filter"  class="navbar-form ">
-                    <div class="form-group">
-                        <label for="from">С</label>
-                        <input type="text"  class="form-control" zippy="from"  style="width:100px">
-                    </div>
-                    <div class="form-group">
-                        <label for="to">по</label>
-                        <input type="text"  class="form-control" style="width:100px" zippy="to"  >
-                    </div>
-                    <div class="form-group">
-                        <label for="docgroup">Группа</label>
-                        <select  class="form-control" zippy="docgroup"><option value="0">Все</option>   </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="searchnumber">Номер</label>
-                        <input class="form-control" type="text" zippy="searchnumber" style="width:100px"  >
-                    </div>
-                    <div class="form-group">
-                        <label for="onlymy">Только  мои </label>
-                        <input class="form-control" type="checkbox" zippy="onlymy">
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" class="  btn btn-default  " value="Ввод">
-                    </div>
-
-
-
-                </form>
-                <table class="table table-striped  table-condensed ">
-                    <tr>
-                        <th >Наименование</th>
-                        <th >Номер</th>
-                        <th >Дата </th>
-                        <th >Сумма</th>
-                        <th >Статус</th>
-                        <th  > </th>
-                        <th  > </th>
-                        <th > </th>
-
-                    </tr>
-                    <tr zippy="doclist">
-                        <td zippy="name"></td>
-                        <td zippy="number" ></td>
-                        <td style="white-space:   nowrap" zippy="date" ></td>
-                        <td zippy="amount" align="right"></td>
-                        <td zippy="state"></td>
-
-                        <td  style="white-space:   nowrap">
-                            <a zippy="show"  title="Просмотр"><i class="icon-preview"></i></a>
-                            <a zippy="edit"  title="Редактировать"><i class="icon-edit"></a>
-                            <a zippy="cancel"  title="Отменить"><i class="icon-undo"></i> </a>
-
-                        </td>
-                        <td>
-                            <a zippy="delete"  title="Удаление"><i class="icon-remove"></i></a>
-                        </td>
-                        <td>
-                            <div class="btn-group" zippy="basedon">
-                                <button title="Создать на  основании" type="button" class="btn btn-default btn-xs  dropdown-toggle" data-toggle="dropdown">
-                                    Создать <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" zippy="basedlist">
-
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <div zippy="pag" ></div>
-
-
-
+        <form zippy="filter" class="navbar-form ">
+            <div class="form-group">
+                <label for="from">С</label>
+                <input type="text" class="form-control" zippy="from" style="width:100px">
             </div>
-        </div>
-        <div class="row">
-            <div zippy="docview"></div>
-            <div >
+            <div class="form-group">
+                <label for="to">по</label>
+                <input type="text" class="form-control" style="width:100px" zippy="to">
             </div>
-        </div>
+            <div class="form-group">
+                <label for="docgroup">Группа</label>
+                <select class="form-control" zippy="docgroup">
+                    <option value="0">Все</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="searchnumber">Номер</label>
+                <input class="form-control" type="text" zippy="searchnumber" style="width:100px">
+            </div>
+            <div class="form-group">
+                <label for="onlymy">Только мои </label>
+                <input class="form-control" type="checkbox" zippy="onlymy">
+            </div>
 
-        <script>
-            function check_delete() {
-                return  confirm("Удалить  документ?")
-            }
-        </script>
-    </body>
+            <div class="form-group">
+                <input type="submit" class="  btn btn-default  " value="Ввод">
+            </div>
+
+
+        </form>
+        <table class="table table-striped  table-condensed ">
+            <tr>
+                <th>Наименование</th>
+                <th>Номер</th>
+                <th>Дата</th>
+                <th>Сумма</th>
+                <th>Статус</th>
+                <th></th>
+                <th></th>
+                <th></th>
+
+            </tr>
+            <tr zippy="doclist">
+                <td zippy="name"></td>
+                <td zippy="number"></td>
+                <td style="white-space:   nowrap" zippy="date"></td>
+                <td zippy="amount" align="right"></td>
+                <td zippy="state"></td>
+
+                <td style="white-space:   nowrap">
+                    <a zippy="show" title="Просмотр"><i class="icon-preview"></i></a>
+                    <a zippy="edit" title="Редактировать"><i class="icon-edit"></a>
+                    <a zippy="cancel" title="Отменить"><i class="icon-undo"></i> </a>
+
+                </td>
+                <td>
+                    <a zippy="delete" title="Удаление"><i class="icon-remove"></i></a>
+                </td>
+                <td>
+                    <div class="btn-group" zippy="basedon">
+                        <button title="Создать на  основании" type="button"
+                                class="btn btn-default btn-xs  dropdown-toggle" data-toggle="dropdown">
+                            Создать <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" zippy="basedlist">
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div zippy="pag"></div>
+
+
+    </div>
+</div>
+<div class="row">
+    <div zippy="docview"></div>
+    <div>
+    </div>
+</div>
+
+<script>
+    function check_delete() {
+        return confirm("Удалить  документ?")
+    }
+</script>
+</body>
 </html>

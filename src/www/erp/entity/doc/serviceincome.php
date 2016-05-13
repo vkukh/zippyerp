@@ -2,11 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  локумент акт  о  выполненных работах
@@ -72,8 +71,6 @@ class ServiceIncome extends Document
 
             // $sc->save();
         }
-
-
 
 
         Entry::AddEntry("91", "63", $total, $this->document_id, $this->document_date);

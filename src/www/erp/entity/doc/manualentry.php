@@ -2,15 +2,10 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\Stock;
-use \ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Entity\Customer;
-use \ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ для ручных  операций
@@ -110,7 +105,7 @@ class ManualEntry extends Document
             "description" => $this->headerdata["description"],
             "document_number" => $this->document_number
         );
-        $detail = array();
+        //$detail = array();
         $i = 1;
         $arr = array();
         $accarr = unserialize(base64_decode($this->headerdata['entry']));

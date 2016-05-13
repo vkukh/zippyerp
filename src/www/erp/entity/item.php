@@ -2,8 +2,6 @@
 
 namespace ZippyERP\ERP\Entity;
 
-use ZippyERP\ERP\Consts;
-
 /**
  * Клас-сущность  ТМЦ
  *
@@ -30,13 +28,12 @@ class Item extends \ZCL\DB\Entity
     {
 
 
-
         $xml = @simplexml_load_string($this->detail);
-        $this->priceopt = (string) ($xml->priceopt[0]);
-        $this->priceret = (string) ($xml->priceret[0]);
-        $this->barcode = (string) ($xml->barcode[0]);
-        $this->uktzed = (string) ($xml->uktzed[0]);
-        $this->code = (string) ($xml->code[0]);
+        $this->priceopt = (string)($xml->priceopt[0]);
+        $this->priceret = (string)($xml->priceret[0]);
+        $this->barcode = (string)($xml->barcode[0]);
+        $this->uktzed = (string)($xml->uktzed[0]);
+        $this->code = (string)($xml->code[0]);
 
         parent::afterLoad();
     }
@@ -79,7 +76,7 @@ class Item extends \ZCL\DB\Entity
      */
     public static function getQuantity($item_id, $date)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $where = "   stock_id IN( select stock_id from erp_store_stock st join erp_store sr on st.store_id = sr.store_id  where item_id= {$item_id} and store_type = " . Store::STORE_TYPE_OPT . " )  and date(document_date) <= " . $conn->DBDate($date);
         $sql = " select coalesce(sum(quantity),0) AS quantity  from erp_account_subconto  where " . $where;
         return $conn->GetOne($sql);

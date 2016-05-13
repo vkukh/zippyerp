@@ -2,12 +2,12 @@
 
 namespace ZippyERP\System\Pages;
 
-use \Zippy\Html\Form\TextInput as TextInput;
-use \ZippyERP\System\Helper;
-use \ZippyERP\System\User;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Html\Form\TextInput as TextInput;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\Helper;
+use ZippyERP\System\System;
+use ZippyERP\System\User;
 
 class UserLogin extends Base
 {
@@ -33,9 +33,9 @@ class UserLogin extends Base
         if ($this->_login == '') {
             $this->setError('Введите логин');
         } else
-        if ($this->_password == '') {
-            $this->setError('Введите пароль');
-        }
+            if ($this->_password == '') {
+                $this->setError('Введите пароль');
+            }
 
         if (strlen($this->_login) > 0 && strlen($this->_password)) {
 
@@ -67,7 +67,7 @@ class UserLogin extends Base
     public function beforeRequest()
     {
         parent::beforeRequest();
-        
+
         if (System::getUser()->user_id > 0) {
             App::RedirectHome();
         }

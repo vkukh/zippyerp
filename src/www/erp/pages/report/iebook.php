@@ -2,21 +2,14 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Account;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Consts as C;
-use \ZippyERP\System\System;
-use \Carbon\Carbon;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\RedirectLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Consts as C;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\System;
 
 /**
  * Отчет книга доходов  и расходов
@@ -69,12 +62,11 @@ class IEBook extends \ZippyERP\ERP\Pages\Base
         $report = new \ZippyERP\ERP\Report('iebook.tpl');
 
         $header = array();
-        $detail = array();
+        //$detail = array();
         $firm = System::getOptions("firmdetail");
         $common = System::getOptions("common");
 
-        $header['firm'] = $firm['name'];
-        ;
+        $header['firm'] = $firm['name'];;
         $header['code'] = $firm['edrpou'];
         $header['nds'] = $common['hasnds'] == true;
 
@@ -82,7 +74,7 @@ class IEBook extends \ZippyERP\ERP\Pages\Base
         $to = $this->filter->to->getDate();
 
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         $sql = "SELECT v.document_date,
               sum( case when extcode in(" . C::TYPEOP_CUSTOMER_IN . "," . C::TYPEOP_RET_IN . ")   then  amount else 0 end   ) as income ,
@@ -106,7 +98,6 @@ class IEBook extends \ZippyERP\ERP\Pages\Base
               GROUP  by  v.document_date
               HAVING  (expence + commonexpence + salary + ecb) >0
               ORDER  by  v.document_date ";
-
 
 
         $rs2 = $conn->Execute($sql);

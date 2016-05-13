@@ -4,7 +4,7 @@ namespace ZippyERP\ERP\Entity;
 
 /**
  * Клас-сущность  денежные счета
- * 
+ *
  * @table=erp_moneyfunds
  * @keyfield=id
  */
@@ -17,7 +17,7 @@ class MoneyFund extends \ZCL\DB\Entity
 
     /**
      * Возвращает  кассу
-     * 
+     *
      */
 
     public static function getCash()

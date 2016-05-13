@@ -2,16 +2,16 @@
 
 namespace ZippyERP\ERP\Pages\CustomPage;
 
-use \Zippy\Html\Panel;
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \ZippyERP\ERP\Entity\Customer;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Customer;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Helper as H;
 
 class CustPayments extends \ZippyERP\ERP\Pages\Base
 {
@@ -58,7 +58,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $amount = $item->saldo;
         $row->add(new Label('customername', $item->customer_name));
         $row->add(new Label('debet', $amount > 0 ? H::fm($amount) : ''));
-        $row->add(new Label('credit', $amount < 0 ? H::fm(0 - $amount) : '' ));
+        $row->add(new Label('credit', $amount < 0 ? H::fm(0 - $amount) : ''));
         $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
         $row->add(new ClickLink('invoice'))->setClickHandler($this, 'invoiceOnClick');
     }
@@ -67,7 +67,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
     {
         $customer = $sender->getOwner()->getDataItem();
         $this->doclist->custname1->setText($customer->customer_name);
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select  sc.document_id,sum(sc.amount) as amount,meta_desc,document_number,sc.document_date
                 from  erp_account_subconto sc  join erp_document_view dc on sc.document_id = dc.document_id
                 where customer_id = {$customer->customer_id} and (account_id = 371 or account_id = 681)
@@ -151,7 +151,7 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
 
     public function __construct()
     {
-        
+
     }
 
     public function getItemCount()
@@ -161,7 +161,7 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select  coalesce(sum(sc.amount ),0) as  saldo,sc.customer_id ,c.customer_name
                 from  erp_account_subconto sc join erp_customer c on sc.customer_id = c.customer_id
                 where  account_id = 371 or account_id = 681

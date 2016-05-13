@@ -2,16 +2,12 @@
 
 namespace ZippyERP\ERP\Pages\CustomPage;
 
-use \Zippy\Html\Panel;
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \ZippyERP\ERP\Entity\Employee;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Employee;
+use ZippyERP\ERP\Helper as H;
 
 class AccountablePayments extends \ZippyERP\ERP\Pages\Base
 {
@@ -48,7 +44,7 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
     {
         $employee = $sender->getOwner()->getDataItem();
         $this->doclist->empname1->setText($employee->shortname);
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select  sc.amount , sc.document_id,sc.document_date,d.document_number
                 from  erp_account_subconto sc join erp_document d  on sc.document_id = d.document_id
                 where  account_id = 372 order by sc.document_date ";
@@ -106,7 +102,7 @@ class APDataSource implements \Zippy\Interfaces\DataSource
 
     public function __construct()
     {
-        
+
     }
 
     public function getItemCount()
@@ -116,7 +112,7 @@ class APDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select coalesce(sum(sc.amount),0) as  saldo, sc.employee_id,shortname
                 from  erp_account_subconto sc join erp_staff_employee_view  e on sc.employee_id = e.employee_id
                 where  account_id = 372

@@ -2,9 +2,7 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ счета   входящего
@@ -30,11 +28,11 @@ class PurchaseInvoice extends Document
                 "amount" => H::fm($value['amount'])
             );
         }
-
-        $bank = \ZippyERP\ERP\Entity\Bank::load($f->bank);
+        $firm = \ZippyERP\System\System::getOptions("firmdetail");
+        $bank = \ZippyERP\ERP\Entity\Bank::load($this->headerdata["moneyfund_id"]);
         //$customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
-            "account" => $f->bankaccount,
+            "account" => $bank->bankaccount,
             "bank" => $bank->bank_name,
             "mfo" => $bank->mfo,
             "address" => $firm['city'] . ', ' . $firm['street'],

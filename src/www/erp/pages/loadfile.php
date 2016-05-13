@@ -20,10 +20,10 @@ class LoadFile extends \Zippy\Html\WebPage
         if ($file == null)
             die;
 
-        $type = "";
+        //$type = "";
         $pos = strrpos($file['filename'], '.');
         if ($pos !== false) {
-            $type = substr($file['filename'], $pos + 1);
+            //$type = substr($file['filename'], $pos + 1);
         }
         $size = strlen($file['filedata']);
         if ($size > 0) {

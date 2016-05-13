@@ -2,12 +2,11 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Consts as C;
 use ZippyERP\ERP\Entity\Entry;
-use ZippyERP\ERP\Entity\Customer;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Consts as C;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Entity\MoneyFund;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ банковская выписка
@@ -29,12 +28,10 @@ class BankStatement extends Document
     {
 
 
-
-
         $types = $this->getTypes();
-        $i = 1;
+       
         $detail = array();
-        $total = 0;
+        
         foreach ($this->detaildata as $value) {
 
             $detail[] = array(
@@ -45,12 +42,11 @@ class BankStatement extends Document
         };
 
 
-
         $header = array(
             'date' => date('d.m.Y', $this->document_date),
             'bankaccount' => \ZippyERP\ERP\Entity\MoneyFund::load($this->headerdata['bankaccount'])->title,
             "document_number" => $this->document_number
-                // "amountstr" => \ZippyERP\ERP\Util::ucfirst(\ZippyERP\ERP\Util::money2str(H::fm($total )))
+            // "amountstr" => \ZippyERP\ERP\Util::ucfirst(\ZippyERP\ERP\Util::money2str(H::fm($total )))
         );
 
         $report = new \ZippyERP\ERP\Report('bankstatement.tpl');
@@ -206,7 +202,7 @@ class BankStatement extends Document
             }
             // опприходование  наличности
             if ($value['optype'] == self::CASHOUT) {
-                //$cash = MoneyFund::getCash();
+                $cash = MoneyFund::getCash();
                 Entry::AddEntry('31', "30", $value['amount'], $this->document_id, $this->document_date);
                 $sc = new SubConto($this, 31, $value['amount']);
                 $sc->setMoneyfund($this->headerdata['bankaccount']);
@@ -217,8 +213,6 @@ class BankStatement extends Document
                 $sc->setExtCode(C::TYPEOP_BANK_IN);
                 $sc->save();
             }
-
-
 
 
             // $this->AddConnectedDoc($value['doc']);

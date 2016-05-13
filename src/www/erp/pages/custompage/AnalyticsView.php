@@ -2,18 +2,12 @@
 
 namespace ZippyERP\ERP\Pages\CustomPage;
 
-use \Zippy\Html\Panel;
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Label;
+use Zippy\Html\DataList\Column;
+use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextInput;
-use \Zippy\Html\Link\ClickLink;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \Zippy\Html\DataList\DataTable;
-use \Zippy\Html\DataList\Column;
 
 class AnalyticsView extends \ZippyERP\ERP\Pages\Base
 {
@@ -36,8 +30,7 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
         $this->filter->add(new Date('from', $from));
         $this->filter->add(new Date('to', $to));
         $this->filter->add(new Date('sdate', time()))->setVisible(false);
-        $this->filter->add(new DropDownChoice('viewtype'))->setChangeHandler($this, 'typeOnClick');
-        ;
+        $this->filter->add(new DropDownChoice('viewtype'))->setChangeHandler($this, 'typeOnClick');;
         $this->filter->viewtype->setValue(1);
         $this->filter->add(new TextInput('searchkey'));
         $this->filter->add(new CheckBox('chaccount'));
@@ -60,13 +53,11 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
         $this->datalist->setPageSize(10);
 
 
-
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
     }
 
     public function typeOnClick($sender)
     {
-
 
 
         if ($this->filter->viewtype->getValue() == 1) {
@@ -142,7 +133,6 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
         }
 
 
-
         $this->datalist->Reload();
         $this->datalist->setVisible(true);
         $this->docview->setVisible(false);
@@ -189,7 +179,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     private function getSQL()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         if ($this->page->filter->viewtype->getValue() == 1) {
             $sql = " from erp_account_subconto_view where document_date >= " . $conn->DBDate($this->page->filter->from->getDate()) . " and  document_date <= " . $conn->DBDate($this->page->filter->to->getDate());
@@ -213,7 +203,6 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
                 $sql = $sql . " or meta_desc like " . $conn->qstr($searchkey) . ")";
             }
         }
-
 
 
         if ($this->page->filter->viewtype->getValue() == 2) {
@@ -281,7 +270,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItemCount()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         if ($this->page->filter->viewtype->getValue() == 1) {
             $sql = "select count(*) as cnt " . $this->getSQL();
         } else {
@@ -294,7 +283,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         if ($this->page->filter->viewtype->getValue() == 1) {
             $sql = "select  document_id,document_date,extcode,meta_desc,document_number,partion," . $this->getFields() . "
@@ -321,7 +310,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItem($id)
     {
-        
+
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\ERP\Helper;
+use ZippyERP\ERP\Helper;
 
 /**
  * Класс-сущность документ
@@ -125,21 +125,21 @@ class Document extends \ZCL\DB\Entity
         }
         $xml = new \SimpleXMLElement($this->content);
         foreach ($xml->header->children() as $child) {
-            $this->headerdata[(string) $child->getName()] = (string) $child;
+            $this->headerdata[(string)$child->getName()] = (string)$child;
         }
         $this->detaildata = array();
         foreach ($xml->detail->children() as $row) {
             $_row = array();
             foreach ($row->children() as $item) {
-                $_row[(string) $item->getName()] = (string) $item;
-                if (((string) $item) == 'true') {
-                    $_row[(string) $item->getName()] = true;
+                $_row[(string)$item->getName()] = (string)$item;
+                if (((string)$item) == 'true') {
+                    $_row[(string)$item->getName()] = true;
                 }
-                if (((string) $item) == 'false') {
-                    $_row[(string) $item->getName()] = false;
+                if (((string)$item) == 'false') {
+                    $_row[(string)$item->getName()] = false;
                 }
-                if (is_integer((string) $item)) {
-                    $_row[(string) $item->getName()] = (int) $item;
+                if (is_integer((string)$item)) {
+                    $_row[(string)$item->getName()] = (int)$item;
                 }
             }
             $this->detaildata[] = $_row;
@@ -164,7 +164,7 @@ class Document extends \ZCL\DB\Entity
 
         if (trim(get_class($this), "\\") == 'ZippyERP\ERP\Entity\Doc\Document') {
             //если  екземпляр  базового типа Document приводим  к  дочернему  типу
-            return $this->cast()->Execute();
+            $this->cast()->Execute();
         }
     }
 
@@ -174,7 +174,7 @@ class Document extends \ZCL\DB\Entity
      */
     protected function Cancel()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
         // если  метод не переопределен  в  наследнике удаляем  документ  со  всех  движений
         //   $conn->Execute("delete from erp_stock_activity where document_id =" . $this->document_id);
@@ -200,7 +200,7 @@ class Document extends \ZCL\DB\Entity
     {
         $arr = explode("\\", $classname);
         $classname = $arr[count($arr) - 1];
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select meta_id from  erp_metadata where meta_type=1 and meta_name='{$classname}'";
         $meta = $conn->GetRow($sql);
         $classname = '\ZippyERP\ERP\Entity\Doc\\' . $classname;
@@ -224,7 +224,7 @@ class Document extends \ZCL\DB\Entity
 
     protected function beforeDelete()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->Execute("delete from erp_document_update_log  where document_id =" . $this->document_id);
         $conn->Execute("update erp_document set  state=" . self::STATE_DELETED . " where  document_id =" . $this->document_id);
 
@@ -251,7 +251,7 @@ class Document extends \ZCL\DB\Entity
     public function AddConnectedDoc($id)
     {
         if ($id > 0) {
-            $conn = \ZDB\DB\DB::getConnect();
+            $conn = \ZDB\DB::getConnect();
             $conn->Execute("delete from erp_docrel  where (doc1={$this->document_id} and doc2={$id} )  or (doc2={$this->document_id} and doc1={$id})");
             $conn->Execute("insert  into erp_docrel (doc1,doc2) values({$id},{$this->document_id})");
         }
@@ -265,7 +265,7 @@ class Document extends \ZCL\DB\Entity
     public function RemoveConnectedDoc($id)
     {
         if ($id > 0) {
-            $conn = \ZDB\DB\DB::getConnect();
+            $conn = \ZDB\DB::getConnect();
             $conn->Execute("delete from erp_docrel  where (doc1={$this->document_id} and doc2={$id} )  or (doc2={$this->document_id} and doc1={$id})");
         }
     }
@@ -289,7 +289,7 @@ class Document extends \ZCL\DB\Entity
     {
 
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $rs = $conn->Execute("select l.*,u.userlogin from erp_document_update_log l left join system_users u on l.user_id = u.user_id where document_id={$this->document_id}");
         $list = array();
         foreach ($rs as $row) {
@@ -327,7 +327,7 @@ class Document extends \ZCL\DB\Entity
         }
         $this->state = $state;
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $host = $conn->qstr($_SERVER["REMOTE_ADDR"]);
         $user = \ZippyERP\System\System::getUser()->getUserID();
         $sql = "insert into erp_document_update_log (document_id,user_id,document_state,updatedon,hostname) values ({$this->document_id},{$user},{$this->state},now(),{$host})";
@@ -347,16 +347,26 @@ class Document extends \ZCL\DB\Entity
     {
 
         switch ($state) {
-            case Document::STATE_NEW: return "Новый";
-            case Document::STATE_EDITED: return "Отредактирован";
-            case Document::STATE_CANCELED: return "Отменен";
-            case Document::STATE_EXECUTED: return "Проведен";
-            case Document::STATE_CLOSED: return "Закрыт";
-            case Document::STATE_APPROVED: return "Утвержден";
-            case Document::STATE_DELETED: return "Удален";
-            case Document::STATE_WP: return "Ожидает оплату";
-            case Document::STATE_WA: return "Ждет утверждения";
-            default: return "Неизвестный статус";
+            case Document::STATE_NEW:
+                return "Новый";
+            case Document::STATE_EDITED:
+                return "Отредактирован";
+            case Document::STATE_CANCELED:
+                return "Отменен";
+            case Document::STATE_EXECUTED:
+                return "Проведен";
+            case Document::STATE_CLOSED:
+                return "Закрыт";
+            case Document::STATE_APPROVED:
+                return "Утвержден";
+            case Document::STATE_DELETED:
+                return "Удален";
+            case Document::STATE_WP:
+                return "Ожидает оплату";
+            case Document::STATE_WA:
+                return "Ждет утверждения";
+            default:
+                return "Неизвестный статус";
         }
     }
 
@@ -415,7 +425,7 @@ class Document extends \ZCL\DB\Entity
      */
     public function checkDeleted()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         $cnt = $conn->GetOne("select  count(*) from erp_docrel where  doc1 = {$this->document_id}  or  doc2 = {$this->document_id}");
         if ($cnt > 0)
@@ -437,15 +447,14 @@ class Document extends \ZCL\DB\Entity
     /**
      * Поиск  документа
      *
-     * @param mixed $type   имя или id типа
-     * @param mixed $from   начало  периода  или  null
-     * @param mixed $to     конец  периода  или  null
+     * @param mixed $type имя или id типа
+     * @param mixed $from начало  периода  или  null
+     * @param mixed $to конец  периода  или  null
      * @param mixed $header значения заголовка
      */
     public static function search($type, $from, $to, $header = array())
     {
-        $conn = $conn = \ZDB\DB\DB::getConnect();
-        ;
+        $conn = $conn = \ZDB\DB::getConnect();;
         $where = "state= " . Document::STATE_EXECUTED;
 
         if (strlen($type) > 0) {

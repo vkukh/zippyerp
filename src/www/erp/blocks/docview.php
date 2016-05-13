@@ -2,25 +2,21 @@
 
 namespace ZippyERP\ERP\Blocks;
 
-use \Zippy\Binding\PropertyBinding as Prop;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Session;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\DataList\ArrayDataSource;
-use \ZCL\DB\EntityDataSource as EDS;
+use Zippy\Binding\PropertyBinding as Prop;
+use Zippy\Html\DataList\ArrayDataSource;
+use Zippy\Html\DataList\DataView;
 use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextArea;
-use Zippy\Html\Form\DropDownChoice;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Link\RedirectLink;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Helper;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\System;
 
 /**
  * Виджет для  просмотра  документов
@@ -179,7 +175,7 @@ class DocView extends \Zippy\Html\PageFragment
             $this->updateDocs();
             $this->addrelform->addrel->setText('');
         } else {
-            
+
         }
     }
 
@@ -188,7 +184,7 @@ class DocView extends \Zippy\Html\PageFragment
     {
         $text = $sender->getValue();
         $answer = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%' and document_id <> {$this->_doc->document_id} order  by document_id desc  limit 0,20";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {

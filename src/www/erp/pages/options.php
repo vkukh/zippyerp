@@ -2,19 +2,14 @@
 
 namespace ZippyERP\ERP\Pages;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\DataList\DataView;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Form\TextArea;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\AutocompleteTextInput;
-use \ZippyERP\System\System;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
+use Zippy\Html\Form\TextInput;
+use ZippyERP\System\System;
 
 class Options extends \ZippyERP\System\Pages\AdminBase
 {
@@ -44,8 +39,6 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->detail->add(new SubmitButton('detailsave'))->setClickHandler($this, 'saveDetailOnClick');
 
 
-
-
         $this->add(new Form('common'));
         $this->common->add(new Date('closeddate'));
 
@@ -57,10 +50,8 @@ class Options extends \ZippyERP\System\Pages\AdminBase
         $this->common->add(new AutocompleteTextInput('manager'))->setAutocompleteHandler($this, "OnAutoEmployee");
         $this->common->add(new AutocompleteTextInput('accounter'))->setAutocompleteHandler($this, "OnAutoEmployee");
         $this->common->add(new AutocompleteTextInput('ownerfiz'))->setAutocompleteHandler($this, "OnAutoContact");
-        $this->common->ownerfiz->setVisible(true);
-        ;
-        $this->common->manager->setVisible(false);
-        ;
+        $this->common->ownerfiz->setVisible(true);;
+        $this->common->manager->setVisible(false);;
 
 
         $this->add(new Form('tax'));
@@ -230,19 +221,15 @@ class Options extends \ZippyERP\System\Pages\AdminBase
     public function OnJFChange($sender)
     {
         if ($sender->isChecked()) {
-            $this->common->ownerfiz->setVisible(false);
-            ;
+            $this->common->ownerfiz->setVisible(false);;
             $this->common->manager->setKey(0);
             $this->common->manager->setText('');
-            $this->common->manager->setVisible(true);
-            ;
+            $this->common->manager->setVisible(true);;
         } else {
-            $this->common->ownerfiz->setVisible(true);
-            ;
+            $this->common->ownerfiz->setVisible(true);;
             $this->common->ownerfiz->setKey(0);
             $this->common->ownerfiz->setText('');
-            $this->common->manager->setVisible(false);
-            ;
+            $this->common->manager->setVisible(false);;
         }
     }
 

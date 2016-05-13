@@ -2,8 +2,8 @@
 
 namespace ZippyERP\System\Pages;
 
-use \ZippyERP\System\System;
-use \ZippyERP\System\Application as App;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\System;
 
 //базовая страница  для  страниц пользователя
 class UserBase extends \Zippy\Html\WebPage

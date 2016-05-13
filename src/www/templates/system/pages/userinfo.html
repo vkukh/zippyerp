@@ -1,68 +1,69 @@
 <html>
 
 
-    <body>
+<body>
 
-        <div class="row">
-            <div class="col-xs-12">  
+<div class="row">
+    <div class="col-xs-12">
 
-                <table >
-                    <tr>
+        <table>
+            <tr>
 
-                        <td id="td-info">
-                            Информация о пользователе
-                            <table class=" table table-bordered table-condensed">
-
-
-                                <tbody >
-                                    <tr>
-                                        <td ><b>Логин:</b></td> <td zippy="login"> </td>
-                                    </tr> 
-                                    <tr>
-                                        <td ><b>Регистрация:</b></td> <td zippy="createdate"> </td>
-                                    </tr> 
-                                    <tr>
-                                        <td ><b>Роли:</b></td> <td zippy="userroles"> </td>
-                                    </tr> 
-                                </tbody>
-
-                            </table>    
-
-                        </td>
-
-                        <td valign="top" style="padding-left:50px;">
+                <td id="td-info">
+                    Информация о пользователе
+                    <table class=" table table-bordered table-condensed">
 
 
+                        <tbody>
+                        <tr>
+                            <td><b>Логин:</b></td>
+                            <td zippy="login"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Регистрация:</b></td>
+                            <td zippy="createdate"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Роли:</b></td>
+                            <td zippy="userroles"></td>
+                        </tr>
+                        </tbody>
 
-                            <form zippy="roleform" method="POST">
-                                Редактирование роли  
-                                <table class=" table table-bordered  table-condensed">
+                    </table>
+
+                </td>
+
+                <td valign="top" style="padding-left:50px;">
 
 
+                    <form zippy="roleform" method="POST">
+                        Редактирование роли
+                        <table class=" table table-bordered  table-condensed">
 
-                                    <tbody >
-                                        <tr>
-                                            <td zippy="rolerow" >
 
-                                                <input type="checkbox" name="role" zippy="role" style="float:left;">
-                                                &nbsp;<span zippy="description"></span>
+                            <tbody>
+                            <tr>
+                                <td zippy="rolerow">
 
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                    <input type="checkbox" name="role" zippy="role" style="float:left;">
+                                    &nbsp;<span zippy="description"></span>
 
-                                </table>
-                                <input type="submit" value="Сохранить" class="btn btn-success btn-sm">
-                            </form>
+                                </td>
+                            </tr>
+                            </tbody>
 
-                        </td>
+                        </table>
+                        <input type="submit" value="Сохранить" class="btn btn-success btn-sm">
+                    </form>
 
-                    </tr>
-                </table>
+                </td>
 
-            </div>
-        </div>
-    </body>
+            </tr>
+        </table>
+
+    </div>
+</div>
+</body>
 </html>
 
 

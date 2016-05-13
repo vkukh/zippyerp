@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ  Платежное поручение

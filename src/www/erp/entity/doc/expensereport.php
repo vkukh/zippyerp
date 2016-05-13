@@ -2,11 +2,9 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Авансовый отчет
@@ -37,12 +35,11 @@ class ExpenseReport extends Document
             "employee" => $employee->shortname,
             "expenseamount" => $this->headerdata["expenseamount"] > 0 ? H::fm($this->headerdata["expenseamount"]) : 0,
             "expensetype" => $elist[$this->headerdata["expensetype"]],
-            "employee" => $employee->shortname,
+         
             "document_number" => $this->document_number,
             "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])
         );
-
 
 
         $report = new \ZippyERP\ERP\Report('expensereport.tpl');
@@ -54,7 +51,7 @@ class ExpenseReport extends Document
 
     public function Execute()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
         $employee_id = $this->headerdata["employee"];
@@ -87,18 +84,7 @@ class ExpenseReport extends Document
         }
 
 
-
-
-
-
-
-
-
-
-
-
         $conn->CompleteTrans();
-
 
 
         return true;
@@ -106,7 +92,6 @@ class ExpenseReport extends Document
 
     public static function expenceList()
     {
-
 
 
         $list = array();

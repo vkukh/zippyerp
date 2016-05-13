@@ -2,9 +2,8 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Util;
 
 /**
  * Класс-сущность  документ счет-фактура
@@ -49,7 +48,7 @@ class Invoice extends Document
             "paydate" => date('d.m.Y', $this->headerdata["payment_date"]),
             "total" => H::fm($total),
             "totalnds" => H::fm($total + $this->headerdata["totalnds"]),
-            "summa" => Util::ucfirst(Util::money2str($total + $this->headerdata["nds"] / 100, '.', ''))
+            "summa" => Util::ucfirst(Util::money2str($total + $this->headerdata["nds"] / 100))
         );
 
         $report = new \ZippyERP\ERP\Report('invoice.tpl');

@@ -2,8 +2,8 @@
 
 namespace ZippyERP\System\Pages;
 
-use \ZippyERP\System\System;
-use \ZippyERP\System\Application as App;
+use ZippyERP\System\Application as App;
+use ZippyERP\System\System;
 
 //базовая страница  для  страниц администратора
 class AdminBase extends \Zippy\Html\WebPage
@@ -15,7 +15,7 @@ class AdminBase extends \Zippy\Html\WebPage
 
     public function __construct()
     {
-        $this->title = 'Страница администратора';
+        $this->_title = 'Страница администратора';
         $this->add(new \ZippyERP\System\Blocks\Header("header"));
         $this->add(new \Zippy\Html\Label("errormessage", new \Zippy\Binding\PropertyBinding($this, '_errormsg'), false, true))->setVisible(false);
         $this->add(new \Zippy\Html\Label("warnmessage", new \Zippy\Binding\PropertyBinding($this, '_warnmsg'), false, true))->setVisible(false);
@@ -36,6 +36,7 @@ class AdminBase extends \Zippy\Html\WebPage
         $this->_errormsg = $msg;
         $this->errormessage->setVisible(true);
     }
+
     public function setWarn($msg)
     {
         $this->_warnmsg = $msg;
@@ -47,6 +48,7 @@ class AdminBase extends \Zippy\Html\WebPage
         $this->_successmsg = $msg;
         $this->successmessage->setVisible(true);
     }
+
     protected function beforeRender()
     {
         //     $this->errormessage->setVisible(strlen($this->_errormsg) > 0);

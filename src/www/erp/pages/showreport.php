@@ -10,14 +10,13 @@ class ShowReport extends \Zippy\Html\WebPage
     {
 
 
-
         $html = \ZippyERP\System\Session::getSession()->printform;
 
         if ($type == "preview") {
-            Header("Content-Type: text/html;charset=UTF-8");
+            header("Content-Type: text/html;charset=UTF-8");
         }
         if ($type == "print") {
-            Header("Content-Type: text/html;charset=UTF-8");
+            header("Content-Type: text/html;charset=UTF-8");
         }
         if ($type == "doc") {
             header("Content-type: application/vnd.ms-word");

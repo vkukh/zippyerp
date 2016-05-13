@@ -11,7 +11,7 @@ class Price
     //  /api/Price/All
     public function All()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $groups = array();
 
         $rs = $conn->Execute('select distinct *  from  erp_item_group where  group_id in (select  group_id  from  erp_item where  price  > 0)  order  by  group_name');

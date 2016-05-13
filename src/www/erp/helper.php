@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP;
 
-use \ZDB\DB\DB;
+use ZDB\DB;
 use ZippyERP\System\System;
 
 /**
@@ -22,7 +22,7 @@ class Helper
 
     public static function generateMenu($meta_type)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $rows = $conn->Execute("select *  from erp_metadata where meta_type= {$meta_type} and disabled <> 1 order  by  description ");
         $menu = array();
         $groups = array();
@@ -38,15 +38,20 @@ class Helper
             }
         }
         switch ($meta_type) {
-            case 1 : $dir = "Pages/Doc";
+            case 1 :
+                $dir = "Pages/Doc";
                 break;
-            case 2 : $dir = "Pages/Report";
+            case 2 :
+                $dir = "Pages/Report";
                 break;
-            case 3 : $dir = "Pages/Register";
+            case 3 :
+                $dir = "Pages/Register";
                 break;
-            case 4 : $dir = "Pages/Reference";
+            case 4 :
+                $dir = "Pages/Reference";
                 break;
-            case 5 : $dir = "Pages/CustomPage";
+            case 5 :
+                $dir = "Pages/CustomPage";
                 break;
         }
         $textmenu = "";
@@ -71,7 +76,7 @@ class Helper
      */
     public static function getDocGroups()
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $groups = array();
 
         $rs = $conn->Execute('SELECT distinct menugroup FROM  erp_metadata where meta_type =' . 1);
@@ -148,7 +153,7 @@ class Helper
     /**
      * Возвращает  ссписок  денежных счетов
      *
-     * @param mixed $bank  true  если  банк иначе  касса
+     * @param mixed $bank true  если  банк иначе  касса
      */
     public static function getMoneyFundsList($bank)
     {
@@ -171,8 +176,8 @@ class Helper
      * Запись  файла   в БД
      *
      * @param mixed $file
-     * @param mixed $itemid   ID  объекта
-     * @param mixed $itemtype  тип  объекта (документ - 0 )
+     * @param mixed $itemid ID  объекта
+     * @param mixed $itemtype тип  объекта (документ - 0 )
      */
     public static function addFile($file, $itemid, $comment, $itemtype = 0)
     {
@@ -199,7 +204,7 @@ class Helper
      */
     public static function getFileList($item_id, $item_type = 0)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $rs = $conn->Execute("select * from erp_files where item_id={$item_id} and item_type={$item_type} ");
         $list = array();
         foreach ($rs as $row) {
@@ -222,7 +227,7 @@ class Helper
      */
     public static function deleteFile($file_id)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->Execute("delete  from  erp_files  where  file_id={$file_id}");
         $conn->Execute("delete  from  erp_filesdata  where  file_id={$file_id}");
     }
@@ -234,7 +239,7 @@ class Helper
      */
     public static function loadFile($file_id)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $rs = $conn->Execute("select filename,filedata from erp_files join erp_filesdata on erp_files.file_id = erp_filesdata.file_id  where erp_files.file_id={$file_id}  ");
         foreach ($rs as $row) {
             return $row;
@@ -246,7 +251,7 @@ class Helper
     /**
      * Форматирует  вывод  денежной суммы
      *
-     * @param mixed $value     сумма   в   копейках
+     * @param mixed $value сумма   в   копейках
      */
     public static function fm($value)
     {
@@ -256,7 +261,7 @@ class Helper
     /**
      * Форматирует  вывод  денежной суммы   в  тысячах
      *
-     * @param mixed $value     сумма   в   копейках
+     * @param mixed $value сумма   в   копейках
      */
     public static function fm_t1($value)
     {
@@ -268,7 +273,7 @@ class Helper
     /**
      * Возвращает  НДС
      *
-     * @param mixed $revert   возвращает  обратную  величину (наприме  если   20% (0.2)  возвращает 16.67% (0.1667) )
+     * @param mixed $revert возвращает  обратную  величину (наприме  если   20% (0.2)  возвращает 16.67% (0.1667) )
      */
     public static function nds($revert = false)
     {
@@ -291,8 +296,7 @@ class Helper
         $_data = "";
         $strlen = mb_strlen($string);
         while ($strlen) {
-            $_data .= (" " . mb_substr($string, 0, 1, 'UTF-8'));
-            ;
+            $_data .= (" " . mb_substr($string, 0, 1, 'UTF-8'));;
             $string = mb_substr($string, 1, $strlen, 'UTF-8');
             $strlen = mb_strlen($string, 'UTF-8');
         }

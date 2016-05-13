@@ -24,12 +24,12 @@ class Store extends \ZCL\DB\Entity
      * Получает список  бух. счетов к  которым  привязаны
      * ТМЦ хранищиеся  на  этом складе
      * @param mixed $store_id
-     * @return массив  для   комбобокса
+     * @return mixed массив  для   комбобокса
      */
     public static function getAccounts($store_id)
     {
         $list = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = " select distinct sc.account_id, ap.acc_name  from erp_account_subconto sc join erp_account_plan ap on sc.account_id = ap.acc_code  where   stock_id in (select stock_id  from  erp_store_stock where   store_id = {$store_id}) order  by  ap.acc_name";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {

@@ -3,23 +3,20 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
+use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
-use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use Zippy\Html\Panel;
-use ZippyERP\System\Application as App;
-use ZippyERP\System\System;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Employee;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Страница    выплаита зарплаты
@@ -40,7 +37,6 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date'))->setDate(time());
 
 
-
         $this->docform->add(new DropDownChoice('year', H::getYears(), date('Y')));
         $this->docform->add(new DropDownChoice('month', H::getMonth(), date('m')));
 
@@ -55,7 +51,6 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editamount'));
         $this->editdetail->add(new AutocompleteTextInput('editemployee'))->setAutocompleteHandler($this, "OnAutoEmployee");
         $this->editdetail->editemployee->setChangeHandler($this, 'OnChangeEmployee');
-
 
 
         $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
@@ -166,7 +161,6 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editemployee->setText($emp->getInitName());
 
 
-
         $this->_rowid = $emp->employee_id;
     }
 
@@ -177,7 +171,6 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не выбран сотрудник");
             return;
         }
-
 
 
         $emp = Employee::load($id);
@@ -228,7 +221,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $isEdited = $this->_doc->document_id > 0;
 
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -242,10 +235,10 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 
@@ -255,7 +248,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
      */
     private function calcTotal()
     {
-        
+
     }
 
     /**
@@ -299,7 +292,6 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $amount = abs($emp->getForPayed($this->docform->document_date->getDate()));
         $this->editdetail->editamount->setText(H::fm($amount));
         $this->editdetail->editpayed->setText(H::fm($amount));
-
 
 
         $this->updateAjax(array('editamount', "editpayed"));

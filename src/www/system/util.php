@@ -10,7 +10,7 @@ class Util
 
     /**
      * Возвращает  часть строки   в  юникоде
-     * 
+     *
      * @param mixed $str
      * @param mixed $count
      */
@@ -26,14 +26,14 @@ class Util
 
     /**
      * удаляет  рекурсивно  каталог
-     * 
+     *
      * @param mixed $dir
      */
     public static function removeDirRec($dir)
     {
         if ($objs = glob($dir . "/*")) {
             foreach ($objs as $obj) {
-                is_dir($obj) ? removeDirRec($obj) : unlink($obj);
+                is_dir($obj) ? self::removeDirRec($obj) : unlink($obj);
             }
         }
         @rmdir($dir);
@@ -67,11 +67,14 @@ class Util
         $image_old = imagecreatefromstring(file_get_contents($filepath));
         imagecopyresampled($image_new, $image_old, 0, 0, 0, 0, $new_width, $new_height, $imagewidth, $imageheight);
         switch ($ext) {
-            case 'jpg':imagejpeg($image_new, $thumb);
+            case 'jpg':
+                imagejpeg($image_new, $thumb);
                 break;
-            case 'png':imagepng($image_new, $thumb);
+            case 'png':
+                imagepng($image_new, $thumb);
                 break;
-            case 'gif':imagegif($image_new, $thumb);
+            case 'gif':
+                imagegif($image_new, $thumb);
                 break;
         }
 

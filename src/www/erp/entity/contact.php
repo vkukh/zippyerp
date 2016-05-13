@@ -4,7 +4,7 @@ namespace ZippyERP\ERP\Entity;
 
 /**
  * Клас-сущность  контакт
- * 
+ *
  * @table=erp_contact
  * @view=erp_contact_view
  * @keyfield=contact_id
@@ -36,9 +36,9 @@ class Contact extends \ZCL\DB\Entity
         if (strlen($this->detail) > 0) {
             //распаковываем  данные из detail
             $xml = simplexml_load_string($this->detail);
-            $this->url = (string) ($xml->url[0]);
-            $this->address = (string) ($xml->address[0]);
-            $this->phone = (string) ($xml->phone[0]);
+            $this->url = (string)($xml->url[0]);
+            $this->address = (string)($xml->address[0]);
+            $this->phone = (string)($xml->phone[0]);
         }
         parent::afterLoad();
     }
@@ -61,7 +61,7 @@ class Contact extends \ZCL\DB\Entity
 
     /**
      * Возвращает сущности  связанные   с  контактом (сотрудник,   контрагент  и т.д.)
-     * 
+     *
      */
     public function getType()
     {

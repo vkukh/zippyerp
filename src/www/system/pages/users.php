@@ -2,10 +2,8 @@
 
 namespace ZippyERP\System\Pages;
 
-use \ZippyERP\System\User;
-use \ZippyERP\System\DB;
-use \ZippyERP\System\System;
-use \Zippy\Html\DataList\DataView;
+use Zippy\Html\DataList\DataView;
+use ZippyERP\System\User;
 
 class Users extends AdminBase
 {
@@ -75,7 +73,7 @@ class UserDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $desc = true)
     {
-        return User::find('', $sortfield . ($desc === true ? ' desc' : ''),  $count, $start);
+        return User::find('', $sortfield . ($desc === true ? ' desc' : ''), $count, $start);
     }
 
     public function getItem($id)

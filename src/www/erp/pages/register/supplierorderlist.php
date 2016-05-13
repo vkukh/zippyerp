@@ -2,22 +2,18 @@
 
 namespace ZippyERP\ERP\Pages\Register;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\DataList\DataView;
-use \ZCL\DB\EntityDataSource;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Doc\Document;
-use \ZippyERP\ERP\Entity\Doc\SupplierOrder;
-use \ZippyERP\System\Application as App;
-use \ZippyERP\System\System;
-use \ZippyERP\System\Session;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Filter;
-use \ZippyERP\ERP\Entity\Customer;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use ZippyERP\ERP\Entity\Customer;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Entity\Doc\SupplierOrder;
+use ZippyERP\ERP\Filter;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * журнал  докуметов - заказов  поставщику
@@ -27,7 +23,7 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
 
     /**
      *
-     * @param mixed $docid  Документ  должен  быть  показан  в  просмотре
+     * @param mixed $docid Документ  должен  быть  показан  в  просмотре
      * @return DocList
      */
     public function __construct($docid = 0)
@@ -119,7 +115,7 @@ class DocSODataSource implements \Zippy\Interfaces\DataSource
     private function getWhere()
     {
 
-        $conn = \ZDB\DB\DB::getConnect();
+        //$conn = \ZDB\DB::getConnect();
         $filter = Filter::getFilter("SupplierOrderList");
         $where = " meta_name ='SupplierOrder' ";
 
@@ -147,7 +143,7 @@ class DocSODataSource implements \Zippy\Interfaces\DataSource
 
     public function getItem($id)
     {
-        
+
     }
 
 }

@@ -2,18 +2,16 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\AutocompleteTextInput;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Entity\Item;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\RedirectLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\Store;
+use ZippyERP\ERP\Helper as H;
 
 class ItemActivity extends \ZippyERP\ERP\Pages\Base
 {
@@ -91,7 +89,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
 
         $i = 1;
         $detail = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
 
         $sql = "
             SELECT

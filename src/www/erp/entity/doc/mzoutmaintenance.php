@@ -2,14 +2,8 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Entity\Item;
-use \ZippyERP\ERP\Entity\Stock;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\MoneyFund;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
 
 /**
  *   документ списания  МЦ  с  эксплуатации
@@ -33,7 +27,7 @@ class MZOutMaintenance extends Document
             );
         }
 
-        $firm = \ZippyERP\System\System::getOptions("firmdetail");
+        //$firm = \ZippyERP\System\System::getOptions("firmdetail");
         // $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number
@@ -60,12 +54,11 @@ class MZOutMaintenance extends Document
                 $a13 += $amount;
 
 
-
                 $sc = new SubConto($this, 11, 0 - $amount);
                 $sc->setAsset($value['item_id']);
                 $sc->save();
             } else {
-                
+
             }
 
             //забалансовый
@@ -79,7 +72,6 @@ class MZOutMaintenance extends Document
 
         Entry::AddEntry("13", "11", $a13, $this->document_id, $this->document_date);
         Entry::AddEntry(-1, 1001, $a1001, $this->document_id, $this->document_date);
-
 
 
         return true;

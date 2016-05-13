@@ -2,13 +2,11 @@
 
 namespace ZippyERP\ERP\Blocks;
 
-use \Zippy\Html\Form\Form;
-use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\Button;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextArea;
-use \Zippy\Html\Label;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use \Zippy\Binding\PropertyBinding as Bind;
+use Zippy\Html\Form\TextInput;
 
 /**
  * Виджет для  редатирования  контакта
@@ -20,10 +18,10 @@ class Contact extends \Zippy\Html\PageFragment
 
     /**
      * put your comment there...
-     * 
-     * @param mixed $id    id компонента
-     * @param mixed $caller   ссылка на  класс  вызвавшей  страницы
-     * @param mixed $callback  имя функции  к  вызвавшей странице  для возврата
+     *
+     * @param mixed $id id компонента
+     * @param mixed $caller ссылка на  класс  вызвавшей  страницы
+     * @param mixed $callback имя функции  к  вызвавшей странице  для возврата
      */
     public function __construct($id, $caller, $callback)
     {
@@ -53,7 +51,7 @@ class Contact extends \Zippy\Html\PageFragment
         $isnew = $this->item->contact_id == 0;
         $this->item->Save();
 
-        $this->caller->{$this->callback}(true, $isnew ? $this->item->contact_id : 0 );
+        $this->caller->{$this->callback}(true, $isnew ? $this->item->contact_id : 0);
     }
 
     public function cancelOnClick($sender)
@@ -64,7 +62,7 @@ class Contact extends \Zippy\Html\PageFragment
 
     /**
      * передает  данные для  редактирования
-     * 
+     *
      * @param mixed $item
      */
     public function open(\ZippyERP\ERP\Entity\Contact $item = null)

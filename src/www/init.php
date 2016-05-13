@@ -19,7 +19,7 @@ $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
 //  phpQuery::$debug = true;
 
 //Параметры   соединения  с  БД
-\ZDB\DB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
+\ZDB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
 
  
 

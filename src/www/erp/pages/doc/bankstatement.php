@@ -3,25 +3,23 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Form\CheckBox;
-use Zippy\Html\Form\Date;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use Zippy\Html\Panel;
-use ZippyERP\System\Application as App;
-use ZippyERP\ERP\Entity\Doc\Document;
-use ZippyERP\ERP\Entity\Doc\BankStatement as BS;
-use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Entity\Customer;
+use ZippyERP\ERP\Entity\Doc\BankStatement as BS;
+use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Entry;
 use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Банковская   выписка
@@ -152,10 +150,8 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editpayment->setValue(0);
         $this->editdetail->editdoc->setKey(0);
         $this->editdetail->editdoc->setText('');
-        $this->editdetail->editcustomer->setKey(0);
-        ;
-        $this->editdetail->editcustomer->setText('');
-        ;
+        $this->editdetail->editcustomer->setKey(0);;
+        $this->editdetail->editcustomer->setText('');;
         $this->editdetail->editamount->setText("0");
         $this->editdetail->editnds->setText("0");
         $this->editdetail->editcomment->setText("");
@@ -188,7 +184,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->_doc->headerdata['bankaccount'] = $this->docform->bankaccount->getValue();
         $isEdited = $this->_doc->document_id > 0;
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -202,10 +198,10 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 
@@ -234,7 +230,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editdoc->setVisible(true);
         $this->editdetail->editcustomer->setVisible(true);
         $this->editdetail->editprepayment->setVisible(true);
-        $list = array();
+        //$list = array();
 
         if ($sender->getValue() == BS::TAX) {
 
@@ -297,7 +293,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     {
         $text = $sender->getValue();
         $answer = array();
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $sql = "select document_id,document_number from erp_document where document_number  like '%{$text}%' and document_id <> {$this->_doc->document_id} and state = " . Document::STATE_EXECUTED . "  order  by document_id desc  limit 0,20";
         $rs = $conn->Execute($sql);
         foreach ($rs as $row) {

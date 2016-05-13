@@ -2,14 +2,9 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Util;
-use \ZippyERP\ERP\Helper as H;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\Account;
-use \ZippyERP\ERP\Entity\Stock;
-use Carbon\Carbon;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ переоценка  в  суммовом  учете
@@ -22,7 +17,6 @@ class RevaluationRetSum extends Document
     {
 
 
-
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
             "summa" => H::fm($this->headerdata['summa']),
@@ -31,11 +25,14 @@ class RevaluationRetSum extends Document
         );
 
         switch ($this->headerdata['type']) {
-            case 1: $header['typename'] = "Переоценка";
+            case 1:
+                $header['typename'] = "Переоценка";
                 break;
-            case 2: $header['typename'] = "Списание недостач";
+            case 2:
+                $header['typename'] = "Списание недостач";
                 break;
-            case 3: $header['typename'] = "Оприходование излишков";
+            case 3:
+                $header['typename'] = "Оприходование излишков";
                 break;
         }
 
@@ -48,11 +45,9 @@ class RevaluationRetSum extends Document
 
     public function Execute()
     {
-        $diff = $this->headerdata['summa'] - $this->headerdata['actual'];
+        $diff = $this->headerdata['summa'] - $this->headerdata['actual'];;
 
-        ;
-
-        Entry::AddEntry("282", "285", $diff, $this->document_id, $cash->id, $customer_id);
+        Entry::AddEntry("282", "285", $diff, $this->document_id, $this->document_date);
         $sc = new SubConto($this, 282, $diff);
         $sc->setStock($this->headerdata["stock_id"]);
         $sc->setQuantity($diff);
@@ -62,7 +57,6 @@ class RevaluationRetSum extends Document
         $sc->setExtCode($this->headerdata["store_id"]);
 
         $sc->save();
-
 
 
         return true;

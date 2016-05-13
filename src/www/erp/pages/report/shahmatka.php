@@ -2,15 +2,14 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\Date;
-use \Zippy\Html\Label;
-use \Zippy\Html\Link\ClickLink;
-use \Zippy\Html\Panel;
-use \ZippyERP\ERP\Entity\Account;
-use \Zippy\Html\Link\RedirectLink;
-use \ZippyERP\ERP\Helper as H;
+use Zippy\Html\Form\Date;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Link\RedirectLink;
+use Zippy\Html\Panel;
+use ZippyERP\ERP\Entity\Account;
+use ZippyERP\ERP\Helper as H;
 use ZippyERP\System\Application as App;
 
 class Shahmatka extends \ZippyERP\ERP\Pages\Base
@@ -66,9 +65,9 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $acclist = Account::find("acc_code>=10 and acc_code<1000", "cast(acc_code as char)");
 
         $detail = array();
-        $left = array();
+        //$left = array();
         $top = array(array('cell' => ''));
-        $right = array();
+        //$right = array();
         $bottom = array(array('cell' => 'Кредит', 'bold' => true));
 
 
@@ -84,8 +83,7 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
             $bottom[] = array('cell' => H::fm($data['obct']), 'bold' => true);
         }
         $top[] = array('cell' => 'Дебет', 'bold' => true);
-        $bottom[] = array('cell' => '');
-        ;
+        $bottom[] = array('cell' => '');;
 
 
         $detail[] = array('row' => $top);
@@ -112,7 +110,6 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         //  $detail = array();
         //  $detail[] =  array('row'=>array(array('cell'=>'fff'),array('cell'=>'ffddddf')));
         //   $detail[] =  array('row'=>array(array('cell'=>'fddssdff'),array('cell'=>'ffddddf')));
-
 
 
         $report = new \ZippyERP\ERP\Report('shahmatka.tpl');

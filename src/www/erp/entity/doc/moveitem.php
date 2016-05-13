@@ -2,12 +2,11 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use \ZippyERP\System\System;
-use \ZippyERP\ERP\Entity\Store;
-use \ZippyERP\ERP\Entity\Stock;
-use \ZippyERP\ERP\Entity\SubConto;
-use \ZippyERP\ERP\Entity\Entry;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Entry;
+use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\Store;
+use ZippyERP\ERP\Entity\SubConto;
+use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  локумент перемещения товаров
@@ -24,7 +23,7 @@ class MoveItem extends Document
 
         $store = Store::load($this->headerdata['storeto']);
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
         $ret = 0;    // торговая  наценка
@@ -53,7 +52,7 @@ class MoveItem extends Document
             if ($store->store_type == Store::STORE_TYPE_RET) {    //розница
                 $stockto = Stock::getFirst("store_id={$this->headerdata['storeto']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
                 if ($stockto instanceof Stock) {
-                    
+
                 } else {
                     $stockto = new Stock();
                     $stockto->document_id = $this->document_id;
@@ -61,7 +60,7 @@ class MoveItem extends Document
                     $stockto->item_id = $value['item_id'];
                     $stockto->price = $value['price'];
                     $stockto->partion = $value['partion'];  // себестоимость
-                    $stockto->Save();
+                    $stockto->save();
                 }
                 $sc = new SubConto($this, 282, ($value['quantity'] / 1000) * $stockto->price);
                 $sc->setStock($stockto->stock_id);
@@ -79,9 +78,9 @@ class MoveItem extends Document
                 $item = \ZippyERP\ERP\Entity\Item::getSumItem();
 
                 $stockto = Stock::getStock($this->headerdata['storeto'], $item->item_id, 1, true);
-                $sc = new SubConto($this, 282, ($value['quantity'] / 1000 ) * $value['price']);
+                $sc = new SubConto($this, 282, ($value['quantity'] / 1000) * $value['price']);
                 $sc->setStock($stockto->stock_id);
-                $sc->setQuantity(($value['quantity'] ) * $value['price']); //цена  единицы  товара - 1 копейка.
+                $sc->setQuantity(($value['quantity']) * $value['price']); //цена  единицы  товара - 1 копейка.
 
                 $sc->save();
 
@@ -113,8 +112,7 @@ class MoveItem extends Document
             "document_number" => $this->document_number
         );
 
-        $reportgen = new \ZCL\RepGen\RepGen(_ROOT . 'templates/erp/printforms/moveitem.html', $header);
-
+      
         $i = 1;
         $detail = array();
         foreach ($this->detaildata as $value) {

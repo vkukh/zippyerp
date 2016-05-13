@@ -2,7 +2,7 @@
 
 namespace ZippyERP\System;
 
-use \ZCL\DB\Entity;
+use ZCL\DB\Entity;
 
 /**
  *  Класс  инкапсулирующий   сущность  User
@@ -17,7 +17,7 @@ class User extends Entity
 
     /**
      * @see Entity
-     * 
+     *
      */
     protected function init()
     {
@@ -28,7 +28,7 @@ class User extends Entity
 
     /**
      * Проверка  залогинивания
-     * 
+     *
      */
     public function isLogined()
     {
@@ -37,7 +37,7 @@ class User extends Entity
 
     /**
      * Выход из  системмы
-     * 
+     *
      */
     public function logout()
     {
@@ -46,7 +46,7 @@ class User extends Entity
 
     /**
      * @see Entity
-     * 
+     *
      */
     protected function afterLoad()
     {
@@ -55,7 +55,7 @@ class User extends Entity
 
     /**
      * @see Entity
-     * 
+     *
      */
     protected function beforeSave()
     {
@@ -66,7 +66,7 @@ class User extends Entity
 
     /**
      * @see Entity
-     * 
+     *
      */
     protected function beforeDelete()
     {
@@ -80,18 +80,18 @@ class User extends Entity
 
     /**
      * Возвращает  пользователя   по  логину
-     * 
+     *
      * @param mixed $login
      */
     public static function getByLogin($login)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         return User::getFirst('userlogin = ' . $conn->qstr($login));
     }
 
     /**
      * Принадлежность к роли
-     * 
+     *
      * @param mixed $rolename
      */
     public function hasRole($rolename)
@@ -110,12 +110,12 @@ class User extends Entity
 
     /**
      * Возвращает  пользователя   по  хешу
-     * 
+     *
      * @param mixed $md5hash
      */
     public static function getByHash($md5hash)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        //$conn = \ZDB\DB::getConnect();
         $arr = User::find('md5hash=' . Entity::qstr($md5hash));
         if (count($arr) == 0) {
             return null;
@@ -126,7 +126,7 @@ class User extends Entity
 
     /**
      * Возвращает ID  пользователя
-     * 
+     *
      */
     public function getUserID()
     {

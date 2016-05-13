@@ -31,7 +31,7 @@ function autoload($className)
 
 spl_autoload_register('\ZippyERP\System\autoload');
 
-function getTemplate($templatepath, $className, $layout = '')
+function getTemplate($templatepath, $className)
 {
     $className = str_replace("\\", "/", ltrim($className, '\\'));
 
@@ -47,7 +47,7 @@ function getTemplate($templatepath, $className, $layout = '')
 
 function Route($uri)
 {
-    global  $logger;
+    global $logger;
     $api = explode('/', $uri);
 
     if ($api[0] == 'api' && count($api) > 2) {
@@ -69,13 +69,13 @@ function Route($uri)
                 $page = new $class;
                 $response = call_user_func_array(array($page, $api[2]), $params);
             } catch (Exception $e) {
-         
-        $logger->error($e->getMessage(), e);
+
+                $logger->error($e->getMessage(), $e);
                 $response = "<error>" . $e->getMessage() . "</error>";
             }
         }
         $xml = '<?xml version="1.0" encoding="utf-8"?>' . $response;
-        
+
         header(`Content-Type: text/xml; charset=utf-8`);
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

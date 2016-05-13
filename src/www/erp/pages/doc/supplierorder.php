@@ -4,24 +4,22 @@
 
 namespace ZippyERP\ERP\Pages\Doc;
 
-use \Zippy\Html\Form\Form;
-use \Zippy\Html\Form\TextInput;
-use \Zippy\Html\Form\DropDownChoice;
-use \Zippy\Html\Form\AutocompleteTextInput;
-use \Zippy\Html\DataList\DataView;
-use \ZCL\DB\EntityDataSource;
-use \Zippy\Html\Label;
+use Zippy\Html\DataList\DataView;
+use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
-use \Zippy\Html\Form\CheckBox;
-use \Zippy\Html\Link\ClickLink;
+use Zippy\Html\Form\DropDownChoice;
+use Zippy\Html\Form\Form;
+use Zippy\Html\Form\SubmitButton;
+use Zippy\Html\Form\TextInput;
+use Zippy\Html\Label;
+use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
-use \Zippy\Html\Form\SubmitButton;
-use \Zippy\Html\Form\Button;
-use ZippyERP\ERP\Entity\Doc\Document;
-use ZippyERP\System\Application as App;
-use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Customer;
-use \ZippyERP\ERP\Helper as H;
+use ZippyERP\ERP\Entity\Doc\Document;
+use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Helper as H;
+use ZippyERP\System\Application as App;
 
 /**
  * Страница документа заказ  поставщику
@@ -132,7 +130,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
 
         $this->_doc->datatag = $this->docform->supplier->getKey();
 
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
             $this->_doc->save();
@@ -143,10 +141,10 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
             App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
-            $this->setError($ee->message);
+            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
-            throw new \Exception($ee->message);
+            throw new \Exception($ee->getMessage());
         }
     }
 

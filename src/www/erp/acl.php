@@ -2,8 +2,6 @@
 
 namespace ZippyERP\ERP;
 
-use \ZDB\DB\DB;
-
 /**
  * Класс  для  упрвления доступом к метаобьектам
  */
@@ -15,7 +13,7 @@ class ACL
      */
     public static function getRoleAccess($meta_id)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $roles = \ZippyERP\System\Role::find();
 
         foreach (array_keys($roles) as $role_id) {
@@ -34,7 +32,7 @@ class ACL
 
     public static function updateRoleAccess($meta_id, $rows)
     {
-        $conn = \ZDB\DB\DB::getConnect();
+        $conn = \ZDB\DB::getConnect();
         $conn->Execute("delete from erp_metadata_access where metadata_id ={$meta_id} ");
 
         foreach ($rows as $row) {

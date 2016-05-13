@@ -1,13 +1,12 @@
 {
-    "require": {
-
-        "swiftmailer/swiftmailer": "v5.4.1",
-        "monolog/monolog": "1.18.2",
-        "ircmaxell/password-compat": "v1.0.4",
-        "nesbot/Carbon": "1.21.0",
-         "timetoogo/pinq": "3.3.0",
-        "leon-mbs/zippy": "dev-master"
-    },
-    "config": {
-    }
+  "require": {
+    "swiftmailer/swiftmailer": "v5.4.1",
+    "monolog/monolog": "1.18.2",
+    "ircmaxell/password-compat": "v1.0.4",
+    "nesbot/Carbon": "1.21.0",
+    "timetoogo/pinq": "3.3.0",
+    "leon-mbs/zippy": "dev-master"
+  },
+  "config": {
+  }
 }

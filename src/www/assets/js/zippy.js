@@ -1,4 +1,5 @@
 
+
 function getUpdate(q)
 {
     $.ajax({

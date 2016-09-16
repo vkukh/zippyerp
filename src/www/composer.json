@@ -5,8 +5,6 @@
     "ircmaxell/password-compat": "v1.0.4",
     "nesbot/Carbon": "1.21.0",
     "timetoogo/pinq": "3.3.0",
-    "leon-mbs/zippy": "dev-master"
-  },
-  "config": {
+    "leon-mbs/zippy": "dev-master"  
   }
 }

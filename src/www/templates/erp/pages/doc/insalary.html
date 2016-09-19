@@ -3,24 +3,24 @@
 <body>
 
 
-<form zippy="docform" class="form-horizontal">
+<form zippy="docform"  >
     <h4>Начисление зарплаты</h4>
     <div class="row">
 
-        <div class="form-group">
+        <div class="form-group row">
             <label for="document_number" class="col-xs-2  control-label">Номер документа</label>
             <div class="col-xs-3">
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="document_date" class="col-xs-2  control-label"> Дата</label>
             <div class="col-xs-3">
                 <input class="form-control" type="text" zippy="document_date" style="width:110px;" required="required">
             </div>
         </div>
 
-        <div class="form-group  ">
+        <div class="form-group  row ">
             <label for="month" class="col-xs-2  control-label">Период</label>
             <div class="col-xs-3">
                 <select class="form-control" style="width:110px;display:inline" zippy="month"></select>&nbsp;
@@ -29,7 +29,7 @@
             </div>
 
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="document_date" class="col-xs-2  control-label"> </label>
             <div class="col-xs-3 checkbox">
                 <labeL>
@@ -44,7 +44,7 @@
     <div class="row">
         <div class="col-xs-12">
             <a zippy="addrow">Добавить сотрудника</a>
-            <table class="table table-condenced">
+            <table class="table table-sm">
                 <tr>
                     <th>ФИО</th>
 
@@ -78,66 +78,66 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
-            &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default ">
+            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-secondary  ">
+            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-secondary  ">
+            &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-secondary ">
 
         </div>
     </div>
 
 
 </form>
-<form zippy="editdetail" class="form-horizontal">
+<form zippy="editdetail" >
     <input type="hidden" zippy="taxfot">
     <h4>Ввод начислений и удержаний</h4>
     <div class="row">
 
 
-        <div class="form-group">
+        <div class="form-group row">
             <label for="editemployee" class="col-xs-3 control-label">ФИО </label>
             <div class="col-xs-4 ">
                 <input class="form-control" type="text" zippy="editemployee" required="required">
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group row">
             <label for="basesalary" class="col-xs-3 control-label">Основная зарплата </label>
             <div class="col-xs-2 ">
                 <input zippy="basesalary" class="form-control" type="text" value="0" pattern="[0-9\.]+">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="vacation" class="col-xs-3 control-label"> Отпускные </label>
             <div class="col-xs-2 ">
                 <input zippy="vacation" class="form-control" type="text" value="0" pattern="[0-9\.]+">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="sick" class="col-xs-3 control-label"> Больничный </label>
             <div class="col-xs-2 ">
                 <input zippy="sick" class="form-control" type="text" pattern="[0-9\.]+">
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group row">
             <label class="col-xs-3 control-label"> </label>
             <div class="col-xs-3 ">
-                <input type="submit" zippy="submitcalc" value="Рассчитать" class="btn btn-default ">
+                <input type="submit" zippy="submitcalc" value="Рассчитать" class="btn btn-secondary ">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="taxfl" class="col-xs-3 control-label">Подоходный</label>
             <div class="col-xs-2 ">
                 <input zippy="taxfl" class="form-control" type="text" value="0" pattern="[0-9\.]+">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="taxecb" class="col-xs-3 control-label">ЕСВ</label>
             <div class="col-xs-2 ">
                 <input zippy="taxecb" class="form-control" type="text" value="0" pattern="[0-9\.]+">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="taxmil" class="col-xs-3 control-label">Военный сбор</label>
             <div class="col-xs-2 ">
                 <input zippy="taxmil" class="form-control" type="text" pattern="[0-9\.]+">
@@ -145,11 +145,11 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="form-group row">
             <div class="col-xs-3 ">
-                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default ">
+                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-secondary ">
                 &nbsp;&nbsp;
-                <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default ">
+                <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-secondary ">
             </div>
         </div>
 

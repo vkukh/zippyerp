@@ -4,10 +4,10 @@
 <body>
 <div style="background-color: #fff;">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#printtab" data-toggle="tab"><i class="fa fa-print"></i> Печатная форма</a></li>
-        <li><a href="#messagetab" data-toggle="tab"><i class="fa fa-comments"></i> Комментарии</a></li>
-        <li><a href="#datatab" data-toggle="tab"><i class="fa fa-file"></i> Прикрепленные файлы, документы</a></li>
-        <li><a href="#stattab" data-toggle="tab"><i class="fa fa-area-chart"></i> Статистика</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#printtab" data-toggle="tab"><i class="fa fa-print"></i> Печатная форма</a></li>
+        <li class="nav-item"><a class="nav-link  " href="#messagetab" data-toggle="tab"><i class="fa fa-comments"></i> Комментарии</a></li>
+        <li class="nav-item"><a class="nav-link  " href="#datatab" data-toggle="tab"><i class="fa fa-file"></i> Прикрепленные файлы, документы</a></li>
+        <li class="nav-item"><a class="nav-link  " href="#stattab" data-toggle="tab"><i class="fa fa-area-chart"></i> Статистика</a></li>
     </ul>
 
     <div class="tab-content">
@@ -42,7 +42,7 @@
                         <form zippy="addmsgform">
                             Коментарий:<br>
                             <textarea required="required" zippy="addmsg" style="width:300px;height:120px;"></textarea>
-                            <br> <input class="btn btn-default btn-xs" type="submit" value="Добавить">
+                            <br> <input class="btn btn-secondary btn-sm" type="submit" value="Добавить">
                         </form>
                     </td>
 
@@ -66,7 +66,7 @@
                         <form zippy="addrelform">
                             Добавить документ:<br>
                             <input placeholder="Начните ввод номера " style="width:200px" type="text"
-                                   required="required" zippy="addrel"><br> <input class="btn btn-default btn-xs "
+                                   required="required" zippy="addrel"><br> <input class="btn btn-secondary btn-sm "
                                                                                   type="submit" value="Добавить">
                         </form>
                     </td>
@@ -85,7 +85,7 @@
                             <input type="file" required="required" zippy="addfile">
                             <br>Коментарий <br>
                             <input type="text" zippy="adddescfile" style="width:200px">
-                            <br> <input class="btn btn-default btn-xs" type="submit" value="Добавить">
+                            <br> <input class="btn btn-secondary btn-sm" type="submit" value="Добавить">
 
                         </form>
 

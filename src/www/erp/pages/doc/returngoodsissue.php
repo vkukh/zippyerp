@@ -24,7 +24,7 @@ use ZippyERP\System\Application as App;
 /**
  * Возвратная  накладная
  */
-class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
+class ReturnGoodsIssue extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

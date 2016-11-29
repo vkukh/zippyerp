@@ -22,7 +22,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода  акта выполненных работ
  */
-class ServiceAct extends \ZippyERP\ERP\Pages\Base
+class ServiceAct extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

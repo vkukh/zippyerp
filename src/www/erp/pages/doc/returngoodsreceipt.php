@@ -24,7 +24,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода  возврата  поставщику
  */
-class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
+class ReturnGoodsReceipt extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

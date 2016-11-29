@@ -6,7 +6,7 @@ use Zippy\Html\Label as Label;
 use ZippyERP\System\Role;
 use ZippyERP\System\System;
 
-class UserInfo extends AdminBase
+class UserInfo extends \ZippyERP\System\Pages\Bases
 {
 
     private $user;

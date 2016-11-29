@@ -24,7 +24,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода  счета-фактуры
  */
-class Invoice extends \ZippyERP\ERP\Pages\Base
+class Invoice extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

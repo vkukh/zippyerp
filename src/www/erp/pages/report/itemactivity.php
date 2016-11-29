@@ -13,7 +13,7 @@ use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
 
-class ItemActivity extends \ZippyERP\ERP\Pages\Base
+class ItemActivity extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

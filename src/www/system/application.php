@@ -71,7 +71,7 @@ class Application extends \Zippy\WebApplication
 
 
         if (preg_match('/^[-#a-zA-Z0-9\/_]+$/', $uri) == 0) {
-            new \Zippy\Exception('Invalid URI: ' . $uri);
+            new \Zippy\Exception('Неверный  URI: ' . $uri);
         }
 
 

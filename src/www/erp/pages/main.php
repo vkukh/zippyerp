@@ -11,7 +11,7 @@ use ZippyERP\ERP\Entity\Doc\Document;
 
 ;;
 
-class Main extends Base
+class Main extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

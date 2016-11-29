@@ -13,8 +13,10 @@ use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\ACL;
+use ZippyERP\System\System;
+use ZippyERP\System\Application as App;
 
-class MetaData extends \ZippyERP\System\Pages\AdminBase
+class MetaData extends \ZippyERP\System\Pages\Base
 {
 
     private $metadatads;
@@ -24,7 +26,9 @@ class MetaData extends \ZippyERP\System\Pages\AdminBase
     {
 
         parent::__construct();
-
+           if (System::getUser()->userlogin !== 'admin') {
+            App::Redirect('\ZippyERP\System\Pages\Error', 'Вы не админ');
+        }
         $this->metadatads = new \ZCL\DB\EntityDataSource("\\ZippyERP\\ERP\\Entity\\MetaData", "", "description");
         $this->roleaccessds = new \Zippy\Html\DataList\ArrayDataSource(null);
 

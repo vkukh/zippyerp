@@ -22,7 +22,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  спиание  ТМЦ (потери)
  */
-class InventoryLost extends \ZippyERP\ERP\Pages\Base
+class InventoryLost extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

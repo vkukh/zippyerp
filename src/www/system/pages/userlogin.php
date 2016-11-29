@@ -9,9 +9,9 @@ use ZippyERP\System\Helper;
 use ZippyERP\System\System;
 use ZippyERP\System\User;
 
-class UserLogin extends Base
+class UserLogin extends \Zippy\Html\WebPage
 {
-
+     public $_errormsg;
     public $_login, $_password;
 
     public function __construct()
@@ -25,6 +25,8 @@ class UserLogin extends Base
         $form->add(new \Zippy\Html\Form\SubmitButton('submit'))->setClickHandler($this, 'onsubmit');
 
         $this->add($form);
+        $this->add(new \Zippy\Html\Label("errormessage", new Bind($this, '_errormsg')))->setVisible(false);
+          
     }
 
     public function onsubmit($sender)
@@ -63,14 +65,23 @@ class UserLogin extends Base
 
         $this->_password = '';
     }
-
+    final protected function setError($msg)
+    {
+        $this->_errormsg = $msg;
+    }
     public function beforeRequest()
     {
         parent::beforeRequest();
-
+       
+        $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
+  
         if (System::getUser()->user_id > 0) {
             App::RedirectHome();
         }
     }
-
+   
+    protected function afterRender()
+    {
+        $this->errormessage->setVisible(false);
+    }
 }

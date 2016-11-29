@@ -23,7 +23,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  спиание  ТМЦ (затраты)
  */
-class InventoryExpence extends \ZippyERP\ERP\Pages\Base
+class InventoryExpence extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

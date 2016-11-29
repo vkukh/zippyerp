@@ -13,20 +13,20 @@
     <div class="col-xs-10">
         <h3>Журнал проводок </h3>
 
-        <form zippy="filter" >
-            <div class="form-group   row">
+        <form zippy="filter" class="form-horizontal">
+            <div class="form-group  ">
                 <label for="from" class="col-xs-2 control-label">С</label>
                 <div class="col-xs-3">
                     <input type="text" class="form-control" zippy="from">
                 </div>
             </div>
-            <div class="form-group   row">
+            <div class="form-group  ">
                 <label for="to" class="col-xs-2 control-label">по</label>
                 <div class="col-xs-3">
                     <input type="text" class="form-control" zippy="to">
                 </div>
             </div>
-            <div class="form-group   row">
+            <div class="form-group  ">
                 <label for="dt" class="col-xs-2 control-label">Счет</label>
                 <div class="col-xs-5">
                     <select class="form-control" zippy="dt">
@@ -34,7 +34,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group  row ">
+            <div class="form-group  ">
                 <label for="ct" class="col-xs-2 control-label"> Корр. счет </label>
                 <div class="col-xs-5">
                     <select class="form-control" zippy="ct">
@@ -43,14 +43,14 @@
                 </div>
             </div>
 
-            <div class="form-group  row ">
-                <div class="col-xs-2 offset-xs-2">
-                    <input class="btn btn-secondary  " type="submit" value="Ввод">
+            <div class="form-group  ">
+                <div class="col-xs-2 col-xs-offset-2">
+                    <input class="btn btn-default  " type="submit" value="Ввод">
                 </div>
             </div>
 
         </form>
-        <table class="table table-bordered  table-sm" style="width:600px;">
+        <table class="table table-bordered  table-condensed" style="width:600px;">
             <tr>
                 <th style="width:90px;">Дата</th>
                 <th style="width:30px;">Дт</th>

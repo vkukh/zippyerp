@@ -14,7 +14,7 @@ use ZippyERP\System\System;
 /**
  * Отчет книга доходов  и расходов
  */
-class IEBook extends \ZippyERP\ERP\Pages\Base
+class IEBook extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

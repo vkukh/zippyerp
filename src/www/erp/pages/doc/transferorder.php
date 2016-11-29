@@ -20,7 +20,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница документа Платежное поручение
  */
-class TransferOrder extends \ZippyERP\ERP\Pages\Base
+class TransferOrder extends \ZippyERP\System\Pages\Base
 {
 
     private $_doc;

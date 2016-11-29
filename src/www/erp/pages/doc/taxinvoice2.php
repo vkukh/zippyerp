@@ -26,7 +26,7 @@ use ZippyERP\System\System;
 /**
  * Страница  ввода прилоджения 2 к  налоговой  накладной
  */
-class TaxInvoice2 extends \ZippyERP\ERP\Pages\Base
+class TaxInvoice2 extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

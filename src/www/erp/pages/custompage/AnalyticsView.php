@@ -9,7 +9,7 @@ use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextInput;
 
-class AnalyticsView extends \ZippyERP\ERP\Pages\Base
+class AnalyticsView extends \ZippyERP\System\Pages\Base
 {
 
     public $datalist;

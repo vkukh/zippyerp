@@ -13,7 +13,7 @@ use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Helper as H;
 
-class CustPayments extends \ZippyERP\ERP\Pages\Base
+class CustPayments extends \ZippyERP\System\Pages\Base
 {
 
     public $_dlist = array();

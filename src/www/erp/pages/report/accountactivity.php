@@ -11,7 +11,7 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Helper as H;
 
-class AccountActivity extends \ZippyERP\ERP\Pages\Base
+class AccountActivity extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

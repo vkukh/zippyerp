@@ -23,7 +23,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода  гарантийного талона
  */
-class Warranty extends \ZippyERP\ERP\Pages\Base
+class Warranty extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

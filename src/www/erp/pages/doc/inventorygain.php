@@ -23,7 +23,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  оприходование излишков
  */
-class InventoryGain extends \ZippyERP\ERP\Pages\Base
+class InventoryGain extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

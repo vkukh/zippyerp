@@ -16,7 +16,7 @@ use ZippyERP\System\Application as App;
 /**
  * Рееср налоговых накладных
  */
-class TaxInvoiceList extends \ZippyERP\ERP\Pages\Base
+class TaxInvoiceList extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

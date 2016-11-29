@@ -18,7 +18,7 @@ use ZippyERP\System\Application as App;
 /**
  * журнал  докуметов - заказов  поставщику
  */
-class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
+class SupplierOrderList extends \ZippyERP\System\Pages\Base
 {
 
     /**

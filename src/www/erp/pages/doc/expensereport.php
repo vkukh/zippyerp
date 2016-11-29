@@ -24,7 +24,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода  авансового отчета
  */
-class ExpenseReport extends \ZippyERP\ERP\Pages\Base
+class ExpenseReport extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

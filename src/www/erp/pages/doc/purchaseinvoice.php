@@ -24,7 +24,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода  счета входящего
  */
-class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
+class PurchaseInvoice extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

@@ -15,7 +15,7 @@ use ZippyERP\ERP\Helper as H;
 /**
  * Класс  страницы  журнала  проводок
  */
-class EntryList extends \ZippyERP\ERP\Pages\Base
+class EntryList extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

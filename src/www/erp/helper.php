@@ -59,7 +59,11 @@ class Helper
             $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
         }
         foreach ($groups as $gname => $group) {
-            $textmenu .= "<li class=\"dropdown-submenu\"><a tabindex=\"-1\" href=\"#\">$gname</a><ul class=\"dropdown-menu\">";
+            $textmenu .= "<li  ><a   href=\"#\">$gname 
+            <span class=\"pull-right-container\">
+                  <i class=\"fa fa-angle-left pull-right\"></i>
+                </span>
+            </a><ul class=\"treeview-menu\">";
 
             foreach ($group as $item) {
                 $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";

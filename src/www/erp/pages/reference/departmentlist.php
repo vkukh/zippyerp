@@ -12,7 +12,7 @@ use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Department;
 
-class DepartmentList extends \ZippyERP\ERP\Pages\Base
+class DepartmentList extends \ZippyERP\System\Pages\Base
 {
 
     private $_department;

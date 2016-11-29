@@ -29,7 +29,7 @@ use ZippyERP\System\Application as App;
  * Документ для ручных  операций
  * и  ввода начальных остатков
  */
-class ManualEntry extends \ZippyERP\ERP\Pages\Base
+class ManualEntry extends \ZippyERP\System\Pages\Base
 {
 
     public $_entryarr = array();

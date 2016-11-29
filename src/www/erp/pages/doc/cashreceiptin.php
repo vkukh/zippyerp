@@ -23,7 +23,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница документа Приходный кассовый  ордер
  */
-class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
+class CashReceiptIn extends \ZippyERP\System\Pages\Base
 {
 
     private $_doc;

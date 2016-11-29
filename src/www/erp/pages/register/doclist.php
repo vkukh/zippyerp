@@ -20,7 +20,7 @@ use ZippyERP\System\System;
 /**
  * журнал  докуметов
  */
-class DocList extends \ZippyERP\ERP\Pages\Base
+class DocList extends \ZippyERP\System\Pages\Base
 {
 
     /**

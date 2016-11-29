@@ -7,7 +7,7 @@ use ZippyERP\System\System;
 /**
  * Декларация по НДС
  */
-class Decnds extends \ZippyERP\ERP\Pages\Base
+class Decnds extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

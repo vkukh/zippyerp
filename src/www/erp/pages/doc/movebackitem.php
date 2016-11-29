@@ -23,7 +23,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода возврата  на  склад
  */
-class MoveBackItem extends \ZippyERP\ERP\Pages\Base
+class MoveBackItem extends \ZippyERP\System\Pages\Base
 {
 
     private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ', 26 => 'Готовая продукция');

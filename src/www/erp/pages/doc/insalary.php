@@ -23,7 +23,7 @@ use ZippyERP\System\System;
 /**
  * Страница    начисление зарплаты
  */
-class InSalary extends \ZippyERP\ERP\Pages\Base
+class InSalary extends \ZippyERP\System\Pages\Base
 {
 
     public $_emplist = array();

@@ -24,7 +24,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода перемещения товаров
  */
-class MoveItem extends \ZippyERP\ERP\Pages\Base
+class MoveItem extends \ZippyERP\System\Pages\Base
 {
 
     public $_itemlist = array();

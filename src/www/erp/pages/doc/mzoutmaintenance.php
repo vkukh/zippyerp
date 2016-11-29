@@ -19,7 +19,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  списания  МЦ  с  эксплуатации
  */
-class MZOutMaintenance extends \ZippyERP\ERP\Pages\Base
+class MZOutMaintenance extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

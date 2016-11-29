@@ -12,7 +12,7 @@ use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\GroupItem;
 
-class GroupItemList extends \ZippyERP\ERP\Pages\Base
+class GroupItemList extends \ZippyERP\System\Pages\Base
 {
 
     private $_groupitem;

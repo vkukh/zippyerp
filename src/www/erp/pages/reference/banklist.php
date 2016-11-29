@@ -12,7 +12,7 @@ use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Bank;
 
-class BankList extends \ZippyERP\ERP\Pages\Base
+class BankList extends \ZippyERP\System\Pages\Base
 {
 
     private $_bank;

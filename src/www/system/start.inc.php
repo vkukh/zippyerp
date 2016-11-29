@@ -24,7 +24,7 @@ function autoload($className)
         if (file_exists($file)) {
             require_once($file);
         } else {
-            \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', 'Неверный URL');
+            \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', 'Неверный URL '.$className);
         }
     }
 }

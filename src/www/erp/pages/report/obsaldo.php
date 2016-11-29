@@ -10,7 +10,7 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Helper as H;
 
-class ObSaldo extends \ZippyERP\ERP\Pages\Base
+class ObSaldo extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

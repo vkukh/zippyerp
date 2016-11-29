@@ -11,7 +11,7 @@ use ZippyERP\ERP\Helper as H;
 /**
  * Класс страницы плана счетов
  */
-class AccountList extends \ZippyERP\ERP\Pages\Base
+class AccountList extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

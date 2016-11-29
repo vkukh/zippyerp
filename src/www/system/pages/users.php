@@ -4,8 +4,10 @@ namespace ZippyERP\System\Pages;
 
 use Zippy\Html\DataList\DataView;
 use ZippyERP\System\User;
+use ZippyERP\System\System;
+use ZippyERP\System\Application as App;
 
-class Users extends AdminBase
+class Users extends \ZippyERP\System\Pages\Base
 {
 
     // public $userlist = array();
@@ -13,7 +15,9 @@ class Users extends AdminBase
     public function __construct()
     {
         parent::__construct();
-
+          if (System::getUser()->userlogin !== 'admin') {
+            App::Redirect('\ZippyERP\System\Pages\Error', 'Вы не админ');
+        }
         $this->add(new DataView("userrow", new UserDataSource(), $this, 'OnAddUserRow'))->Reload();
 
         $this->add(new DataView("rolerow", new \ZCL\DB\EntityDataSource('\ZippyERP\System\Role'), $this, 'OnAddRoleRow'))->Reload();

@@ -26,7 +26,7 @@ use ZippyERP\System\System;
 /**
  * Страница  ввода  налоговой  накладной
  */
-class TaxInvoice extends \ZippyERP\ERP\Pages\Base
+class TaxInvoice extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

@@ -15,7 +15,7 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Contact;
 use ZippyERP\ERP\Entity\Customer;
 
-class CustomerList extends \ZippyERP\ERP\Pages\Base
+class CustomerList extends \ZippyERP\System\Pages\Base
 {
 
     private $_customer = null;

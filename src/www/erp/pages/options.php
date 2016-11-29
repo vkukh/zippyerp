@@ -10,14 +10,17 @@ use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
 use ZippyERP\System\System;
+use ZippyERP\System\Application as App;
 
-class Options extends \ZippyERP\System\Pages\AdminBase
+class Options extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()
     {
         parent::__construct();
-
+          if (System::getUser()->userlogin !== 'admin') {
+            App::Redirect('\ZippyERP\System\Pages\Error', 'Вы не админ');
+        }
         $this->add(new Form('detail'));
         $this->detail->add(new TextInput('name'));
         $this->detail->add(new TextInput('edrpou'));

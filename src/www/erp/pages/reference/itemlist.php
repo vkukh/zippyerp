@@ -12,7 +12,7 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\GroupItem;
 use ZippyERP\ERP\Entity\Item;
 
-class ItemList extends \ZippyERP\ERP\Pages\Base
+class ItemList extends \ZippyERP\System\Pages\Base
 {
 
     private $_item;

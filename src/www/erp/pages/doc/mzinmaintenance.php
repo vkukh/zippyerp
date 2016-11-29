@@ -24,7 +24,7 @@ use ZippyERP\System\Application as App;
 /**
  * Страница  ввода  МЦ в  эксплуатацию
  */
-class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
+class MZInMaintenance extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

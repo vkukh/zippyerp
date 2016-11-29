@@ -22,7 +22,7 @@ use ZippyERP\System\Application as App;
 /**
  *    ликвидация  ОС
  */
-class NAOutMaintenance extends \ZippyERP\ERP\Pages\Base
+class NAOutMaintenance extends \ZippyERP\System\Pages\Base
 {
 
     public $_tovarlist = array();

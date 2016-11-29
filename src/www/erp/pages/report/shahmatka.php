@@ -12,7 +12,7 @@ use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Helper as H;
 use ZippyERP\System\Application as App;
 
-class Shahmatka extends \ZippyERP\ERP\Pages\Base
+class Shahmatka extends \ZippyERP\System\Pages\Base
 {
 
     private $_updatejs = false;

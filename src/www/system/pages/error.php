@@ -2,7 +2,7 @@
 
 namespace ZippyERP\System\Pages;
 
-class Error extends Base
+class Error extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct($error = '')

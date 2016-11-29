@@ -15,7 +15,7 @@ use ZippyERP\System\System;
 /**
  * финансовый отчет  малого  предприятия
  */
-class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
+class FinancialReportSmall extends \ZippyERP\System\Pages\Base
 {
 
     public function __construct()

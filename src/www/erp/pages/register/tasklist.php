@@ -20,7 +20,7 @@ use ZippyERP\ERP\Entity\Task;
 use ZippyERP\ERP\Helper;
 use ZippyERP\System\System;
 
-class TaskList extends \ZippyERP\ERP\Pages\Base
+class TaskList extends \ZippyERP\System\Pages\Base
 {
 
     private $_task;

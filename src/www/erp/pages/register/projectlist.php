@@ -24,7 +24,7 @@ use ZippyERP\ERP\Entity\Task;
 use ZippyERP\ERP\Helper;
 use ZippyERP\System\System;
 
-class ProjectList extends \ZippyERP\ERP\Pages\Base
+class ProjectList extends \ZippyERP\System\Pages\Base
 {
 
     private $_project;

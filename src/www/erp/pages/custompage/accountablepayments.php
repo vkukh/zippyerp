@@ -9,7 +9,7 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Helper as H;
 
-class AccountablePayments extends \ZippyERP\ERP\Pages\Base
+class AccountablePayments extends \ZippyERP\System\Pages\Base
 {
 
     public $_dlist = array();

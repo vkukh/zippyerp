@@ -7,7 +7,7 @@ use Zippy\Html\Form\TextInput;
 use Zippy\Html\Label;
 use ZippyERP\System\System;
 
-class UserProfile extends UserBase
+class UserProfile extends \ZippyERP\System\Pages\Base
 {
 
     public $_userlogin, $_userpass, $_confirm;

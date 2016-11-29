@@ -19,16 +19,16 @@
 
 
 <h3>Счет входящий</h3>
-<form zippy="docform"  >
+<form zippy="docform" class="form-horizontal">
     <div class="row">
 
-        <div class="form-group row">
+        <div class="form-group">
             <label for="document_number" class="col-xs-2 control-label">Номер док.</label>
             <div class="col-xs-3 ">
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group">
             <label for="document_date" class="col-xs-2 control-label">Дата</label>
             <div class="col-xs-3">
                 <input class="form-control" type="text" zippy="document_date" required="required">
@@ -44,14 +44,14 @@
 
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group">
             <label for="paydate" class="col-xs-2 control-label">К оплате</label>
             <div class="col-xs-3">
                 <input class="form-control" type="text" zippy="paydate">
 
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group">
             <label for="contract" class="col-xs-2 control-label">Договор, заказ</label>
             <div class="col-xs-3">
                 <input class="form-control" type="text" zippy="contract">
@@ -108,9 +108,9 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-secondary  ">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-secondary  ">
-            &nbsp;<input zippy="execdoc" type="submit" value="Оплачен" class="btn btn-secondary  ">
+            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
+            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            &nbsp;<input zippy="execdoc" type="submit" value="Оплачен" class="btn btn-default  ">
         </div>
     </div>
 </form>
@@ -144,10 +144,10 @@
 
             </div>
             <div class="form-group">
-                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-secondary "> <input type="button"
+                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default "> <input type="button"
                                                                                                           zippy="cancelrow"
                                                                                                           value="Отменить"
-                                                                                                          class="btn btn-secondary ">
+                                                                                                          class="btn btn-default ">
             </div>
 
 

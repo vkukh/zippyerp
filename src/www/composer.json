@@ -1,5 +1,6 @@
 {
   "require": {
+    "php": ">=5.4.0",
     "swiftmailer/swiftmailer": "v5.4.1",
     "monolog/monolog": "1.18.2",
     "ircmaxell/password-compat": "v1.0.4",

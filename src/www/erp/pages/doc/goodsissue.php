@@ -133,7 +133,7 @@ class GoodsIssue extends \ZippyERP\System\Pages\Base
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
     }
-
+       
     public function detailOnRow($row)
     {
         $item = $row->getDataItem();

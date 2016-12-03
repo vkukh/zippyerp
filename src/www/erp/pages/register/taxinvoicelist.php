@@ -140,7 +140,7 @@ class TaxListDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Document::find($this->getWhere(), "created ", "desc");
+        return Document::find($this->getWhere(), "created  ". $asc, $count,$start);
     }
 
     public function getItem($id)

@@ -138,7 +138,7 @@ class DocSODataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Document::find($this->getWhere(), "document_date", "desc");
+        return Document::find($this->getWhere(), "document_date ". $asc, $count,$start);
     }
 
     public function getItem($id)

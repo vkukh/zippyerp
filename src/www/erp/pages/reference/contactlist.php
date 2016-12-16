@@ -21,7 +21,7 @@ class ContactList extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, "onFilter");
+        $this->add(new Form('filter'))->onSubmit($this, "onFilter");
         $this->filter->add(new TextInput('search'));
 
 
@@ -34,7 +34,7 @@ class ContactList extends \ZippyERP\System\Pages\Base
         $this->contacttable->add(new Paginator('pag', $this->contacttable->contactlist));
         $this->contacttable->contactlist->setSelectedClass('success');
         $this->contacttable->contactlist->Reload();
-        $this->contacttable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->contacttable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
 
         $this->add(new \ZippyERP\ERP\Blocks\Contact('contactdetail', $this, 'OnDetail'))->setVisible(false);
         $this->add(new \ZippyERP\ERP\Blocks\ContactView('contactview'))->setVisible(false);
@@ -49,9 +49,9 @@ class ContactList extends \ZippyERP\System\Pages\Base
         //$row->add(new Label('middlename', $item->middlename));
         $row->add(new Label('email', $item->email));
         $row->add(new Label('type', $item->getType()));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('show'))->onClick($this, 'showOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function deleteOnClick($sender)

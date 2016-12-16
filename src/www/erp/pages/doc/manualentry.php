@@ -55,48 +55,48 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $this->docform->add(new DropDownChoice('e_acclistd', Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
         $this->docform->add(new DropDownChoice('e_acclistc', Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
         $this->docform->add(new TextInput('e_accsumma'));
-        $this->docform->add(new SubmitButton('addaccbtn'))->setClickHandler($this, 'addaccbtnOnClick');
+        $this->docform->add(new SubmitButton('addaccbtn'))->onClick($this, 'addaccbtnOnClick');
         //ТМЦ
         $this->docform->add(new DataView('itemtable', new ArrayDataSource($this, '_itemarr'), $this, 'itemtableOnRow'));
         $this->docform->add(new DropDownChoice('e_storelist', Store::findArray('storename', 'store_type=' . Store::STORE_TYPE_OPT, 'storename')));
-        $this->docform->add(new AutocompleteTextInput('e_itemlist'))->setAutocompleteHandler($this, "OnAutoItem");
+        $this->docform->add(new AutocompleteTextInput('e_itemlist'))->onText($this, "OnAutoItem");
         $this->docform->add(new TextInput('e_quantity'));
         $this->docform->add(new TextInput('e_price'));
         $this->docform->add(new DropDownChoice('e_itemop', new Bind($this, '_acclist')));
-        $this->docform->add(new SubmitButton('additembtn'))->setClickHandler($this, 'additembtnOnClick');
+        $this->docform->add(new SubmitButton('additembtn'))->onClick($this, 'additembtnOnClick');
         //Сотрудники
         $this->docform->add(new DataView('emptable', new ArrayDataSource($this, '_emparr'), $this, 'emptableOnRow'));
         $this->docform->add(new DropDownChoice('e_empop', new Bind($this, '_acclist')));
-        $this->docform->add(new AutocompleteTextInput('e_emplist'))->setAutocompleteHandler($this, "OnAutoEmp");
+        $this->docform->add(new AutocompleteTextInput('e_emplist'))->onText($this, "OnAutoEmp");
         $this->docform->add(new TextInput('e_empamount'));
-        $this->docform->add(new SubmitButton('addempbtn'))->setClickHandler($this, 'addempbtnOnClick');
+        $this->docform->add(new SubmitButton('addempbtn'))->onClick($this, 'addempbtnOnClick');
 
         //контрагенты
         $this->docform->add(new DataView('ctable', new ArrayDataSource($this, '_carr'), $this, 'ctableOnRow'));
-        $this->docform->add(new AutocompleteTextInput('e_сlist'))->setAutocompleteHandler($this, "OnAutoCont");
+        $this->docform->add(new AutocompleteTextInput('e_сlist'))->onText($this, "OnAutoCont");
         $this->docform->add(new TextInput('e_сamount'));
-        $this->docform->add(new SubmitButton('addсbtn'))->setClickHandler($this, 'addсbtnOnClick');
+        $this->docform->add(new SubmitButton('addсbtn'))->onClick($this, 'addсbtnOnClick');
         $this->docform->add(new DropDownChoice('e_cop', new Bind($this, '_acclist')));
 
         //Денежные счета
         $this->docform->add(new DataView('ftable', new ArrayDataSource($this, '_farr'), $this, 'ftableOnRow'))->Reload();
         $this->docform->add(new DropDownChoice('e_flist', MoneyFund::findArray('title', '', 'title')));
         $this->docform->add(new TextInput('e_famount'));
-        $this->docform->add(new SubmitButton('addfbtn'))->setClickHandler($this, 'addfbtnOnClick');
+        $this->docform->add(new SubmitButton('addfbtn'))->onClick($this, 'addfbtnOnClick');
         $this->docform->add(new DropDownChoice('e_foper', new Bind($this, '_acclist')));
 
         //ОС и НМА
         $this->docform->add(new DataView('catable', new ArrayDataSource($this, '_caarr'), $this, 'catableOnRow'));
-        $this->docform->add(new AutocompleteTextInput('e_calist'))->setAutocompleteHandler($this, "OnAutoCa");
+        $this->docform->add(new AutocompleteTextInput('e_calist'))->onText($this, "OnAutoCa");
         $this->docform->add(new TextInput('e_caquantity'));
         $this->docform->add(new TextInput('e_caprice'));
         $this->docform->add(new DropDownChoice('e_caop', new Bind($this, '_acclist')));
-        $this->docform->add(new SubmitButton('addcabtn'))->setClickHandler($this, 'addcabtnOnClick');
+        $this->docform->add(new SubmitButton('addcabtn'))->onClick($this, 'addcabtnOnClick');
 
 
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
-        $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа на страницу
             $this->_edited = true;
@@ -131,7 +131,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $row->add(new Label('acccodec', $entry->acc_c == -1 ? "" : $entry->acc_c));
         $row->add(new Label('acccoded', $entry->acc_d == -1 ? "" : $entry->acc_d));
         $row->add(new Label('accvalue', H::fm($entry->amount) . " " . $entry->dc));
-        $row->add(new ClickLink('delacc'))->setClickHandler($this, 'delaccOnClick');
+        $row->add(new ClickLink('delacc'))->onClick($this, 'delaccOnClick');
     }
 
     public function delaccOnClick($sender)
@@ -193,7 +193,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $row->add(new Label('itemname', $item->itemname));
         $row->add(new Label('itemcnt', $item->qty / 1000));
         $row->add(new Label('itemprice', H::fm($item->price)));
-        $row->add(new ClickLink('delitem'))->setClickHandler($this, 'delitemOnClick');
+        $row->add(new ClickLink('delitem'))->onClick($this, 'delitemOnClick');
     }
 
     public function delitemOnClick($sender)
@@ -259,7 +259,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
 
         $row->add(new Label('empname', $item->fullname));
         $row->add(new Label('empamount', H::fm($item->val)));
-        $row->add(new ClickLink('delemp'))->setClickHandler($this, 'delempOnClick');
+        $row->add(new ClickLink('delemp'))->onClick($this, 'delempOnClick');
     }
 
     public function delempOnClick($sender)
@@ -305,7 +305,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $row->add(new Label('cop', $_oplist[$c->op]));
         $row->add(new Label('сname', $c->customer_name));
         $row->add(new Label('сamount', H::fm($c->val)));
-        $row->add(new ClickLink('delс'))->setClickHandler($this, 'delсOnClick');
+        $row->add(new ClickLink('delс'))->onClick($this, 'delсOnClick');
     }
 
     public function delсOnClick($sender)
@@ -346,7 +346,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $row->add(new Label('fop', $_oplist[$f->op]));
         $row->add(new Label('fname', $f->title));
         $row->add(new Label('famount', H::fm($f->val)));
-        $row->add(new ClickLink('delf'))->setClickHandler($this, 'delfOnClick');
+        $row->add(new ClickLink('delf'))->onClick($this, 'delfOnClick');
     }
 
     public function delfOnClick($sender)
@@ -386,7 +386,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $row->add(new Label('caname', $item->itemname));
         $row->add(new Label('cacnt', $item->qty / 1000));
         $row->add(new Label('caprice', H::fm($item->price)));
-        $row->add(new ClickLink('delca'))->setClickHandler($this, 'delcaOnClick');
+        $row->add(new ClickLink('delca'))->onClick($this, 'delcaOnClick');
     }
 
     public function delcaOnClick($sender)

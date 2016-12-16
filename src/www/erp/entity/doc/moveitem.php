@@ -52,7 +52,7 @@ class MoveItem extends Document
             if ($store->store_type == Store::STORE_TYPE_RET) {    //розница
                 $stockto = Stock::getFirst("store_id={$this->headerdata['storeto']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
                 if ($stockto instanceof Stock) {
-
+                    
                 } else {
                     $stockto = new Stock();
                     $stockto->document_id = $this->document_id;
@@ -112,7 +112,7 @@ class MoveItem extends Document
             "document_number" => $this->document_number
         );
 
-      
+
         $i = 1;
         $detail = array();
         foreach ($this->detaildata as $value) {

@@ -36,8 +36,8 @@ class Contract extends \ZippyERP\System\Pages\Base
         $this->docform->add(new Date('startdate', time()));
         $this->docform->add(new Date('enddate', time()));
         $this->docform->add(new TextArea('description'));
-        $this->docform->add(new SubmitButton('submit'))->setClickHandler($this, 'submitOnClick');
-        $this->docform->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->docform->add(new SubmitButton('submit'))->onClick($this, 'submitOnClick');
+        $this->docform->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);

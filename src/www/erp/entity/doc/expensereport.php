@@ -35,7 +35,6 @@ class ExpenseReport extends Document
             "employee" => $employee->shortname,
             "expenseamount" => $this->headerdata["expenseamount"] > 0 ? H::fm($this->headerdata["expenseamount"]) : 0,
             "expensetype" => $elist[$this->headerdata["expensetype"]],
-         
             "document_number" => $this->document_number,
             "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])

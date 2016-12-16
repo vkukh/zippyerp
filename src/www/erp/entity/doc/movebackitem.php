@@ -86,7 +86,7 @@ class MoveBackItem extends Document
             "document_number" => $this->document_number
         );
 
-            $i = 1;
+        $i = 1;
         $detail = array();
         foreach ($this->detaildata as $value) {
             $detail[] = array("no" => $i++,

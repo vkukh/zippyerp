@@ -22,7 +22,7 @@ class FinancialReportSmall extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new DropDownChoice('yr'));
         $this->filter->add(new DropDownChoice('qw'));
 
@@ -122,7 +122,8 @@ class FinancialReportSmall extends \ZippyERP\System\Pages\Base
 
         //актив
         $b1011 = $a10->getSaldoD($from) + $a11->getSaldoD($from) + $a12->getSaldoD($from);
-        $e1011 = $a10->getSaldoD($to) + $a11->getSaldoD($to) + $a12->getSaldoD($to);;
+        $e1011 = $a10->getSaldoD($to) + $a11->getSaldoD($to) + $a12->getSaldoD($to);
+        ;
         $b1012 = $a13->getSaldoD($from);
         $e1012 = $a13->getSaldoD($to);
 
@@ -281,11 +282,11 @@ class FinancialReportSmall extends \ZippyERP\System\Pages\Base
             'date1m' => date('m', time()),
             'date1d' => date('d', time()),
             'date2' => date('d.m.Y', $to + 1),
-            'edrpou' => (string)sprintf("%10d", $firm['edrpou']),
-            'koatuu' => (string)sprintf("%10d", $firm['koatuu']),
-            'kopfg' => (string)sprintf("%10d", $firm['kopfg']),
-            'kodu' => (string)sprintf("%10d", $firm['kodu']),
-            'kved' => (string)sprintf("%10s", $firm['kved']),
+            'edrpou' => (string) sprintf("%10d", $firm['edrpou']),
+            'koatuu' => (string) sprintf("%10d", $firm['koatuu']),
+            'kopfg' => (string) sprintf("%10d", $firm['kopfg']),
+            'kodu' => (string) sprintf("%10d", $firm['kodu']),
+            'kved' => (string) sprintf("%10s", $firm['kved']),
             'address' => $firm->dtreet . ' ' . $firm->city . ', ' . $firm->phone,
             'firmname' => $firm['name'],
             'b1005' => H::fm_t1($b1005),
@@ -381,16 +382,16 @@ class FinancialReportSmall extends \ZippyERP\System\Pages\Base
     public function exportGNAU($header)
     {
         $year = $this->filter->yr->getValue();
-        $pm = (string)sprintf('%02d', 3 * $this->filter->qw->getValue());
+        $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
         $common = System::getOptions("common");
         $firm = System::getOptions("firmdetail");
         $jf = ($common['juridical'] == true ? "J" : "F") . "0901106";
 
-        $edrpou = (string)sprintf("%10d", $firm['edrpou']);
+        $edrpou = (string) sprintf("%10d", $firm['edrpou']);
         //2301 0011111111 J0901106 1 00 0000045 1 03 2015 2301.xml
         //1 - місяць, 2 - квартал, 3 - півріччя, 4 - 9 місяців, 5 - рік
 
-        $number = (string)sprintf('%07d', 1);
+        $number = (string) sprintf('%07d', 1);
         $filename = $firm['gni'] . $edrpou . "J0901106" . "100{$number}2" . $pm . $year . $firm['gni'] . ".xml";
 
         $filename = str_replace(' ', '0', $filename);
@@ -412,11 +413,11 @@ class FinancialReportSmall extends \ZippyERP\System\Pages\Base
   <C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>
   <C_DOC_STAN>1</C_DOC_STAN>
   <LINKED_DOCS xsi:nil=\"true\" />
-  <D_FILL>" . (string)date('dmY') . "</D_FILL>
+  <D_FILL>" . (string) date('dmY') . "</D_FILL>
   <SOFTWARE>Zippy ERP</SOFTWARE>
   </DECLARHEAD>
   <DECLARBODY>
-  <HFILL>" . (string)date('dmY') . "</HFILL>
+  <HFILL>" . (string) date('dmY') . "</HFILL>
   <HNAME>{$firm['name']}<</HNAME>
   <HTIN>{$firm['edrpou']}</HTIN>
   <HKOATUU_S xsi:nil=\"true\" />

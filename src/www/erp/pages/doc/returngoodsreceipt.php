@@ -40,30 +40,30 @@ class ReturnGoodsReceipt extends \ZippyERP\System\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");
+        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoContragent");
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type=" . Store::STORE_TYPE_OPT)));
-        $this->docform->add(new AutocompleteTextInput('contract'))->setAutocompleteHandler($this, "OnAutoContract");
+        $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 
-        $this->docform->add(new CheckBox('isnds'))->setChangeHandler($this, 'onIsnds');
+        $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
         $this->docform->add(new CheckBox('cash'));
-        $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
-        $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
+        $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
 
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->setAutocompleteHandler($this, "OnAutoItem");
+        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, "OnAutoItem");
 
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new TextInput('editpricends'));
         $this->editdetail->add(new DropDownChoice('edittype', $this->_itemtype));
 
-        $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
-        $this->editdetail->add(new SubmitButton('saverow'))->setClickHandler($this, 'saverowOnClick');
-        //$this->editdetail->add(new SubmitLink('additem'))->setClickHandler($this, 'addItemOnClick');
+        $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
+        $this->editdetail->add(new SubmitButton('saverow'))->onClick($this, 'saverowOnClick');
+        //$this->editdetail->add(new SubmitLink('additem'))->onClick($this, 'addItemOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
@@ -121,9 +121,9 @@ class ReturnGoodsReceipt extends \ZippyERP\System\Pages\Base
         $row->add(new Label('price', H::fm($item->price)));
         $row->add(new Label('pricends', H::fm($item->pricends)));
         $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->pricends)));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
 
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function editOnClick($sender)

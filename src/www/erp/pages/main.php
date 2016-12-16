@@ -9,7 +9,8 @@ use Zippy\Html\Label;
 use ZippyERP\ERP\DataItem;
 use ZippyERP\ERP\Entity\Doc\Document;
 
-;;
+;
+;
 
 class Main extends \ZippyERP\System\Pages\Base
 {
@@ -212,32 +213,32 @@ class Main extends \ZippyERP\System\Pages\Base
         }
 
         $lowitems = \Pinq\Traversable::from($lowitems)
-            ->orderByAscending(function ($row) {
-                return $row->date;
-            })
-            ->thenByAscending(function ($row) {
-                return $row->itemname;
-            })
-            ->thenByAscending(function ($row) {
-                return $row->storename;
-            })
-            ->select(function ($row) {
-                return $row;
-            })->asArray();
+                        ->orderByAscending(function ($row) {
+                            return $row->date;
+                        })
+                        ->thenByAscending(function ($row) {
+                            return $row->itemname;
+                        })
+                        ->thenByAscending(function ($row) {
+                            return $row->storename;
+                        })
+                        ->select(function ($row) {
+                            return $row;
+                        })->asArray();
 
         $highitems = \Pinq\Traversable::from($highitems)
-            ->orderByAscending(function ($row) {
-                return $row->date;
-            })
-            ->thenByAscending(function ($row) {
-                return $row->itemname;
-            })
-            ->thenByAscending(function ($row) {
-                return $row->storename;
-            })
-            ->select(function ($row) {
-                return $row;
-            })->asArray();
+                        ->orderByAscending(function ($row) {
+                            return $row->date;
+                        })
+                        ->thenByAscending(function ($row) {
+                            return $row->itemname;
+                        })
+                        ->thenByAscending(function ($row) {
+                            return $row->storename;
+                        })
+                        ->select(function ($row) {
+                            return $row;
+                        })->asArray();
 
 
         $data['lowitems'] = $lowitems;

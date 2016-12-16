@@ -10,5 +10,5 @@ namespace ZippyERP\ERP\Entity;
  */
 class Department extends \ZCL\DB\Entity
 {
-
+    
 }

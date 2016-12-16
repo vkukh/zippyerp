@@ -29,7 +29,7 @@ class Application extends \Zippy\WebApplication
     {
 
         $templatepath = _ROOT . 'templates/';
- 
+
         $name = ltrim($name, '\\');
         //$arr = explode('\\', $name);
 
@@ -92,7 +92,6 @@ class Application extends \Zippy\WebApplication
         }
     }
 
-
     /**
      * Редирект на  страницу с  ошибкой
      *
@@ -101,6 +100,5 @@ class Application extends \Zippy\WebApplication
     {
         self::$app->getResponse()->Redirect("\\ZippyERP\\Pages\\Error", $message);
     }
-
 
 }

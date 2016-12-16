@@ -8,12 +8,14 @@ namespace ZippyERP\System;
  */
 class System
 {
+
     private static $_options = array();   //  для кеширования отчета
 
     /**
      * Возвращает  текущего  юзера
      * @return  User
      */
+
     public static function getUser()
     {
         $user = Session::getSession()->user;
@@ -43,7 +45,6 @@ class System
 
         return Session::getSession();
     }
-
 
     /**
      * Возвращает набор  параметром  по  имени набора

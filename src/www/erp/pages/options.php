@@ -18,7 +18,7 @@ class Options extends \ZippyERP\System\Pages\Base
     public function __construct()
     {
         parent::__construct();
-          if (System::getUser()->userlogin !== 'admin') {
+        if (System::getUser()->userlogin !== 'admin') {
             App::Redirect('\ZippyERP\System\Pages\Error', 'Вы не админ');
         }
         $this->add(new Form('detail'));
@@ -39,7 +39,7 @@ class Options extends \ZippyERP\System\Pages\Base
         $this->detail->add(new DropDownChoice('bank2', \ZippyERP\ERP\Entity\Bank::findArray('bank_name', '', 'bank_name')));
         $this->detail->add(new TextInput('bankaccount'));
         $this->detail->add(new TextInput('bankaccount2'));
-        $this->detail->add(new SubmitButton('detailsave'))->setClickHandler($this, 'saveDetailOnClick');
+        $this->detail->add(new SubmitButton('detailsave'))->onClick($this, 'saveDetailOnClick');
 
 
         $this->add(new Form('common'));
@@ -47,18 +47,20 @@ class Options extends \ZippyERP\System\Pages\Base
 
         $this->common->add(new CheckBox('hasnds'));
         $this->common->add(new CheckBox('simpletax'));
-        $this->common->add(new CheckBox('juridical'))->setChangeHandler($this, "OnJFChange");
-        $this->common->add(new SubmitButton('commonsave'))->setClickHandler($this, 'saveCommonOnClick');
+        $this->common->add(new CheckBox('juridical'))->onChange($this, "OnJFChange");
+        $this->common->add(new SubmitButton('commonsave'))->onClick($this, 'saveCommonOnClick');
         $this->common->add(new DropDownChoice('basestore', \ZippyERP\ERP\Entity\Store::findArray('storename', '')));
-        $this->common->add(new AutocompleteTextInput('manager'))->setAutocompleteHandler($this, "OnAutoEmployee");
-        $this->common->add(new AutocompleteTextInput('accounter'))->setAutocompleteHandler($this, "OnAutoEmployee");
-        $this->common->add(new AutocompleteTextInput('ownerfiz'))->setAutocompleteHandler($this, "OnAutoContact");
-        $this->common->ownerfiz->setVisible(true);;
-        $this->common->manager->setVisible(false);;
+        $this->common->add(new AutocompleteTextInput('manager'))->onText($this, "OnAutoEmployee");
+        $this->common->add(new AutocompleteTextInput('accounter'))->onText($this, "OnAutoEmployee");
+        $this->common->add(new AutocompleteTextInput('ownerfiz'))->onText($this, "OnAutoContact");
+        $this->common->ownerfiz->setVisible(true);
+        ;
+        $this->common->manager->setVisible(false);
+        ;
 
 
         $this->add(new Form('tax'));
-        $this->tax->add(new SubmitButton('taxsave'))->setClickHandler($this, 'saveTaxOnClick');
+        $this->tax->add(new SubmitButton('taxsave'))->onClick($this, 'saveTaxOnClick');
         $this->tax->add(new TextInput('minsalary', 0));
         $this->tax->add(new TextInput('minnsl', 0));
         $this->tax->add(new TextInput('nsl', 0));
@@ -224,15 +226,19 @@ class Options extends \ZippyERP\System\Pages\Base
     public function OnJFChange($sender)
     {
         if ($sender->isChecked()) {
-            $this->common->ownerfiz->setVisible(false);;
+            $this->common->ownerfiz->setVisible(false);
+            ;
             $this->common->manager->setKey(0);
             $this->common->manager->setText('');
-            $this->common->manager->setVisible(true);;
+            $this->common->manager->setVisible(true);
+            ;
         } else {
-            $this->common->ownerfiz->setVisible(true);;
+            $this->common->ownerfiz->setVisible(true);
+            ;
             $this->common->ownerfiz->setKey(0);
             $this->common->ownerfiz->setText('');
-            $this->common->manager->setVisible(false);;
+            $this->common->manager->setVisible(false);
+            ;
         }
     }
 

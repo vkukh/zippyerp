@@ -125,21 +125,21 @@ class Document extends \ZCL\DB\Entity
         }
         $xml = new \SimpleXMLElement($this->content);
         foreach ($xml->header->children() as $child) {
-            $this->headerdata[(string)$child->getName()] = (string)$child;
+            $this->headerdata[(string) $child->getName()] = (string) $child;
         }
         $this->detaildata = array();
         foreach ($xml->detail->children() as $row) {
             $_row = array();
             foreach ($row->children() as $item) {
-                $_row[(string)$item->getName()] = (string)$item;
-                if (((string)$item) == 'true') {
-                    $_row[(string)$item->getName()] = true;
+                $_row[(string) $item->getName()] = (string) $item;
+                if (((string) $item) == 'true') {
+                    $_row[(string) $item->getName()] = true;
                 }
-                if (((string)$item) == 'false') {
-                    $_row[(string)$item->getName()] = false;
+                if (((string) $item) == 'false') {
+                    $_row[(string) $item->getName()] = false;
                 }
-                if (is_integer((string)$item)) {
-                    $_row[(string)$item->getName()] = (int)$item;
+                if (is_integer((string) $item)) {
+                    $_row[(string) $item->getName()] = (int) $item;
                 }
             }
             $this->detaildata[] = $_row;
@@ -454,7 +454,8 @@ class Document extends \ZCL\DB\Entity
      */
     public static function search($type, $from, $to, $header = array())
     {
-        $conn = $conn = \ZDB\DB::getConnect();;
+        $conn = $conn = \ZDB\DB::getConnect();
+        ;
         $where = "state= " . Document::STATE_EXECUTED;
 
         if (strlen($type) > 0) {

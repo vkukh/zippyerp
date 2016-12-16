@@ -54,7 +54,7 @@ class NADeprecation extends Document
 
             if ($this->headerdata['tax'] == 0) {
                 if ($ca->depreciation == 1 && $ca->term > 0) { //линейный метод
-                    $amount = (int)round(($ca->value - $ca->cancelvalue) / $ca->term);
+                    $amount = (int) round(($ca->value - $ca->cancelvalue) / $ca->term);
                 }
 
 

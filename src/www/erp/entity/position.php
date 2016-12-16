@@ -10,5 +10,5 @@ namespace ZippyERP\ERP\Entity;
  */
 class Position extends \ZCL\DB\Entity
 {
-
+    
 }

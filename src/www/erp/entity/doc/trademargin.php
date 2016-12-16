@@ -62,7 +62,8 @@ class TradeMargin extends Document
         $saled = $conn->GetOne($sql);  //выручка сданная в кассу
 
         $k = ($tm - $discont) / ($ost - $discont);
-        $sb = (1 - $k) * $saled;; //себестоимость
+        $sb = (1 - $k) * $saled;
+        ; //себестоимость
         // списываем  наценку
         Entry::AddEntry("285", "282", $saled - $sb, $this->document_id, $this->document_date);
         // себестоимость реализации

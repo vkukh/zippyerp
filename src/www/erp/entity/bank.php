@@ -27,7 +27,7 @@ class Bank extends \ZCL\DB\Entity
     {
         //распаковываем  данные из detail
         $xml = simplexml_load_string($this->detail);
-        $this->mfo = (string)($xml->mfo[0]);
+        $this->mfo = (string) ($xml->mfo[0]);
 
         parent::afterLoad();
     }

@@ -31,11 +31,11 @@ class EmployeeList extends \ZippyERP\System\Pages\Base
 
         $this->add(new Panel('employeetable'))->setVisible(true);
         $this->employeetable->add(new DataView('employeelist', new EDS('\ZippyERP\ERP\Entity\employee'), $this, 'employeelistOnRow'))->Reload();
-        $this->employeetable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->employeetable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('employeedetail'))->setVisible(false);
-        $this->employeedetail->add(new AutocompleteTextInput('editcontact'))->setAutocompleteHandler($this, "onContact");
-        $this->employeedetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->employeedetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->employeedetail->add(new AutocompleteTextInput('editcontact'))->onText($this, "onContact");
+        $this->employeedetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->employeedetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
         $this->employeedetail->add(new DropDownChoice('editdepartment', Department::findArray('department_name', '', 'department_name')));
         $this->employeedetail->add(new DropDownChoice('editposition', Position::findArray('position_name', '', 'position_name')));
         $this->employeedetail->add(new TextInput('editlogin'));
@@ -48,9 +48,9 @@ class EmployeeList extends \ZippyERP\System\Pages\Base
         $this->employeedetail->add(new Date('edithiredate'));
         $this->employeedetail->add(new CheckBox('editcombined'));
         $this->employeedetail->add(new CheckBox('editinvalid'));
-        $this->employeedetail->add(new ClickLink('opencontact'))->setClickHandler($this, 'OpenOnClick');
-        $this->employeedetail->add(new ClickLink('showcontact'))->setClickHandler($this, 'ShowOnClick');
-        $this->employeedetail->add(new ClickLink('addcontact'))->setClickHandler($this, 'AddContactOnClick');
+        $this->employeedetail->add(new ClickLink('opencontact'))->onClick($this, 'OpenOnClick');
+        $this->employeedetail->add(new ClickLink('showcontact'))->onClick($this, 'ShowOnClick');
+        $this->employeedetail->add(new ClickLink('addcontact'))->onClick($this, 'AddContactOnClick');
 
         $this->add(new \ZippyERP\ERP\Blocks\Contact('contactdetail', $this, 'OnDetail'))->setVisible(false);
         $this->add(new \ZippyERP\ERP\Blocks\ContactView('contactview'))->setVisible(false);
@@ -64,8 +64,8 @@ class EmployeeList extends \ZippyERP\System\Pages\Base
         $row->add(new Label('department', $item->department_name));
         $row->add(new Label('position', $item->position_name));
         $row->add(new Label('login', $item->login));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function deleteOnClick($sender)

@@ -41,7 +41,7 @@ class ProjectList extends \ZippyERP\System\Pages\Base
         $this->_taskds = new EDS('\ZippyERP\ERP\Entity\Task');
 
         $this->add(new Panel('listtab'));
-        $this->listtab->add(new ClickLink('addnew'))->setClickHandler($this, 'addnewOnClick');
+        $this->listtab->add(new ClickLink('addnew'))->onClick($this, 'addnewOnClick');
         $this->listtab->add(new DataView('projectlist', $this->_projectds, $this, 'projectlistOnRow'))->Reload();
 
         $this->add(new Panel('edittab'))->setVisible(false);
@@ -51,29 +51,29 @@ class ProjectList extends \ZippyERP\System\Pages\Base
         $editform->add(new Date('editstartdate', time()));
         $editform->add(new Date('editenddate', time()));
         $editform->add(new TextArea('editdesc'));
-        $editform->add(new AutocompleteTextInput('editbase'))->setAutocompleteHandler($this, 'editbaseOnAutocomplete');
-        $editform->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $editform->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $editform->add(new AutocompleteTextInput('editbase'))->onText($this, 'editbaseOnAutocomplete');
+        $editform->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $editform->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
         $this->add(new Panel('contenttab'))->setVisible(false);
         $this->contenttab->add(new DataView('dw_msglist', new ArrayDataSource(new Prop($this, '_msglist')), $this, 'dw_msglistOnRow'));
-        $this->contenttab->add(new Form('addmsgform'))->setSubmitHandler($this, 'OnMsgSubmit');
+        $this->contenttab->add(new Form('addmsgform'))->onSubmit($this, 'OnMsgSubmit');
         $this->contenttab->addmsgform->add(new TextArea('addmsg'));
         $this->contenttab->add(new DataView('dw_files', new ArrayDataSource(new Prop($this, '_fileslist')), $this, 'dw_filesOnRow'));
-        $this->contenttab->add(new Form('addfileform'))->setSubmitHandler($this, 'OnFileSubmit');
+        $this->contenttab->add(new Form('addfileform'))->onSubmit($this, 'OnFileSubmit');
         $this->contenttab->addfileform->add(new File('addfile'));
         $this->contenttab->addfileform->add(new TextInput('adddescfile'));
         $this->contenttab->add(new Label('showname'));
         $this->contenttab->add(new Label('showdesc'));
-        $this->contenttab->add(new ClickLink('tolist'))->setClickHandler($this, 'cancelOnClick');
+        $this->contenttab->add(new ClickLink('tolist'))->onClick($this, 'cancelOnClick');
 
         //задачи
         $this->add(new Panel('taskstab'))->setVisible(false);
         $this->taskstab->add(new Panel('tasklisttab'));
-        $this->taskstab->add(new ClickLink('tolist2'))->setClickHandler($this, 'cancelOnClick');
+        $this->taskstab->add(new ClickLink('tolist2'))->onClick($this, 'cancelOnClick');
         $this->taskstab->add(new Label('showname2'));
 
-        $this->taskstab->tasklisttab->add(new ClickLink('taskaddnew'))->setClickHandler($this, 'addnewtaskOnClick');
-        $this->taskstab->tasklisttab->add(new ClickLink('togantt'))->setClickHandler($this, 'toogleGantt');
+        $this->taskstab->tasklisttab->add(new ClickLink('taskaddnew'))->onClick($this, 'addnewtaskOnClick');
+        $this->taskstab->tasklisttab->add(new ClickLink('togantt'))->onClick($this, 'toogleGantt');
         $this->taskstab->tasklisttab->add(new DataView('tasklist', $this->_taskds, $this, 'tasklistOnRow'));
 
 
@@ -86,11 +86,11 @@ class ProjectList extends \ZippyERP\System\Pages\Base
         $edittaskform->add(new DropDownChoice('edittaskstatus', Task::getStatusList(), 0));
         $edittaskform->add(new DropDownChoice('edittaskspriority', Task::getPriorityList(), 3));
         $edittaskform->add(new DropDownChoice('editassignedto', Task::getAssignedList(), 0));
-        $edittaskform->add(new SubmitButton('tasksave'))->setClickHandler($this, 'tasksaveOnClick');
-        $edittaskform->add(new Button('taskcancel'))->setClickHandler($this, 'taskcancelOnClick');
+        $edittaskform->add(new SubmitButton('tasksave'))->onClick($this, 'tasksaveOnClick');
+        $edittaskform->add(new Button('taskcancel'))->onClick($this, 'taskcancelOnClick');
 
         $this->taskstab->add(new Panel('ganttab'))->setVisible(false);
-        $this->taskstab->ganttab->add(new ClickLink('fromgantt'))->setClickHandler($this, 'toogleGantt');
+        $this->taskstab->ganttab->add(new ClickLink('fromgantt'))->onClick($this, 'toogleGantt');
         $this->taskstab->ganttab->add(new \ZCL\Gantt\Gantt('gantt'))->setAjaxEvent($this, 'OnGantt');
     }
 
@@ -116,10 +116,10 @@ class ProjectList extends \ZippyERP\System\Pages\Base
             $row->add(new Label('enddate', date('Y-m-d', $project->end_date)));
 
         $row->add(new Label('ready', "{$project->taskclosed} из {$project->taskall}"));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('tasks'))->setClickHandler($this, 'tasksOnClick');
-        $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('tasks'))->onClick($this, 'tasksOnClick');
+        $row->add(new ClickLink('show'))->onClick($this, 'showOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function editOnClick($sender)
@@ -208,7 +208,7 @@ class ProjectList extends \ZippyERP\System\Pages\Base
         $row->add(new Label("msgdata", nl2br($item->message), true));
         $row->add(new Label("msgdate", date("Y-m-d H:i", $item->created)));
         $row->add(new Label("msguser", $item->userlogin));
-        $row->add(new ClickLink('delmsg'))->setClickHandler($this, 'delmsgOnClick');
+        $row->add(new ClickLink('delmsg'))->onClick($this, 'delmsgOnClick');
     }
 
     public function OnMsgSubmit($sender)
@@ -241,7 +241,7 @@ class ProjectList extends \ZippyERP\System\Pages\Base
         $file = $row->add(new \Zippy\Html\Link\BookmarkableLink("filename", _BASEURL . '?p=ZippyERP/ERP/Pages/LoadFile&arg=' . $item->file_id));
         $file->setValue($item->filename);
         $file->setAttribute('title', $item->description);
-        $row->add(new ClickLink('delfile'))->setClickHandler($this, 'delfileOnClick');
+        $row->add(new ClickLink('delfile'))->onClick($this, 'delfileOnClick');
     }
 
     public function OnFileSubmit($sender)
@@ -318,8 +318,8 @@ class ProjectList extends \ZippyERP\System\Pages\Base
         $statuslist = Task::getStatusList();
         $row->add(new Label('taskstatus', $statuslist[$task->status]));
         $row->add(new Label('taskassignedtoname', $task->assignedtoname));
-        $row->add(new ClickLink('taskedit'))->setClickHandler($this, 'taskeditOnClick');
-        $row->add(new ClickLink('taskdelete'))->setClickHandler($this, 'taskdeleteOnClick');
+        $row->add(new ClickLink('taskedit'))->onClick($this, 'taskeditOnClick');
+        $row->add(new ClickLink('taskdelete'))->onClick($this, 'taskdeleteOnClick');
     }
 
     public function taskeditOnClick($sender)

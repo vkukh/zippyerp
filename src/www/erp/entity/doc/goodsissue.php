@@ -81,7 +81,8 @@ class GoodsIssue extends Document
                 $types[$item['type']]['pamount'] = $types[$item['type']]['pamount'] + $item['partion'] * ($item['quantity'] / 1000);
                 $types[$item['type']]['namount'] = $types[$item['type']]['namount'] + $item['nds'];
             } else {
-                $types[$item['type']] = array();;
+                $types[$item['type']] = array();
+                ;
                 $types[$item['type']]['amount'] = $item['pricends'] * ($item['quantity'] / 1000);
                 $types[$item['type']]['pamount'] = $item['partion'] * ($item['quantity'] / 1000);
                 $types[$item['type']]['namount'] = $item['nds'];

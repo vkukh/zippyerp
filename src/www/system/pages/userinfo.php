@@ -22,7 +22,7 @@ class UserInfo extends \ZippyERP\System\Pages\Bases
 
         $this->add(new \Zippy\Html\Form\Form('roleform'))->setVisible(System::getUser()->userlogin == 'admin');
         $this->roleform->add(new \Zippy\Html\DataList\DataView("rolerow", new \ZCL\DB\EntityDataSource('\ZippyERP\System\Role'), $this, 'OnAddRoleRow'))->Reload();
-        $this->roleform->setSubmitHandler($this, 'OnSubmit');
+        $this->roleform->onSubmit($this, 'OnSubmit');
     }
 
     //вывод строки таблицы  ролей

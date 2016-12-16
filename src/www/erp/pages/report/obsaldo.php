@@ -17,7 +17,7 @@ class ObSaldo extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', time()));
 

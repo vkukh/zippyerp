@@ -44,14 +44,14 @@ class Customer extends \ZCL\DB\Entity
     {
         //распаковываем  данные из detail
         $xml = simplexml_load_string($this->detail);
-        $this->code = (string)($xml->code[0]);
-        $this->inn = (string)($xml->inn[0]);
-        $this->city = (string)($xml->city[0]);
-        $this->street = (string)($xml->street[0]);
-        $this->bank = (string)($xml->bankaccount1->bank[0]);
-        $this->bank2 = (string)($xml->bankaccount2->bank[0]);
-        $this->bankaccount = (string)($xml->bankaccount1->account[0]);
-        $this->bankaccount2 = (string)($xml->bankaccount2->account[0]);
+        $this->code = (string) ($xml->code[0]);
+        $this->inn = (string) ($xml->inn[0]);
+        $this->city = (string) ($xml->city[0]);
+        $this->street = (string) ($xml->street[0]);
+        $this->bank = (string) ($xml->bankaccount1->bank[0]);
+        $this->bank2 = (string) ($xml->bankaccount2->bank[0]);
+        $this->bankaccount = (string) ($xml->bankaccount1->account[0]);
+        $this->bankaccount2 = (string) ($xml->bankaccount2->account[0]);
 
         parent::afterLoad();
     }

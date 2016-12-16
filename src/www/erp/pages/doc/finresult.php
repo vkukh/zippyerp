@@ -25,8 +25,8 @@ class FinResult extends \ZippyERP\System\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             if ($this->_doc == null)

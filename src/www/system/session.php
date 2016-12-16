@@ -15,7 +15,7 @@ class Session
 
     public function __construct()
     {
-
+        
     }
 
     public function __set($name, $value)

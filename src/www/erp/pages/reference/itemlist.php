@@ -21,14 +21,14 @@ class ItemList extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new TextInput('searchkey'));
         $this->filter->add(new DropDownChoice('group', GroupItem::getList()));
 
 
         $this->add(new Panel('itemtable'))->setVisible(true);
         $this->itemtable->add(new DataView('itemlist', new ItemDataSource($this), $this, 'itemlistOnRow'))->Reload();
-        $this->itemtable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->itemtable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->itemtable->itemlist->setPageSize(10);
         $this->itemtable->add(new \Zippy\Html\DataList\Paginator('pag', $this->itemtable->itemlist));
         $this->itemtable->itemlist->reload();
@@ -43,8 +43,8 @@ class ItemList extends \ZippyERP\System\Pages\Base
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('typename', $item->typename));
         $row->add(new Label('group_name', $item->group_name));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function deleteOnClick($sender)
@@ -115,7 +115,7 @@ class ItemDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Item::find($this->getWhere(), "itemname asc" , $count, $start);
+        return Item::find($this->getWhere(), "itemname asc", $count, $start);
     }
 
     public function getItem($id)

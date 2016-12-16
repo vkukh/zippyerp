@@ -23,7 +23,7 @@ class AccountablePayments extends \ZippyERP\System\Pages\Base
         $this->_empds = new APDataSource();
         $this->alistpanel->add(new DataView('alist', $this->_empds, $this, 'alistOnRow'))->Reload();
         $this->add(new Panel('doclist'))->setVisible(false);
-        $this->doclist->add(new ClickLink('backtolist'))->setClickHandler($this, 'backtolistOnClick');
+        $this->doclist->add(new ClickLink('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->doclist->add(new DataView('dlist', new \Zippy\Html\DataList\ArrayDataSource($this, "_dlist"), $this, 'dlistOnRow'));
         $this->doclist->dlist->setSelectedClass('success');
@@ -37,7 +37,7 @@ class AccountablePayments extends \ZippyERP\System\Pages\Base
         $item = $row->getDataItem();
         $row->add(new Label('empname', $item->shortname));
         $row->add(new Label('saldo', H::fm($item->saldo)));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
     }
 
     public function editOnClick($sender)
@@ -102,7 +102,7 @@ class APDataSource implements \Zippy\Interfaces\DataSource
 
     public function __construct()
     {
-
+        
     }
 
     public function getItemCount()

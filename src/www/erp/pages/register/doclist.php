@@ -9,6 +9,7 @@ use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Panel;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use ZippyERP\ERP\Entity\Doc\Document;
@@ -37,17 +38,19 @@ class DocList extends \ZippyERP\System\Pages\Base
             $filter->from = time() - (7 * 24 * 3600);
             $filter->page = 1;
         }
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
         $this->filter->add(new Date('from', $filter->from));
         $this->filter->add(new Date('to', $filter->to));
         $this->filter->add(new DropDownChoice('docgroup', H::getDocGroups()));
         $this->filter->add(new CheckBox('onlymy'))->setChecked($filter->onlymy == true);
         $this->filter->add(new TextInput('searchnumber'));
+
         if (strlen($filter->docgroup) > 0)
             $this->filter->docgroup->setValue($filter->docgroup);
 
         $doclist = $this->add(new DataView('doclist', new DocDataSource(), $this, 'doclistOnRow'));
         $doclist->setSelectedClass('success');
+
         $this->add(new Paginator('pag', $doclist));
         $doclist->setPageSize(10);
         $filter->page = $this->doclist->setCurrentPage($filter->page);
@@ -63,6 +66,7 @@ class DocList extends \ZippyERP\System\Pages\Base
 
     public function filterOnSubmit($sender)
     {
+
         $this->docview->setVisible(false);
         //запоминаем  форму   фильтра
         $filter = Filter::getFilter("doclist");
@@ -87,10 +91,10 @@ class DocList extends \ZippyERP\System\Pages\Base
 
         $row->add(new Label('state', Document::getStateName($item->state)));
         // $row->add(new Label('created', date('d-m-Y', $item->created)));
-        $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('show'))->onClick($this, 'showOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('cancel'))->onClick($this, 'cancelOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
         $user = System::getUser();
         $row->delete->setVisible($user->userlogin == 'admin' || $user->user_id = $item->user_id);
 
@@ -113,7 +117,7 @@ class DocList extends \ZippyERP\System\Pages\Base
             foreach ($basedonlist as $doctype => $docname) {
                 $list .= "<li><a href=\"/?p=ZippyERP/ERP/Pages/Doc/" . $doctype . "&arg=/0/{$item->document_id}\">{$docname}</a></li>";
             };
-            //$basedon = $row->add(new Label('basedlist'))->setText($list, true);
+            $basedon = $row->add(new Label('basedlist'))->setText($list, true);
         }
 
 
@@ -214,7 +218,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItem($id)
     {
-
+        
     }
 
 }

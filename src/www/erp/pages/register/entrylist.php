@@ -22,7 +22,7 @@ class EntryList extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
         $filter = Filter::getFilter("entrylist");
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
         $this->filter->add(new Date('from', strlen($filter->from) > 0 ? $filter->from : time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', strlen($filter->to) > 0 ? $filter->to : time()));
         $this->filter->add(new DropDownChoice('dt', \ZippyERP\ERP\Entity\Account::findArrayEx("acc_code not in (select acc_pid  from erp_account_plan)")));
@@ -101,12 +101,12 @@ class EntryDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Entry::find($this->getWhere(), "document_date  " . $asc,$count, $start);
+        return Entry::find($this->getWhere(), "document_date  " . $asc, $count, $start);
     }
 
     public function getItem($id)
     {
-
+        
     }
 
 }

@@ -26,24 +26,24 @@ class MetaData extends \ZippyERP\System\Pages\Base
     {
 
         parent::__construct();
-           if (System::getUser()->userlogin !== 'admin') {
+        if (System::getUser()->userlogin !== 'admin') {
             App::Redirect('\ZippyERP\System\Pages\Error', 'Вы не админ');
         }
         $this->metadatads = new \ZCL\DB\EntityDataSource("\\ZippyERP\\ERP\\Entity\\MetaData", "", "description");
         $this->roleaccessds = new \Zippy\Html\DataList\ArrayDataSource(null);
 
         $this->add(new Panel('listpan'));
-        $this->listpan->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
+        $this->listpan->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
         $this->listpan->filter->add(new CheckBox('fdoc'))->setChecked(true);
         $this->listpan->filter->add(new CheckBox('fdic'))->setChecked(true);
         $this->listpan->filter->add(new CheckBox('frep'))->setChecked(true);
         $this->listpan->filter->add(new CheckBox('freg'))->setChecked(true);
         $this->listpan->filter->add(new CheckBox('fpage'))->setChecked(true);
-        $this->listpan->add(new ClickLink('addnew'))->setClickHandler($this, 'addnewOnClick');
+        $this->listpan->add(new ClickLink('addnew'))->onClick($this, 'addnewOnClick');
         $this->listpan->add(new DataView('metarow', $this->metadatads, $this, 'metarowOnRow'))->Reload();
 
         $this->add(new Panel('editpan'))->setVisible(false);
-        $this->editpan->add(new Form('editform'))->setSubmitHandler($this, 'editformOnSubmit');
+        $this->editpan->add(new Form('editform'))->onSubmit($this, 'editformOnSubmit');
         $this->editpan->editform->add(new TextInput('meta_id'));
         $this->editpan->editform->add(new TextInput('edit_description'));
         $this->editpan->editform->add(new TextInput('edit_meta_name'));
@@ -51,7 +51,7 @@ class MetaData extends \ZippyERP\System\Pages\Base
         $this->editpan->editform->add(new TextArea('edit_notes'));
         $this->editpan->editform->add(new CheckBox('edit_disabled'));
         $this->editpan->editform->add(new DropDownChoice('edit_meta_type'));
-        $this->editpan->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->editpan->add(new ClickLink('cancel'))->onClick($this, 'cancelOnClick');
         $this->editpan->editform->add(new DataView('rolerow', $this->roleaccessds, $this, 'rolerowOnRow'));
         //  $this->editpan->editform->add(new Panel('eipan'));
         //  $this->editpan->editform->eipan->add(new RedirectLink('exportzip', ""));
@@ -126,8 +126,8 @@ class MetaData extends \ZippyERP\System\Pages\Base
         $row->add(new Label('meta_name', $item->meta_name));
         $row->add(new Label('menugroup', $item->menugroup));
         $row->add(new Label('type', $title));
-        $row->add(new ClickLink('rowedit'))->setClickHandler($this, 'roweditOnClick');
-        $row->add(new ClickLink('rowdelete'))->setClickHandler($this, 'rowdeleteOnClick');
+        $row->add(new ClickLink('rowedit'))->onClick($this, 'roweditOnClick');
+        $row->add(new ClickLink('rowdelete'))->onClick($this, 'rowdeleteOnClick');
     }
 
     public function roweditOnClick($sender)

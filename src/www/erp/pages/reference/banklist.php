@@ -23,12 +23,12 @@ class BankList extends \ZippyERP\System\Pages\Base
 
         $this->add(new Panel('banktable'))->setVisible(true);
         $this->banktable->add(new DataView('banklist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Bank'), $this, 'banklistOnRow'))->Reload();
-        $this->banktable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->banktable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('bankdetail'))->setVisible(false);
         $this->bankdetail->add(new TextInput('editbankname'));
         $this->bankdetail->add(new TextInput('editmfo'));
-        $this->bankdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->bankdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->bankdetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->bankdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
     public function banklistOnRow($row)
@@ -36,8 +36,8 @@ class BankList extends \ZippyERP\System\Pages\Base
         $item = $row->getDataItem();
 
         $row->add(new Label('bankname', $item->bank_name));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function editOnClick($sender)

@@ -34,11 +34,11 @@ class ContactView extends \Zippy\Html\PageFragment
         $this->add(new Label('contentname'));
         $this->add(new Label('contentdescription'));
 
-        $this->add(new Form('addfileform'))->setSubmitHandler($this, 'OnFileSubmit');
+        $this->add(new Form('addfileform'))->onSubmit($this, 'OnFileSubmit');
         $this->addfileform->add(new \Zippy\Html\Form\File('addfile'));
         $this->addfileform->add(new TextInput('adddescfile'));
         $this->add(new DataView('dw_files', new ArrayDataSource(new Bind($this, '_fileslist')), $this, 'fileListOnRow'));
-        $this->add(new Form('addmsgform'))->setSubmitHandler($this, 'OnMsgSubmit');
+        $this->add(new Form('addmsgform'))->onSubmit($this, 'OnMsgSubmit');
         $this->addmsgform->add(new TextArea('addmsg'));
         $this->add(new DataView('dw_msglist', new ArrayDataSource(new Bind($this, '_msglist')), $this, 'msgListOnRow'));
     }
@@ -95,7 +95,7 @@ class ContactView extends \Zippy\Html\PageFragment
         $file->setValue($item->filename);
         $file->setAttribute('title', $item->description);
 
-        $row->add(new ClickLink('delfile'))->setClickHandler($this, 'deleteFileOnClick');
+        $row->add(new ClickLink('delfile'))->onClick($this, 'deleteFileOnClick');
     }
 
     //удаление прикрепленного файла
@@ -143,7 +143,7 @@ class ContactView extends \Zippy\Html\PageFragment
         $row->add(new Label("msgdate", date("Y-m-d H:i", $item->created)));
         $row->add(new Label("msguser", $item->userlogin));
 
-        $row->add(new ClickLink('delmsg'))->setClickHandler($this, 'deleteMsgOnClick');
+        $row->add(new ClickLink('delmsg'))->onClick($this, 'deleteMsgOnClick');
     }
 
     //удаление коментария

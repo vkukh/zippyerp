@@ -17,7 +17,7 @@ class AccountActivity extends \ZippyERP\System\Pages\Base
     public function __construct()
     {
         parent::__construct();
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', time()));
         $this->filter->add(new DropDownChoice('acc', \ZippyERP\ERP\Entity\Account::findArrayEx("acc_code not in (select acc_pid  from erp_account_plan)", "acc_code")));

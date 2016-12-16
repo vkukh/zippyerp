@@ -40,21 +40,21 @@ class OutSalary extends \ZippyERP\System\Pages\Base
         $this->docform->add(new DropDownChoice('year', H::getYears(), date('Y')));
         $this->docform->add(new DropDownChoice('month', H::getMonth(), date('m')));
 
-        $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
-        $this->docform->add(new SubmitLink('loadall'))->setClickHandler($this, 'loadallOnClick');
-        $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
+        $this->docform->add(new SubmitLink('loadall'))->onClick($this, 'loadallOnClick');
+        $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editpayed'));
         $this->editdetail->add(new TextInput('editamount'));
-        $this->editdetail->add(new AutocompleteTextInput('editemployee'))->setAutocompleteHandler($this, "OnAutoEmployee");
-        $this->editdetail->editemployee->setChangeHandler($this, 'OnChangeEmployee');
+        $this->editdetail->add(new AutocompleteTextInput('editemployee'))->onText($this, "OnAutoEmployee");
+        $this->editdetail->editemployee->onChange($this, 'OnChangeEmployee');
 
 
-        $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
-        $this->editdetail->add(new SubmitButton('submitrow'))->setClickHandler($this, 'saverowOnClick');
+        $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
+        $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа на страницу
             $this->_doc = Document::load($docid);
@@ -105,8 +105,8 @@ class OutSalary extends \ZippyERP\System\Pages\Base
 
         $row->add(new Label('payed', H::fm($item->payed)));
         $row->add(new Label('amount', H::fm($item->amount)));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function loadallOnClick($sender)
@@ -248,7 +248,7 @@ class OutSalary extends \ZippyERP\System\Pages\Base
      */
     private function calcTotal()
     {
-
+        
     }
 
     /**

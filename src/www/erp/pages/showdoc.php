@@ -87,7 +87,7 @@ class ShowDoc extends \Zippy\Html\WebPage
             header("Content-Disposition: attachment;Filename={$filename}");
             header("Content-Transfer-Encoding: binary");
 
-           // echo $zip;
+            // echo $zip;
         }
         die;
     }

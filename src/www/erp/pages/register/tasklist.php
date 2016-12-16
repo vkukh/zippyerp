@@ -35,14 +35,14 @@ class TaskList extends \ZippyERP\System\Pages\Base
         $this->_taskds = new EDS('\ZippyERP\ERP\Entity\Task');
 
         $this->add(new Panel('listtab'));
-        $this->listtab->add(new Form('filterform'))->setSubmitHandler($this, 'OnFilter');
+        $this->listtab->add(new Form('filterform'))->onSubmit($this, 'OnFilter');
         $this->listtab->filterform->add(new DropDownChoice('filterproject', Project::findArray('projectname'), 0));
         $this->listtab->filterform->add(new DropDownChoice('filterassignedto', Task::getAssignedList(), 0));
         $this->listtab->filterform->add(new DropDownChoice('filterstatus', Task::getStatusList(), -1));
         $this->listtab->filterform->add(new DropDownChoice('filtersorting'));
 
         //форма   поиска  по  коду
-        $this->listtab->add(new Form('searchform'))->setSubmitHandler($this, 'OnSearch');
+        $this->listtab->add(new Form('searchform'))->onSubmit($this, 'OnSearch');
         $this->listtab->searchform->add(new TextInput('searchcode'));
 
 
@@ -50,19 +50,19 @@ class TaskList extends \ZippyERP\System\Pages\Base
 
         $this->add(new Panel('contenttab'))->setVisible(false);
         $this->contenttab->add(new Label('showtaskname'));
-        $this->contenttab->add(new Form('editform'))->setSubmitHandler($this, 'OnEdit');
+        $this->contenttab->add(new Form('editform'))->onSubmit($this, 'OnEdit');
         $this->contenttab->editform->add(new DropDownChoice('editstatus', Task::getStatusList(), 0));
         $this->contenttab->editform->add(new DropDownChoice('editassignedto', Task::getAssignedList(), 0));
 
 
         $this->contenttab->add(new DataView('dw_msglist', new ArrayDataSource(new Prop($this, '_msglist')), $this, 'dw_msglistOnRow'));
-        $this->contenttab->add(new Form('addmsgform'))->setSubmitHandler($this, 'OnMsgSubmit');
+        $this->contenttab->add(new Form('addmsgform'))->onSubmit($this, 'OnMsgSubmit');
         $this->contenttab->addmsgform->add(new TextArea('addmsg'));
         $this->contenttab->add(new DataView('dw_files', new ArrayDataSource(new Prop($this, '_fileslist')), $this, 'dw_filesOnRow'));
-        $this->contenttab->add(new Form('addfileform'))->setSubmitHandler($this, 'OnFileSubmit');
+        $this->contenttab->add(new Form('addfileform'))->onSubmit($this, 'OnFileSubmit');
         $this->contenttab->addfileform->add(new File('addfile'));
         $this->contenttab->addfileform->add(new TextInput('adddescfile'));
-        $this->contenttab->add(new ClickLink('tolist'))->setClickHandler($this, 'tolistOnClick');
+        $this->contenttab->add(new ClickLink('tolist'))->onClick($this, 'tolistOnClick');
 
 
         //$this->_taskds->setWhere('task_id=' . ($task_id > 0 ? $task_id : 0 ));
@@ -126,7 +126,7 @@ class TaskList extends \ZippyERP\System\Pages\Base
         if ($task->updated > 0)
             $row->add(new Label('updated', date('Y-m-d H:i', $task->updated)));
 
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
     }
 
     public function OnEdit($sender)
@@ -170,7 +170,7 @@ class TaskList extends \ZippyERP\System\Pages\Base
         $row->add(new Label("msgdata", nl2br($item->message), true));
         $row->add(new Label("msgdate", date("Y-m-d H:i", $item->created)));
         $row->add(new Label("msguser", $item->userlogin));
-        $row->add(new ClickLink('delmsg'))->setClickHandler($this, 'delmsgOnClick');
+        $row->add(new ClickLink('delmsg'))->onClick($this, 'delmsgOnClick');
     }
 
     public function OnMsgSubmit($sender)
@@ -203,7 +203,7 @@ class TaskList extends \ZippyERP\System\Pages\Base
         $file = $row->add(new \Zippy\Html\Link\BookmarkableLink("filename", _BASEURL . '?p=ZippyERP/ERP/Pages/LoadFile&arg=' . $item->file_id));
         $file->setValue($item->filename);
         $file->setAttribute('title', $item->description);
-        $row->add(new ClickLink('delfile'))->setClickHandler($this, 'delfileOnClick');
+        $row->add(new ClickLink('delfile'))->onClick($this, 'delfileOnClick');
     }
 
     public function OnFileSubmit($sender)

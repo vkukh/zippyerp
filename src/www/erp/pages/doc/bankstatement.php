@@ -39,27 +39,27 @@ class BankStatement extends \ZippyERP\System\Pages\Base
 
         $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "bankaccount <> '' and ftype>0")));
 
-        $this->docform->add(new SubmitLink('addrow'))->setClickHandler($this, 'addrowOnClick');
-        $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
+        $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes()))->setChangeHandler($this, 'typeOnClick');
-        $this->editdetail->add(new AutocompleteTextInput('editcustomer'))->setAutocompleteHandler($this, "OnAutoContragent");
+        $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes()))->onChange($this, 'typeOnClick');
+        $this->editdetail->add(new AutocompleteTextInput('editcustomer'))->onText($this, "OnAutoContragent");
         $this->editdetail->add(new CheckBox('editprepayment'))->setChecked(1);
 
         $this->editdetail->add(new DropDownChoice('editpayment'))->setOptionList(\ZippyERP\ERP\Consts::getTaxesList());
         $this->editdetail->editpayment->setVisible(false);
         $docinput = $this->editdetail->add(new AutocompleteTextInput('editdoc'));
-        $docinput->setAutocompleteHandler($this, 'OnDocAutocomplete');
-        $docinput->setAjaxChangeHandler($this, 'OnDocChange');
+        $docinput->onText($this, 'OnDocAutocomplete');
+        $docinput->onChange($this, 'OnDocChange', true);
         $this->editdetail->add(new TextInput('editamount'))->setText("1");
         $this->editdetail->add(new TextInput('editnds'))->setText("0");
         $this->editdetail->add(new TextInput('editcomment'));
         $this->editdetail->add(new CheckBox('editnoentry'));
-        $this->editdetail->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
-        $this->editdetail->add(new SubmitButton('submitrow'))->setClickHandler($this, 'saverowOnClick');
+        $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
+        $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа на страницу
             $this->_doc = Document::load($docid);
@@ -93,7 +93,7 @@ class BankStatement extends \ZippyERP\System\Pages\Base
         $row->add(new Label('amount', H::fm($item->amount)));
         $row->add(new Label('document', $item->docnumber));
         $row->add(new Label('comment', $item->comment));
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function deleteOnClick($sender)
@@ -150,8 +150,10 @@ class BankStatement extends \ZippyERP\System\Pages\Base
         $this->editdetail->editpayment->setValue(0);
         $this->editdetail->editdoc->setKey(0);
         $this->editdetail->editdoc->setText('');
-        $this->editdetail->editcustomer->setKey(0);;
-        $this->editdetail->editcustomer->setText('');;
+        $this->editdetail->editcustomer->setKey(0);
+        ;
+        $this->editdetail->editcustomer->setText('');
+        ;
         $this->editdetail->editamount->setText("0");
         $this->editdetail->editnds->setText("0");
         $this->editdetail->editcomment->setText("");

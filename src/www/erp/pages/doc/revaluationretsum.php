@@ -28,10 +28,11 @@ class RevaluationRetSum extends \ZippyERP\System\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
 
-        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET_SUM)))->setAjaxChangeHandler($this, 'ajaxUpdateActual');;
+        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET_SUM)))->onChange($this, 'ajaxUpdateActual', true);
+        ;
         $this->docform->add(new DropDownChoice('type'));
         $this->docform->add(new TextInput('summa'));
         $this->docform->add(new Label('actual'));

@@ -30,7 +30,7 @@ class CustomerOrderList extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
         $filter = Filter::getFilter("CustomerOrderList");
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
         $this->filter->add(new DropDownChoice('statelist', CustomerOrder::getStatesList()));
         $this->filter->add(new DropDownChoice('customerlist', Customer::findArray('customer_name')));
         $this->filter->add(new CheckBox('notpayed'));
@@ -65,8 +65,8 @@ class CustomerOrderList extends \ZippyERP\System\Pages\Base
         $row->add(new Label('payment', ($item->intattr2 > 0) ? H::fm($item->intattr2) : ""));
 
         $row->add(new Label('state', Document::getStateName($item->state)));
-        $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
+        $row->add(new ClickLink('show'))->onClick($this, 'showOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
         //закрытый период
         if ($item->updated < strtotime("2013-01-01")) {
             $row->edit->setVisible(false);
@@ -137,12 +137,12 @@ class DocCODataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Document::find($this->getWhere(), "document_date ". $asc, $count,$start);
+        return Document::find($this->getWhere(), "document_date " . $asc, $count, $start);
     }
 
     public function getItem($id)
     {
-
+        
     }
 
 }

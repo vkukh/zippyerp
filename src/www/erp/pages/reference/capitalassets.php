@@ -29,7 +29,7 @@ class CapitalAssets extends \ZippyERP\System\Pages\Base
 
         $this->add(new Panel('itemtable'))->setVisible(true);
         $this->itemtable->add(new DataView('itemlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\CapitalAsset', "item_type=" . Item::ITEM_TYPE_OS), $this, 'itemlistOnRow'))->Reload();
-        $this->itemtable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->itemtable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('itemdetail'))->setVisible(false);
         $this->itemdetail->add(new TextInput('edititemname'));
         $this->itemdetail->add(new TextInput('editterm'));
@@ -40,8 +40,8 @@ class CapitalAssets extends \ZippyERP\System\Pages\Base
 
         $this->itemdetail->add(new Date('editdatemaint'));
         $this->itemdetail->add(new TextArea('editdescription'));
-        $this->itemdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->itemdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->itemdetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->itemdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
 
         $this->itemdetail->add(new DropDownChoice('editgroup'));
         $this->itemdetail->add(new DropDownChoice('editdepreciation'));
@@ -55,9 +55,9 @@ class CapitalAssets extends \ZippyERP\System\Pages\Base
 
         $row->add(new Label('itemname', $item->itemname));
         $row->add(new Label('inventory', $item->inventory));
-        $row->add(new ClickLink('copy'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('copy'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function deleteOnClick($sender)

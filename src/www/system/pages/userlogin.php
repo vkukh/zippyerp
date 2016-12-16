@@ -11,7 +11,8 @@ use ZippyERP\System\User;
 
 class UserLogin extends \Zippy\Html\WebPage
 {
-     public $_errormsg;
+
+    public $_errormsg;
     public $_login, $_password;
 
     public function __construct()
@@ -22,11 +23,10 @@ class UserLogin extends \Zippy\Html\WebPage
         $form->add(new TextInput('userlogin', new Bind($this, '_login')));
         $form->add(new TextInput('userpassword', new Bind($this, '_password')));
         $form->add(new \Zippy\Html\Form\CheckBox('remember'));
-        $form->add(new \Zippy\Html\Form\SubmitButton('submit'))->setClickHandler($this, 'onsubmit');
+        $form->add(new \Zippy\Html\Form\SubmitButton('submit'))->onClick($this, 'onsubmit');
 
         $this->add($form);
         $this->add(new \Zippy\Html\Label("errormessage", new Bind($this, '_errormsg')))->setVisible(false);
-          
     }
 
     public function onsubmit($sender)
@@ -35,9 +35,9 @@ class UserLogin extends \Zippy\Html\WebPage
         if ($this->_login == '') {
             $this->setError('Введите логин');
         } else
-            if ($this->_password == '') {
-                $this->setError('Введите пароль');
-            }
+        if ($this->_password == '') {
+            $this->setError('Введите пароль');
+        }
 
         if (strlen($this->_login) > 0 && strlen($this->_password)) {
 
@@ -65,23 +65,26 @@ class UserLogin extends \Zippy\Html\WebPage
 
         $this->_password = '';
     }
+
     final protected function setError($msg)
     {
         $this->_errormsg = $msg;
     }
+
     public function beforeRequest()
     {
         parent::beforeRequest();
-       
+
         $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
-  
+
         if (System::getUser()->user_id > 0) {
             App::RedirectHome();
         }
     }
-   
+
     protected function afterRender()
     {
         $this->errormessage->setVisible(false);
     }
+
 }

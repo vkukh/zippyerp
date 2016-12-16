@@ -25,7 +25,7 @@ class CashBook extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new DropDownChoice('yr', array(date('Y') - 1 => date('Y') - 1, date('Y') => date('Y'), date('Y') + 1 => date('Y') + 1), date('Y')));
         $this->filter->add(new DropDownChoice('mn', H::getMonth(), date('m')));
         $this->filter->add(new CheckBox('phead'));
@@ -67,7 +67,8 @@ class CashBook extends \ZippyERP\System\Pages\Base
 
 
         $header['header'] = $this->filter->phead->isChecked();
-        $header['firm'] = $firm['name'];;
+        $header['firm'] = $firm['name'];
+        ;
         $header['code'] = $firm['edrpou'];
         $mn = H::getMonth();
         $codes = Consts::getCodesList();

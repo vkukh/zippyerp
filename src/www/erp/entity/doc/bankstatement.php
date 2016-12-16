@@ -29,9 +29,9 @@ class BankStatement extends Document
 
 
         $types = $this->getTypes();
-       
+
         $detail = array();
-        
+
         foreach ($this->detaildata as $value) {
 
             $detail[] = array(
@@ -46,7 +46,7 @@ class BankStatement extends Document
             'date' => date('d.m.Y', $this->document_date),
             'bankaccount' => \ZippyERP\ERP\Entity\MoneyFund::load($this->headerdata['bankaccount'])->title,
             "document_number" => $this->document_number
-            // "amountstr" => \ZippyERP\ERP\Util::ucfirst(\ZippyERP\ERP\Util::money2str(H::fm($total )))
+                // "amountstr" => \ZippyERP\ERP\Util::ucfirst(\ZippyERP\ERP\Util::money2str(H::fm($total )))
         );
 
         $report = new \ZippyERP\ERP\Report('bankstatement.tpl');

@@ -28,7 +28,7 @@ class ABC extends \ZippyERP\System\Pages\Base
         $from = $dt->startOfMonth()->timestamp;
         $to = $dt->endOfMonth()->timestamp;
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', $from));
         $this->filter->add(new Date('to', $to));
         $this->filter->add(new DropDownChoice('type', $this->typelist, 1));

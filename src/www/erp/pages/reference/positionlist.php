@@ -23,11 +23,11 @@ class PositionList extends \ZippyERP\System\Pages\Base
 
         $this->add(new Panel('positiontable'))->setVisible(true);
         $this->positiontable->add(new DataView('positionlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\position'), $this, 'positionlistOnRow'))->Reload();
-        $this->positiontable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->positiontable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('positiondetail'))->setVisible(false);
         $this->positiondetail->add(new TextInput('editpositionname'));
-        $this->positiondetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->positiondetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->positiondetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->positiondetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
     public function positionlistOnRow($row)
@@ -35,8 +35,8 @@ class PositionList extends \ZippyERP\System\Pages\Base
         $item = $row->getDataItem();
 
         $row->add(new Label('position_name', $item->position_name));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function deleteOnClick($sender)

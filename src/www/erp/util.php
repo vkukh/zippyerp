@@ -75,7 +75,7 @@ function money2str_ru($money, $options = 0)
 
 // each group contais 3 digits, except copecks, containing of 2 digits
         $grp = ($i != 0) ? dec_digits_group($money, $i - 1, 3) :
-            dec_digits_group($money, -1, 2);
+                dec_digits_group($money, -1, 2);
 
 // process the group if not empty
         if ($grp != 0) {
@@ -102,7 +102,7 @@ function money2str_ru($money, $options = 0)
 
 // the main case
                         else
-                            $ret .= $numbers_m[(int)($dig * pow(10, $j))] . ' ';
+                            $ret .= $numbers_m[(int) ($dig * pow(10, $j))] . ' ';
                     }
                 }
             $ret .= $units_ru[$i][sk_plural_form($dig)] . ' ';
@@ -113,7 +113,7 @@ function money2str_ru($money, $options = 0)
 // mandatory copecks
         elseif ($i == 0 && ($options & M2S_KOPS_MANDATORY))
             $ret .= (($options & M2S_KOPS_DIGITS) ? '00' : 'ноль') .
-                ' ' . $units_ru[0][2];
+                    ' ' . $units_ru[0][2];
     }
 
     return trim($ret);
@@ -122,7 +122,7 @@ function money2str_ru($money, $options = 0)
 // service function to select the group of digits
 function dec_digits_group($number, $power, $digits = 1)
 {
-    return (int)bcmod(bcdiv($number, bcpow(10, $power * $digits, 8)), bcpow(10, $digits, 8));
+    return (int) bcmod(bcdiv($number, bcpow(10, $power * $digits, 8)), bcpow(10, $digits, 8));
 }
 
 // service function to get plural form for the number

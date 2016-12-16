@@ -27,7 +27,7 @@ class TaxInvoiceList extends \ZippyERP\System\Pages\Base
             $filter->to = time();
             $filter->from = time() - (7 * 24 * 3600);
         }
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'filterOnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
         $this->filter->add(new Date('from', $filter->from));
         $this->filter->add(new Date('to', $filter->to));
         $this->filter->add(new CheckBox('notchecked'))->setChecked($filter->notchecked == true);
@@ -61,9 +61,9 @@ class TaxInvoiceList extends \ZippyERP\System\Pages\Base
         $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
 
         $row->add(new Label('ernn'))->setVisible($item->headerdata['ernn'] == true);
-        $row->add(new ClickLink('show'))->setClickHandler($this, 'showOnClick');
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $row->add(new ClickLink('show'))->onClick($this, 'showOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('cancel'))->onClick($this, 'cancelOnClick');
 
         if ($item->state == Document::STATE_CLOSED) {
             $row->edit->setVisible(false);
@@ -140,12 +140,12 @@ class TaxListDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItems($start, $count, $sortfield = null, $asc = null)
     {
-        return Document::find($this->getWhere(), "created  ". $asc, $count,$start);
+        return Document::find($this->getWhere(), "created  " . $asc, $count, $start);
     }
 
     public function getItem($id)
     {
-
+        
     }
 
 }

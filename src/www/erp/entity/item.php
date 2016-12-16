@@ -29,11 +29,11 @@ class Item extends \ZCL\DB\Entity
 
 
         $xml = @simplexml_load_string($this->detail);
-        $this->priceopt = (string)($xml->priceopt[0]);
-        $this->priceret = (string)($xml->priceret[0]);
-        $this->barcode = (string)($xml->barcode[0]);
-        $this->uktzed = (string)($xml->uktzed[0]);
-        $this->code = (string)($xml->code[0]);
+        $this->priceopt = (string) ($xml->priceopt[0]);
+        $this->priceret = (string) ($xml->priceret[0]);
+        $this->barcode = (string) ($xml->barcode[0]);
+        $this->uktzed = (string) ($xml->uktzed[0]);
+        $this->code = (string) ($xml->code[0]);
 
         parent::afterLoad();
     }

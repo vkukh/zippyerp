@@ -70,7 +70,7 @@ class TaxInvoice2 extends Document
 
     public function Execute()
     {
-
+        
     }
 
     /**
@@ -84,9 +84,9 @@ class TaxInvoice2 extends Document
         $firm = System::getOptions("firmdetail");
         $jf = ($common['juridical'] == true ? "J" : "F") . "1201004";
 
-        $edrpou = (string)sprintf("%10d", $firm['edrpou']);
+        $edrpou = (string) sprintf("%10d", $firm['edrpou']);
         //2301 0011111111 F1201004 1 00 0000045 1 03 2015 2301.xml
-        $number = (string)sprintf('%07d', 1);
+        $number = (string) sprintf('%07d', 1);
         $filename = $firm['gni'] . $edrpou . $jf . "100{$number}1" . date('mY', $this->document_date) . $firm['gni'] . ".xml";
         $filename = str_replace(' ', '0', $filename);
         $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
@@ -108,13 +108,13 @@ class TaxInvoice2 extends Document
         $xml .= "<PERIOD_YEAR>" . date('Y', $this->document_date) . "</PERIOD_YEAR>";
         $xml .= "<C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>";
         $xml .= "<C_DOC_STAN>1</C_DOC_STAN>";
-        $xml .= "<D_FILL>" . (string)date('dmY') . "</D_FILL>";
+        $xml .= "<D_FILL>" . (string) date('dmY') . "</D_FILL>";
         $xml .= "<SOFTWARE>Zippy ERP</SOFTWARE>";
 
         $xml .= "</DECLARHEAD>";
         $xml .= "<DECLARBODY>";
         $xml .= "<HORIG>1</HORIG>";
-        $xml .= "<HFILL>" . (string)date('dmY', $this->document_date) . "</HFILL>";
+        $xml .= "<HFILL>" . (string) date('dmY', $this->document_date) . "</HFILL>";
         $xml .= "<HNUM>" . $this->document_number . "</HNUM>";
         $xml .= "<HNAMESEL>{$firm['name']}</HNAMESEL>";
         $xml .= "<HKSEL>{$firm['inn']}</HKSEL>";

@@ -21,7 +21,7 @@ class Shahmatka extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', time()));
 
@@ -30,7 +30,7 @@ class Shahmatka extends \ZippyERP\System\Pages\Base
         $this->detail->add(new RedirectLink('html', ""));
         $this->detail->add(new RedirectLink('excel', ""));
         $this->detail->add(new Label('preview'));
-        $this->detail->add(new ClickLink('loader'))->setAjaxClickHandler($this, "onReport");
+        $this->detail->add(new ClickLink('loader'))->onClick($this, "onReport", true);
     }
 
     public function OnSubmit($sender)
@@ -83,7 +83,8 @@ class Shahmatka extends \ZippyERP\System\Pages\Base
             $bottom[] = array('cell' => H::fm($data['obct']), 'bold' => true);
         }
         $top[] = array('cell' => 'Дебет', 'bold' => true);
-        $bottom[] = array('cell' => '');;
+        $bottom[] = array('cell' => '');
+        ;
 
 
         $detail[] = array('row' => $top);

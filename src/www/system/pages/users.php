@@ -15,7 +15,7 @@ class Users extends \ZippyERP\System\Pages\Base
     public function __construct()
     {
         parent::__construct();
-          if (System::getUser()->userlogin !== 'admin') {
+        if (System::getUser()->userlogin !== 'admin') {
             App::Redirect('\ZippyERP\System\Pages\Error', 'Вы не админ');
         }
         $this->add(new DataView("userrow", new UserDataSource(), $this, 'OnAddUserRow'))->Reload();

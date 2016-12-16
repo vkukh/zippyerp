@@ -23,11 +23,11 @@ class DepartmentList extends \ZippyERP\System\Pages\Base
 
         $this->add(new Panel('departmenttable'))->setVisible(true);
         $this->departmenttable->add(new DataView('departmentlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Department'), $this, 'departmentlistOnRow'))->Reload();
-        $this->departmenttable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
+        $this->departmenttable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('departmentdetail'))->setVisible(false);
         $this->departmentdetail->add(new TextInput('editdepartmentname'));
-        $this->departmentdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->departmentdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->departmentdetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->departmentdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
     public function departmentlistOnRow($row)
@@ -35,8 +35,8 @@ class DepartmentList extends \ZippyERP\System\Pages\Base
         $item = $row->getDataItem();
 
         $row->add(new Label('department_name', $item->department_name));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function deleteOnClick($sender)

@@ -35,16 +35,17 @@ class CashReceiptIn extends \ZippyERP\System\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date', time()));
-        $this->docform->add(new DropDownChoice('optype', CRIN::getTypes(), 1))->setChangeHandler($this, 'optypeOnChange');
+        $this->docform->add(new DropDownChoice('optype', CRIN::getTypes(), 1))->onChange($this, 'optypeOnChange');
         $this->docform->add(new Label('lblopdetail'));
-        $this->docform->add(new AutocompleteTextInput('opdetail'))->setAutocompleteHandler($this, 'opdetailOnAutocomplete');;
+        $this->docform->add(new AutocompleteTextInput('opdetail'))->onText($this, 'opdetailOnAutocomplete');
+        ;
         $this->docform->add(new TextInput('amount'));
         $this->docform->add(new TextInput('nds'));
-        $this->docform->add(new AutocompleteTextInput('basedoc'))->setAutocompleteHandler($this, 'basedocOnAutocomplete');
+        $this->docform->add(new AutocompleteTextInput('basedoc'))->onText($this, 'basedocOnAutocomplete');
         $this->docform->add(new TextArea('notes'));
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
-        $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
         $this->optypeOnChange(null);
         if ($docid > 0) {    //загружаем   содержимое  документа на страницу
             $this->_doc = Document::load($docid);

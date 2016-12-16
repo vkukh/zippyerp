@@ -25,7 +25,7 @@ class IEBook extends \ZippyERP\System\Pages\Base
         $from = $dt->startOfMonth()->timestamp;
         $to = $dt->endOfMonth()->timestamp;
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', $from));
         $this->filter->add(new Date('to', $to));
         $this->add(new Panel('detail'))->setVisible(false);
@@ -66,7 +66,8 @@ class IEBook extends \ZippyERP\System\Pages\Base
         $firm = System::getOptions("firmdetail");
         $common = System::getOptions("common");
 
-        $header['firm'] = $firm['name'];;
+        $header['firm'] = $firm['name'];
+        ;
         $header['code'] = $firm['edrpou'];
         $header['nds'] = $common['hasnds'] == true;
 

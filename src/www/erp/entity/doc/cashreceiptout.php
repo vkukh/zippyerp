@@ -83,7 +83,7 @@ class CashReceiptOut extends Document
             $sc->save();
         }
         if ($optype == C::TYPEOP_COMMON_EXPENCES) {
-             Entry::AddEntry(94, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            Entry::AddEntry(94, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 94, $this->headerdata['amount']);
             $sc->save();
             $sc = new SubConto($this, 30, 0 - $this->headerdata['amount']);
@@ -92,7 +92,7 @@ class CashReceiptOut extends Document
             $sc->save();
         }
         if ($optype == C::TYPEOP_BANK_OUT) {
-             Entry::AddEntry(31, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            Entry::AddEntry(31, 30, $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 31, $this->headerdata['amount']);
             $sc->setMoneyfund($this->headerdata['opdetail']);
             $sc->setExtCode(C::TYPEOP_BANK_OUT);

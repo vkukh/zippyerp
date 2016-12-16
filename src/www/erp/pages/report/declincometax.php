@@ -17,7 +17,7 @@ class Declincometax extends \ZippyERP\System\Pages\Base
 
     public function OnSubmit($sender)
     {
-
+        
     }
 
     public function generateReport($header)

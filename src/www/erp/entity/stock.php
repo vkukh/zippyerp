@@ -26,7 +26,7 @@ class Stock extends \ZCL\DB\Entity
             $orderbydir = "asc";
         }
 
-        $entitylist = self::find($criteria, $orderbyfield,   $count, $offset);
+        $entitylist = self::find($criteria, $orderbyfield, $count, $offset);
 
         $list = array();
         foreach ($entitylist as $key => $value) {

@@ -25,19 +25,19 @@ class CustPayments extends \ZippyERP\System\Pages\Base
         parent::__construct();
 
         $this->add(new Panel('clistpanel'));
-        $this->clistpanel->add(new Form('clistfilter'))->setSubmitHandler($this, 'clistfilterOnSubmit');
+        $this->clistpanel->add(new Form('clistfilter'))->onSubmit($this, 'clistfilterOnSubmit');
         $this->clistpanel->clistfilter->add(new DropDownChoice('clistsort'));
         $this->clistpanel->clistfilter->add(new CheckBox('clistshowall'));
         $this->_custds = new CPDataSource();
         $this->clistpanel->add(new DataView('clist', $this->_custds, $this, 'clistOnRow'))->Reload();
         $this->add(new Panel('doclist'))->setVisible(false);
-        $this->doclist->add(new ClickLink('backtolist'))->setClickHandler($this, 'backtolistOnClick');
+        $this->doclist->add(new ClickLink('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->doclist->add(new DataView('dlist', new \Zippy\Html\DataList\ArrayDataSource($this, "_dlist"), $this, 'dlistOnRow'));
         $this->doclist->dlist->setSelectedClass('success');
         $this->doclist->add(new Label("custname1"));
         $this->add(new Panel('invoicelist'))->setVisible(false);
-        $this->invoicelist->add(new ClickLink('backtolist2'))->setClickHandler($this, 'backtolistOnClick');
+        $this->invoicelist->add(new ClickLink('backtolist2'))->onClick($this, 'backtolistOnClick');
         $this->invoicelist->add(new DataView('ilist', new \Zippy\Html\DataList\ArrayDataSource($this, "_ilist"), $this, 'ilistOnRow'));
         $this->invoicelist->add(new Label("custname2"));
 
@@ -59,8 +59,8 @@ class CustPayments extends \ZippyERP\System\Pages\Base
         $row->add(new Label('customername', $item->customer_name));
         $row->add(new Label('debet', $amount > 0 ? H::fm($amount) : ''));
         $row->add(new Label('credit', $amount < 0 ? H::fm(0 - $amount) : ''));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('invoice'))->setClickHandler($this, 'invoiceOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('invoice'))->onClick($this, 'invoiceOnClick');
     }
 
     public function editOnClick($sender)
@@ -151,7 +151,7 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
 
     public function __construct()
     {
-
+        
     }
 
     public function getItemCount()

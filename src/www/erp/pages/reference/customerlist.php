@@ -27,8 +27,8 @@ class CustomerList extends \ZippyERP\System\Pages\Base
 
         $this->add(new Panel('customertable'))->setVisible(true);
         $this->customertable->add(new DataView('customerlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Customer'), $this, 'customerlistOnRow'))->Reload();
-        $this->customertable->add(new ClickLink('addnew'))->setClickHandler($this, 'addOnClick');
-        $this->customertable->add(new ClickLink('addf'))->setClickHandler($this, 'addOnClick');
+        $this->customertable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
+        $this->customertable->add(new ClickLink('addf'))->onClick($this, 'addOnClick');
         $this->add(new Form('customerdetail'))->setVisible(false);
         $this->customerdetail->add(new TextInput('editcustomername'));
         $this->customerdetail->add(new TextInput('editcode'));
@@ -43,8 +43,8 @@ class CustomerList extends \ZippyERP\System\Pages\Base
         $this->customerdetail->add(new TextInput('editbankaccount'));
         $this->customerdetail->add(new TextInput('editbankaccount2'));
         $this->customerdetail->add(new DropDownChoice('cust_type'));
-        $this->customerdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->customerdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->customerdetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->customerdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
 
         $this->add(new Panel('editcontacts'))->setVisible(false);
 
@@ -55,9 +55,9 @@ class CustomerList extends \ZippyERP\System\Pages\Base
 
         $this->_cds = new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Contact', '');
         $this->editcontacts->add(new DataView('contactlist', $this->_cds, $this, 'contactlistOnRow'));
-        $this->editcontacts->add(new Form('newcontactform'))->setSubmitHandler($this, 'OnNewContactform');
-        $this->editcontacts->newcontactform->add(new AutocompleteTextInput('choicecontact'))->setAutocompleteHandler($this, "onAutoCompleteContact");
-        $this->editcontacts->newcontactform->add(new ClickLink('addnewcontact'))->setClickHandler($this, 'OnAddNewcontact');
+        $this->editcontacts->add(new Form('newcontactform'))->onSubmit($this, 'OnNewContactform');
+        $this->editcontacts->newcontactform->add(new AutocompleteTextInput('choicecontact'))->onText($this, "onAutoCompleteContact");
+        $this->editcontacts->newcontactform->add(new ClickLink('addnewcontact'))->onClick($this, 'OnAddNewcontact');
     }
 
     public function customerlistOnRow($row)
@@ -65,9 +65,9 @@ class CustomerList extends \ZippyERP\System\Pages\Base
         $item = $row->getDataItem();
 
         $row->add(new Label('customername', $item->customer_name));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('editcontactlist'))->setClickHandler($this, 'editContactOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('editcontactlist'))->onClick($this, 'editContactOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function editOnClick($sender)
@@ -171,10 +171,10 @@ class CustomerList extends \ZippyERP\System\Pages\Base
         $row->add(new Label('clastname', $item->lastname));
         //$row->add(new Label('middlename', $item->middlename));
         $row->add(new Label('cemail', $item->email));
-        $row->add(new ClickLink('cedit'))->setClickHandler($this, 'contactlisteditOnClick');
-        $row->add(new ClickLink('cshow'))->setClickHandler($this, 'contactlistshowOnClick');
+        $row->add(new ClickLink('cedit'))->onClick($this, 'contactlisteditOnClick');
+        $row->add(new ClickLink('cshow'))->onClick($this, 'contactlistshowOnClick');
         $del = $row->add(new ClickLink('cdelete'));
-        $del->setClickHandler($this, 'contactlistdeleteOnClick');
+        $del->onClick($this, 'contactlistdeleteOnClick');
         if ($this->_customer->contact_id == $item->contact_id)
             $del->setVisible(false);
     }

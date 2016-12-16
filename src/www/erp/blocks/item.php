@@ -44,8 +44,8 @@ class Item extends \Zippy\Html\PageFragment
         $this->itemdetail->add(new TextInput('edituktzed'));
         $this->itemdetail->add(new TextArea('editdescription'));
 
-        $this->itemdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->itemdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->itemdetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->itemdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
     public function saveOnClick($sender)

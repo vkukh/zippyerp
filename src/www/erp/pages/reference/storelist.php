@@ -28,13 +28,13 @@ class StoreList extends \ZippyERP\System\Pages\Base
 
         $storepanel = $this->add(new Panel('storetable'));
         $storepanel->add(new DataView('storelist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Store'), $this, 'storelistOnRow'));
-        $storepanel->add(new ClickLink('storeadd'))->setClickHandler($this, 'storeaddOnClick');
+        $storepanel->add(new ClickLink('storeadd'))->onClick($this, 'storeaddOnClick');
         $this->add(new Form('storeform'))->setVisible(false);
         $this->storeform->add(new TextInput('storeeditname'));
         $this->storeform->add(new TextArea('storeeditdesc'));
         $this->storeform->add(new DropDownChoice('storeedittype'));
-        $this->storeform->add(new SubmitButton('storesave'))->setClickHandler($this, 'storesaveOnClick');
-        $this->storeform->add(new Button('storecancel'))->setClickHandler($this, 'storecancelOnClick');
+        $this->storeform->add(new SubmitButton('storesave'))->onClick($this, 'storesaveOnClick');
+        $this->storeform->add(new Button('storecancel'))->onClick($this, 'storecancelOnClick');
         $itempanel = $this->add(new Panel('itemtable'));
         $itempanel->setVisible(false);
         $itempanel->add(new DataView('itemlist', new StockDataSource($this), $this, 'itemlistOnRow'));
@@ -49,9 +49,9 @@ class StoreList extends \ZippyERP\System\Pages\Base
 
         $row->add(new Label('storename', $item->storename));
         $row->add(new Label('storedesc', $item->description));
-        $row->add(new ClickLink('showitem'))->setClickHandler($this, 'showitemOnClick');
-        $row->add(new ClickLink('storeedit'))->setClickHandler($this, 'storeeditOnClick');
-        $row->add(new ClickLink('storedelete'))->setClickHandler($this, 'storedeleteOnClick');
+        $row->add(new ClickLink('showitem'))->onClick($this, 'showitemOnClick');
+        $row->add(new ClickLink('storeedit'))->onClick($this, 'storeeditOnClick');
+        $row->add(new ClickLink('storedelete'))->onClick($this, 'storedeleteOnClick');
     }
 
     public function storeeditOnClick($sender)
@@ -130,7 +130,7 @@ class StoreList extends \ZippyERP\System\Pages\Base
         $row->add(new Label('quantity', $qty / 1000));
         $row->add(new Label('quantityw', $f['w'] / 1000));
         $row->add(new Label('quantityr', $f['r'] / 1000));
-        $row->add(new ClickLink('pcancel'))->setClickHandler($this, 'partionOnClick');
+        $row->add(new ClickLink('pcancel'))->onClick($this, 'partionOnClick');
         $row->pcancel->setVisible(false);
 
         if ($qty == 0 && $f['w'] == 0 && $f['r'] == 0) {

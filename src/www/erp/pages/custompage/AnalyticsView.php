@@ -26,11 +26,12 @@ class AnalyticsView extends \ZippyERP\System\Pages\Base
         $from = $dt->startOfMonth()->timestamp;
         $to = $dt->endOfMonth()->timestamp;
 
-        $this->add(new Form('filter'))->setSubmitHandler($this, 'OnSubmit');
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', $from));
         $this->filter->add(new Date('to', $to));
         $this->filter->add(new Date('sdate', time()))->setVisible(false);
-        $this->filter->add(new DropDownChoice('viewtype'))->setChangeHandler($this, 'typeOnClick');;
+        $this->filter->add(new DropDownChoice('viewtype'))->onChange($this, 'typeOnClick');
+        ;
         $this->filter->viewtype->setValue(1);
         $this->filter->add(new TextInput('searchkey'));
         $this->filter->add(new CheckBox('chaccount'));
@@ -310,7 +311,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     public function getItem($id)
     {
-
+        
     }
 
 }

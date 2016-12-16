@@ -36,8 +36,8 @@ class Contact extends \Zippy\Html\PageFragment
         $this->contactdetail->add(new TextInput('editmiddlename'));
         $this->contactdetail->add(new TextInput('editemail'));
         $this->contactdetail->add(new TextArea('editdescription'));
-        $this->contactdetail->add(new SubmitButton('save'))->setClickHandler($this, 'saveOnClick');
-        $this->contactdetail->add(new Button('cancel'))->setClickHandler($this, 'cancelOnClick');
+        $this->contactdetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
+        $this->contactdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
     public function saveOnClick($sender)

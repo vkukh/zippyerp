@@ -45,7 +45,8 @@ class RevaluationRetSum extends Document
 
     public function Execute()
     {
-        $diff = $this->headerdata['summa'] - $this->headerdata['actual'];;
+        $diff = $this->headerdata['summa'] - $this->headerdata['actual'];
+        ;
 
         Entry::AddEntry("282", "285", $diff, $this->document_id, $this->document_date);
         $sc = new SubConto($this, 282, $diff);

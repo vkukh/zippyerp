@@ -33,23 +33,24 @@ class F1df extends \ZippyERP\System\Pages\Base
         $this->add(new Form('filter'));
         $this->filter->add(new DropDownChoice('yr'))->setValue(2016);
         $this->filter->add(new DropDownChoice('qw'))->setValue(1);
-        $this->filter->add(new SubmitLink('load'))->setClickHandler($this, 'OnLoad');
-        $this->filter->add(new SubmitLink('show'))->setClickHandler($this, 'OnShow');
+        $this->filter->add(new SubmitLink('load'))->onClick($this, 'OnLoad');
+        $this->filter->add(new SubmitLink('show'))->onClick($this, 'OnShow');
 
         $this->add(new Panel('listp'));
-        $this->filter->add(new ClickLink('addrow'))->setClickHandler($this, 'addrowOnClick');
+        $this->filter->add(new ClickLink('addrow'))->onClick($this, 'addrowOnClick');
 
         $this->listp->add(new \Zippy\Html\DataList\DataView('list', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_emplist')), $this, 'detailOnRow'));
 
-        $this->add(new Form('editemp'))->setVisible(false);;
-        $this->editemp->add(new AutocompleteTextInput('editemployee'))->setAutocompleteHandler($this, "OnAutoEmp");
+        $this->add(new Form('editemp'))->setVisible(false);
+        ;
+        $this->editemp->add(new AutocompleteTextInput('editemployee'))->onText($this, "OnAutoEmp");
         $this->editemp->add(new TextInput('editincome'));
         $this->editemp->add(new TextInput('editoutcome'));
         $this->editemp->add(new TextInput('edittax'));
         $this->editemp->add(new TextInput('editcode'));
 
-        $this->editemp->add(new Button('cancelrow'))->setClickHandler($this, 'cancelrowOnClick');
-        $this->editemp->add(new SubmitButton('submitrow'))->setClickHandler($this, 'saverowOnClick');
+        $this->editemp->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
+        $this->editemp->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
 
 
         $this->add(new Panel('detail'))->setVisible(false);
@@ -73,8 +74,8 @@ class F1df extends \ZippyERP\System\Pages\Base
         $row->add(new Label('outcome', H::fm($emp->outcome)));
         $row->add(new Label('tax', H::fm($emp->tax)));
         $row->add(new Label('code', $emp->code));
-        $row->add(new ClickLink('edit'))->setClickHandler($this, 'editOnClick');
-        $row->add(new ClickLink('delete'))->setClickHandler($this, 'deleteOnClick');
+        $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
+        $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
     public function addrowOnClick($sender)
@@ -233,7 +234,7 @@ class F1df extends \ZippyERP\System\Pages\Base
         $header['details'] = array();
 
         $year = $this->filter->yr->getValue();
-        $pm = (string)sprintf('%02d', 3 * $this->filter->qw->getValue());
+        $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
 
         $common = System::getOptions("common");
 
@@ -276,9 +277,9 @@ class F1df extends \ZippyERP\System\Pages\Base
         foreach ($this->_emplist as $emp) {
             $_mps[$emp->employee_id] = 1;
             if ($emp->combined > 0)
-                $header['R00G021']++;
+                $header['R00G021'] ++;
             else
-                $header['R00G011']++;
+                $header['R00G011'] ++;
             $header['details'][] = array('number' => $num++,
                 'RXXXXG02' => $emp->inn,
                 'RXXXXG02_' => H::addSpaces($emp->inn),
@@ -309,17 +310,17 @@ class F1df extends \ZippyERP\System\Pages\Base
     public function exportGNAU($header)
     {
         $year = $this->filter->yr->getValue();
-        $pm = (string)sprintf('%02d', 3 * $this->filter->qw->getValue());
+        $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
 
         $common = System::getOptions("common");
         $firm = System::getOptions("firmdetail");
         $jf = ($common['juridical'] == true ? "J" : "F") . "0500102";
         $hjhf = ($common['juridical'] == true) ? "<HJ>1</HJ>" : "<HF>1</HF>";
 
-        $edrpou = (string)sprintf("%10d", $firm['edrpou']);
+        $edrpou = (string) sprintf("%10d", $firm['edrpou']);
         $tin = $common['juridical'] == true ? $firm['edrpou'] : $firm['inn'];
 
-        $number = (string)sprintf('%07d', 1);
+        $number = (string) sprintf('%07d', 1);
         $filename = $firm['gni'] . $edrpou . $jf . "100{$number}2" . $pm . $year . $firm['gni'] . ".xml";
         $filename = str_replace(' ', '0', $filename);
 
@@ -353,11 +354,11 @@ class F1df extends \ZippyERP\System\Pages\Base
   <C_STI_ORIG>{$firm['gni']}</C_STI_ORIG>
   <C_DOC_STAN>1</C_DOC_STAN>
   <LINKED_DOCS xsi:nil=\"true\" />
-  <D_FILL>" . (string)date('dmY') . "</D_FILL>
+  <D_FILL>" . (string) date('dmY') . "</D_FILL>
   <SOFTWARE>Zippy ERP</SOFTWARE>
   </DECLARHEAD>
   <DECLARBODY>
-  <HFILL>" . (string)date('dmY') . "</HFILL>
+  <HFILL>" . (string) date('dmY') . "</HFILL>
   <HNAME>{$header['HNAME']}</HNAME>
   <HTIN>{$tin}</HTIN>
 

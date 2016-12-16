@@ -24,9 +24,9 @@ class UserProfile extends \ZippyERP\System\Pages\Base
         $form->add(new Label('userlogin', new Bind($this, '_userlogin')));
         $form->add(new TextInput('userpassword', new Bind($this, '_userpass')));
         $form->add(new TextInput('confirmpassword', new Bind($this, '_confirm')));
-        $form->add(new \Zippy\Html\Form\SubmitButton('submitpass'))->setClickHandler($this, 'onsubmitpass');
+        $form->add(new \Zippy\Html\Form\SubmitButton('submitpass'))->onClick($this, 'onsubmitpass');
 
-        $form->setSubmitHandler($this, 'onsubmit');
+        $form->onSubmit($this, 'onsubmit');
         $this->add($form);
     }
 
@@ -38,12 +38,12 @@ class UserProfile extends \ZippyERP\System\Pages\Base
         if ($this->_userpass == '') {
             $this->setError('Введите пароль');
         } else
-            if ($this->_confirm == '') {
-                $this->setError('Подтвердите пароль');
-            } else
-                if ($this->_confirm != $this->_userpass) {
-                    $this->setError('Неверное подтверждение');
-                }
+        if ($this->_confirm == '') {
+            $this->setError('Подтвердите пароль');
+        } else
+        if ($this->_confirm != $this->_userpass) {
+            $this->setError('Неверное подтверждение');
+        }
 
 
         if (!$this->isError()) {

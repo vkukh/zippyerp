@@ -35,15 +35,16 @@ class TransferOrder extends \ZippyERP\System\Pages\Base
         $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "ftype=1")));
         $this->docform->add(new CheckBox('tax'));
-        $this->docform->add(new AutocompleteTextInput('customer'))->setAutocompleteHandler($this, "OnAutoContragent");;
+        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoContragent");
+        ;
         $this->docform->add(new TextInput('amount'));
         $this->docform->add(new TextInput('nds'));
-        $this->docform->add(new AutocompleteTextInput('basedoc'))->setAutocompleteHandler($this, 'OnAutocomplete');
+        $this->docform->add(new AutocompleteTextInput('basedoc'))->onText($this, 'OnAutocomplete');
 
         $this->docform->add(new TextArea('notes'));
-        $this->docform->add(new Button('backtolist'))->setClickHandler($this, 'backtolistOnClick');
-        $this->docform->add(new SubmitButton('savedoc'))->setClickHandler($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->setClickHandler($this, 'savedocOnClick');
+        $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
+        $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
 
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу

@@ -77,12 +77,12 @@ class TaxInvoiceIncome extends Document
         $data = str_replace("windows-1251", "utf-8", $data);
         $xml = @simplexml_load_string($data);
         if ($xml instanceof \SimpleXMLElement) {
-
+            
         } else {
             return "Неверный формат";
         }
 
-        $type = (string)$xml->DECLARHEAD->C_DOC . (string)$xml->DECLARHEAD->C_DOC_SUB;
+        $type = (string) $xml->DECLARHEAD->C_DOC . (string) $xml->DECLARHEAD->C_DOC_SUB;
         if ($type != "J12010" && $type != "F12010") {
             return "Тип  документа  не  Налоговая накладная";
         }
@@ -90,18 +90,18 @@ class TaxInvoiceIncome extends Document
 
         $doc = new TaxInvoiceIncome();
 
-        $date = (string)$xml->DECLARBODY->HFILL;
+        $date = (string) $xml->DECLARBODY->HFILL;
         $date = substr($date, 4, 4) . '-' . substr($date, 2, 2) . '-' . substr($date, 0, 2);
         $doc->document_date = strtotime($date);
-        $doc->document_number = (string)$xml->DECLARBODY->HNUM;
-        $doc->headerdata['based'] = (string)$xml->DECLARBODY->H01G1S;
-        $inn = (string)$xml->DECLARBODY->HKSEL;
+        $doc->document_number = (string) $xml->DECLARBODY->HNUM;
+        $doc->headerdata['based'] = (string) $xml->DECLARBODY->H01G1S;
+        $inn = (string) $xml->DECLARBODY->HKSEL;
         $customer = \ZippyERP\ERP\Entity\Customer::loadByInn($inn);
         if ($customer == null) {
             return "Не найден  контрагент  с  ИНН " . $inn;
         }
         $doc->headerdata['customer'] = $customer->customer_id;
-        $ernn = (string)$xml->DECLARBODY->HERPN;
+        $ernn = (string) $xml->DECLARBODY->HERPN;
         if ($ernn == true) {
             $doc->headerdata['ernn'] = true;
         }
@@ -109,22 +109,22 @@ class TaxInvoiceIncome extends Document
 
         $details = array();
         foreach ($xml->xpath('//RXXXXG3S') as $node) {
-            $details[(string)$node->attributes()->ROWNUM]['name'] = (string)$node;
+            $details[(string) $node->attributes()->ROWNUM]['name'] = (string) $node;
         }
         foreach ($xml->xpath('//RXXXXG5') as $node) {
-            $details[(string)$node->attributes()->ROWNUM]['qty'] = (string)$node;
+            $details[(string) $node->attributes()->ROWNUM]['qty'] = (string) $node;
         }
         foreach ($xml->xpath('//RXXXXG6') as $node) {
-            $details[(string)$node->attributes()->ROWNUM]['price'] = (string)$node;
+            $details[(string) $node->attributes()->ROWNUM]['price'] = (string) $node;
         }
         foreach ($xml->xpath('//RXXXXG105_2S') as $node) {
-            $details[(string)$node->attributes()->ROWNUM]['mcode'] = (string)$node;
+            $details[(string) $node->attributes()->ROWNUM]['mcode'] = (string) $node;
         }
         foreach ($xml->xpath('//RXXXXG4') as $node) {
-            $details[(string)$node->attributes()->ROWNUM]['code'] = (string)$node;
+            $details[(string) $node->attributes()->ROWNUM]['code'] = (string) $node;
         }
         foreach ($xml->xpath('//RXXXXG4S') as $node) {
-            $details[(string)$node->attributes()->ROWNUM]['mname'] = (string)$node;
+            $details[(string) $node->attributes()->ROWNUM]['mname'] = (string) $node;
         }
         $nds = H::nds();
         $doc->detaildata = array();

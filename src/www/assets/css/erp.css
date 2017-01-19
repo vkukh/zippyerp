@@ -1,5 +1,5 @@
 
-
+ 
 .brand-logo {
     width: 115px;
     height: 45px;
@@ -7,6 +7,8 @@
     background: url(/assets/images/logo.png) no-repeat;
     background-size: cover;
 }
+ 
+
 .ctable td {
     padding: 2px;;
 }

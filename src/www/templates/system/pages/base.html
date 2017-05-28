@@ -11,14 +11,18 @@
 
     
     <link rel="stylesheet" href="vendor/leon-mbs/zippy/assets/css/allzippy.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-theme.css">
     <link rel="stylesheet" href="/assets/css/AdminLTE.css">
     <link rel="stylesheet" href="/assets/css/skin-black.css">
     <link rel="stylesheet" href="/assets/css/whhg.css">
+    <link rel="stylesheet" href="/assets/css/toastr.min.css">
     <link rel="stylesheet" href="/assets/css/erp.css">
+    
 
 
     <script src="vendor/leon-mbs/zippy/assets/js/allzippy.min.js" type="text/javascript"></script>
     <script src="/assets/js/app.js" type="text/javascript"></script>
+    <script src="/assets/js/toastr.min.js" type="text/javascript"></script>
     <script src="/assets/js/erp.js" type="text/javascript"></script>
        
     
@@ -200,16 +204,14 @@
     <!-- /.sidebar -->
   </aside>
       
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="background-color: #fafafa;">
           <section class="content"> 
  <div class="row ">
- <div class="col-xs-12 ">
-        <div class="alert alert-danger" zippy="errormessage" role="alert"></div>
-        <div class="alert alert-warning" zippy="warnmessage" role="alert"></div>
-        <div class="alert alert-success" zippy="successmessage" role="alert"></div>
-    </div>             
-    </div>             
+             
+    </div>  
+        
             <childpage/>
+            
         </section>
         </div>
 
@@ -221,6 +223,31 @@
     <strong>Copyright © 2014-2016  All rights    reserved.
   </footer>
  </div>
+ <script>
+ 
+     toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    } ;
+    
+    $(function () {
+       // $('[data-toggle="tooltip"]').tooltip()
+    });
+    
+ </script>   
 </body>
 
 </html>

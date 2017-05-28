@@ -17,6 +17,12 @@ class Application extends \Zippy\WebApplication
 
         $this->set404('templates/404.html');
         $this->modules = $modules;
+      
+        $this->addRoute(array(
+            "pos" => "\\ZippyERP\\ERP\\API\\Pos",
+            "price" => "\\ZippyERP\\ERP\\API\\Price"));
+            
+          
     }
 
     /**
@@ -61,36 +67,7 @@ class Application extends \Zippy\WebApplication
         return $template;
     }
 
-    /**
-     * Роутер.  Вызывает  соответствующие  функции  для  модулей
-     *
-     * @param mixed $uri
-     */
-    public function Route($uri)
-    {
-
-
-        if (preg_match('/^[-#a-zA-Z0-9\/_]+$/', $uri) == 0) {
-            new \Zippy\Exception('Неверный  URI: ' . $uri);
-        }
-
-
-        //Системный  роутер
-        $route = '\ZippyERP\\System\\Route';
-        if (function_exists($route)) {
-
-            $route($uri);
-        }
-
-
-        foreach ($this->modules as $module) {
-            $route = '\ZippyERP\\' . $module . '\Route';
-            if (function_exists($route)) {
-
-                $route($uri);
-            }
-        }
-    }
+ 
 
     /**
      * Редирект на  страницу с  ошибкой

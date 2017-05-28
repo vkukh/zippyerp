@@ -15,8 +15,9 @@ class Base extends \Zippy\Html\WebPage
 {
 
     public $_errormsg;
-    public $_warnmsg;
     public $_successmsg;
+    public $_warnmsg;
+    public $_infomsg;
 
     public function __construct($params = null)
     {
@@ -53,12 +54,7 @@ class Base extends \Zippy\Html\WebPage
         $this->add(new ClickLink('logout', $this, 'LogoutClick'));
         $this->add(new Label('username', $user->userlogin));
 
-
-
-        $this->add(new \Zippy\Html\Label("warnmessage", new \Zippy\Binding\PropertyBinding($this, '_warnmsg'), false, true))->setVisible(false);
-        $this->add(new \Zippy\Html\Label("successmessage", new \Zippy\Binding\PropertyBinding($this, '_successmsg'), false, true))->setVisible(false);
-        $this->add(new \Zippy\Html\Label("errormessage", new PropertyBinding($this, '_errormsg')))->setVisible(false);
-
+    
         $this->add(new ClickLink("pageinfo"));
 
         $pi = $this->getPageInfo();
@@ -86,7 +82,7 @@ class Base extends \Zippy\Html\WebPage
 
         //$page = $this->getOwnerPage();
         //  $page = get_class($page)  ;
-        App::RedirectHome();
+        App::Redirect("\\ZippyERP\\System\\Pages\\UserLogin");
         ;
         ;
         //    App::$app->getresponse()->toBack();
@@ -100,21 +96,22 @@ class Base extends \Zippy\Html\WebPage
     }
 
     //вывод ошибки,  используется   в дочерних страницах
-    final protected function setError($msg)
-    {
+   public function setError($msg) {
+
+
         $this->_errormsg = $msg;
     }
 
-    public function setWarn($msg)
-    {
-        $this->_warnmsg = $msg;
-        $this->warnmessage->setVisible(true);
+    public function setSuccess($msg) {
+        $this->_successmsg = $msg;
     }
 
-    public function setSuccess($msg)
-    {
-        $this->_successmsg = $msg;
-        $this->successmessage->setVisible(true);
+    public function setWarn($msg) {
+        $this->_warnmsg = $msg;
+    }
+
+    public function setInfo($msg) {
+        $this->_infomsg = $msg;
     }
 
     final protected function isError()
@@ -124,14 +121,26 @@ class Base extends \Zippy\Html\WebPage
 
     protected function beforeRender()
     {
-        $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
+         
     }
 
     protected function afterRender()
     {
-        $this->errormessage->setVisible(false);
-        $this->warnmessage->setVisible(false);
-        $this->successmessage->setVisible(false);
+        if (strlen($this->_errormsg) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.error('{$this->_errormsg}')        ", true);
+        if (strlen($this->_warnmsg) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.warning('{$this->_warnmsg}')        ", true);
+        if (strlen($this->_successmsg) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.success('{$this->_successmsg}')        ", true);
+        if (strlen($this->_infomsg) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.info('{$this->_infomsg}')        ", true);
+
+
+        $this->setError('');
+        $this->setSuccess('');
+
+        $this->setInfo('');
+        $this->setWarn('');
     }
 
 }

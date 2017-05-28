@@ -9,10 +9,9 @@ try {
 
 
     $app = new \ZippyERP\System\Application('\ZippyERP\ERP\Pages\Main', $modules);
+  
 
-    //  $app->getResponse()->setGzip($_config['common']['gzip']);
-    //ZippyERP\System\System::setUser(ZippyERP\System\User::getByLogin("admin"));        ZippyERP\System\System::setUser(ZippyERP\Core\User::getByLogin("admin"));
-
+    
     $app->Run();
 
 
@@ -30,7 +29,7 @@ try {
 } catch (Exception $e) {
     if($e  instanceof ADODB_Exception){
 
-       \ZDB\DB\DB::getConnect()->CompleteTrans(false); // откат транзакции
+       \ZDB\DB::getConnect()->CompleteTrans(false); // откат транзакции
     }
     $msg =    $e->getMessage() ;
     $logger->error($e);

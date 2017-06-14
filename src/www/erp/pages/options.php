@@ -10,7 +10,7 @@ use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
 use ZippyERP\System\System;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 class Options extends \ZippyERP\System\Pages\Base
 {

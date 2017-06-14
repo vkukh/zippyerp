@@ -15,7 +15,7 @@ use Zippy\Html\Link\RedirectLink;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Helper;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 use ZippyERP\System\System;
 
 /**

@@ -14,7 +14,7 @@ use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Страница  списания  МЦ  с  эксплуатации

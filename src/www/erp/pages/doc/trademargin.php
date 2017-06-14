@@ -10,7 +10,7 @@ use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Store;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Страница  документа списание  торговой наценки

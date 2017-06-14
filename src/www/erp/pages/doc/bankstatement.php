@@ -19,7 +19,7 @@ use ZippyERP\ERP\Entity\Doc\BankStatement as BS;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Entry;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Банковская   выписка

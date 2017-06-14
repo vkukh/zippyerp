@@ -8,9 +8,19 @@ try {
 
 
 
-    $app = new \ZippyERP\System\Application('\ZippyERP\ERP\Pages\Main', $modules);
+    $app = new \Zippy\WebApplication('\ZippyERP\ERP\Pages\Main');
   
-
+  
+    
+    
+    
+      $app->setTemplate("\\ZippyERP\\System\\getTemplate");
+      $app->setTemplate("\\ZippyERP\\ERP\\getTemplate");
+      
+      $app->setRoute("\\ZippyERP\\System\\Route");
+      
+    
+    
     
     $app->Run();
 

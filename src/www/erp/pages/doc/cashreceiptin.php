@@ -18,7 +18,7 @@ use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Entity\MoneyFund;
 use ZippyERP\ERP\Entity\Store;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Страница документа Приходный кассовый  ордер

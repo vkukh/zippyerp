@@ -23,7 +23,7 @@ use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\MoneyFund;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Документ для ручных  операций

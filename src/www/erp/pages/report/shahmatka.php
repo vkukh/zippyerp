@@ -10,7 +10,7 @@ use Zippy\Html\Link\RedirectLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 class Shahmatka extends \ZippyERP\System\Pages\Base
 {

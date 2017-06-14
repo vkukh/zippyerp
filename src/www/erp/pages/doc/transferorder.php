@@ -15,7 +15,7 @@ use Zippy\Html\Form\TextArea;
 use Zippy\Html\Form\TextInput;
 use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Doc\Document;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Страница документа Платежное поручение

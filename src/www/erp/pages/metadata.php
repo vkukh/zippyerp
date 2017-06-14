@@ -14,7 +14,7 @@ use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\ACL;
 use ZippyERP\System\System;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 class MetaData extends \ZippyERP\System\Pages\Base
 {

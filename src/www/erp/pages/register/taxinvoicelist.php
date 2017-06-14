@@ -11,7 +11,7 @@ use Zippy\Html\Link\ClickLink;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Filter;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Рееср налоговых накладных

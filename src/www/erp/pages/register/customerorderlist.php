@@ -13,7 +13,7 @@ use ZippyERP\ERP\Entity\Doc\CustomerOrder;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Filter;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * журнал  докуметов - заказов  клиента

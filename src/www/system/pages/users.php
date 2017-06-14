@@ -5,7 +5,7 @@ namespace ZippyERP\System\Pages;
 use Zippy\Html\DataList\DataView;
 use ZippyERP\System\User;
 use ZippyERP\System\System;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 class Users extends \ZippyERP\System\Pages\Base
 {

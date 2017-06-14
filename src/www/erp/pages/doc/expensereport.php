@@ -19,7 +19,7 @@ use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Страница  ввода  авансового отчета

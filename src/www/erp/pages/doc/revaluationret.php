@@ -17,7 +17,7 @@ use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Stock;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Страница  переоценка  в  рознице

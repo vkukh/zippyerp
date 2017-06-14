@@ -15,20 +15,21 @@ function autoload($className)
         if (file_exists($file)) {
             require_once($file);
         } else {
-            \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', "Класс {$className} не  найден");
+            \Zippy\WebApplication::Redirect('\\ZippyERP\\System\\Pages\\Error', "Класс {$className} не  найден");
         }
     }
 }
 
 spl_autoload_register('\ZippyERP\ERP\autoload');
 
-function getTemplate($templatepath, $className, $layout = '')
+function getTemplate( $className)
 {
     $className = str_replace("\\", "/", ltrim($className, '\\'));
+          $templatepath = _ROOT . 'templates/';
 
     $path = "";
     if (strpos($className, 'ZippyERP/ERP/') === 0) {
         $path = $templatepath . (str_replace("ZippyERP/", "", $className)) . ".html";
     }
-    return $path;
+    return  @file_get_contents(strtolower($path));
 }

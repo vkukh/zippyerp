@@ -17,7 +17,7 @@ use ZippyERP\ERP\Entity\CapitalAsset;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Helper as H;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  *    ликвидация  ОС

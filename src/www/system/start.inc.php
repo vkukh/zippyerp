@@ -24,30 +24,31 @@ function autoload($className)
         if (file_exists($file)) {
             require_once($file);
         } else {
-            \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', 'Неверный URL ' . $className);
+            \Zippy\WebApplication::Redirect('\\ZippyERP\\System\\Pages\\Error', 'Неверный URL ' . $className);
         }
     }
 }
 
 spl_autoload_register('\ZippyERP\System\autoload');
 
-function getTemplate($templatepath, $className)
+ 
+function getTemplate ($className)
 {
+    $templatepath = _ROOT . 'templates/';
     $className = str_replace("\\", "/", ltrim($className, '\\'));
 
     $path = "";
     if (strpos($className, 'ZippyERP/System/') === 0) {
         $path = $templatepath . (str_replace("ZippyERP/", "", $className)) . ".html";
     }
-    return $path;
-}
-
+    return   @file_get_contents(strtolower($path));
+} ;
 //require_once SYSTEM_DIR . 'lang/' . \ZippyERP\System\System::getLang() . '.php';
 // \ZippyERP\Core\System::init();
 
 function Route($uri)
 {
-    global $logger;
+     
     $api = explode('/', $uri);
 
     if ($api[0] == 'api' && count($api) > 2) {
@@ -70,7 +71,7 @@ function Route($uri)
                 $response = call_user_func_array(array($page, $api[2]), $params);
             } catch (Exception $e) {
 
-                $logger->error($e->getMessage(), $e);
+             
                 $response = "<error>" . $e->getMessage() . "</error>";
             }
         }

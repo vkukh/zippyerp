@@ -4,7 +4,7 @@ namespace ZippyERP\System\Pages;
 
 use Zippy\Binding\PropertyBinding as Bind;
 use Zippy\Html\Form\TextInput as TextInput;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 use ZippyERP\System\Helper;
 use ZippyERP\System\System;
 use ZippyERP\System\User;

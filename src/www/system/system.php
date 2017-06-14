@@ -82,5 +82,8 @@ class System
         $conn->Execute(" insert into system_options (optname,optvalue) values ('{$group}'," . $conn->qstr($options) . " ) ");
         self::$_options[$group] = $options;
     }
-
+     public static function RedirectError($message)
+    {
+        self::$app->getResponse()->Redirect("\\ZippyERP\\Pages\\Error", $message);
+    }
 }

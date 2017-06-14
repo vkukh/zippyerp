@@ -7,7 +7,7 @@ use Zippy\Html\Label;
 use Zippy\Html\Panel;
 use Zippy\Html\Link\ClickLink;
 use ZippyERP\ERP\Helper;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 use ZippyERP\System\System;
 use ZippyERP\System\User;
 

@@ -16,7 +16,7 @@ use ZippyERP\ERP\Entity\Doc\CashReceiptOut as CROUT;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Entity\MoneyFund;
-use ZippyERP\System\Application as App;
+use Zippy\WebApplication as App;
 
 /**
  * Страница документа расходный кассовый  ордер

@@ -19,7 +19,7 @@ use Zippy\WebApplication as App;
  * Страница  документа переоценка  в  суммовом  учете
  *
  */
-class RevaluationRetSum extends \ZippyERP\System\Pages\Base
+class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct($docid = 0)

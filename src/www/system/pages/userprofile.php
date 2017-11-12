@@ -10,70 +10,65 @@ use ZippyERP\System\System;
 class UserProfile extends \ZippyERP\System\Pages\Base
 {
 
-    public $_userlogin, $_userpass, $_confirm;
+    public $user;
 
     public function __construct()
     {
         parent::__construct();
 
-        $user = System::getUser();
-
-        $this->_userlogin = $user->userlogin;
+        $this->user = System::getUser();
+ 
         //форма   профиля
-        $form = new \Zippy\Html\Form\Form('profileform');
-        $form->add(new Label('userlogin', new Bind($this, '_userlogin')));
-        $form->add(new TextInput('userpassword', new Bind($this, '_userpass')));
-        $form->add(new TextInput('confirmpassword', new Bind($this, '_confirm')));
-        $form->add(new \Zippy\Html\Form\SubmitButton('submitpass'))->onClick($this, 'onsubmitpass');
-
-        $form->onSubmit($this, 'onsubmit');
+        $form = new \Zippy\Html\Form\Form('profileform') ;
+        $form->add(new Label('userlogin', $this->user->userlogin));
+        $form->add(new TextInput('email', $this->user->email));
+        $form->onSubmit($this, 'onsubmitprof') ;
+        $this->add($form);
+        
+        //форма   пароля
+        $form = new \Zippy\Html\Form\Form('passwordform');
+        $form->add(new TextInput('userpassword'));
+        $form->add(new TextInput('confirmpassword'));
+        $form->onSubmit($this, 'onsubmitpass');
         $this->add($form);
     }
-
+    
     //записать  пароль
     public function onsubmitpass($sender)
     {
         $this->setError('');
-
-        if ($this->_userpass == '') {
+        $pass = $sender->userpassword->getText();
+        $confirm = $sender->confirmpassword->getText();
+        
+        if ($pass == '') {
             $this->setError('Введите пароль');
         } else
-        if ($this->_confirm == '') {
+        if ($confirm == '') {
             $this->setError('Подтвердите пароль');
         } else
-        if ($this->_confirm != $this->_userpass) {
+        if ($confirm != $pass) {
             $this->setError('Неверное подтверждение');
         }
 
 
         if (!$this->isError()) {
-            $user = System::getUser();
-            $user->userpass = (\password_hash($this->_userpass, PASSWORD_DEFAULT));
-
-            $user->save();
+            $this->user->userpass = (\password_hash($pass, PASSWORD_DEFAULT));
+            $this->user->save();
         }
-        $this->_confirm = '';
-        $this->_userpass = '';
+        $this->setSuccess('Пароль записан') ;
+        $sender->userpassword->setText('');
+        $sender->confirmpassword->setText('');
+         
     }
 
     //запись  профиля
-    public function onsubmit($sender)
+    public function onsubmitprof($sender)
     {
-
+        $this->user->email = $sender->email->getText();
         if (!$this->isError()) {
-            $user = System::getUser();
-            //$uploaddir = UPLOAD_USERS;
-            // @mkdir($uploaddir) ;
-
-            $user->save();
+            $this->user->save();
+            System::setUser($user);
+            $this->setSuccess('Профиль записан') ;
         }
     }
-
-    public function beforeRender()
-    {
-        parent::beforeRender();
-
-        //$user = System::getUser();
-    }
-
 }

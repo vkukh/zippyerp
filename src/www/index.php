@@ -6,18 +6,33 @@ require_once 'init.php';
 
 try {
 
+       if ($_COOKIE['remember'] && \ZippyERP\System\System::getUser()->user_id == 0) {
+            $arr = explode('_', $_COOKIE['remember']);
+            $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
+            if ($arr[0] > 0 && $arr[1] === md5($arr[0] . $_config['common']['salt'])) {
+                $user = \ZippyERP\System\User::load($arr[0]);
+            }
+
+            if ($user instanceof \ZippyERP\System\User) {
 
 
-    $app = new \Zippy\WebApplication('\ZippyERP\ERP\Pages\Main');
-  
-  
-    
-    
-    
+                \ZippyERP\System\System::setUser($user);
+
+                $_SESSION['user_id'] = $user->user_id; //для  использования  вне  Application
+                $_SESSION['userlogin'] = $user->userlogin; //для  использования  вне  Application
+            }   
+
+        }
+
+      $app = new \Zippy\WebApplication('\ZippyERP\ERP\Pages\Main');
+
       $app->setTemplate("\\ZippyERP\\System\\getTemplate");
       $app->setTemplate("\\ZippyERP\\ERP\\getTemplate");
+      $app->setTemplate("\\ZippyERP\\Shop\\getTemplate");
       
       $app->setRoute("\\ZippyERP\\System\\Route");
+      $app->setRoute("\\ZippyERP\\ERP\\Route");
+      $app->setRoute("\\ZippyERP\\Shop\\Route");
       
     
     

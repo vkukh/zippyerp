@@ -38,7 +38,6 @@ class Item extends \Zippy\Html\PageFragment
         $this->itemdetail->add(new TextInput('editpriceret'));
         $this->itemdetail->add(new DropDownChoice('editmeasure', \ZippyERP\ERP\Helper::getMeasureList()));
         $this->itemdetail->add(new DropDownChoice('edittype', \ZippyERP\ERP\Entity\Item::getTMZList()));
-        $this->itemdetail->add(new DropDownChoice('editgroup', \ZippyERP\ERP\Helper::getItemGroupList()));
         $this->itemdetail->add(new TextInput('editbarcode'));
         $this->itemdetail->add(new TextInput('editcode'));
         $this->itemdetail->add(new TextInput('edituktzed'));
@@ -61,7 +60,6 @@ class Item extends \Zippy\Html\PageFragment
         $this->item->barcode = $this->itemdetail->editbarcode->getText();
         $this->item->description = $this->itemdetail->editdescription->getText();
         $this->item->measure_id = $this->itemdetail->editmeasure->getValue();
-        $this->item->group_id = $this->itemdetail->editgroup->getValue();
         $this->item->item_type = $this->itemdetail->edittype->getValue();
 
         $this->item->Save();
@@ -94,7 +92,6 @@ class Item extends \Zippy\Html\PageFragment
         $this->itemdetail->edituktzed->setText($this->item->uktzed);
         $this->itemdetail->editbarcode->setText($this->item->barcode);
         $this->itemdetail->editmeasure->setValue($this->item->measure_id);
-        $this->itemdetail->editgroup->setValue($this->item->group_id);
         $this->itemdetail->edittype->setValue($this->item->item_type);
 
         $this->setVisible(true);

@@ -9,7 +9,7 @@ use Zippy\Html\Label;
 use Zippy\Html\Link\RedirectLink;
 use Zippy\Html\Panel;
 
-class ABC extends \ZippyERP\System\Pages\Base
+class ABC extends \ZippyERP\ERP\Pages\Base
 {
 
     private $typelist = array();

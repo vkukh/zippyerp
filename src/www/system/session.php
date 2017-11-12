@@ -34,9 +34,12 @@ class Session
      */
     public static function getSession()
     {
-        if (!isset($_SESSION['ZippyERP_session'])) {
-            $_SESSION['ZippyERP_session'] = new Session();
+        if ($_SESSION['ZippyERP_session'] instanceof Session) {
+            
+        } else {
+          $_SESSION['ZippyERP_session'] = new Session();    
         }
+        
         return $_SESSION['ZippyERP_session'];
     }
 

@@ -24,7 +24,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница документа заказ  покупателя
  */
-class CustomerOrder extends \ZippyERP\System\Pages\Base
+class CustomerOrder extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();

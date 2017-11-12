@@ -4,7 +4,7 @@
 <body>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-8">
 
         <table>
             <tr>
@@ -27,37 +27,17 @@
                             <td><b>Роли:</b></td>
                             <td zippy="userroles"></td>
                         </tr>
+                       <tr>
+                            <td><b>Email:</b></td>
+                            <td zippy="email"></td>
+                        </tr>
                         </tbody>
 
                     </table>
 
                 </td>
 
-                <td valign="top" style="padding-left:50px;">
-
-
-                    <form zippy="roleform" method="POST">
-                        Редактирование роли
-                        <table class=" table table-bordered  table-condensed">
-
-
-                            <tbody>
-                            <tr>
-                                <td zippy="rolerow">
-
-                                    <input type="checkbox" name="role" zippy="role" style="float:left;">
-                                    &nbsp;<span zippy="description"></span>
-
-                                </td>
-                            </tr>
-                            </tbody>
-
-                        </table>
-                        <input type="submit" value="Сохранить" class="btn btn-success btn-sm">
-                    </form>
-
-                </td>
-
+                
             </tr>
         </table>
 

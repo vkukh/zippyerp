@@ -106,5 +106,30 @@ class Item extends \ZCL\DB\Entity
             throw new \ZippyERP\System\Exception("Не  найдет товар для  суммового  учета");
         }
     }
+    
+    /**
+    * Возвращает  имя товара с  кодом
+    * 
+    * @param mixed $criteria
+    * @param mixed $orderbyfield
+    * @param mixed $orderbydir
+    * @param mixed $count
+    * @param mixed $offset
+    */
+    public static function findArrayEx($criteria = "", $orderbyfield = null, $orderbydir = null, $count = -1, $offset = -1)
+    {
+        if ($orderbyfield == null) {
+            $orderbyfield = "itemname";
+            $orderbydir = "asc";
+        }
 
+        $entitylist = self::find($criteria, $orderbyfield, $count, $offset);
+
+        $list = array();
+        foreach ($entitylist as $key => $value) {
+           $list[$key] = $value->itemname . ', ' . $value->code;
+        }
+
+        return $list;
+    }
 }

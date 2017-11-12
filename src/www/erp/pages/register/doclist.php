@@ -13,7 +13,7 @@ use Zippy\Html\Panel;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use ZippyERP\ERP\Entity\Doc\Document;
-use ZippyERP\ERP\Filter;
+use ZippyERP\System\Filter;
 use ZippyERP\ERP\Helper as H;
 use Zippy\WebApplication as App;
 use ZippyERP\System\System;
@@ -21,7 +21,7 @@ use ZippyERP\System\System;
 /**
  * журнал  докуметов
  */
-class DocList extends \ZippyERP\System\Pages\Base
+class DocList extends \ZippyERP\ERP\Pages\Base
 {
 
     /**
@@ -216,7 +216,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
         return $docs;
     }
 
-    public function getItem($id)
+     public function getItem($id)
     {
         
     }

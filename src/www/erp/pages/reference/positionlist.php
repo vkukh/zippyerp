@@ -12,7 +12,7 @@ use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Position;
 
-class PositionList extends \ZippyERP\System\Pages\Base
+class PositionList extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_position;

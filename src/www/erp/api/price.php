@@ -5,7 +5,7 @@ namespace ZippyERP\ERP\API;
 /**
  * Класс  для  экспорта-импорта  прайсов
  */
-class Price extends \Zippy\RestFull   
+class Price extends \ZippyERP\System\RestFul    
 {
 
  

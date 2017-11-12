@@ -15,10 +15,10 @@ abstract class RestFul {
        if ($_SERVER["REQUEST_METHOD"] == "POST"){
            $this->post($_POST["data"])  ;
        };
-       if ($_SERVER["REQUEST_METHOD"] == "POST"){
+       if ($_SERVER["REQUEST_METHOD"] == "DELETE"){
            $this->delete($id)  ;
        };
-       if ($_SERVER["REQUEST_METHOD"] == "POST"){
+       if ($_SERVER["REQUEST_METHOD"] == "PUT"){
            $this->put($id,$_REQUEST["data"])  ;
        };
        

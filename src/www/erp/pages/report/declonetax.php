@@ -7,7 +7,7 @@ use ZippyERP\System\System;
 /**
  * Декларация по единому налогу
  */
-class Declonetax extends \ZippyERP\System\Pages\Base
+class Declonetax extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct()

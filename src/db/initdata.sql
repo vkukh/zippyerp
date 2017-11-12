@@ -4,11 +4,7 @@ SET NAMES 'utf8';
 INSERT INTO `system_users` ( `userlogin`, `userpass`, `createdon`, `active`) VALUES
 ( 'admin', 'admin', '2012-08-23', 1);
 
-INSERT INTO `system_roles` (`role_id`, `rolename`, `description`) VALUES
-(1, 'accounter', 'Бухгалтер');
-
-INSERT INTO `system_user_role` (`role_id`, `user_id`) VALUES
-(1, 2);
+ 
 
 INSERT INTO erp_item_measures(measure_id, measure_name, measure_code) VALUES(1, 'шт.', '2009');
 INSERT INTO erp_item_measures(measure_id, measure_name, measure_code) VALUES(2, 'кг', '0301');
@@ -26,8 +22,8 @@ INSERT INTO `system_options` (`optname`, `optvalue`) VALUES('common', 'a:6:{s:10
 INSERT INTO `system_options` (`optname`, `optvalue`) VALUES('tax', 'a:9:{s:9:"minsalary";s:4:"1378";s:3:"nsl";s:3:"689";s:6:"minnsl";s:4:"1930";s:3:"nds";s:2:"20";s:6:"onetax";s:2:"10";s:6:"ecbfot";s:2:"22";s:6:"ecbinv";s:4:"8.41";s:5:"taxfl";s:2:"18";s:8:"military";s:3:"1.5";}');
 
  -- Суммовой учет
-INSERT INTO `erp_item` (`item_id`, `itemname`, `description`, `measure_id`, `group_id`, `detail`, `item_code`, `item_type`) 
-VALUES(1, 'Суммовой учет', NULL, '1', NULL, '1', NULL, 6);
+INSERT INTO `erp_item` (`item_id`, `itemname`, `description`, `measure_id`,  `detail`, `item_code`, `item_type`) 
+VALUES(1, 'Суммовой учет', NULL,   NULL, '1', NULL, 6);
 
 -- план счетов
  INSERT INTO `erp_account_plan` (`acc_code`, `acc_name`, `acc_pid`) VALUES(20, 'Виробничі запаси', 0);
@@ -126,7 +122,6 @@ INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, 
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(50, 3, 'Реестр  НН', 'TaxInvoiceList', '', '', 0);
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(51, 1, 'Акт выполненных работ', 'ServiceAct', 'Продажи', 'акт о  выполнении работ/услуг нашей фирмой', 0);
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(52, 1, 'Оказанные  услуги', 'ServiceIncome', 'Закупки', 'Акт о  выполнении  услуг  сторонней  организацией', 0);
-INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(53, 4, 'Группа  Товара', 'GroupItemList', 'Склад', '  Группировка  для  удобства  работы  со списками  и  прайсами', 0);
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(54, 2, 'Финансовый отчет малого предприятия', 'FinancialReportSmall', 'Регламентированные', 'Додаток 1\r\nдо Положення (стандарту) бухгалтерського обліку 25 «Фінансовий звіт суб’єкта малого підприємництва»\r\n', 0);
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(55, 1, 'Финансовые  результаты', 'FinResult', 'Прочее', 'Списание  фин. результатов  на  79  счет', 0);
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(56, 5, 'Расчеты  с  подотчетными  лицами', 'AccountablePayments', '', '', 0);

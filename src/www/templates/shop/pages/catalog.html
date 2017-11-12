@@ -1,0 +1,113 @@
+<html>
+    <body>
+        <div class="row ">    
+            <div class="col-xs-12">    
+                <ol class="breadcrumb" zippy="breadcrumb">
+
+                </ol>
+            </div>
+        </div>
+        <div class="row ">    
+            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 ">    
+
+                <form zippy="sfilter">
+                    <div class="form-group"> 
+                        <label>Поиск</label>  
+                        <input zippy="searchkey" class="form-control">
+                        <div class="form-group  ">
+                            <label>Цена</label> 
+                        </div>  
+                        <div class="input-group  ">
+                            <span class="input-group-addon"  > с</span>
+                            <input pattern="[0-9]+"  type="text" zippy="pricefrom" class="form-control"  style="width:60px;"/>
+                            <span  class="input-group-addon"   >по</span>
+                            <input pattern="[0-9]+" type="text" zippy="priceto" class="form-control"  style="width:60px;"/>
+                        </div>                              
+                    </div>                         
+                    <a href="#manflist" data-toggle="collapse" class="filtertiem" > Призводитель  <span class="caret"></span>  </a>
+                    <div id="manflist" class="collapse">
+                        <div zippy="mlist"> </div>
+                    </div>
+                    <div   zippy="attrlist">
+                        <div zippy="attrdata"></div> 
+                    </div> 
+
+                    <div class="form-group" style="margin-top:10px;">
+                        <input class="btn btn-info btn-sm  " type="submit" value="Применить">&nbsp;<a class="btn btn-default  btn-sm " zippy="sclear">Сброс</a>
+                    </div>
+                </form>
+                <div zippy="cartlistpanel">
+                    <h5><b>Список покупок</b></h5>
+                    <table class="table table-condensed">
+                        <tr zippy="cartlist">
+                            <td zippy="cartname"></td>
+                            <td ><a zippy="cartdel"><i class="fa fa-remove"></i></a></td>
+                        </tr>
+                    </table>
+                    <a href="/?p=/ZippyERP/Shop/Pages/Order">Открыть</a>
+                </div>
+                <div zippy="complistpanel">
+                    <h5><b>Список сравнения</b></h5>
+                    <table class="table table-condensed">
+                        <tr zippy="complist">
+                            <td zippy="compname"></td>
+                            <td ><a zippy="compdel"><i class="fa fa-remove"></i></a></td>
+                        </tr>
+                    </table>                    
+                    <a href="/?p=/ZippyERP/Shop/Pages/Compare">Открыть</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-9  col-lg-10">    
+                <div class="row">  
+                    <div class="col-xs-12 col-sm-8 col-md-9  col-lg-10"> 
+                        <form zippy="sortform" class="navbar-form  ">
+
+                            <div class="form-group">
+                                <label>Сортировать</label>
+                                <select class="form-control" zippy="sortorder" >
+                                    <option value="0">По возрастанию цены</option>
+                                    <option value="1">По уменьшению цены</option>
+                                    <option value="2">По рейтингу</option>
+                                    <option value="3">По количеству отзывав</option>
+                                    <option value="4">По количеству продаж</option>
+                                    <option value="5">По наименованию</option>
+                                </select>
+                            </div> 
+                        </form>                          
+                    </div>  
+                </div>  
+                <div class="row">    
+
+                    <div  class="col-sm-4" zippy="catlist">
+                        <span  zippy="snovelty" style="position:absolute" class="label label-success">Новинка</span>
+                        <span  zippy="stopsaled" style="position:absolute;left:80px" class="label label-warning">Топ продаж</span>
+                        <a zippy="simage"><img style="width:100%; "/></a> 
+                        <h5><b><a zippy="scatname"></a></b></h5>
+                        <input readonly="readonly"   type="hidden" class="rating"  zippy="srated"   value="0"  data-filled="fa fa-star" data-empty="fa fa-star-o"/>
+                        &nbsp;&nbsp;&nbsp;<strike><b style="color:red" zippy="soldprice"></b></strike>&nbsp;<b zippy="sprice"></b> грн <br>
+                        <a zippy="sbuy" class="btn btn-success btn-xs">Купить</a>
+                        <p zippy="sshortdesc"></p>
+                    </div>
+                    <div zippy="pag" class="col-xs-12">    
+
+                    </div>                
+                </div>                
+
+                <div class="row" zippy="recentlyp">    
+
+                    <h4>Недавно просмотренные</h4>
+                    <div class="col-xs-12 col-sm-3  "  zippy="rlist">                        
+                        <a zippy="rimage" ><img style="width:100px;"></a>
+                        <h5 ><a zippy="rname"></a> </h5>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('.rating').rating();
+            });
+        </script>        
+    </body>
+</html>

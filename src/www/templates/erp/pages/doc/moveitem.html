@@ -6,7 +6,7 @@
 
 
 <form zippy="docform">
-    <h4> Перемещение на склад</h4>
+    <h3> Перемещение на склад</h3>
     <div class="row">
         <div class="col-xs-3">
             <div class="form-group">
@@ -39,7 +39,7 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <table class="ctable">
+            <table class="table table-condensed">
                 <tr>
                     <th>Наименование</th>
                     <th width="50">Ед.изм.</th>
@@ -84,12 +84,14 @@
             </div>
             <div class="form-group">
                 <label for="edititem" class="  control-label">Наименование</label>
-                <div>
-                    <input type="search" class="form-control" zippy="edititem" required="required"
-                           placeholder="Начните ввод названия">
+               
+                    <select   class="form-control select2 " zippy="edititem"  >
+                    <option value="0">Выберите ТМЦ</option>
+                    </select>
+                    
                     Наличие <span zippy="qtystock"></span>
 
-                </div>
+               
             </div>
             <div class="form-group">
                 <label for="editquantity" class="  control-label">Количество</label>

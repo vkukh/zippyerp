@@ -18,7 +18,7 @@
 <body>
 <div class="row">
     <div class="col-xs-12">
-        <h4> Авансовый отчет</h4>
+        <h3> Авансовый отчет</h3>
         <form zippy="docform">
             <div class="row">
                 <div class="col-xs-4">
@@ -101,9 +101,9 @@
             <a zippy="addrow">Добавить позицию</a>
             <p>&nbsp;</p>
             <p>
-                <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-xs">
-                <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default btn-xs">
-                &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default btn-xs">
+                <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default btn-sm">
+                <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default btn-sm">
+                &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default btn-sm">
 
             </p>
 
@@ -115,10 +115,9 @@
 
                 <div class="form-group">
                     <label for="editname">Наименование </label>
-                    <input placeholder="Начните вводить наименвание..." class="form-control" zippy="edititem">
-
-                    <!--<a style="font-size:16px;position:relative; left: 105%;;top:-25px;" zippy="additem"><i title="Создать и  добавить  в справочник" zippy class="fa fa-plus-circle "></i> </a>-->
-
+                    <select class="form-control select2" zippy="edititem">
+                        <option id="0">Выбрать</option>
+                    </select>
 
                 </div>
 

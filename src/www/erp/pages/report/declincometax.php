@@ -7,7 +7,7 @@ use ZippyERP\System\System;
 /**
  * Декларация по налогу на прибыль
  */
-class Declincometax extends \ZippyERP\System\Pages\Base
+class Declincometax extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct()

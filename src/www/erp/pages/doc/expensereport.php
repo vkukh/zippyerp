@@ -24,7 +24,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  ввода  авансового отчета
  */
-class ExpenseReport extends \ZippyERP\System\Pages\Base
+class ExpenseReport extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();
@@ -54,7 +54,7 @@ class ExpenseReport extends \ZippyERP\System\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
 
 
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, 'OnAutoItem');
+        $this->editdetail->add(new DropDownChoice('edititem',Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_SERVICE . " and item_type <>" . Item::ITEM_TYPE_RETSUM,'itemname')));
 
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
@@ -62,8 +62,7 @@ class ExpenseReport extends \ZippyERP\System\Pages\Base
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('saverow'))->onClick($this, 'saverowOnClick');
-        // $this->editdetail->add(new SubmitLink('additem'))->onClick($this, 'addItemOnClick');
-
+    
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
@@ -141,8 +140,7 @@ class ExpenseReport extends \ZippyERP\System\Pages\Base
         $this->editdetail->editquantity->setText($item->quantity / 1000);
         $this->editdetail->editprice->setText(H::fm($item->price));
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
-        $this->editdetail->edititem->setKey($item->item_id);
-        $this->editdetail->edititem->setText($item->itemname);
+        $this->editdetail->edititem->setValue($item->item_id);
         $this->_rowid = $item->item_id;
     }
 
@@ -166,7 +164,7 @@ class ExpenseReport extends \ZippyERP\System\Pages\Base
     {
 
 
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран ТМЦ");
             return;
@@ -185,7 +183,7 @@ class ExpenseReport extends \ZippyERP\System\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edititem->setValue(0);
-        $this->editdetail->editquantity->setText("1");
+        
 
         $this->editdetail->editprice->setText("");
         $this->editdetail->editpricends->setText("");
@@ -321,11 +319,7 @@ class ExpenseReport extends \ZippyERP\System\Pages\Base
         App::RedirectBack();
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getText();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <>" . Item::ITEM_TYPE_SERVICE . " and item_type <>" . Item::ITEM_TYPE_RETSUM);
-    }
+
 
     public function addItemOnClick($sender)
     {
@@ -342,8 +336,8 @@ class ExpenseReport extends \ZippyERP\System\Pages\Base
 
         $item = $this->itemdetail->getData();
 
-        $this->editdetail->edititem->setKey($item->item_id);
-        $this->editdetail->edititem->setText($item->itemname);
+        $this->editdetail->edititem->setValue($item->item_id);
+     
     }
 
     public function OnExpenseList($sender)

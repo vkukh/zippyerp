@@ -9,7 +9,7 @@ use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextInput;
 
-class AnalyticsView extends \ZippyERP\System\Pages\Base
+class AnalyticsView extends \ZippyERP\ERP\Pages\Base
 {
 
     public $datalist;
@@ -85,11 +85,11 @@ class AnalyticsView extends \ZippyERP\System\Pages\Base
         $this->datalist->removeAllColumns();
 
         if ($this->filter->viewtype->getValue() == 1) {
-            if ($this->filter->chaccount->isChecked())
-                $this->datalist->addColumn(new Column('account_id', 'Счет', true, true));
             $this->datalist->addColumn(new Column('document_date', 'Док. дата', true, true, true));
             $this->datalist->addColumn(new Column('document_number', 'Док. номер', true, true, true));
             $this->datalist->addColumn(new Column('meta_desc', 'Док. тип', true, true, true));
+            if ($this->filter->chaccount->isChecked())
+                $this->datalist->addColumn(new Column('account_id', 'Счет', true, true));
             if ($this->filter->chcustomer->isChecked())
                 $this->datalist->addColumn(new Column('customer_name', 'Контрагент', true, true));
             if ($this->filter->chitems->isChecked()) {

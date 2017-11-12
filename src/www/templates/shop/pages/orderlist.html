@@ -1,0 +1,72 @@
+<html >
+
+    <body>
+        <div class="row">
+            <div class="col-xs-12  col-sm-10 col-md-8">
+                <h3>Список  заказов </h3>
+                <table class="table   table-condenced"   >
+                    <tr  >
+                        <th  >№</th>
+                        <th  >Создан</th>
+                        <th  >Статус</th>
+                        <th  >Сумма</th>
+                        <th  >Заметка</th>
+                        <th  > </th>
+                    </tr>
+                    <tr  zippy="orderlist" >
+
+                        <td zippy="order_id"></td>
+                        <td zippy="created"></td>
+                        <td  >
+                            <span zippy="statusnew" class="label label-primary">Новый</span>
+                            <span zippy="statusinprocess"  class="label label-warning">В обработке</span>
+                            <span zippy="statusclosed"  class="label label-success ">Выполнен</span>
+                            <span zippy="statuscancel"  class="label label-default  ">Отменен</span>
+                        </td>
+                        <td zippy="amount" align="right"></td>
+                        <td zippy="comment"></td>
+
+
+                        <td  ><a zippy="edit"><i class="fa fa-edit"></i></a></td>
+                    </tr>
+                </table>
+                <div zippy="pag"></div>
+            </div>  
+        </div>  
+
+        <div class="row" zippy="details">
+            <div class="col-xs-10    col-md-6 col-lg-3" > 
+
+                <h4>Заказанные товары:</h4>
+                <table class="table table-stripped  " >
+                    <tr>
+                        <th>Код</th>
+                        <th>Товар</th>
+                        <th>Кол.</th>
+                        <th>Цена</th>
+                    </tr>
+                    <tr zippy="orderdetaillist">
+                        <td zippy="code"></td> 
+                        <td ><a zippy="name"></a></td>
+                        <td zippy="qty"></td> 
+                        <td zippy="price"></td> 
+
+                    </tr>
+                </table>
+                <b>Комментарий:</b>
+                <div zippy="contacts"></div>
+                <form zippy="orderform">
+                    <div class="form-group">
+                        <label>Заметка</label> 
+                        <textarea class="form-control" zippy="comment" style="width:300px"></textarea>
+                    </div> 
+                    <div class="form-group">
+                        <input zippy="inprocess" type="submit"  value="В обработку" class="btn   btn-warning">&nbsp;&nbsp;
+                        <input type="submit"  zippy="close" value="Выполнен" class="btn   btn-success">&nbsp;&nbsp;
+                        <input type="submit"  zippy="cancel" value="Отменить" class="btn   btn-default">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html></h4>

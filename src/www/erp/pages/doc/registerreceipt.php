@@ -24,7 +24,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  ввода  товарного чека
  */
-class RegisterReceipt extends \ZippyERP\System\Pages\Base
+class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_tovarlist = array();

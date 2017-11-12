@@ -9,10 +9,10 @@ use Zippy\Html\Form\TextInput;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
-use ZippyERP\ERP\Entity\GroupItem;
+ 
 use ZippyERP\ERP\Entity\Item;
 
-class ItemList extends \ZippyERP\System\Pages\Base
+class ItemList extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_item;
@@ -23,8 +23,9 @@ class ItemList extends \ZippyERP\System\Pages\Base
 
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new TextInput('searchkey'));
-        $this->filter->add(new DropDownChoice('group', GroupItem::getList()));
+        $this->filter->add(new DropDownChoice('stype', \ZippyERP\ERP\Entity\Item::getTMZList()))->setValue(Item::ITEM_TYPE_STUFF);
 
+    
 
         $this->add(new Panel('itemtable'))->setVisible(true);
         $this->itemtable->add(new DataView('itemlist', new ItemDataSource($this), $this, 'itemlistOnRow'))->Reload();
@@ -41,8 +42,8 @@ class ItemList extends \ZippyERP\System\Pages\Base
         $item = $row->getDataItem();
         $row->add(new Label('itemname', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
-        $row->add(new Label('typename', $item->typename));
-        $row->add(new Label('group_name', $item->group_name));
+      
+        $row->add(new Label('code', $item->code));
         $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
@@ -97,11 +98,10 @@ class ItemDataSource implements \Zippy\Interfaces\DataSource
 
     private function getWhere()
     {
-        $where = "item_type <>" . Item::ITEM_TYPE_RETSUM . " and item_type != " . Item::ITEM_TYPE_OS;
+        
         $form = $this->page->filter;
-        if ($form->group->getValue() > 0) {
-            $where = $where . " and group_id=" . $form->group->getValue();
-        }
+        $where = "item_type   = " . $form->stype->getValue();
+        
         if (strlen($form->searchkey->getText()) > 0) {
             $where = $where . " and (itemname like " . Item::qstr('%' . $form->searchkey->getText() . '%') . " or description like " . Item::qstr('%' . $form->searchkey->getText() . '%') . " )  ";
         }

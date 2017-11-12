@@ -21,48 +21,18 @@ $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
 //Параметры   соединения  с  БД
 \ZDB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
 
- 
+; 
 
-//подключение  ядра системмы
+//подключение  ядра и модулей системмы
 require_once _ROOT . 'system/start.inc.php';
 require_once _ROOT . 'erp/start.inc.php';
+require_once _ROOT . 'shop/start.inc.php';
 
-
-//загружаем  модули
-$modules = array();
-/*
-  $modulespath = _ROOT . 'modules/';
-  if ($handle = @opendir($modulespath)) {
-  while (false !== ($file = readdir($handle))) {
-  if (is_dir($modulespath . $file) && strlen($file) > 2) {
-  $startfile = $modulespath . $file . '/start.inc.php';
-  if(file_exists($startfile)){
-  $modules[] = $file;
-  require_once $startfile;
-  }
-
-  }
-  }
-  closedir($handle);
-  }
- */
+ 
 
 session_start();
 
-//подключаем  локализацию
-//$lang = \ZippyERP\System\System::getLang();
-//require_once _ZIPPY ."lang/{$lang}.php";
-
-/*
-  foreach ($modules as $module) {
-  $file = $modulespath .$module  ."/lang/{$lang}.php";
-  if(file_exists($file)){
-  require_once $file;
-  }
-
-  }
- */
-
+ 
 // логгер
 $logger = new \Monolog\Logger("main");
 $dateFormat = "Y n j, g:i a";

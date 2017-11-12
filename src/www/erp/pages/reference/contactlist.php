@@ -11,7 +11,7 @@ use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Contact;
 
-class ContactList extends \ZippyERP\System\Pages\Base
+class ContactList extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_contact;

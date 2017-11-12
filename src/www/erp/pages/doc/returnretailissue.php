@@ -24,7 +24,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  ввода  возвратной розничной  накладной
  */
-class ReturnRetailIssue extends \ZippyERP\System\Pages\Base
+class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_tovarlist = array();

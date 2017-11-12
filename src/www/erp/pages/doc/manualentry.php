@@ -5,7 +5,6 @@ namespace ZippyERP\ERP\Pages\Doc;
 use Zippy\Binding\PropertyBinding as Bind;
 use Zippy\Html\DataList\ArrayDataSource;
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -29,7 +28,7 @@ use Zippy\WebApplication as App;
  * Документ для ручных  операций
  * и  ввода начальных остатков
  */
-class ManualEntry extends \ZippyERP\System\Pages\Base
+class ManualEntry extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_entryarr = array();
@@ -59,7 +58,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         //ТМЦ
         $this->docform->add(new DataView('itemtable', new ArrayDataSource($this, '_itemarr'), $this, 'itemtableOnRow'));
         $this->docform->add(new DropDownChoice('e_storelist', Store::findArray('storename', 'store_type=' . Store::STORE_TYPE_OPT, 'storename')));
-        $this->docform->add(new AutocompleteTextInput('e_itemlist'))->onText($this, "OnAutoItem");
+        $this->docform->add(new DropDownChoice('e_itemlist',Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_SERVICE,'itemname'))) ;
         $this->docform->add(new TextInput('e_quantity'));
         $this->docform->add(new TextInput('e_price'));
         $this->docform->add(new DropDownChoice('e_itemop', new Bind($this, '_acclist')));
@@ -67,13 +66,13 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         //Сотрудники
         $this->docform->add(new DataView('emptable', new ArrayDataSource($this, '_emparr'), $this, 'emptableOnRow'));
         $this->docform->add(new DropDownChoice('e_empop', new Bind($this, '_acclist')));
-        $this->docform->add(new AutocompleteTextInput('e_emplist'))->onText($this, "OnAutoEmp");
+        $this->docform->add(new DropDownChoice('e_emplist',Employee::findArray('fullname', "",'fullname')));
         $this->docform->add(new TextInput('e_empamount'));
         $this->docform->add(new SubmitButton('addempbtn'))->onClick($this, 'addempbtnOnClick');
 
         //контрагенты
         $this->docform->add(new DataView('ctable', new ArrayDataSource($this, '_carr'), $this, 'ctableOnRow'));
-        $this->docform->add(new AutocompleteTextInput('e_сlist'))->onText($this, "OnAutoCont");
+        $this->docform->add(new DropDownChoice('e_сlist',Customer::findArray('customer_name',"","customer_name"))) ;
         $this->docform->add(new TextInput('e_сamount'));
         $this->docform->add(new SubmitButton('addсbtn'))->onClick($this, 'addсbtnOnClick');
         $this->docform->add(new DropDownChoice('e_cop', new Bind($this, '_acclist')));
@@ -87,7 +86,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
 
         //ОС и НМА
         $this->docform->add(new DataView('catable', new ArrayDataSource($this, '_caarr'), $this, 'catableOnRow'));
-        $this->docform->add(new AutocompleteTextInput('e_calist'))->onText($this, "OnAutoCa");
+        $this->docform->add(new DropDownChoice('e_calist',Item::findArray('itemname', "    item_type =" . Item::ITEM_TYPE_OS,'itemname'))) ;
         $this->docform->add(new TextInput('e_caquantity'));
         $this->docform->add(new TextInput('e_caprice'));
         $this->docform->add(new DropDownChoice('e_caop', new Bind($this, '_acclist')));
@@ -176,11 +175,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         }
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <>" . Item::ITEM_TYPE_SERVICE);
-    }
+ 
 
     public function itemtableOnRow($row)
     {
@@ -205,7 +200,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
 
     public function additembtnOnClick($sender)
     {
-        $id = $this->docform->e_itemlist->getKey();
+        $id = $this->docform->e_itemlist->getValue();
         if (isset($this->_itemarr[$id])) {
             $this->setError('Дублирование строки');
             return;
@@ -271,7 +266,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
 
     public function addempbtnOnClick($sender)
     {
-        $id = $this->docform->e_emplist->getKey();
+        $id = $this->docform->e_emplist->getValue();
 
         $emp = Employee::load($id);
 
@@ -291,11 +286,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $this->docform->e_empamount->setText('');
     }
 
-    public function OnAutoEmp($sender)
-    {
-        $text = $sender->getValue();
-        return Employee::findArray('fullname', "fullname like '%{$text}%' ");
-    }
+   
 
     public function ctableOnRow($row)
     {
@@ -317,7 +308,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
 
     public function addсbtnOnClick($sender)
     {
-        $id = $this->docform->e_сlist->getKey();
+        $id = $this->docform->e_сlist->getValue();
         if (isset($this->_carr[$id])) {
             $this->setError('Дублирование строки');
             return;
@@ -328,15 +319,10 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $this->_carr[$id] = $c;
         $this->docform->ctable->Reload();
         $this->docform->e_сamount->setText('0');
-        $this->docform->e_сlist->setKey(0);
-        $this->docform->e_сlist->setText('');
+        $this->docform->e_сlist->setValue(0);
     }
 
-    public function OnAutoCont($sender)
-    {
-        $text = $sender->getValue();
-        return Customer::findArray('customer_name', "customer_name like'%{$text}%' ");
-    }
+
 
     public function ftableOnRow($row)
     {
@@ -371,11 +357,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
         $this->docform->e_famount->setText('');
     }
 
-    public function OnAutoCa($sender)
-    {
-        $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type =" . Item::ITEM_TYPE_OS);
-    }
+
 
     public function catableOnRow($row)
     {
@@ -398,7 +380,7 @@ class ManualEntry extends \ZippyERP\System\Pages\Base
 
     public function addcabtnOnClick($sender)
     {
-        $id = $this->docform->e_calist->getKey();
+        $id = $this->docform->e_calist->getValue();
         if (isset($this->_caarr[$id])) {
             $this->setError('Дублирование строки');
         }

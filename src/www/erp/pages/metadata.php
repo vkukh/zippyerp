@@ -16,7 +16,7 @@ use ZippyERP\ERP\ACL;
 use ZippyERP\System\System;
 use Zippy\WebApplication as App;
 
-class MetaData extends \ZippyERP\System\Pages\Base
+class MetaData extends \ZippyERP\ERP\Pages\Base
 {
 
     private $metadatads;
@@ -195,30 +195,11 @@ class MetaData extends \ZippyERP\System\Pages\Base
     {
         $item = $row->getDataItem();
 
-        $row->add(new Label('rolename', $item->description));
+        $row->add(new Label('rolename', $item->userlogin));
         $row->add(new CheckBox('viewacc', new Bind($item, 'viewacc')));
         $row->add(new CheckBox('editacc', new Bind($item, 'editacc')));
-        $row->add(new CheckBox('deleteacc', new Bind($item, 'deleteacc')));
         $row->add(new CheckBox('execacc', new Bind($item, 'execacc')));
     }
 
-    /*
-      События  жизненного  цикла  страницы, раскоментировать нужное
-      public function beforeRequest(){
-      parent::beforeRequest();
-
-      }
-      public function afterRequest(){
-      parent::afterRequest();
-
-      }
-      public function beforeRender(){
-      parent::beforeRender();
-
-      }
-      public function afterRender(){
-      parent::afterRender();
-
-      }
-     */
+     
 }

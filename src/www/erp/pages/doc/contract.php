@@ -19,7 +19,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница документа Договор
  */
-class Contract extends \ZippyERP\System\Pages\Base
+class Contract extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_doc;

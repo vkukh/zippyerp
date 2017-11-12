@@ -1,6 +1,6 @@
 <?php
 
-namespace ZippyERP\ERP;
+namespace ZippyERP\System;
 
 /**
  *   Класс для  хранения   в сессии  параметров
@@ -39,4 +39,8 @@ class Filter
         return $filter;
     }
 
+    //Сброс  фильтра
+    public function clean(){
+         $this->data = array() ;
+    }
 }

@@ -18,7 +18,7 @@ use ZippyERP\System\System;
 /**
  * Отчет кассовая книга
  */
-class CashBook extends \ZippyERP\System\Pages\Base
+class CashBook extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct()

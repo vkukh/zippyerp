@@ -17,7 +17,7 @@ use ZippyERP\ERP\Entity\CapitalAsset;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Helper as H;
 
-class CapitalAssets extends \ZippyERP\System\Pages\Base
+class CapitalAssets extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_item;

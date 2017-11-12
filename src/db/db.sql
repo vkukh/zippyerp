@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS erp_item (
   itemname varchar(64) DEFAULT NULL,
   description varchar(255) DEFAULT NULL,
   measure_id varchar(32) DEFAULT NULL,
-  group_id int(11) DEFAULT NULL,
+ 
   detail text NOT NULL COMMENT 'цена  для   прайса',
   item_code varchar(16) DEFAULT NULL,
   item_type smallint(6) DEFAULT NULL,
@@ -247,20 +247,7 @@ AVG_ROW_LENGTH = 268
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
---
--- Описание для таблицы erp_item_group
---
-DROP TABLE IF EXISTS erp_item_group;
-CREATE TABLE IF NOT EXISTS erp_item_group (
-  group_id int(11) NOT NULL AUTO_INCREMENT,
-  group_name varchar(255) NOT NULL,
-  PRIMARY KEY (group_id)
-)
-ENGINE = MYISAM
-AUTO_INCREMENT = 12
-AVG_ROW_LENGTH = 28
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
+ 
 
 --
 -- Описание для таблицы erp_item_measures
@@ -323,10 +310,10 @@ DROP TABLE IF EXISTS erp_metadata_access;
 CREATE TABLE IF NOT EXISTS erp_metadata_access (
   metadata_access_id int(11) NOT NULL AUTO_INCREMENT,
   metadata_id int(11) NOT NULL,
-  role_id int(11) NOT NULL,
+  user_id int(11) NOT NULL,
   viewacc tinyint(1) NOT NULL DEFAULT 0,
   editacc tinyint(1) NOT NULL DEFAULT 0,
-  deleteacc tinyint(1) NOT NULL DEFAULT 0,
+
   execacc tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (metadata_access_id)
 )
@@ -516,25 +503,11 @@ AVG_ROW_LENGTH = 258
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
---
--- Описание для таблицы system_roles
---
-DROP TABLE IF EXISTS system_roles;
-CREATE TABLE IF NOT EXISTS system_roles (
-  role_id int(11) NOT NULL AUTO_INCREMENT,
-  rolename varchar(64) NOT NULL,
-  description varchar(255) NOT NULL,
-  PRIMARY KEY (role_id)
-)
-ENGINE = MYISAM
-AUTO_INCREMENT = 2
-AVG_ROW_LENGTH = 40
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
+ 
 --
 -- Описание для таблицы system_session
 --
+/*
 DROP TABLE IF EXISTS system_session;
 CREATE TABLE IF NOT EXISTS system_session (
   sesskey varchar(64) NOT NULL DEFAULT '',
@@ -551,21 +524,8 @@ ENGINE = MYISAM
 AVG_ROW_LENGTH = 91273
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
-
---
--- Описание для таблицы system_user_role
---
-DROP TABLE IF EXISTS system_user_role;
-CREATE TABLE IF NOT EXISTS system_user_role (
-  role_id int(11) NOT NULL,
-  user_id int(11) NOT NULL,
-  UNIQUE INDEX role_id (role_id, user_id)
-)
-ENGINE = MYISAM
-AVG_ROW_LENGTH = 9
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
+*/
+ 
 --
 -- Описание для таблицы system_users
 --
@@ -577,6 +537,11 @@ CREATE TABLE IF NOT EXISTS system_users (
   createdon date NOT NULL,
   active int(1) NOT NULL DEFAULT 0,
   email varchar(255) DEFAULT NULL,
+  username varchar(250)   NULL,
+  homepage varchar(250)   NULL,
+  erpuser tinyint(1) NOT NULL DEFAULT '0',
+  shopuser int(1) NOT NULL DEFAULT '0',
+  acl text NOT NULL,
   PRIMARY KEY (user_id),
   UNIQUE INDEX userlogin (userlogin)
 )
@@ -679,15 +644,13 @@ SELECT
   `t`.`description` AS `description`,
   `t`.`measure_id` AS `measure_id`,
   `m`.`measure_name` AS `measure_name`,
-  `t`.`group_id` AS `group_id`,
-  `g`.`group_name` AS `group_name`,
+ 
   `t`.`item_code` AS `item_code`,
   `t`.`item_type` AS `item_type`
 FROM ((`erp_item` `t`
   JOIN `erp_item_measures` `m`
     ON ((`t`.`measure_id` = `m`.`measure_id`)))
-  LEFT JOIN `erp_item_group` `g`
-    ON ((`t`.`group_id` = `g`.`group_id`)));
+  );
 
 --
 -- Описание для представления erp_message_view
@@ -711,25 +674,21 @@ FROM (`erp_message`
 --
 -- Описание для представления erp_metadata_access_view
 --
-DROP VIEW IF EXISTS erp_metadata_access_view CASCADE;
-CREATE
-VIEW erp_metadata_access_view
-AS
-SELECT
-  `a`.`viewacc` AS `viewacc`,
-  `a`.`editacc` AS `editacc`,
-  `a`.`deleteacc` AS `deleteacc`,
-  `a`.`execacc` AS `execacc`,
-  `r`.`user_id` AS `user_id`,
-  `m`.`meta_type` AS `meta_type`,
-  `m`.`meta_name` AS `meta_name`
-FROM ((`erp_metadata_access` `a`
-  JOIN `system_user_role` `r`
-    ON ((`a`.`role_id` = `r`.`role_id`)))
-  JOIN `erp_metadata` `m`
-    ON ((`a`.`metadata_id` = `m`.`meta_id`)));
+DROP VIEW IF EXISTS erp_metadata_access_view  ;
+CREATE   VIEW `erp_metadata_access_view` AS 
+  select 
+    `a`.`metadata_access_id` AS `metadata_access_id`,
+    `a`.`metadata_id` AS `metadata_id`,
+    `a`.`user_id` AS `user_id`,
+    `a`.`viewacc` AS `viewacc`,
+    `a`.`editacc` AS `editacc`,
+    `a`.`execacc` AS `execacc`,
+    `m`.`meta_type` AS `meta_type`,
+    `m`.`meta_name` AS `meta_name`,
+    `u`.`userlogin` AS `userlogin` 
+  from 
+    ((`erp_metadata_access` `a` join `system_users` `u` on((`a`.`user_id` = `u`.`user_id`))) join `erp_metadata` `m` on((`a`.`metadata_id` = `m`.`meta_id`)));
 
---
 -- Описание для представления erp_staff_employee_view
 --
 DROP VIEW IF EXISTS erp_staff_employee_view CASCADE;
@@ -816,8 +775,7 @@ SELECT
   `erp_store_stock`.`price` AS `price`,
   `erp_store_stock`.`partion` AS `partion`,
   COALESCE(`erp_store_stock`.`closed`, 0) AS `closed`,
-  `erp_item_view`.`item_type` AS `item_type`,
-  `erp_item_view`.`group_id` AS `group_id`
+  `erp_item_view`.`item_type` AS `item_type`
 FROM ((`erp_store_stock`
   JOIN `erp_item_view`
     ON ((`erp_store_stock`.`item_id` = `erp_item_view`.`item_id`)))
@@ -906,4 +864,259 @@ FROM ((((((`erp_account_subconto` `sc`
   LEFT JOIN `erp_stock_view` `st`
     ON ((`sc`.`stock_id` = `st`.`stock_id`)));
 	
+CREATE TABLE IF NOT EXISTS `erp_account_entry_view` (
+`entry_id` int(11)
+,`acc_d` int(11)
+,`acc_c` int(11)
+,`amount` int(11)
+,`document_id` int(11)
+,`document_number` varchar(45)
+,`meta_desc` varchar(255)
+,`meta_name` varchar(255)
+,`document_date` date
+);
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_attributes`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_attributes` (
+  `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
+  `attributename` varchar(64) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `attributetype` tinyint(4) NOT NULL,
+  `valueslist` varchar(255) DEFAULT NULL,
+  `showinlist` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`attribute_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_attributevalues`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_attributevalues` (
+  `attributevalue_id` int(11) NOT NULL AUTO_INCREMENT,
+  `attribute_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `attributevalue` varchar(255) NOT NULL,
+  PRIMARY KEY (`attributevalue_id`),
+  KEY `attribute_id` (`attribute_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_images`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_images` (
+  `image_id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` longblob NOT NULL,
+  `mime` varchar(16) NOT NULL,
+  `thumb` blob NOT NULL,
+  PRIMARY KEY (`image_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_manufacturers`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_manufacturers` (
+  `manufacturer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `manufacturername` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  PRIMARY KEY (`manufacturer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_orderdetails`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_orderdetails` (
+  `orderdetail_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  PRIMARY KEY (`orderdetail_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_orders`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_orders` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `amount` int(11) NOT NULL,
+  `description` text,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `comment` varchar(250) DEFAULT NULL,
+  `created` date NOT NULL,
+  `closed` date DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_productgroups`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_productgroups` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `groupname` varchar(128) NOT NULL,
+  `mpath` varchar(1024) DEFAULT NULL,
+  `image_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_products`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_products` (
+  `product_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL DEFAULT '0',
+  `productname` varchar(255) NOT NULL,
+  `manufacturer_id` int(11) NOT NULL DEFAULT '0',
+  `price` int(11) NOT NULL DEFAULT '0',
+  `image_id` int(11) DEFAULT NULL,
+  `description` text NOT NULL,
+  `fulldescription` text NOT NULL,
+  `old_price` int(11) NOT NULL,
+  `novelty` tinyint(1) NOT NULL,
+  `topsaled` int(1) NOT NULL DEFAULT '0',
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `sef` varchar(64) DEFAULT NULL,
+  `erp_item_id` int(11) NOT NULL,
+  `erp_stock_id` int(11) NOT NULL,
+  `item_code` varchar(255) NOT NULL,
+  `created` date NOT NULL,
+  `partion` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `shop_prod_comments`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_prod_comments` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `author` varchar(64) NOT NULL,
+  `comment` text NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `rating` tinyint(4) NOT NULL DEFAULT '0',
+  `moderated` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`comment_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
+
+CREATE   VIEW `shop_orderdetails_view` AS 
+  select 
+    `od`.`orderdetail_id` AS `orderdetail_id`,
+    `od`.`order_id` AS `order_id`,
+    `od`.`product_id` AS `product_id`,
+    `od`.`quantity` AS `quantity`,
+    `od`.`price` AS `price`,
+    `p`.`productname` AS `productname`,
+    `p`.`group_id` AS `group_id`,
+    `p`.`partion` AS `partion`,
+    `so`.`status` AS `orderstatus` 
+  from 
+    ((`shop_orderdetails` `od` join `shop_products` `p` on((`od`.`product_id` = `p`.`product_id`))) join `shop_orders` `so` on((`so`.`order_id` = `od`.`order_id`)));
+
+-- --------------------------------------------------------
+CREATE  VIEW `shop_orders_view` AS 
+  select 
+    `shop_orders`.`order_id` AS `order_id`,
+    `shop_orders`.`amount` AS `amount`,
+    `shop_orders`.`description` AS `description`,
+    `shop_orders`.`status` AS `status`,
+    `shop_orders`.`comment` AS `comment`,
+    `shop_orders`.`created` AS `created`,
+    `shop_orders`.`closed` AS `closed` 
+  from 
+    `shop_orders`;
+	
+CREATE  VIEW `shop_productgroups_view` AS 
+  select 
+    `g`.`group_id` AS `group_id`,
+    `g`.`parent_id` AS `parent_id`,
+    `g`.`groupname` AS `groupname`,
+    `g`.`mpath` AS `mpath`,
+    `g`.`image_id` AS `image_id`,
+    (
+  select 
+    count(`sg`.`group_id`) AS `cnt` 
+  from 
+    `shop_productgroups` `sg` 
+  where 
+    (`g`.`group_id` = `sg`.`parent_id`)) AS `gcnt`,(
+  select 
+    count(`p`.`product_id`) AS `cnt` 
+  from 
+    `shop_products` `p` 
+  where 
+    (`g`.`group_id` = `p`.`group_id`)) AS `pcnt` 
+  from 
+    `shop_productgroups` `g`;	
+	
+CREATE  VIEW `shop_products_view` AS 
+  select 
+    `p`.`product_id` AS `product_id`,
+    `p`.`group_id` AS `group_id`,
+    `p`.`productname` AS `productname`,
+    `p`.`manufacturer_id` AS `manufacturer_id`,
+    `p`.`price` AS `price`,
+    `p`.`image_id` AS `image_id`,
+    `p`.`description` AS `description`,
+    `p`.`fulldescription` AS `fulldescription`,
+    `p`.`old_price` AS `old_price`,
+    `p`.`topsaled` AS `topsaled`,
+    `p`.`deleted` AS `deleted`,
+    `p`.`sef` AS `sef`,
+    `p`.`erp_item_id` AS `erp_item_id`,
+    `p`.`erp_stock_id` AS `erp_stock_id`,
+    `p`.`item_code` AS `item_code`,
+    `p`.`created` AS `created`,
+    `g`.`groupname` AS `groupname`,
+    `m`.`manufacturername` AS `manufacturername`,
+    coalesce((
+  select 
+    avg(`pr`.`rating`) AS `avg(rating)` 
+  from 
+    `shop_prod_comments` `pr` 
+  where 
+    ((`pr`.`product_id` = `p`.`product_id`) and (`pr`.`rating` > 0))),0) AS `rated`,coalesce((
+  select 
+    count(`pc`.`comment_id`) AS `count(``pc``.``comment_id``)` 
+  from 
+    `shop_prod_comments` `pc` 
+  where 
+    (`pc`.`product_id` = `p`.`product_id`)),0) AS `comments`,(
+  select 
+    coalesce(sum(`erp_account_subconto`.`quantity`),
+    0) AS `cnt` 
+  from 
+    `erp_account_subconto` 
+  where 
+    (`erp_account_subconto`.`stock_id` = `p`.`erp_stock_id`)) AS `cntonstore` 
+  from 
+    ((`shop_products` `p` join `shop_productgroups` `g` on((`p`.`group_id` = `g`.`group_id`))) left join `shop_manufacturers` `m` on((`p`.`manufacturer_id` = `m`.`manufacturer_id`)));	
 	

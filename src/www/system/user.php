@@ -8,12 +8,12 @@ use ZCL\DB\Entity;
  *  Класс  инкапсулирующий   сущность  User
  * @table=system_users
  * @keyfield=user_id
- * @view_=system_users_view
+ 
  */
 class User extends Entity
 {
 
-    private $roles = null;
+     
 
     /**
      * @see Entity
@@ -21,9 +21,12 @@ class User extends Entity
      */
     protected function init()
     {
-        $this->userlogin = "Guest";
+        $this->userlogin = "Гость";
         $this->user_id = 0;
-        $this->registration_date = date('Y-m-d', time());
+        $this->createdon =  time();
+        $this->erprole =  0;
+        $this->shoporders =  0;
+        $this->shopcontent =  0;
     }
 
     /**
@@ -43,6 +46,7 @@ class User extends Entity
     {
         $this->init();
     }
+  
 
     /**
      * @see Entity
@@ -50,7 +54,15 @@ class User extends Entity
      */
     protected function afterLoad()
     {
-        $this->registration_date = strtotime($this->registration_date);
+       $this->createdon = strtotime($this->createdon);
+ 
+   //распаковываем  данные из detail
+        $xml = simplexml_load_string($this->acl);
+        $this->erpacl = (int) ($xml->erpacl[0]);
+        $this->shopcontent = (int) ($xml->shopcontent[0]);
+        $this->shoporders = (int) ($xml->shoporders[0]);
+
+        parent::afterLoad();              
     }
 
     /**
@@ -59,10 +71,15 @@ class User extends Entity
      */
     protected function beforeSave()
     {
-        if ($this->user_id == 0) {
-            //    mkdir(_ROOT .UPLOAD_USERS . $this->userlogin .'/');
-        }
-    }
+          parent::beforeSave();
+        //упаковываем  данные в detail
+        $this->acl = "<detail><erpacl>{$this->erpacl}</erpacl>";
+        $this->acl .= "<shopcontent>{$this->shopcontent}</shopcontent>";
+        $this->acl .= "<shoporders>{$this->shoporders}</shoporders>";
+        $this->acl .= "</detail>";
+            
+        return true;       
+    }  
 
     /**
      * @see Entity
@@ -70,12 +87,8 @@ class User extends Entity
      */
     protected function beforeDelete()
     {
-        if ($objs = glob(_ROOT . UPLOAD_USERS . $this->user_id . "/*")) {
-            foreach ($objs as $obj) {
-                unlink($obj);
-            }
-        }
-        @rmdir(_ROOT . UPLOAD_USERS . $this->userlogin . '/');
+      $conn = \ZDB\DB::getConnect();
+      $conn->Execute("delete from erp_metadata_access where user_id=" . $this->user_id);
     }
 
     /**
@@ -88,25 +101,14 @@ class User extends Entity
         $conn = \ZDB\DB::getConnect();
         return User::getFirst('userlogin = ' . $conn->qstr($login));
     }
-
-    /**
-     * Принадлежность к роли
-     *
-     * @param mixed $rolename
-     */
-    public function hasRole($rolename)
+    
+    public static function getByEmail($email)
     {
-
-        if ($this->roles == null) {
-            $this->roles = array();
-            $_roles = Role::find(' role_id in (select role_id from system_user_role where user_id = ' . $this->user_id . ')');
-
-            foreach ($_roles as $_role) {
-                $this->roles[] = $_role->rolename;
-            }
-        }
-        return @in_array($rolename, $this->roles);
+        $conn = \ZDB\DB::getConnect();
+        return User::getFirst('email = ' . $conn->qstr($email));
     }
+
+ 
 
     /**
      * Возвращает  пользователя   по  хешу
@@ -133,4 +135,5 @@ class User extends Entity
         return $this->user_id;
     }
 
+     
 }

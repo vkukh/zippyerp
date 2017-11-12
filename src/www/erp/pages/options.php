@@ -12,7 +12,7 @@ use Zippy\Html\Form\TextInput;
 use ZippyERP\System\System;
 use Zippy\WebApplication as App;
 
-class Options extends \ZippyERP\System\Pages\Base
+class Options extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct()

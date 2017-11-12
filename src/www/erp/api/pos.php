@@ -5,7 +5,7 @@ namespace ZippyERP\ERP\API;
 /**
  * Класс  для  работы  с  кассовыми  апаратами
  */
-class Pos  extends \Zippy\RestFull   
+class Pos  extends \ZippyERP\System\RestFul   
 {
 
     public function post($xml)
@@ -17,9 +17,7 @@ class Pos  extends \Zippy\RestFull
 
         // todo
         $doc->save();
-
-
-      
+       
         $this->OKAnswer();
     }
 

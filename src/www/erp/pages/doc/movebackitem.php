@@ -23,7 +23,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  ввода возврата  на  склад
  */
-class MoveBackItem extends \ZippyERP\System\Pages\Base
+class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ', 26 => 'Готовая продукция');
@@ -155,7 +155,7 @@ class MoveBackItem extends \ZippyERP\System\Pages\Base
         // $fromstock = Stock::getStock($this->docform->storefrom->getValue(),$stock->item_id,$stock->price,false);
         $stockfrom = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and price={$stock->price} and partion={$stock->partion} and closed <> 1");
 
-        if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET) {
+        if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET || $store->store_type == Store::STORE_TYPE_INET) {
             $this->setError('Товар  с  такой  ценой и партией не найден  в  магазине');
             return;
         }
@@ -258,7 +258,7 @@ class MoveBackItem extends \ZippyERP\System\Pages\Base
         } else {
             //$item = Item::load($stock->item_id);
         }
-        if ($store->store_type == Store::STORE_TYPE_RET) {
+        if ($store->store_type == Store::STORE_TYPE_RET && && $store->store_type == Store::STORE_TYPE_INET) {
             
         }
     }

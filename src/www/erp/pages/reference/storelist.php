@@ -17,7 +17,7 @@ use ZippyERP\ERP\Entity\Stock;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
 
-class StoreList extends \ZippyERP\System\Pages\Base
+class StoreList extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_store = null;

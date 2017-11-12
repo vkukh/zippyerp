@@ -23,7 +23,7 @@ use Zippy\WebApplication as App;
  * Страница  ввода  акта  о  выполненных работах
  * сторонней организацией
  */
-class ServiceIncome extends \ZippyERP\System\Pages\Base
+class ServiceIncome extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();

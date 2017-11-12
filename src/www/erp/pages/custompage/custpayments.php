@@ -13,7 +13,7 @@ use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Helper as H;
 
-class CustPayments extends \ZippyERP\System\Pages\Base
+class CustPayments extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_dlist = array();
@@ -34,7 +34,7 @@ class CustPayments extends \ZippyERP\System\Pages\Base
         $this->doclist->add(new ClickLink('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->doclist->add(new DataView('dlist', new \Zippy\Html\DataList\ArrayDataSource($this, "_dlist"), $this, 'dlistOnRow'));
-        $this->doclist->dlist->setSelectedClass('success');
+       // $this->doclist->dlist->setSelectedClass('success');
         $this->doclist->add(new Label("custname1"));
         $this->add(new Panel('invoicelist'))->setVisible(false);
         $this->invoicelist->add(new ClickLink('backtolist2'))->onClick($this, 'backtolistOnClick');

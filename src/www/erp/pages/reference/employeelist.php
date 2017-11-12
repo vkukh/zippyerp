@@ -20,7 +20,7 @@ use ZippyERP\ERP\Entity\Department;
 use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Entity\Position;
 
-class EmployeeList extends \ZippyERP\System\Pages\Base
+class EmployeeList extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_employee;

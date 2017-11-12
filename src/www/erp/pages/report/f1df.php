@@ -20,7 +20,7 @@ use ZippyERP\System\System;
 /**
  * Отчет форма 1ДФ
  */
-class F1df extends \ZippyERP\System\Pages\Base
+class F1df extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_emplist = array();

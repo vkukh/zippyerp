@@ -78,7 +78,7 @@
             <div class="form-group">
                 <label for="e_acclistc" class="col-xs-2 control-label"> </label>
                 <div class="col-xs-3">
-                    <input zippy="addaccbtn" type="submit" value="Добавить" class="btn btn-default btn-xs">
+                    <input zippy="addaccbtn" type="submit" value="Добавить" class="btn btn-default btn-sm">
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
             </table>
             <a name="a2"></a>
 
-            <div class="form-group row">
+            <div class="form-group  ">
                 <label for="e_itemop" class="col-xs-2 control-label">Счет</label>
                 <div class="col-xs-3">
                     <select class="form-control " zippy="e_itemop">
@@ -115,7 +115,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group  ">
                 <label for="e_storelist" class="col-xs-2 control-label">Склад</label>
                 <div class="col-xs-3">
                     <select class="form-control" zippy="e_storelist">
@@ -123,25 +123,28 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_itemlist" class="col-xs-2 control-label">ТМЦ</label>
                 <div class="col-xs-3">
-                    <input class="form-control" type="text" zippy="e_itemlist" placeholder="Начните вводить">
+                 <select class="form-control select2 " zippy="e_itemlist">
+                        <option value="0">Выбрать</option>
+                    </select>
+
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_quantity" class="col-xs-2 control-label">Количество</label>
                 <div class="col-xs-3">
                     <input class="form-control" type="text" zippy="e_quantity" pattern="[0-9\.]+">
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_price" class="col-xs-2 control-label">Цена</label>
                 <div class="col-xs-3">
                     <input class="form-control" type="text" zippy="e_price" pattern="[0-9\.]+">
                 </div>
             </div>
-            <div class="form-group  row">
+            <div class="form-group ">
                 <label class="col-xs-2 control-label"> </label>
                 <div class="col-xs-3">
                     <input zippy="additembtn" type="submit" value="Добавить" class="btn btn-default  ">
@@ -166,7 +169,7 @@
                     <td><a zippy="delemp"><i class="fa fa-trash"></i></a></td>
                 </tr>
             </table>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_itemop" class="col-xs-2 control-label">Счет</label>
                 <div class="col-xs-3">
                     <select class="form-control " zippy="e_empop">
@@ -174,21 +177,23 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_emplist" class="col-xs-2 control-label">ФИО</label>
                 <div class="col-xs-3">
 
-                    <input class="form-control" type="text" zippy="e_emplist" placeholder="Начните вводить">
+                  <select class="form-control select2 " zippy="e_emplist">
+                        <option value="0">Выбрать</option>
+                    </select>
 
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_empamount" class="col-xs-2 control-label">Сумма</label>
                 <div class="col-xs-3">
                     <input class="form-control " zippy="e_empamount" type="text">
                 </div>
             </div>
-            <div class="form-group  row">
+            <div class="form-group ">
                 <label class="col-xs-2 control-label"> </label>
                 <div class="col-xs-3">
                     <input zippy="addempbtn" type="submit" value="Добавить" class="btn btn-default  ">
@@ -210,7 +215,7 @@
                     <td><a zippy="delс"><i class="fa fa-trash"></i></a></td>
                 </tr>
             </table>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_cop" class="col-xs-2 control-label">Счет</label>
                 <div class="col-xs-3">
                     <select class="form-control " zippy="e_cop">
@@ -219,21 +224,23 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_сlist" class="col-xs-2 control-label">Наименование</label>
                 <div class="col-xs-3">
 
-                    <input class="form-control" type="text" zippy="e_сlist" placeholder="Начните вводить">
-
+                   <select class="form-control select2 " zippy="e_сlist">
+                        <option value="0">Выбрать</option>
+                    </select>
+ 
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_сamount" class="col-xs-2 control-label">Сумма</label>
                 <div class="col-xs-3">
                     <input class="form-control " zippy="e_сamount" type="text">
                 </div>
             </div>
-            <div class="form-group  row">
+            <div class="form-group ">
                 <label class="col-xs-2 control-label"> </label>
                 <div class="col-xs-3">
                     <input zippy="addсbtn" type="submit" value="Добавить" class="btn btn-default  ">
@@ -256,7 +263,7 @@
                     <td><a zippy="delf"><i class="fa fa-trash"></i></a></td>
                 </tr>
             </table>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_foper" class="col-xs-2 control-label">Счет</label>
                 <div class="col-xs-3">
                     <select class="form-control " zippy="e_foper">
@@ -264,19 +271,19 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_flist" class="col-xs-2 control-label">Денежный счет</label>
                 <div class="col-xs-3">
                     <select class="form-control " zippy="e_flist"></select>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_famount" class="col-xs-2 control-label">Сумма</label>
                 <div class="col-xs-3">
                     <input class="form-control " zippy="e_famount" type="text">
                 </div>
             </div>
-            <div class="form-group  row">
+            <div class="form-group ">
                 <label class="col-xs-2 control-label"> </label>
                 <div class="col-xs-3">
                     <input zippy="addfbtn" type="submit" value="Добавить" class="btn btn-default  ">
@@ -306,7 +313,7 @@
             </table>
             <a name="a2"></a>
 
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_caop" class="col-xs-2 control-label">Счет</label>
                 <div class="col-xs-3">
                     <select class="form-control " zippy="e_caop">
@@ -315,25 +322,27 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_calist" class="col-xs-2 control-label">ТМЦ</label>
                 <div class="col-xs-3">
-                    <input class="form-control" type="text" zippy="e_calist" placeholder="Начните вводить">
+                    <select class="form-control select2" zippy="e_calist">
+                        <option value="0">Выбрать</option>
+                    </select>                    
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_caquantity" class="col-xs-2 control-label">Количество</label>
                 <div class="col-xs-3">
                     <input class="form-control" type="text" zippy="e_caquantity" pattern="[0-9\.]+">
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="e_caprice" class="col-xs-2 control-label">Цена</label>
                 <div class="col-xs-3">
                     <input class="form-control" type="text" zippy="e_caprice" pattern="[0-9\.]+">
                 </div>
             </div>
-            <div class="form-group  row">
+            <div class="form-group ">
                 <label class="col-xs-2 control-label"> </label>
                 <div class="col-xs-3">
                     <input zippy="addcabtn" type="submit" value="Добавить" class="btn btn-default  ">
@@ -346,7 +355,7 @@
     </div>
 
 
-    <div class="form-group  row">
+    <div class="form-group ">
         <hr style="border: solid 1px #aaa;">
 
 

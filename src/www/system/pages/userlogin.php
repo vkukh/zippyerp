@@ -53,10 +53,7 @@ class UserLogin extends \Zippy\Html\WebPage
                     setcookie("remember", $user->user_id . '_' . md5($user->user_id . $_config['common']['salt']), time() + 60 * 60 * 24 * 30);
                 }
 
-                @mkdir(_ROOT . UPLOAD_USERS . $user->user_id);
-                \ZippyERP\System\Util::removeDirRec(_ROOT . UPLOAD_USERS . $user->user_id . '/tmp');
-                @mkdir(_ROOT . UPLOAD_USERS . $user->user_id . '/tmp');
-
+                 
                 App::RedirectHome();
             } else {
                 $this->setError('Неверный  логин');

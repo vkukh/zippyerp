@@ -1,0 +1,330 @@
+<?php
+
+namespace ZippyERP\Shop\Pages;
+
+use \Zippy\Html\Panel;
+use \Zippy\Html\Label;
+use \Zippy\Binding\PropertyBinding as Bind;
+use \Zippy\Html\Form\Form;
+use \Zippy\Html\Form\TextInput;
+use \Zippy\Html\Form\TextArea;
+use \Zippy\Html\Form\CheckBox;
+use \Zippy\Html\Link\SubmitLink;
+use \Zippy\Html\Link\ClickLink;
+use \ZCL\BT\Tree;
+use \ZippyERP\Shop\Entity\Product;
+use \ZippyERP\Shop\Entity\ProductGroup;
+use \ZippyERP\Shop\Entity\ProductAttribute;
+use \ZippyERP\Shop\Helper;
+
+class GroupList extends \ZippyERP\Shop\Pages\Base
+{
+
+    private $group = null, $rootgroup;
+    public $attrlist = array();
+
+    public function __construct() {
+        parent::__construct();
+
+
+
+        $tree = $this->add(new Tree("tree"));
+        $tree->onSelectNode($this, "onTree");
+
+        $this->ReloadTree();
+
+        $form = $this->add(new Form('newgroupform'));
+        $form->add(new TextInput('newgroupname'));
+        $form->add(new SubmitLink('newgroup'))->onClick($this, 'OnNewGroup');
+
+        $form = $this->add(new Form('groupform'));
+
+
+        $form->add(new TextInput('groupname'));
+        $form->add(new SubmitLink('renamegroup'))->onClick($this, 'OnRenameGroup');
+        $form->add(new SubmitLink('delgroup'))->onClick($this, 'OnDelGroup');
+        $form->add(new SubmitLink('savegroup'))->onClick($this, 'OnSavePhoto');
+        $form->add(new \Zippy\Html\Form\File('photo'));
+        $form->add(new \Zippy\Html\Image('group_image', ''));
+
+        $attrpanel = $this->add(new Panel('attrpanel'));
+        $attrpanel->add(new \Zippy\Html\DataList\DataView('attritem', new \Zippy\Html\DataList\ArrayDataSource(new Bind($this, 'attrlist')), $this, 'OnAddRow'));
+
+        $this->UpdateAttrList();
+
+        $attrpanel->add(new ClickLink('addattr'))->onClick($this, 'OnAddAttribute');
+        $form = $attrpanel->add(new Form('attreditform'));
+        $form->setVisible(false);
+        $form->onSubmit($this, 'OnSaveAttribute');
+        $form->add(new TextInput('attrname'));
+        $form->add(new TextInput('attrid'));
+        $form->add(new \Zippy\Html\Form\DropDownChoice('attrtype', Helper::getAttributeTypes()))->onChange($this, 'OnAttrType');
+        $form->add(new Label('attrtypename'));
+        $form->add(new CheckBox('showinlist'));
+
+        $form->add(new Panel('attrvaluespanel'));
+        $form->attrvaluespanel->add(new TextArea('attrvalues'));
+        $form->attrvaluespanel->setVisible(false);
+
+        $form->add(new Panel('meashurepanel'));
+        $form->meashurepanel->add(new TextInput('meashure'));
+        $form->meashurepanel->setVisible(false);
+    }
+
+    //загрузить дерево
+    public function ReloadTree() {
+
+        $this->tree->removeNodes();
+
+        $this->rootgroup = new ProductGroup();
+        $this->rootgroup->group_id = PHP_INT_MAX;
+        $this->rootgroup->groupname = "//";
+
+        $root = new \ZCL\BT\TreeNode("//", PHP_INT_MAX);
+        $this->tree->addNode($root);
+
+        $itemlist = ProductGroup::find("", "mpath,groupname");
+        $nodelist = array();
+
+        foreach ($itemlist as $item) {
+            $node = new \ZCL\BT\TreeNode($item->groupname, $item->group_id);
+            $parentnode = @$nodelist[$item->parent_id];
+            if ($item->parent_id == 0)
+                $parentnode = $root;
+
+            $this->tree->addNode($node, $parentnode);
+
+            $nodelist[$item->group_id] = $node;
+        }
+    }
+
+    //клик по  узлу
+    public function onTree($sender, $id) {
+        $nodeid = $this->tree->selectedNodeId();
+        if ($nodeid == -1) {
+            $this->group = null;
+            return;
+        }
+        if ($nodeid == -2) {
+            $this->group = $this->rootgroup;
+            return;
+        }
+        $this->group = ProductGroup::load($nodeid);
+        $this->groupform->groupname->setText($this->group->groupname);
+
+        $this->groupform->group_image->setUrl('/assets/images/noimage.jpg');
+        if ($this->group->image_id > 0) {
+            $this->groupform->group_image->setUrl('/simage/' . $this->group->image_id);
+        }
+        $this->UpdateAttrList();
+    }
+
+    public function OnNewGroup($sender) {
+        $this->group = new ProductGroup();
+        $this->group->groupname = $this->newgroupform->newgroupname->getText();
+        $this->group->parent_id = $this->tree->selectedNodeId();
+        if ($this->group->parent_id == $this->rootgroup->group_id) {
+            $this->group->parent_id = 0;
+        } else {
+            $pcnt = Product::findCnt("group_id=" . $this->group->parent_id);
+            if ($pcnt > 0) {
+                $this->setError('Нельзя добавить дочернюю в группу с товарами');
+                return;
+            }
+        }
+        $this->group->save();
+
+        $this->newgroupform->newgroupname->setText('');
+        $this->ReloadTree();
+        $this->tree->selectedNodeId($this->group->group_id);
+    }
+
+    public function OnRenameGroup($sender) {
+        $newname = $this->groupform->groupname->getText();
+
+        if ($this->group->groupname == $newname) {
+            return;
+        }
+
+        $this->group->groupname = $newname;
+        $this->group->save();
+        $this->ReloadTree();
+    }
+
+    public function OnDelGroup($sender) {
+        $pcnt = Product::findCnt("group_id=" . $this->group->group_id);
+        if ($pcnt > 0) {
+            $this->setError('Нельзя удалить группу с товарами');
+            return;
+        }
+        ProductGroup::delete($this->group->group_id);
+        $this->group = null;
+        $this->ReloadTree();
+    }
+
+    public function OnSavePhoto($sender) {
+
+
+        $filedata = $this->getComponent('photo')->getFile();
+        if (strlen($filedata["tmp_name"]) > 0) {
+            $imagedata = getimagesize($filedata["tmp_name"]);
+
+            if (preg_match('/(gif|png|jpeg)$/', $imagedata['mime']) == 0) {
+                $this->setError('Неверный формат');
+                return;
+            }
+
+            if ($imagedata[0] * $imagedata[1] > 1000000) {
+                $this->setError('Слишком большой размер изображения');
+                return;
+            }
+            $r = ((double) $imagedata[0]) / $imagedata[1];
+            if ($r > 1.05 || $r < 0.95) {
+                $this->setError('Изображение должно  быть квадратным');
+                return;
+            }
+            $th = new \JBZoo\Image\Image($filedata['tmp_name']);
+            $th = $th->resize(256, 256);
+
+            $image = new \ZippyERP\Shop\Entity\Image();
+            $image->content = file_get_contents($th->getPath());
+            @unlink($th->getPath());
+            $image->mime = $imagedata['mime'];
+            $image->save();
+            $this->group->image_id = $image->image_id;
+            $this->group->save();
+            $this->groupform->group_image->setUrl('/simage/' . $this->group->image_id);
+        }
+    }
+
+    //обновить атрибуты
+    protected function UpdateAttrList() {
+        $this->attrlist = Helper::getProductAttributeListByGroup($this->group->group_id, true);
+        $this->attrpanel->attritem->Reload();
+    }
+
+    public function OnAddRow(\Zippy\Html\DataList\DataRow $datarow) {
+        $item = $datarow->getDataItem();
+        $datarow->add(new Label("itemname", $item->attributename));
+        $attrlist = Helper::getAttributeTypes();
+        $datarow->add(new Label("itemtype", $attrlist[$item->attributetype]));
+        $datarow->add(new Label("itemvalues", $item->valueslist));
+        $datarow->add(new ClickLink("itemdel", $this, 'OnDeleteAtribute'))->setVisible($this->group->group_id == $item->group_id);
+        $datarow->add(new ClickLink("itemedit", $this, 'OnEditAtribute'))->setVisible($this->group->group_id == $item->group_id);
+
+        return $datarow;
+    }
+
+    public function OnAddAttribute($sender) {
+        $form = $this->attrpanel->attreditform;
+        $form->setVisible(true);
+        $form->attrtype->setVisible(true);
+        $form->attrvaluespanel->setVisible(false);
+        $form->attrvaluespanel->attrvalues->setValue('');
+        $form->meashurepanel->setVisible(false);
+        $form->meashurepanel->meashure->setValue('');
+        $form->attrtypename->setVisible(false);
+        $form->attrtype->setValue(1);
+        $form->attrname->setValue("");
+        $form->attrid->setValue("0");
+    }
+
+    //сменить  тип  атрибута
+    public function OnAttrType($sender) {
+
+        $type = $sender->getValue();
+        $this->attrpanel->attreditform->attrvaluespanel->setVisible(false);
+        $this->attrpanel->attreditform->meashurepanel->setVisible(false);
+        if ($type == 2) {
+            $this->attrpanel->attreditform->meashurepanel->setVisible(true);
+        }
+        if ($type == 3 || $type == 4) {
+            $this->attrpanel->attreditform->attrvaluespanel->setVisible(true);
+        }
+    }
+
+    public function OnEditAtribute($sender) {
+        $item = $sender->getOwner()->getDataItem();
+
+        $form = $this->attrpanel->attreditform;
+        $form->setVisible(true);
+        $form->attrid->setValue($item->attribute_id);
+        $form->attrname->setValue($item->attributename);
+        $form->meashurepanel->meashure->setValue($item->valueslist);
+        $form->attrvaluespanel->attrvalues->setValue($item->valueslist);
+
+
+        $form->attrtype->setVisible(false);
+        $form->attrvaluespanel->setVisible(false);
+        $form->meashurepanel->setVisible(false);
+        $form->attrtypename->setVisible(true);
+
+
+        $attrlist = Helper::getAttributeTypes();
+
+        $form->attrtypename->setText($attrlist[$item->attributetype]);
+
+        if ($item->attributetype == 2) {
+            $form->meashurepanel->setVisible(true);
+        }
+        if ($item->attributetype == 3 || $item->attributetype == 4) {
+            $form->attrvaluespanel->setVisible(true);
+        }
+        $form->showinlist->setChecked($item->showinlist > 0);
+    }
+
+    public function OnSaveAttribute($sender) {
+        $form = $this->attrpanel->attreditform;
+        $attrid = $form->attrid->getText();
+
+        if ($attrid == "0") {
+            $attr = new ProductAttribute();
+            $attr->group_id = $this->group->group_id;
+            $attr->attributetype = $form->attrtype->getValue();
+        } else {
+            $attr = ProductAttribute::load($attrid);
+        }
+        $attr->attributename = $form->attrname->getText();
+
+
+        if (strlen($attr->attributename) == 0) {
+            $this->setError("Введите наименование!");
+
+            return;
+        }
+        if ($attr->attributetype == 2) {
+            $attr->valueslist = $form->meashurepanel->meashure->getText();
+        }
+        if ($attr->attributetype == 3 || $attr->attributetype == 4) {
+            $attr->valueslist = $form->attrvaluespanel->attrvalues->getText();
+            $attr->valueslist = preg_replace('/\s+/', " ", $attr->valueslist);
+        }
+        $attr->showinlist = $form->showinlist->isChecked() ? 1 : 0;
+
+        $attr->Save();
+        $this->UpdateAttrList();
+
+        $form->setVisible(false);
+    }
+
+    public function OnDeleteAtribute($sender) {
+        $id = $sender->getOwner()->getDataItem()->attribute_id;
+        ProductAttribute::delete($id);
+        $this->UpdateAttrList();
+        $this->attrpanel->attreditform->setVisible(false);
+    }
+
+    protected function beforeRender() {
+        parent::beforeRender();
+
+        $this->groupform->setVisible(false);
+        $this->attrpanel->setVisible(false);
+        if ($this->group instanceof ProductGroup) {
+            if ($this->group->groupname != "//") {
+                $this->groupform->setVisible(true);
+                $this->attrpanel->setVisible(true);
+            }
+        }
+    }
+
+}

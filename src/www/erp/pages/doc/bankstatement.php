@@ -24,7 +24,7 @@ use Zippy\WebApplication as App;
 /**
  * Банковская   выписка
  */
-class BankStatement extends \ZippyERP\System\Pages\Base
+class BankStatement extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_list = array();

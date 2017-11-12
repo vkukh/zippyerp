@@ -1,0 +1,143 @@
+<html >
+
+    <body >
+        <div  class="row">
+
+
+            <div class="col-xs-12 col-md-10"  >
+                <div class="row"  >
+                    <div class="col-xs-12 col-sm-5"  >  
+
+                        <a zippy="product_image" data-toggle="lightbox" data-gallery="product"   >
+                            <img  style="width:256px; " /></a>
+                    </div>	
+
+
+                    <div class="col-xs-8 col-sm-5"  >
+                        <h4 zippy="productname"  ></h4> 
+                        <h5><b><span zippy="manufacturername"></span></b></h5>
+                        <p   zippy="description" ></p>
+                        <a zippy="addtocompare" >Добавить  к сравнению</a><a zippy="compare" >Сравнить</a>
+                        &nbsp;&nbsp;&nbsp;<a onclick="openComments()" href="return false;" zippy="comments"></a> <input readonly="readonly"   type="hidden" class="rating"  zippy="rated"   value="0"  data-filled="fa fa-star" data-empty="fa fa-star-o"/>
+
+                    </div>
+                    <div class="col-xs-4 col-sm-2"  >
+                        <span  zippy="novelty"  class="label label-success">Новинка</span>
+                        <span  zippy="topsaled" class="label label-warning">Топ продаж</span>
+
+                        <h3 ><strike style="color:red;"  zippy="oldprice"></strike></h3>
+                        <h3 ><b zippy="price"></b> грн</h3>
+                        <br><b zippy="onstore"></b>
+                        <br><a class="btn btn-success " zippy="buy" ></a>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>     <br>
+        <div  class="row">  
+            <div  class="col-xs-12 col-md-10">  
+
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#descriptiontab" data-toggle="tab">Описание</a></li>
+                    <li><a href="#detailstab" data-toggle="tab">Характеристики</a></li>
+                    <li><a id="mt" href="#messagestab" data-toggle="tab">Комментарии</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="row tab-pane active" id="descriptiontab">
+                        <div class="col-xs-12 col-md-8"  >  
+                            <div zippy="fulldescription"  ></div>
+                        </div>
+                    </div>
+                    <div class="row tab-pane" id="detailstab">
+                        <div class="col-xs-12 col-md-8"  >  
+                            <table    class="table table-condensed   table-stripped  ">
+                                <tr  zippy="attributelist">
+                                    <td><span zippy="attrname" ></span></td>
+                                    <td><span zippy="attrvalue" ></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class=" tab-pane" id="messagestab">
+                        <div class="row  " id="messagestab">
+                            <div class="col-xs-12 col-sm-6  col-sm-4 "  >  
+                                <form method="post" zippy="formcomment">
+                                    <a name="commentbegin" ></a>  
+                                    <div class="form-group">
+                                        <label>Имя</label>
+                                        <input class="form-control" type="text" zippy="nick" required="required"  />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Oценка</label>
+                                        <input   type="hidden" class="rating"  zippy="rating"   value="0"  data-filled="fa fa-star" data-empty="fa fa-star-o"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Отзыв</label>
+                                        <textarea class="form-control" type zippy="comment" cols="40" rows="5" required="required" ></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" value="Добавить" class="btn btn-primary "/>
+                                    </div>                         
+
+
+
+
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row "  >
+                            <div class="col-xs-12 col-sm-8  col-sm-6 "  >  
+
+                                <table class="table"  >
+                                    <tr zippy="commentlist">
+                                        <td>
+                                            <b><span  zippy="nick"></span>:</b><br>  
+                                            <span  zippy="created"></span>&nbsp;&nbsp;<input readonly="readonly"   type="hidden" class="rating"  zippy="rate"   value="0"  data-filled="fa fa-star" data-empty="fa fa-star-o"/> 
+                                            <p zippy="comment" ></p>
+
+                                        </td>
+                                        <td>
+                                            {{#isconman}}    
+                                            <a zippy="deletecomment" class="deletecomment" title=" Удалить комментарий "><i style="color:red;" class="fa fa-remove"></i></a>
+                                            {{/isconman}}    
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div zippy="pag"></div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+
+                $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+                    event.preventDefault();
+                    $(this).ekkoLightbox({'alwaysShowClose': true});
+                });
+
+                $('.rating').rating();
+
+
+            });
+
+
+            function openComments() {
+
+                window.location = '#commentbegin';
+                $('#mt').click();
+            }
+
+
+        </script>
+    </body>
+</html>

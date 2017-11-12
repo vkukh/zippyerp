@@ -13,7 +13,7 @@ use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
 
-class ItemActivity extends \ZippyERP\System\Pages\Base
+class ItemActivity extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct()
@@ -24,7 +24,7 @@ class ItemActivity extends \ZippyERP\System\Pages\Base
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', time()));
         $this->filter->add(new DropDownChoice('store', Store::findArray("storename", "")));
-        $this->filter->add(new AutocompleteTextInput('item'))->onText($this, 'OnAutoItem');
+        $this->filter->add(new DropDownChoice('item', Item::findArray('itemname', "  item_type in (" . Item::ITEM_TYPE_RETSUM . "," . Item::ITEM_TYPE_STUFF . ")","itemname"))) ;
 
 
         $this->add(new Panel('detail'))->setVisible(false);
@@ -35,16 +35,13 @@ class ItemActivity extends \ZippyERP\System\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getText();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type in (" . Item::ITEM_TYPE_RETSUM . "," . Item::ITEM_TYPE_STUFF . ")");
-    }
+   
 
     public function OnSubmit($sender)
     {
-        $item = $this->filter->item->getKey();
-        if (Item::load($item) == null) {
+        $itemid = $this->filter->item->getValue();
+        $item = Item::load($itemid);
+        if ($item == null) {
             $this->setError('Не выбран ТМЦ');
             return;
         }
@@ -73,17 +70,17 @@ class ItemActivity extends \ZippyERP\System\Pages\Base
     private function generateReport()
     {
 
-        $store = $this->filter->store->getValue();
-        $item = $this->filter->item->getKey();
-
+        $storeid = $this->filter->store->getValue();
+        $itemid = $this->filter->item->getValue();
+        $item = Item::load($itemid);
         $from = $this->filter->from->getDate();
         $to = $this->filter->to->getDate();
 
         $header = array('datefrom' => date('d.m.Y', $from),
             'dateto' => date('d.m.Y', $to),
-            "store" => Store::load($store)->storename,
-            "item" => Item::load($item)->itemname,
-            "measure" => Item::load($item)->measure_name
+            "store" => Store::load($storeid)->storename,
+            "item" => $item->itemname,
+            "measure" => $item->measure_name
         );
 
 
@@ -113,8 +110,8 @@ class ItemActivity extends \ZippyERP\System\Pages\Base
                erp_account_subconto  sc join erp_store_stock  st on  sc.stock_id = st.stock_id
                join erp_document  dc  on sc.document_id = dc.document_id
 
-              WHERE st.item_id = {$item}
-              AND st.store_id = {$store}
+              WHERE st.item_id = {$itemid}
+              AND st.store_id = {$storeid}
               AND DATE(sc.document_date) >= " . $conn->DBDate($from) . "
               AND DATE(sc.document_date) <= " . $conn->DBDate($to) . "
               GROUP BY st.stock_id,

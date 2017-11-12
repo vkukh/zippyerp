@@ -15,7 +15,7 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Contact;
 use ZippyERP\ERP\Entity\Customer;
 
-class CustomerList extends \ZippyERP\System\Pages\Base
+class CustomerList extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_customer = null;
@@ -25,6 +25,10 @@ class CustomerList extends \ZippyERP\System\Pages\Base
     {
         parent::__construct();
 
+        $this->add(new Form('filter'))->onSubmit($this, 'OnSesrch');
+        $this->filter->add(new TextInput('searchkey'));
+        
+        
         $this->add(new Panel('customertable'))->setVisible(true);
         $this->customertable->add(new DataView('customerlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Customer'), $this, 'customerlistOnRow'))->Reload();
         $this->customertable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
@@ -56,10 +60,18 @@ class CustomerList extends \ZippyERP\System\Pages\Base
         $this->_cds = new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Contact', '');
         $this->editcontacts->add(new DataView('contactlist', $this->_cds, $this, 'contactlistOnRow'));
         $this->editcontacts->add(new Form('newcontactform'))->onSubmit($this, 'OnNewContactform');
-        $this->editcontacts->newcontactform->add(new AutocompleteTextInput('choicecontact'))->onText($this, "onAutoCompleteContact");
+        $this->editcontacts->newcontactform->add(new DropDownChoice('choicecontact',Contact::findArray("fullname", " employee = 0 and customer = 0  ", "fullname" )));
         $this->editcontacts->newcontactform->add(new ClickLink('addnewcontact'))->onClick($this, 'OnAddNewcontact');
     }
-
+    
+    public function OnSesrch($sender)
+    {
+        if (strlen($this->filter->searchkey->getText()) == 0) return;
+        
+        $this->customertable->customerlist->getDataSource()->setWhere("customer_name like  ". Customer::qstr('%' . $this->filter->searchkey->getText().'%') ) ; 
+        $this->customertable->customerlist->Reload();
+    }
+    
     public function customerlistOnRow($row)
     {
         $item = $row->getDataItem();
@@ -235,11 +247,12 @@ class CustomerList extends \ZippyERP\System\Pages\Base
     // выбран  контакт  из  списка  для  добавления  к   контрагенту
     public function OnNewContactform($sender)
     {
-        $contact_id = $sender->choicecontact->getKey();
+        $contact_id = $sender->choicecontact->getValue();
         if ($contact_id > 0) {
             $contact = Contact::load($contact_id);
-            $newc = $this->_customer->contact_id == -1;  //создается   контрагент
+            $newc  =$this->_customer->contact_id == -1;
             if ($newc) {
+                //создается   контрагент
                 $this->_customer->contact_id = $contact_id;
                 $this->_customer->customer_name = "ЧП " . $contact->firstname;
                 $this->_customer->Save();
@@ -254,17 +267,10 @@ class CustomerList extends \ZippyERP\System\Pages\Base
                 $this->customerdetail->editcustomername->setText($this->_customer->customer_name);
                 $this->customertable->customerlist->Reload();
             }
-            $sender->choicecontact->setText('');
-            $sender->choicecontact->setKey(0);
+            $sender->choicecontact->setValue(0);
         }
     }
 
-    public function onAutoCompleteContact($sender)
-    {
-        $text = $sender->getValue();
-
-        return Contact::findArray("fullname", " employee = 0 and customer = 0  and  fullname  like '%{$text}%' ", "fullname", 20);
-    }
 
     public function OnAddNewcontact($sender)
     {

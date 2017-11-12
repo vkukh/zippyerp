@@ -16,7 +16,7 @@ use Zippy\WebApplication as App;
  * Страница  документа списание  торговой наценки
  *
  */
-class TradeMargin extends \ZippyERP\System\Pages\Base
+class TradeMargin extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct($docid = 0)

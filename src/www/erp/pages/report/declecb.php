@@ -7,7 +7,7 @@ use ZippyERP\System\System;
 /**
  * Отчет по единому социальному взносу
  */
-class Declecb extends \ZippyERP\System\Pages\Base
+class Declecb extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct()

@@ -14,7 +14,7 @@ use Zippy\WebApplication as App;
  * Страница  документа финансовые результаты
  *
  */
-class FinResult extends \ZippyERP\System\Pages\Base
+class FinResult extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_doc;

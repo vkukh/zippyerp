@@ -9,7 +9,7 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Helper as H;
 
-class AccountablePayments extends \ZippyERP\System\Pages\Base
+class AccountablePayments extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_dlist = array();
@@ -26,7 +26,7 @@ class AccountablePayments extends \ZippyERP\System\Pages\Base
         $this->doclist->add(new ClickLink('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->doclist->add(new DataView('dlist', new \Zippy\Html\DataList\ArrayDataSource($this, "_dlist"), $this, 'dlistOnRow'));
-        $this->doclist->dlist->setSelectedClass('success');
+        //$this->doclist->dlist->setSelectedClass('success');
         $this->doclist->add(new Label("empname1"));
 
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);

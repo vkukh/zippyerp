@@ -23,7 +23,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  документа инвентаризация
  */
-class Inventory extends \ZippyERP\System\Pages\Base
+class Inventory extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();

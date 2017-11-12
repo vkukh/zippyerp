@@ -15,7 +15,7 @@ use Zippy\WebApplication as App;
  * Страница  документа начсисление амортизации
  *
  */
-class NADeprecation extends \ZippyERP\System\Pages\Base
+class NADeprecation extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_doc;

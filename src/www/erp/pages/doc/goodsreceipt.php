@@ -24,7 +24,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  ввода  приходной  накладной
  */
-class GoodsReceipt extends \ZippyERP\System\Pages\Base
+class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();

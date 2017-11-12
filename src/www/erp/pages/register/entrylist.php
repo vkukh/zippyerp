@@ -9,13 +9,13 @@ use Zippy\Html\Form\Form;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use ZippyERP\ERP\Entity\Entry;
-use ZippyERP\ERP\Filter;
+use ZippyERP\System\Filter;
 use ZippyERP\ERP\Helper as H;
 
 /**
  * Класс  страницы  журнала  проводок
  */
-class EntryList extends \ZippyERP\System\Pages\Base
+class EntryList extends \ZippyERP\ERP\Pages\Base
 {
 
     public function __construct()

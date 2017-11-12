@@ -2,51 +2,91 @@
 
 <body>
 <div class="row">
-    <div class="col-xs-5">
+    
 
-
-        <h4>Пользователи</h4>
+          <div zippy="listpan">
+          <div class="col-xs-8">
+        <h3>Пользователи</h3>
+        <a zippy="addnew" class="btn btn-default btn-sm">Создать</a>
         <table class="table table-bordered table-striped table-condensed">
 
             <thead align="center">
             <tr>
                 <th>Логин</th>
-                <th width="120">Дата рег.</th>
-                <th width="10">&nbsp;</th>
+                <th  >Дата рег.</th>
+           
+                <th  >Email</th>
+                <th width="24">&nbsp;</th>
             </tr>
             </thead>
 
             <tbody>
             <tr zippy="userrow">
                 <td><a zippy="userlogin"></a></td>
-                <td zippy="created" align="center"></td>
+                <td zippy="created" align="center" style="white-space:nowrap"></td>
+           
+                <td zippy="email"  ></td>
+                <td><a zippy="edit"><i class="fa fa-edit"></i></a></td>
                 <td><a zippy="remove"><i class="fa fa-trash"></i></a></td>
             </tr>
             </tbody>
         </table>
-        <a href="/?p=ZippyERP/System/Pages/Registration" class="btn btn-default  "
-           title="Создать  нового  пользователя">Создать</a>
-
+    
     </div>
-    <div class="col-xs-5">
-        <h4>Роли</h4>
-        <table class="table table-bordered table-striped " align="center">
-
-            <thead>
-            <tr>
-                <th width="230">Наименование роли</th>
-                <th>Пользователи</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr zippy="rolerow">
-                <td zippy="description"></td>
-                <td zippy="users"></td>
-            </tr>
-            </tbody>
-
-        </table>
     </div>
+    
+    <div zippy="editpan">
+    <div class="col-xs-4">
+      <h4> Редактирование</h4>   
+        <form zippy="editform" role="form">
+             <div class="form-group">
+                <label for="editlogin">Логин</label>
+                <input class="form-control" zippy="editlogin" required="required">
+            </div>
+             <div class="form-group">
+                <label for="editemail">Email</label>
+                <input class="form-control" zippy="editemail"  >
+            </div>
+             <div class="form-group">
+                <label for="erpacl">Права доступа в ERP</label>
+                <select  class="form-control" zippy="editerpacl">
+                <option value="0">Не  выбрано</option>
+                <option value="1">Полный доступ к бухгалтерии</option>
+                <option value="2">Доступ определяется метаданными</option>
+                <option value="3">Доступ только  к  своим документам</option>
+                </select>
+              </div>  
+              <div class="form-group">
+                            <label for="erpacl">Права доступа в магазине</label>
+ 
+                  <div class="checkbox">
+                <label>
+      <input zippy="editshopcontent" type="checkbox"> Контент менеджер магазина
+    </label>
+    </div>
+    <div class="checkbox">
+    <label>
+      <input zippy="editshoporders" type="checkbox"> Менеджер заказов магазина
+    </label>
+            </div>
+            </div>
+           <div class="form-group">
+           
+                <button type="submit" class="btn btn-default btn-sm ">Сохранить</button>
+                &nbsp; <a zippy="cancel" class="btn btn-default  btn-sm ">Отменить</a>
+          </div>
+            </form> 
+    </div>
+    </div>
+ 
+    </div>
+        <script>
+        function check_remove() {
+
+            return confirm("Удалить  пользователя?")
+
+        }
+
+    </script>
 </body>
 </html>

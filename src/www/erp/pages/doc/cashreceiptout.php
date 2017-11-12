@@ -21,7 +21,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница документа расходный кассовый  ордер
  */
-class CashReceiptOut extends \ZippyERP\System\Pages\Base
+class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_doc;

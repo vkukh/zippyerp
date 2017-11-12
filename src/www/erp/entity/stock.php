@@ -30,8 +30,7 @@ class Stock extends \ZCL\DB\Entity
 
         $list = array();
         foreach ($entitylist as $key => $value) {
-
-            $list[$key] = $value->itemname . ', ' . \ZippyERP\ERP\Helper::fm($value->price);
+           $list[$key] = $value->itemname . ', ' . \ZippyERP\ERP\Helper::fm($value->price);
         }
 
         return $list;
@@ -106,5 +105,6 @@ class Stock extends \ZCL\DB\Entity
         $sql = " select coalesce(sum(case  when  quantity > 0 then quantity else 0 end ),0) as  w,  coalesce(sum(case  when  quantity < 0 then 0-quantity else 0 end ),0) as  r  from erp_account_subconto  where  " . $where;
         return $conn->GetRow($sql);
     }
-
+    
+    
 }

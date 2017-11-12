@@ -11,14 +11,14 @@ use Zippy\Html\Link\ClickLink;
 use ZippyERP\ERP\Entity\Customer;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Doc\SupplierOrder;
-use ZippyERP\ERP\Filter;
+use ZippyERP\System\Filter;
 use ZippyERP\ERP\Helper as H;
 use Zippy\WebApplication as App;
 
 /**
  * журнал  докуметов - заказов  поставщику
  */
-class SupplierOrderList extends \ZippyERP\System\Pages\Base
+class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
 {
 
     /**

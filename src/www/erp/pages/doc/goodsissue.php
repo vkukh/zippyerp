@@ -25,7 +25,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  ввода  расходной  накладной
  */
-class GoodsIssue extends \ZippyERP\System\Pages\Base
+class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_tovarlist = array();

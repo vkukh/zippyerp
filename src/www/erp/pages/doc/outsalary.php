@@ -21,7 +21,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница    выплаита зарплаты
  */
-class OutSalary extends \ZippyERP\System\Pages\Base
+class OutSalary extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_emplist = array();

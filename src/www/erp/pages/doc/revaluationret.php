@@ -22,7 +22,7 @@ use Zippy\WebApplication as App;
 /**
  * Страница  переоценка  в  рознице
  */
-class RevaluationRet extends \ZippyERP\System\Pages\Base
+class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();

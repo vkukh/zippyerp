@@ -87,7 +87,7 @@ class TaxInvoiceList extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->docview->setVisible(true);
         $this->docview->setDoc($item);
-        $this->doclist->setSelectedRow($item->document_id);
+        $this->doclist->setSelectedRow($sender->getOwner());
         $this->doclist->Reload();
     }
 

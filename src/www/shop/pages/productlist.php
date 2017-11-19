@@ -40,7 +40,9 @@ class ProductList extends Base
 
         $op = System::getOptions("shop");
         $this->shop = $op["store"];
-
+        if($this->shop==""){
+            $setError("Не задан склад");
+        }
         $tree = $this->add(new Tree("tree"));
         $tree->onSelectNode($this, "onTree");
 
@@ -131,7 +133,6 @@ class ProductList extends Base
             return;
         }
         $this->group = ProductGroup::load($nodeid);
-        $this->editpanel->editform->egroup->setValue($this->group->group_id);
         if ($this->group instanceof ProductGroup) {
             $ch = $this->group->getChildren();
             $this->listpanel->addnew->setVisible(count($ch) == 0); // Добавляем  товар если  нет  дочерних груп у текущей]   
@@ -165,6 +166,7 @@ class ProductList extends Base
         $this->listpanel->setVisible(false);
         $this->editpanel->editform2->clean();
         $this->editpanel->editform->clean();
+        $this->editpanel->editform->bdelete->setVisible(false);
     }
 
 //выбран товар со склада
@@ -182,6 +184,8 @@ class ProductList extends Base
             return;
         }
         $this->editpanel->editform->edisabled->setVisible(false);
+        $this->editpanel->editform->bdelete->setVisible(false);
+        $this->editpanel->editform->bback->setVisible(true);
 
         $this->editpanel->editform->ename->setText($this->product->productname);
         $this->editpanel->editform->ecode->setText($this->product->item_code);
@@ -195,6 +199,8 @@ class ProductList extends Base
         $this->editpanel->editform->attrlist->Reload();
         $this->editpanel->editform2->setVisible(false);
         $this->editpanel->editform->setVisible(true);
+        $this->editpanel->editform->egroup->setValue($this->group->group_id);
+         
     }
 
 //строка товара
@@ -224,6 +230,8 @@ class ProductList extends Base
         $this->editpanel->editform->edescdet->setText($this->product->fulldescription);
         $this->editpanel->editform->emanuf->setValue($this->product->manufacturer_id);
         $this->editpanel->editform->estock->setValue($this->product->erp_stock_id);
+        $this->editpanel->editform->bdelete->setVisible(true);
+        $this->editpanel->editform->bback->setVisible(false);
 
 
         $this->editpanel->editform->estock->setOptionList(array());
@@ -233,6 +241,8 @@ class ProductList extends Base
         }
         $this->attrlist = $this->product->getAttrList();
         $this->editpanel->editform->attrlist->Reload();
+        $this->editpanel->editform->egroup->setValue($this->group->group_id);
+         
     }
 
 //строка  атрибута
@@ -285,12 +295,12 @@ class ProductList extends Base
             }
 
             $image = new \ZippyERP\Shop\Entity\Image();
-            $image->content = file_get_contents($file['tmp_name']);
+            $image->content =  file_get_contents($file['tmp_name']) ; 
             $image->mime = $imagedata['mime'];
             $th = new \JBZoo\Image\Image($file['tmp_name']);
             $th = $th->resize(256, 256);
             $th->save();
-            $image->thumb = file_get_contents($th->getPath());
+            $image->thumb = $th->getBinary();
 
             $image->save();
             $this->product->image_id = $image->image_id;

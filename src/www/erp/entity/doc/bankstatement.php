@@ -23,6 +23,7 @@ class BankStatement extends Document
     const IN_BACK = 6; //возврат от поставщика
     const OUT_BACK = 7; //возврат покупателю
     const OUT_COMMON = 8; //Общие накладные расходы
+    const OUT_CARD = 9; //Оплата кредиткой
 
     public function generateReport()
     {
@@ -62,6 +63,8 @@ class BankStatement extends Document
 
         foreach ($this->detaildata as $value) {
             if ($value['noentry'] === 'true') //не выполнять проводки
+                continue;
+            if ($value['optype'] == self::CARD) //оплата кредиткой. Проводки в накладной
                 continue;
 
 
@@ -231,6 +234,7 @@ class BankStatement extends Document
         $list[self::IN_BACK] = "Возврат от  поставщика";
         $list[self::OUT_BACK] = "Возврат покупателю";
         $list[self::OUT_COMMON] = "Общие накладные расходы";
+        $list[self::OUT_CARD] = "Оплата кредиткой";
         return $list;
     }
 

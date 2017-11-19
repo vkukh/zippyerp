@@ -46,9 +46,11 @@ class Document extends \ZCL\DB\Entity
     protected function init()
     {
         $this->document_id = 0;
+        $this->state = 0;
         $this->basedoc = '';
         $this->document_number = '';
         $this->created = time();
+        $this->updated = time();
         $this->document_date = time();
         $this->user_id = \ZippyERP\System\System::getUser()->user_id;
         $this->headerdata = array();

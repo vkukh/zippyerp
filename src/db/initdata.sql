@@ -155,5 +155,6 @@ INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, 
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(85, 2, 'Декдарация по единому  налогу (юр.)', 'Declonetaxj', 'Регламентированные', '', 1);
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(86, 2, 'Декларация по  единому  налогу (физ.)', 'Declonetaxf', 'Регламентированные', '', 1);
 INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(87, 2, 'Отчет по единому социальному взносу.', 'Declecb', 'Регламентированные', '', 1);
+INSERT INTO `erp_metadata` (`meta_id`, `meta_type`, `description`, `meta_name`, `menugroup`, `notes`, `disabled`) VALUES(89, 1, 'Накладная инет магазина', 'OnlineIssue', 'Продажи', '', 1);
 
   

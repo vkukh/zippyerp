@@ -45,10 +45,10 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new CheckBox('plan'));
 
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->onChange($this, 'OnChangeStore');
+        $this->docform->add(new DropDownChoice('paytype',array(0=>'Предоплата',1=>'Наличные',2=>'Кредитная карта') ));
         $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoContragent");
         $this->docform->add(new CheckBox('isnds', true))->onChange($this, 'onIsnds');
-        $this->docform->add(new CheckBox('cash'));
-        $this->docform->add(new CheckBox('prepayment'))->setChecked(true);
+ 
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
         $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
 
@@ -80,10 +80,9 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_date->setDate($this->_doc->document_date);
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
+            $this->docform->paytype->setValue($this->_doc->headerdata['paytype']);
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
-            $this->docform->prepayment->setChecked($this->_doc->headerdata['prepayment']);
-            $this->docform->cash->setChecked($this->_doc->headerdata['cash']);
-            $this->docform->customer->setKey($this->_doc->headerdata['customer']);
+             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
             $this->docform->customer->setText($this->_doc->headerdata['customername']);
             $this->docform->contract->setKey($this->_doc->headerdata['contract']);
             $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
@@ -235,9 +234,8 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             'contract' => $this->docform->contract->getKey(),
             'contractnumber' => $this->docform->contract->getText(),
             'isnds' => $this->docform->isnds->isChecked(),
-            'cash' => $this->docform->cash->isChecked(),
+            'paytype' => $this->docform->paytype->getValue(),
             'plan' => $this->docform->plan->isChecked(),
-            'prepayment' => $this->docform->prepayment->isChecked(),
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
@@ -307,10 +305,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
         if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не введен   покупатель");
         }
-        if ($this->docform->cash->isChecked() && $this->docform->prepayment->isChecked()) {
-            $this->setError("Должно  быть либо  предоплата либо  оплата  наличными");
-        }
-        return !$this->isError();
+         return !$this->isError();
     }
 
     public function beforeRender()

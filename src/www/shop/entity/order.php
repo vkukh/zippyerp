@@ -13,15 +13,37 @@ class Order extends \ZCL\DB\Entity
 
     protected function init() {
         $this->order_id = 0;
+        $this->payment = 0;
+        $this->created = time();
+    }
+ 
+
+    protected function beforeSave()
+    {
+        parent::beforeSave();
+        //упаковываем  данные в detail
+        $this->details = "<detail><delivery>{$this->delivery}</delivery>";
+        $this->details .= "<payment>{$this->payment}</payment>";
+        $this->details .= "</detail>";
+
+        return true;
     }
 
-    protected function afterLoad() {
-
+    protected function afterLoad()
+    {
         $this->created = strtotime($this->created);
         $this->closed = strlen($this->closed) > 0 ? strtotime($this->closed) : null;
-    }
+        
+        //распаковываем  данные из detail
+        $xml = simplexml_load_string($this->details);
+        $this->delivery = (int) ($xml->delivery[0]);
+        $this->payment = (int) ($xml->payment[0]);
 
+        parent::afterLoad();
+    }    
+    
     protected function afterSave($update) {
+        parent::afterSave($update);
         if ($update == false)
             return;
         $conn = \ZCL\DB\DB::getConnect();

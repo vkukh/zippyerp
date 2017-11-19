@@ -251,18 +251,21 @@ class Helper
      * @param mixed $contact
      * @param mixed $user_id
      */
-    public static function saveOrder($basket, $contact) {
+    public static function saveOrder($basket, $contact,$delivery) {
         $conn = DB::getConnect();
         $amount = 0;
         foreach ($basket->list as $product) {
             $amount = $amount + $product->price * $product->quantity;
         }
-        $sql = "insert into shop_orders ( created,closed,amount,description) values(now(),null,{$amount}," . $conn->qstr($contact) . ")";
-        $conn->Execute($sql);
-        $order_id = $conn->Insert_ID();
+        $order = new \ZippyERP\Shop\Entity\Order();
+        $order->amount = $amount;
+        $order->description = $contact;
+        $order->delivery = $delivery;
+        $order->save();
+         
 
         foreach ($basket->list as $product) {
-            $sql = "insert into shop_orderdetails (order_id,product_id,quantity,price) values({$order_id},{$product->product_id},{$product->quantity},{$product->price})";
+            $sql = "insert into shop_orderdetails (order_id,product_id,quantity,price) values({$order->order_id},{$product->product_id},{$product->quantity},{$product->price})";
             $conn->Execute($sql);
         }
     }

@@ -60,6 +60,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         $form->add(new TextInput('attrid'));
         $form->add(new \Zippy\Html\Form\DropDownChoice('attrtype', Helper::getAttributeTypes()))->onChange($this, 'OnAttrType');
         $form->add(new Label('attrtypename'));
+        $form->add(new Label('tt'))->setAttribute("title","Атрибут 'Есть/Нет' указывает наличие или  отсутствие какойго либо параметра. Наприме FM-тюнер");
         $form->add(new CheckBox('showinlist'));
 
         $form->add(new Panel('attrvaluespanel'));
@@ -137,6 +138,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         $this->newgroupform->newgroupname->setText('');
         $this->ReloadTree();
         $this->tree->selectedNodeId($this->group->group_id);
+        $this->onTree($this->tree, 0);
     }
 
     public function OnRenameGroup($sender) {
@@ -185,10 +187,11 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
             }
             $th = new \JBZoo\Image\Image($filedata['tmp_name']);
             $th = $th->resize(256, 256);
-
+             
             $image = new \ZippyERP\Shop\Entity\Image();
-            $image->content = file_get_contents($th->getPath());
-            @unlink($th->getPath());
+            $image->content = $th->getBinary();
+             
+   
             $image->mime = $imagedata['mime'];
             $image->save();
             $this->group->image_id = $image->image_id;
@@ -240,6 +243,21 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         }
         if ($type == 3 || $type == 4) {
             $this->attrpanel->attreditform->attrvaluespanel->setVisible(true);
+        }
+        if($type==1){
+             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Есть/Нет' указывает наличие или  отсутствие какойго либо параметра. Наприме FM-тюнер");
+        }
+        if($type==2){
+             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Число' - числовой параметр (наприме  емкость акумулятора). Список для фильтра  отбора  формируется  на основании значений атрибута заданных для товаров.");
+        }
+        if($type==3){
+             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Список' предназначен для набора из  котрог можено выбрать только одно значчение. Например цвет.  Задается списком через запятую.");
+        }
+        if($type==4){
+             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Набор' предназначен для  набора из  которого  можно выбрать несколько значений. Например диапазоны приема сигнала. Задается списком через запятую. ");
+        }
+        if($type==5){
+             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Строка'- просто строковый параметр (например тип процессора). Обычно не участвоет в фильтре. ");
         }
     }
 

@@ -7,6 +7,7 @@ use \Zippy\Html\Image;
 use \Zippy\Html\Form\Form;
 use \Zippy\Html\Form\TextInput;
 use \Zippy\Html\Form\TextArea;
+use \Zippy\Html\Form\DropDownChoice;
 use \ZippyERP\Shop\Helper;
 use \ZippyERP\Shop\Basket;
 use \Zippy\WebApplication as App;
@@ -28,6 +29,7 @@ class Order extends Base
         $form->add(new Label('summa', new \Zippy\Binding\PropertyBinding($this, 'sum')));
         $this->OnUpdate($this);
         $form = $this->add(new Form('orderform'));
+        $form->add(new DropDownChoice('delivery',array(1=>'Почта',2=>'Курьер',3=>'Самлвывоз')));
         $form->add(new TextArea('contact'));
         $form->onSubmit($this, 'OnSave');
     }
@@ -65,15 +67,20 @@ class Order extends Base
 
         $this->OnUpdate($this);
         $contact = $this->orderform->contact->getText();
+        $delivery = $this->orderform->delivery->getValue();
         if ($contact == '') {
-            $this->setError("Введите контакт");
+            $this->setError("Введите контакты");
+            return;
+        }
+        if ($delivery == 0) {
+            $this->setError("Выберите тип доставки");
             return;
         }
 
         if (count($this->basketlist) == 0)
             return;
 
-        Helper::saveOrder(Basket::getBasket(), $contact);
+        Helper::saveOrder(Basket::getBasket(), $contact,$delivery);
 
 
         $this->orderform->contact->setText('');

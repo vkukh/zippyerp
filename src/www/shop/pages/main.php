@@ -37,10 +37,15 @@ class Main extends Base
 
 
         $this->add(new Panel("subcatlistp"));
+        
         $this->subcatlistp->setVisible($id > 0);
         $this->subcatlistp->add(new DataView("subcatlist", new EntityDataSource("\\ZippyERP\\Shop\\Entity\\ProductGroup", "parent_id=" . $id), $this, 'OnCatRow'));
         if ($id > 0)
             $this->subcatlistp->subcatlist->Reload();
+            
+        $this->add(new Panel("newlistp"));            
+        $this->newlistp->add(new DataView("newlist", new EntityDataSource("\\ZippyERP\\Shop\\Entity\\Product", "","product_id desc",12), $this, 'OnNewRow'))->Reload();
+        
     }
 
     public function OnCatRow($datarow) {
@@ -49,5 +54,10 @@ class Main extends Base
         $datarow->add(new BookmarkableLink("scatimg", $link))->setValue("/simage/" . $g->image_id);
         $datarow->add(new BookmarkableLink("scatname", $link))->setValue($g->groupname);
     }
+    public function OnNewRow($row) {
+        $item = $row->getDataItem();
+        $row->add(new BookmarkableLink("nimage", "/sp/" . $item->product_id))->setValue("/simage/" . $item->image_id . "/t");
+        $row->add(new BookmarkableLink("nname", "/sp/" . $item->product_id))->setValue($item->productname);
+      }
 
 }

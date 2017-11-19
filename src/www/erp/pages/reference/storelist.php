@@ -111,7 +111,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
     public function showitemOnClick($sender)
     {
         $store = $sender->owner->getDataItem();
-        $this->storetable->storelist->setSelectedRow($store->store_id);
+        $this->storetable->storelist->setSelectedRow($sender->getOwner());
         $this->storetable->storelist->Reload();
         $this->_store = $store;
         $this->itemtable->setVisible(true);

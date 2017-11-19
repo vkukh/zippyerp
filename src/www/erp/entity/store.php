@@ -14,7 +14,7 @@ class Store extends \ZCL\DB\Entity
     const STORE_TYPE_OPT = 1; //  Оптовый  склад
     const STORE_TYPE_RET = 2; //  Розничный  склад
     const STORE_TYPE_RET_SUM = 3; //  Магазин  с  суммовым  учетом
-    const STORE_TYPE_INET = 4; //  Интернет магазан
+    
 
     protected function beforeDelete()
     {

@@ -155,7 +155,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         // $fromstock = Stock::getStock($this->docform->storefrom->getValue(),$stock->item_id,$stock->price,false);
         $stockfrom = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and price={$stock->price} and partion={$stock->partion} and closed <> 1");
 
-        if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET || $store->store_type == Store::STORE_TYPE_INET) {
+        if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET  ) {
             $this->setError('Товар  с  такой  ценой и партией не найден  в  магазине');
             return;
         }
@@ -258,7 +258,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         } else {
             //$item = Item::load($stock->item_id);
         }
-        if ($store->store_type == Store::STORE_TYPE_RET && && $store->store_type == Store::STORE_TYPE_INET) {
+        if ($store->store_type == Store::STORE_TYPE_RET ) {
             
         }
     }

@@ -18,5 +18,9 @@ class ProductGroup extends \ZCL\DB\TreeEntity
         $this->parent_id = 0;
         $this->mpath = '';
     }
-
+    protected function beforeDelete() {
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->Execute("delete from shop_attributes where      group_id =" . $this->group_id);
+        Image::delete($this->image_id);
+    }
 }

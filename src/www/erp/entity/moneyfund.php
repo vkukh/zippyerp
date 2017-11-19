@@ -19,10 +19,18 @@ class MoneyFund extends \ZCL\DB\Entity
      * Возвращает  кассу
      *
      */
-
     public static function getCash()
     {
         return self::getFirst('ftype=' . self::MF_CASH);
+    }
+
+    /**
+    * Возвращает основной счет
+    *     
+    */
+    public static function getBankAccount()
+    {
+        return self::getFirst('ftype=' . self::MF_BANK);
     }
 
 }

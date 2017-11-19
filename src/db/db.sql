@@ -609,27 +609,24 @@ DROP VIEW IF EXISTS erp_document_view CASCADE;
 CREATE
 VIEW erp_document_view
 AS
-SELECT
-  `d`.`document_id` AS `document_id`,
-  `d`.`document_number` AS `document_number`,
-  `d`.`document_date` AS `document_date`,
-  `d`.`created` AS `created`,
-  `d`.`updated` AS `updated`,
-  `d`.`user_id` AS `user_id`,
-  `d`.`content` AS `content`,
-  `d`.`amount` AS `amount`,
-  `d`.`type_id` AS `type_id`,
-  `u`.`userlogin` AS `userlogin`,
-  `d`.`state` AS `state`,
-  `d`.`datatag` AS `datatag`,
-  `erp_metadata`.`meta_name` AS `meta_name`,
-  `erp_metadata`.`description` AS `meta_desc`
-FROM ((`erp_document` `d`
-  JOIN `system_users` `u`
-    ON ((`d`.`user_id` = `u`.`user_id`)))
-  JOIN `erp_metadata`
-    ON ((`erp_metadata`.`meta_id` = `d`.`type_id`)));
-
+  select 
+    `d`.`document_id` AS `document_id`,
+    `d`.`document_number` AS `document_number`,
+    `d`.`document_date` AS `document_date`,
+    `d`.`created` AS `created`,
+    `d`.`updated` AS `updated`,
+    `d`.`user_id` AS `user_id`,
+    `d`.`content` AS `content`,
+    `d`.`amount` AS `amount`,
+    `d`.`type_id` AS `type_id`,
+    `u`.`userlogin` AS `userlogin`,
+    `d`.`state` AS `state`,
+    `d`.`datatag` AS `datatag`,
+    `erp_metadata`.`meta_name` AS `meta_name`,
+    `erp_metadata`.`description` AS `meta_desc` 
+  from 
+    ((`erp_document` `d` join `system_users` `u` on((`d`.`user_id` = `u`.`user_id`))) join `erp_metadata` on((`erp_metadata`.`meta_id` = `d`.`type_id`)));
+    
 --
 -- Описание для представления erp_item_view
 --
@@ -782,7 +779,6 @@ FROM ((`erp_store_stock`
   JOIN `erp_store`
     ON ((`erp_store_stock`.`store_id` = `erp_store`.`store_id`)))
 WHERE COALESCE((`erp_item_view`.`item_type` <> 3));
-
 --
 -- Описание для представления erp_task_task_view
 --
@@ -958,6 +954,7 @@ CREATE TABLE IF NOT EXISTS `shop_orders` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `amount` int(11) NOT NULL,
   `description` text,
+   details text,
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `comment` varchar(250) DEFAULT NULL,
   `created` date NOT NULL,
@@ -1027,8 +1024,8 @@ CREATE TABLE IF NOT EXISTS `shop_prod_comments` (
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
 
-CREATE   VIEW `shop_orderdetails_view` AS 
-  select 
+CREATE VIEW `shop_orderdetails_view` AS
+  select
     `od`.`orderdetail_id` AS `orderdetail_id`,
     `od`.`order_id` AS `order_id`,
     `od`.`product_id` AS `product_id`,
@@ -1037,8 +1034,10 @@ CREATE   VIEW `shop_orderdetails_view` AS
     `p`.`productname` AS `productname`,
     `p`.`group_id` AS `group_id`,
     `p`.`partion` AS `partion`,
-    `so`.`status` AS `orderstatus` 
-  from 
+    `p`.`erp_stock_id` AS `erp_stock_id`,
+    `p`.`erp_item_id` AS `erp_item_id`,
+    `so`.`status` AS `orderstatus`
+  from
     ((`shop_orderdetails` `od` join `shop_products` `p` on((`od`.`product_id` = `p`.`product_id`))) join `shop_orders` `so` on((`so`.`order_id` = `od`.`order_id`)));
 
 -- --------------------------------------------------------
@@ -1049,6 +1048,7 @@ CREATE  VIEW `shop_orders_view` AS
     `shop_orders`.`description` AS `description`,
     `shop_orders`.`status` AS `status`,
     `shop_orders`.`comment` AS `comment`,
+	`shop_orders`.`details` AS `details`,
     `shop_orders`.`created` AS `created`,
     `shop_orders`.`closed` AS `closed` 
   from 

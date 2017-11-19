@@ -21,7 +21,7 @@
                         <tr>
                             <td   > </td>
                             <td align="right"  ><b>Итого:</b></td>
-                            <td   ><b><span zippy="summa"></span></b></td>
+                            <td  ><b><span zippy="summa"></span></b></td>
                             <td  ></td>
                             <td  ></td>
                         </tr>
@@ -31,7 +31,11 @@
                 <br>
                 <form zippy="orderform" method="post">
                     <div class="form-group">
-                        <label for="store">Коментарии и  доставка</label>
+                        <label for="store">Доставка</label>
+                        <select  class="form-control" zippy="delivery"><option value="0">Выбрать</option></select>
+                    </div>
+                   <div class="form-group">
+                        <label for="store">Коментарий</label>
                         <textarea zippy="contact" cols="40" rows="5"  class="form-control" zippy></textarea>
                     </div>
                     <div class="form-group">

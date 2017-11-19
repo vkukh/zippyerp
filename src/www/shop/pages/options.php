@@ -26,7 +26,7 @@ class Options extends \ZippyERP\Shop\Pages\Base
             $op = array();
 
         $this->add(new Form('optionform'))->onSubmit($this, 'saveOnClick');
-        $this->optionform->add(new DropDownChoice('store', \ZippyERP\ERP\Entity\Store::findArray("storename", "store_type=" . \ZippyERP\ERP\Entity\Store::STORE_TYPE_INET)));
+        $this->optionform->add(new DropDownChoice('store', \ZippyERP\ERP\Entity\Store::findArray("storename", "store_type=" . \ZippyERP\ERP\Entity\Store::STORE_TYPE_OPT)));
         $this->optionform->add(new TextInput('emailorder'))->setText($op['emailorder']);
 
 

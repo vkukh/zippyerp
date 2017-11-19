@@ -75,12 +75,12 @@ class ProductView extends Base
         $this->add(new \Zippy\Html\DataList\Pager("pag", $this->commentlist));
         $this->commentlist->Reload();
 
-        if ($prosuct->deleted == 1) {
+        if ($product->deleted == 1) {
             $this->onstore = "Снят с продажи";
             $this->buy->setVisible(false);
         } else {
 
-            if ($prosuct->cntonstore > 0) {
+            if ($product->cntonstore > 0) {
                 $this->onstore->setText("В наличии");
                 $this->buy->setValue("Купить");
             } else {

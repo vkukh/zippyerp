@@ -86,7 +86,7 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
     public function ddocOnClick($sender)
     {
         $item = $sender->getOwner()->getDataItem();
-        $this->doclist->dlist->setSelectedRow($item->getID());
+        $this->doclist->dlist->setSelectedRow($sender->getOwner());
         $this->doclist->dlist->Reload();
         $this->docview->setVisible(true);
         $this->docview->setDoc(\ZippyERP\ERP\Entity\Doc\Document::load($item->document_id));

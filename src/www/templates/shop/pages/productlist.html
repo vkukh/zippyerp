@@ -133,7 +133,7 @@
 
                             </div>  
                             <div class="form-group">
-                                <label for="egroup">Группа</label>
+                                <label for="egroup">Группа&nbsp;<i zippy="tt" class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Выбор другой группы для перемещения товара"></i></label>
                                 <select zippy="egroup"   class="form-control select2"  >
                                 </select>
                             </div> 
@@ -150,5 +150,10 @@
                 </div>
             </div>
         </div>
+  <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+  </script>        
     </body>
 </html>

@@ -254,7 +254,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
             $item = Item::load($stock->item_id);
             $this->editdetail->editprice->setText(H::fm($item->priceret));
         }
-        if ($store->store_type == Store::STORE_TYPE_RET || $store->store_type == Store::STORE_TYPE_INET) {
+        if ($store->store_type == Store::STORE_TYPE_RET ) {
             //если  уже   есть  товар  в  магазине  берем  цену  оттуда
             $stock = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and closed <> 1");
             if ($stock instanceof Stock) {

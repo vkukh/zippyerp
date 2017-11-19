@@ -2,9 +2,9 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use ZippyERP\ERP\Entity\Entry;
-use ZippyERP\ERP\Entity\SubConto;
-use ZippyERP\ERP\Helper as H;
+use \ZippyERP\ERP\Entity\Entry;
+use \ZippyERP\ERP\Entity\SubConto;
+use \ZippyERP\ERP\Helper as H;
 
 /**
  * Класс-сущность  документ розничная  накладая
@@ -36,6 +36,7 @@ class RegisterReceipt extends Document
             "firmcode" => $firm['code'],
             "kassa" => $this->headerdata["kassa"],
             "return" => $this->headerdata["return"],
+            "paycard" => $this->headerdata["paycard"],
             "document_number" => $this->document_number,
             "total" => H::fm($this->headerdata["total"]),
             "totalnds" => H::fm($this->headerdata["totalnds"])
@@ -51,6 +52,7 @@ class RegisterReceipt extends Document
     public function Execute()
     {
         $return = $this->headerdata['return'];
+        $paycard = $this->headerdata['paycard'];
 
 
         $ret = 0;
@@ -71,6 +73,18 @@ class RegisterReceipt extends Document
             $ret = 0 - $ret;
             $cost = 0 - $cost;
             $this->headerdata['totalnds'] = 0 - $this->headerdata['totalnds'];
+        }
+        if ($paycard == 1 && $return != 1) {  //оплата кредиткой
+            $bank = \ZippyERP\ERP\Entity\MoneyFund::getBankAccount() ;
+            
+            //списываем с  магазина
+            $ret = Entry::AddEntry(31, 372, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 372, 0 - $this->headerdata['amount']);
+            $sc->setEmployee($this->headerdata['store']);
+            $sc->save();           
+            $sc = new SubConto($this, 31, $this->headerdata["total"]);
+            $sc->setMoneyfund($bank->id);
+            $sc->save();
         }
 
         // списываем  наценку

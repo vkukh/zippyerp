@@ -45,7 +45,7 @@
                             <input type="file" zippy="photo"   />
                         </div>
                         <div class="col-xs-2 ">
-                            <a  zippy="savegroup"  class="btn btn-sm  btn-default">Загрузить фото</a> <br>
+                            <a  zippy="savegroup"  class="btn    btn-default">Загрузить фото</a> <br>
 
                         </div>
                     </div>                   
@@ -78,8 +78,8 @@
                     <form zippy="attreditform" class="col-xs-6 ">
                         <hr>
                         <div class="form-group">
-                            <label for="attrtype">Тип:</label>
-                            <select zippy="attrtype" class="form-control"></select>
+                            <label for="attrtype">Тип: &nbsp;<i zippy="tt" class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title=""></i></label>
+                            <select zippy="attrtype" class="form-control" ></select>
                             <span  zippy="attrtypename"  class="form-control"></span>                                
                         </div> 
                         <div class="form-group">
@@ -92,7 +92,7 @@
                         </div> 
                         <div class="form-group" zippy="meashurepanel">
                             <label for="meashure">Единица измерения:</label>
-                            <input type="text" zippy="meashure" class="form-control"  style="width:40px;"/>
+                            <input type="text" zippy="meashure" class="form-control"  style="width:50px;"/>
                         </div> 
 
                         <div class="chechbox">
@@ -111,6 +111,10 @@
 
             </div>
         </div>
-
+  <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+  </script>
     </body>
 </html>

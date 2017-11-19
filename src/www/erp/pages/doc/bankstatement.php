@@ -232,6 +232,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editdoc->setVisible(true);
         $this->editdetail->editcustomer->setVisible(true);
         $this->editdetail->editprepayment->setVisible(true);
+        $this->editdetail->editnoentry->setVisible(true);
         //$list = array();
 
         if ($sender->getValue() == BS::TAX) {
@@ -257,6 +258,14 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->editdetail->editcustomer->setVisible(false);
             $this->editdetail->editprepayment->setVisible(false);
             $this->editdetail->editpayment->setVisible(false);
+        }
+        if ($sender->getValue() == BS::OUT_CARD) {
+            $this->editdetail->editnds->setVisible(false);
+            $this->editdetail->editdoc->setVisible(false);
+            $this->editdetail->editcustomer->setVisible(false);
+            $this->editdetail->editprepayment->setVisible(false);
+            $this->editdetail->editpayment->setVisible(false);
+            $this->editdetail->editnoentry->setVisible(false);
         }
         $this->editdetail->editcustomer->setKey(0);
 

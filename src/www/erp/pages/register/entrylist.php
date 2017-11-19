@@ -66,7 +66,7 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->docview->setVisible(true);
         $this->docview->setDoc(\ZippyERP\ERP\Entity\Doc\Document::load($item->document_id));
-        $this->entrylist->setSelectedRow($item->entry_id);
+        $this->entrylist->setSelectedRow($sender->getOwner());
         $this->entrylist->Reload();
     }
 

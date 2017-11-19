@@ -59,7 +59,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         if ($docid > 0) {
             $this->docview->setVisible(true);
             $this->docview->setDoc(Document::load($docid));
-            $this->doclist->setSelectedRow($docid);
+            //$this->doclist->setSelectedRow($docid);
             $doclist->Reload();
         }
     }
@@ -134,7 +134,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->docview->setVisible(true);
         $this->docview->setDoc($item);
-        $this->doclist->setSelectedRow($item->document_id);
+        $this->doclist->setSelectedRow($sender->getOwner());
         $this->doclist->Reload();
     }
 

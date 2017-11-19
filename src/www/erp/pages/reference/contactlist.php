@@ -84,7 +84,7 @@ class ContactList extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->contactview->open($item);
         $this->contactdetail->setVisible(false);
-        $this->contacttable->contactlist->setSelectedRow($item->contact_id);
+        $this->contacttable->contactlist->setSelectedRow($sender->getOwner());
         $this->contacttable->contactlist->Reload();
     }
 

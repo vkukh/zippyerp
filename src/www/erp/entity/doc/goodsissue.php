@@ -112,7 +112,7 @@ class GoodsIssue extends Document
                 }
             }
         }
-        if ($this->headerdata['prepayment'] == 1) {  //предоплата
+        if ($this->headerdata['paytype'] == 1) {  //предоплата
             Entry::AddEntry("681", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
             $sc->setCustomer($this->headerdata["customer"]);
@@ -133,7 +133,7 @@ class GoodsIssue extends Document
         $sc->save();
 
 
-        if ($this->headerdata['cash'] == true) {
+        if ($this->headerdata['paytype'] == 2) {  //наличные
 
             $cash = MoneyFund::getCash();
             \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
@@ -141,9 +141,18 @@ class GoodsIssue extends Document
             $sc->setCustomer($this->headerdata["customer"]);
 
             $sc->save();
-            $sc = new SubConto($this, 30, $this->headerdata["total"]);
-            $sc->setMoneyfund($cash->id);
-            // $sc->save();
+       
+        }
+        if ($this->headerdata['paytype'] == 3) {   //кредитка
+
+            $bank = MoneyFund::getBankAccount();
+            \ZippyERP\ERP\Entity\Entry::AddEntry("31", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+            $sc->save();
+            $sc = new SubConto($this, 31, $this->headerdata["total"]);
+            $sc->setMoneyfund($bank->id);
+            $sc->save();         
         }
 
 

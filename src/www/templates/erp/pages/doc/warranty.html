@@ -16,6 +16,11 @@
                 <label for="document_date" class="  control-label"> Дата</label>
                 <input class="form-control" type="text" zippy="document_date" required="required">
             </div>
+            <div class="form-group  ">
+                <label for="store" class="  control-label">Магазин</label>
+                <select class="form-control" zippy="store">
+                </select>
+            </div>            
             <div class="form-group">
                 <label for="customer" class="  control-label"> Покупатель</label>
                 <input class="form-control" type="text" zippy="customer" required="required">
@@ -67,9 +72,9 @@
         <div class="col-xs-4">
             <div class="form-group">
                 <label for="edittovar" class="  control-label">Наименование</label>
-                <input class="form-control" type="text" zippy="edittovar" required="required"
-                       placeholder="Начните вводить наименование">
-
+                <select class="form-control select2" type="text" zippy="edittovar"   >
+                <option value="0">Не  выбран</option>
+                </select>
 
             </div>
             <div class="form-group">

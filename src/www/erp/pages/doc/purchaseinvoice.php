@@ -7,6 +7,7 @@ namespace ZippyERP\ERP\Pages\Doc;
 use Zippy\Html\DataList\DataView;
 use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
+use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\Form;
@@ -43,9 +44,8 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
         $this->docform->isnds->setChecked(true);
 
-        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoContragent");
+        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
-
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
@@ -63,8 +63,8 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editpricends'));
 
 
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
-        ;
+        $this->editdetail->add(new DropDownChoice('edittovar',Item::findArray('itemname', " item_type <> " . Item::ITEM_TYPE_RETSUM,'itemname')));
+      
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
@@ -80,8 +80,8 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
             $this->docform->paydate->setDate($this->_doc->headerdata['payment_date']);
 
 
-            $this->docform->customer->setKey($this->_doc->headerdata['customer']);
-            $this->docform->customer->setValue($this->_doc->headerdata['customername']);
+            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+            
             $this->docform->contract->setKey($this->_doc->headerdata['contract']);
             $this->docform->contract->setValue($this->_doc->headerdata['contractnumber']);
 
@@ -101,8 +101,8 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
                     if ($basedoc->meta_name == 'SupplierOrder') {
                         $nds = H::nds(true);  // если  в  заказе   цена  с  НДС  получаем  базовую  цену
 
-                        $this->docform->customer->setKey($basedoc->headerdata['supplier']);
-                        $this->docform->customer->setText($basedoc->headerdata['suppliername']);
+                        $this->docform->customer->setValue($basedoc->headerdata['supplier']);
+                        
                         $this->docform->contract->setKey($basedoc->document_id);
                         $this->docform->contract->setText($basedoc->document_number);
 
@@ -117,8 +117,8 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
 
                         $this->docform->isnds->setChecked($basedoc->headerdata['isnds']);
 
-                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
-                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -167,8 +167,8 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($item->price));
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
 
-        $this->editdetail->edittovar->setKey($item->item_id);
-        $this->editdetail->edittovar->setText($item->itemname);
+        $this->editdetail->edittovar->setValue($item->item_id);
+        
 
         $this->_rowid = $item->item_id;
     }
@@ -182,7 +182,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -221,8 +221,8 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getKey(),
-            'customername' => $this->docform->customer->getText(),
+            'customer' => $this->docform->customer->getValue(),
+            'customername' => $this->docform->customer->getValueName(),
             'contract' => $this->docform->contract->getKey(),
             'contractnumber' => $this->docform->contract->getText(),
             'isnds' => $this->docform->isnds->isChecked(),
@@ -239,7 +239,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $isEdited = $this->_doc->document_id > 0;
-        $this->_doc->datatag = $this->docform->customer->getKey();
+        $this->_doc->datatag = $this->docform->customer->getValue();
 
 
         $conn = \ZDB\DB::getConnect();
@@ -299,7 +299,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введен ни один  товар");
         }
-        if ($this->docform->customer->getKey() == 0) {
+        if ($this->docform->customer->getValue() == 0) {
             $this->setError("Не выбран поставщик");
         }
         return !$this->isError();
@@ -332,11 +332,7 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function OnAutoContragent($sender)
-    {
-        $text = $sender->getValue();
-        return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
-    }
+    
 
     public function OnAutoContract($sender)
     {
@@ -344,10 +340,6 @@ class PurchaseInvoice extends \ZippyERP\ERP\Pages\Base
         return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <> " . Item::ITEM_TYPE_RETSUM);
-    }
+    
 
 }

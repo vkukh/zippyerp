@@ -9,6 +9,7 @@ use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
+use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\File;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
@@ -41,7 +42,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
 
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoContragent");
+        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name'))) ;
         $this->docform->add(new CheckBox('ernn'));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 
@@ -56,7 +57,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
+        $this->editdetail->add(new DropDownChoice('edittovar',Item::findArray('itemname', " item_type <> " . Item::ITEM_TYPE_RETSUM,'itemname')));
 
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
@@ -76,8 +77,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
             $this->docform->contract->setKey($this->_doc->headerdata['contract']);
             $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
 
-            $this->docform->customer->setKey($this->_doc->headerdata['customer']);
-            $this->docform->customer->setText($this->_doc->headerdata['customername']);
+            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+            
 
             foreach ($this->_doc->detaildata as $item) {
                 $item = new Item($item);
@@ -96,8 +97,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
                     // Создатся  на  основании  приходной  накладной
                     if ($basedoc->meta_name == 'GoodsReceipt') {
                         //  $this->docform->nds->setText($basedoc->headerdata['nds'] / 100);
-                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
-                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -109,8 +110,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
                     // Создать  на  основании  счета  входящего
                     if ($basedoc->meta_name == 'PurchaseInvoice') {
 
-                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
-                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -122,8 +123,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
                     // Создать  на  основании  Акта  выполненых услуг
                     if ($basedoc->meta_name == 'ServiceIncome') {
 
-                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
-                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -158,8 +159,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $item = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
-        $this->editdetail->edittovar->setKey($item->item_id);
-        $this->editdetail->edittovar->setText($item->itemname);
+        $this->editdetail->edittovar->setValue($item->item_id);
+        
 
         $this->editdetail->editquantity->setText($item->quantity / 1000);
         $this->editdetail->editprice->setText(H::fm($item->price));
@@ -185,7 +186,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбрана позиция");
             return;
@@ -203,8 +204,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setKey(0);
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
+         
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editpricends->setText("");
         $this->editdetail->editprice->setText("");
@@ -225,8 +226,8 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getKey(),
-            'customername' => $this->docform->customer->getText(),
+            'customer' => $this->docform->customer->getValue(),
+            'customername' => $this->docform->customer->getValueName(),
             'contract' => $this->docform->contract->getKey(),
             'contractnumber' => $this->docform->contract->getText(),
             'ernn' => $this->docform->ernn->isChecked(),
@@ -294,7 +295,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
      */
     private function checkForm()
     {
-        if ($this->docform->customer->getKey() == 0) {
+        if ($this->docform->customer->getValue() == 0) {
             $this->setError("Не выбран поставщик");
         }
         if (count($this->_tovarlist) == 0) {
@@ -347,11 +348,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function OnAutoContragent($sender)
-    {
-        $text = $sender->getValue();
-        return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
-    }
+
 
     public function OnAutoContract($sender)
     {
@@ -359,10 +356,6 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <> " . Item::ITEM_TYPE_RETSUM);
-    }
+
 
 }

@@ -29,9 +29,11 @@
             <div class="form-group  ">
                 <label for="customer" class="  control-label">Исполнитель</label>
 
-                <input class="form-control" type="text" zippy="customer" placeholder="Начните вводить"
-                       required="required">
-
+ 
+     <select class="form-control select2" zippy="customer"    >
+                   <option value"0">Не выбран</option>
+                </select>  
+            
             </div>
             <div class="form-group  ">
                 <label for="contract" class="  control-label">Договор, заказ </label>
@@ -125,7 +127,10 @@
 
             <div class="form-group">
                 <label for="editname">Наименование </label>
-                <input class="form-control" type="text" zippy="edititem" required="required"></input>
+                
+                <select class="form-control select2" zippy="edititem"    >
+                   <option value"0">Не выбран</option>
+                </select>                  
             </div>
             <div class="form-group">
                 <label for="editquantity">Количество</label>

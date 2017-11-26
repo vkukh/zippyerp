@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -49,8 +49,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editpayed'));
         $this->editdetail->add(new TextInput('editamount'));
-        $this->editdetail->add(new AutocompleteTextInput('editemployee'))->onText($this, "OnAutoEmployee");
-        $this->editdetail->editemployee->onChange($this, 'OnChangeEmployee');
+        $this->editdetail->add(new DropDownChoice('editemployee',Employee::findArray("fullname", " hiredate is not null  ","fullname")))->onChange($this, 'OnChangeEmployee');
 
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
@@ -140,8 +139,8 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->setVisible(false);
         $this->_rowid = 0;
         //очищаем  форму
-        $this->editdetail->editemployee->setKey(0);
-        $this->editdetail->editemployee->setText('');
+        $this->editdetail->editemployee->setValue(0);
+        
         $this->editdetail->editamount->setText("0");
         $this->editdetail->editpayed->setText("0");
     }
@@ -157,8 +156,8 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editamount->setText(H::fm($emp->amount));
         $this->editdetail->editpayed->setText(H::fm($emp->payed));
 
-        $this->editdetail->editemployee->setKey($emp->employee_id);
-        $this->editdetail->editemployee->setText($emp->getInitName());
+        $this->editdetail->editemployee->setValue($emp->employee_id);
+  
 
 
         $this->_rowid = $emp->employee_id;
@@ -166,7 +165,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->editemployee->getKey();
+        $id = $this->editdetail->editemployee->getValue();
         if ($id == 0) {
             $this->setError("Не выбран сотрудник");
             return;
@@ -277,17 +276,13 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-    public function OnAutoEmployee($sender)
-    {
-        $text = $sender->getValue();
-        return Employee::findArray("fullname", " hiredate is not null and  fullname  like '%{$text}%' ");
-    }
+    
 
     public function OnChangeEmployee($sender)
     {
         if ($this->_os)
             return;
-        $id = $sender->getKey();
+        $id = $sender->getValue();
         $emp = Employee::load($id);
         $amount = abs($emp->getForPayed($this->docform->document_date->getDate()));
         $this->editdetail->editamount->setText(H::fm($amount));

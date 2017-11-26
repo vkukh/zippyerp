@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\DropDownChoice; 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\Form;
@@ -45,9 +45,16 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         //   $this->editdetail->add(new DropDownChoice('editinventory')) ;
         $this->editdetail->add(new TextInput('editprice'));
-
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
-        //  $this->editdetail->edittovar->onChange($this, 'OnChangeItem');
+      
+        $list_ = CapitalAsset::find("item_type= " . Item::ITEM_TYPE_OS , "itemname");
+        $list = array();
+        foreach ($list_ as $id => $os) {
+            if ($os->typeos == 11)
+                continue; //идет как  малоценка
+            $list[$id] = strlen($os->inventory) > 0 ? $os->inventory . ', ' . $os->itemname : $os->itemname;
+        }
+        $this->editdetail->add(new DropDownChoice('edittovar',$list));//->onChange($this, 'OnChangeItem');
+        
 
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
@@ -109,8 +116,8 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($os->value));
 
 
-        $this->editdetail->edittovar->setKey($os->item_id);
-        $this->editdetail->edittovar->setText($os->inventory . ', ' . $os->itemname);
+        $this->editdetail->edittovar->setValue($os->item_id);
+        
 
 
         $this->_rowid = $os->item_id;
@@ -118,7 +125,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбрано ОС");
             return;
@@ -140,8 +147,8 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setKey(0);
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
+        
         //   $this->editdetail->editinventory->setOptionList(array());
 
         $this->editdetail->editprice->setText("");
@@ -229,18 +236,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-        $list_ = CapitalAsset::find("item_type= " . Item::ITEM_TYPE_OS . " and ( itemname  like '%{$text}%' or detail  like '%<inventory>{$text}</inventory>%' ) ", "itemname");
-        $list = array();
-        foreach ($list_ as $id => $os) {
-            if ($os->typeos == 11)
-                continue; //идет как  малоценка
-            $list[$id] = strlen($os->inventory) > 0 ? $os->inventory . ', ' . $os->itemname : $os->itemname;
-        }
-        return $list;
-    }
+ 
 
     public function OnChangeItem($sender)
     {

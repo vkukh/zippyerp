@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -39,8 +39,9 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-
-        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
+        
+        $this->docform->add(new DropDownChoice('store',Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET) ))->onChange($this, 'OnChangeStore');
+        $this->docform->store->selectFirst();
         $this->docform->add(new TextInput('kassa'));
 
         $this->docform->add(new CheckBox('return'));
@@ -56,8 +57,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
-        $this->editdetail->edittovar->onChange($this, 'OnChangeItem');
+        $this->editdetail->add(new DropDownChoice('edittovar'))->onChange($this, 'OnChangeItem');
 
         $this->editdetail->add(new Label('qtystock'));
 
@@ -88,6 +88,8 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
+        $this->OnChangeStore($this->docform->store);
+        
     }
 
     public function detailOnRow($row)
@@ -130,8 +132,8 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
-        $this->editdetail->edittovar->setKey($stock->stock_id);
-        $this->editdetail->edittovar->setText($stock->itemname);
+        $this->editdetail->edittovar->setValue($stock->stock_id);
+        
 
         $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 
@@ -140,7 +142,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -157,8 +159,8 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setKey(0);
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
+        
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -268,23 +270,17 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         //очистка  списка  товаров
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
-    }
-
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
         $store_id = $this->docform->store->getValue();
-
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
+        $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 ",'itemname'));
+        
     }
-
+ 
     public function OnChangeItem($sender)
     {
-        $id = $sender->getKey();
+        $id = $sender->getValue();
         $stock = Stock::load($id);
         //$item = Item::load($stock->item_id);
         $this->editdetail->editprice->setText(H::fm($stock->price));
-
 
         $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 

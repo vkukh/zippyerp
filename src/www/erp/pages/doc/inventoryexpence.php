@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -50,8 +50,8 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, "OnAutoItem");
-        $this->editdetail->edititem->onChange($this, 'OnChangeItem');
+        $this->editdetail->add(new DropDownChoice('edititem'));
+        $this->editdetail->edititem->onChange($this, 'OnChangeItem',true);
         $this->editdetail->add(new DropDownChoice('edittype', array(201 => 'Материал', 25 => 'Полуфабрикат'), 201))->onChange($this, "OnItemType");
 
 
@@ -78,6 +78,8 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
+        $this->OnItemType($this->editdetail->edittype);
+        
     }
 
     public function detailOnRow($row)
@@ -98,7 +100,7 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         // unset($this->_itemlist[$item->item_id]);
 
-        $this->_itemlist = array_diff_key($this->_itemlist, array($item->item_id => $this->_itemlist[$item->item_id]));
+        $this->_itemlist = array_diff_key($this->_itemlist, array($item->stock_id => $this->_itemlist[$item->stock_id]));
         $this->docform->detail->Reload();
     }
 
@@ -109,8 +111,8 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->docform->setVisible(false);
         $this->_rowid = 0;
         //очищаем  форму
-        $this->editdetail->edititem->setKey(0);
-        $this->editdetail->edititem->setText('');
+        $this->editdetail->edititem->setValue(0);
+    
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -129,8 +131,8 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
 
 
         //  $list = Stock::findArrayEx("closed  <> 1   and store_id={$stock->store_id}");
-        $this->editdetail->edititem->setKey($stock->stock_id);
-        $this->editdetail->edititem->setText($stock->itemname);
+        $this->editdetail->edititem->setValue($stock->stock_id);
+        
         $this->editdetail->edittype->setValue($stock->type);
 
 
@@ -139,7 +141,7 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран ТМЦ");
             return;
@@ -224,10 +226,17 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
 
     public function OnItemType($sender)
     {
-        $this->editdetail->edititem->setKey(0);
-        $this->editdetail->edititem->setText('');
+        $this->editdetail->edititem->setValue(0);
+        
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editprice->setText(" ");
+        
+        $store_id = $this->docform->store->getValue();
+         $account_id = $this->editdetail->edittype->getValue();
+                                                 
+        $this->editdetail->edititem->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and stock_id in(select stock_id  from  erp_account_subconto  where  account_id={$account_id}) "));
+         
+        
     }
 
     /**
@@ -263,18 +272,12 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-
-        $store_id = $this->docform->store->getValue();
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and stock_id in(select stock_id  from  erp_account_subconto  where  account_id= " . $this->editdetail->edittype->getValue() . ") ");
-    }
+    
 
     public function OnChangeItem($sender)
     {
 
-        $id = $sender->getKey();
+        $id = $sender->getValue();
         $stock = Stock::load($id);
         //   $item = Item::load($stock->item_id);
         $this->editdetail->editprice->setText(H::fm($stock->price));

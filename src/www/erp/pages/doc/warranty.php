@@ -5,18 +5,20 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
 use Zippy\WebApplication as App;
 
@@ -39,6 +41,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new TextInput('customer'));
+        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
 
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
@@ -53,7 +56,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editsn'));
         $this->editdetail->add(new TextInput('editwarranty'));
 
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
+        $this->editdetail->add(new DropDownChoice('edittovar'));
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
@@ -121,19 +124,25 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
     public function editOnClick($sender)
     {
         $item = $sender->owner->getDataItem();
-        //$tovar = $this->_tovarlist[$item->item_id];
+        $store_id = $this->docform->store->getValue();
+        $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1  "));
+        $this->editdetail->edittovar->setValue($item->stock_id);
+        
 
 
         $this->editdetail->editprice->setText(H::fm($item->price));
-        //$list = Item::findArray('itemname', 'group_id=' . $item->group_id);
-        $this->editdetail->edittovar->setKey($item->item_id);
-        $this->editdetail->edittovar->setText($item->itemname);
+        
+ 
+        
         $this->editdetail->editquantity->setText($item->quantity / 1000);
         $this->editdetail->editwarranty->setText($item->warranty);
         $this->editdetail->editsn->setText($item->sn);
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
-        $this->_rowid = $item->item_id;
+        $this->_rowid = $item->stock_id;
+        
+      
+         
     }
 
     public function addrowOnClick($sender)
@@ -141,30 +150,34 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
+        $store_id = $this->docform->store->getValue();
+        $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1  "));
+        $this->editdetail->edittovar->setValue(0);
+        
     }
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
         }
-        $item = Item::load($id);
-        $item->quantity = 1000 * $this->editdetail->editquantity->getText();
-        $item->price = $this->editdetail->editprice->getText() * 100;
-        $item->sn = $this->editdetail->editsn->getText();
-        $item->warranty = $this->editdetail->editwarranty->getText();
+        $stock = Stock::load($id);
+        $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
+        $stock->price = $this->editdetail->editprice->getText() * 100;
+        $stock->sn = $this->editdetail->editsn->getText();
+        $stock->warranty = $this->editdetail->editwarranty->getText();
 
-        unset($this->_tovarlist[$this->_rowid]);
-        $this->_tovarlist[$item->item_id] = $item;
+         
+        $this->_tovarlist[$stock->stock_id] = $stock;
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setKey(0);
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
+         
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -241,13 +254,13 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
     {
         App::RedirectBack();
     }
-
-    public function OnAutoItem($sender)
+  
+    public function OnChangeStore($sender)
     {
-        $text = $sender->getValue();
-        $store_id = $this->docform->store->getValue();
-
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
+        //очистка  списка  товаров
+        $this->_tovarlist = array();
+        $this->docform->detail->Reload();
     }
+    
 
 }

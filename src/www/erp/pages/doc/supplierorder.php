@@ -5,7 +5,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -38,7 +38,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new Date('timeline'))->setDate(time() + 3 * 24 * 3600);
-        $this->docform->add(new AutocompleteTextInput('supplier'))->onText($this, "OnAutoCont");
+        $this->docform->add(new DropDownChoice('supplier',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
         $this->docform->add(new DropDownChoice('orderstate', \ZippyERP\ERP\Entity\Doc\SupplierOrder::getStatesList()));
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
 
@@ -49,7 +49,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
 
 
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, "OnAutoItem");
+        $this->editdetail->add(new DropDownChoice('edititem',Item::findArray('itemname', " item_type <> " . Item::ITEM_TYPE_RETSUM,'itemname')));
         $this->editdetail->add(new TextInput('editquantity'));
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new SubmitButton('saverow'))->onClick($this, 'saverowOnClick');
@@ -61,8 +61,8 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
             $this->docform->total->setText(H::fm($this->_doc->total));
             $this->docform->timeline->setDate($this->_doc->headerdata['timeline']);
             $this->docform->document_date->setDate($this->_doc->document_date);
-            $this->docform->supplier->setKey($this->_doc->headerdata['supplier']);
-            $this->docform->supplier->setText($this->_doc->headerdata['suppliername']);
+            $this->docform->supplier->setValue($this->_doc->headerdata['supplier']);
+            
             $this->docform->orderstate->setValue($this->_doc->headerdata['orderstate']);
 
 
@@ -114,8 +114,8 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $old_state = $this->_doc->headerdata['orderstate'];
         $new_state = $this->docform->orderstate->getValue();
         $this->_doc->headerdata = array(
-            'supplier' => $this->docform->supplier->getKey(),
-            'suppliername' => $this->docform->supplier->getText(),
+            'supplier' => $this->docform->supplier->getValue(),
+            'suppliername' => $this->docform->supplier->getValueName(),
             'orderstate' => $new_state,
             'timeline' => $this->docform->timeline->getDate(),
         );
@@ -128,7 +128,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->document_date->getDate();
 
-        $this->_doc->datatag = $this->docform->supplier->getKey();
+        $this->_doc->datatag = $this->docform->supplier->getValue();
 
         $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
@@ -156,7 +156,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -198,7 +198,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
         }
-        if ($this->docform->supplier->getKey() == 0) {
+        if ($this->docform->supplier->getValue() == 0) {
             $this->setError("Не выбран  поставщик");
         }
         return !$this->isError();
@@ -217,16 +217,8 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->total->setText(H::fm($total));
     }
 
-    public function OnAutoCont($sender)
-    {
-        $text = $sender->getValue();
-        return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
-    }
+    
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like'%{$text}%' and item_type <> " . Item::ITEM_TYPE_RETSUM);
-    }
+    
 
 }

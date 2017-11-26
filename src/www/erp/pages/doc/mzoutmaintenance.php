@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+use Zippy\Html\Form\DropDownChoice;  
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\Form;
@@ -42,8 +42,7 @@ class MZOutMaintenance extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
-        $this->editdetail->edittovar->onChange($this, 'OnChangeItem');
+        $this->editdetail->add(new DropDownChoice('edittovar',Item::findArray('itemname', "     item_id in( select   extcode  from erp_account_subconto where account_id =1001 group  by extcode having sum(quantity) > 0)",'itemname')))->onChange($this, 'OnChangeItem');
 
         $this->editdetail->add(new Label('qtystock'));
 
@@ -106,8 +105,8 @@ class MZOutMaintenance extends \ZippyERP\ERP\Pages\Base
 
 
         // $list = Stock::findArrayEx("closed  <> 1   and store_id={$stock->store_id}");
-        $this->editdetail->edittovar->setKey($item->item_id);
-        $this->editdetail->edittovar->setText($item->itemname);
+        $this->editdetail->edittovar->setValue($item->item_id);
+        
         $qt = \ZippyERP\ERP\Entity\SubConto::getQuantity(0, 1001, 0, 0, 0, 0, $item->item_id);
 
         $this->editdetail->qtystock->setText($qt / 1000);
@@ -117,7 +116,7 @@ class MZOutMaintenance extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -131,8 +130,8 @@ class MZOutMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setKey(0);
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
+        
         $this->editdetail->editquantity->setText("1");
 
 
@@ -211,12 +210,7 @@ class MZOutMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-
-        return Item::findArray('itemname', "   itemname  like '%{$text}%' and item_id in( select   extcode  from erp_account_subconto where account_id =1001 group  by extcode having sum(quantity) > 0)");
-    }
+    
 
     public function OnChangeItem($sender)
     {

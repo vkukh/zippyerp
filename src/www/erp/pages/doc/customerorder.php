@@ -5,7 +5,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -38,7 +38,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new Date('timeline'))->setDate(time() + 3 * 24 * 3600);
-        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoCont");
+        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
 
         $this->docform->add(new DropDownChoice('orderstate', \ZippyERP\ERP\Entity\Doc\CustomerOrder::getStatesList()));
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
@@ -49,7 +49,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
         $this->add(new Form('editdetail'))->setVisible(false);
 
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, "OnAutoItem");
+        $this->editdetail->add(new DropDownChoice('edititem',Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_RETSUM,'itemname')));
         $this->editdetail->edititem->onChange($this, 'OnChangeItem');
         $this->editdetail->add(new TextInput('editquantity'));
         $this->editdetail->add(new TextInput('editprice'));
@@ -118,8 +118,8 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $new_state = $this->docform->orderstate->getValue();
 
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getKey(),
-            'customername' => $this->docform->customer->getText(),
+            'customer' => $this->docform->customer->getValue(),
+            'customername' => $this->docform->customer->getValueName(),
             'orderstate' => $new_state,
             'timeline' => $this->docform->timeline->getDate(),
         );
@@ -132,7 +132,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->document_date->getDate();
         $this->_doc->order_state = $this->docform->orderstate->getValue();
-        $this->_doc->tagcode = $this->docform->customer->getKey();
+        $this->_doc->tagcode = $this->docform->customer->getValue();
         $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
@@ -158,7 +158,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -174,8 +174,8 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edititem->setKey(0);
-        $this->editdetail->edititem->setText('');
+        $this->editdetail->edititem->setValue(0);
+        
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -201,7 +201,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введен ни один  товар");
         }
-        if ($this->docform->customer->getKey() == 0) {
+        if ($this->docform->customer->getValue() == 0) {
             $this->setError("Не выбран  поставщик");
         }
 
@@ -232,16 +232,7 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->updateAjax(array('editprice', 'qtystore'));
     }
 
-    public function OnAutoCont($sender)
-    {
-        $text = $sender->getValue();
-        return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
-    }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-        return Item::findArray('itemname', "itemname like '%{$text}%' and item_type <>" . Item::ITEM_TYPE_RETSUM);
-    }
+    
 
 }

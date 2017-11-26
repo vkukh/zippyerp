@@ -2,7 +2,6 @@
 
 namespace ZippyERP\ERP\Pages;
 
-use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -50,14 +49,12 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $this->common->add(new CheckBox('juridical'))->onChange($this, "OnJFChange");
         $this->common->add(new SubmitButton('commonsave'))->onClick($this, 'saveCommonOnClick');
         $this->common->add(new DropDownChoice('basestore', \ZippyERP\ERP\Entity\Store::findArray('storename', '')));
-        $this->common->add(new AutocompleteTextInput('manager'))->onText($this, "OnAutoEmployee");
-        $this->common->add(new AutocompleteTextInput('accounter'))->onText($this, "OnAutoEmployee");
-        $this->common->add(new AutocompleteTextInput('ownerfiz'))->onText($this, "OnAutoContact");
+        $this->common->add(new DropDownChoice('manager',\ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ","fullname"))) ;
+        $this->common->add(new DropDownChoice('accounter',\ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ","fullname")) ) ;
+        $this->common->add(new DropDownChoice('ownerfiz',\ZippyERP\ERP\Entity\Contact::findArray("fullname", "","fullname"))) ;
         $this->common->ownerfiz->setVisible(true);
-        ;
+       
         $this->common->manager->setVisible(false);
-        ;
-
 
         $this->add(new Form('tax'));
         $this->tax->add(new SubmitButton('taxsave'))->onClick($this, 'saveTaxOnClick');
@@ -112,12 +109,11 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $this->common->simpletax->setChecked($common['simpletax']);
         $this->common->juridical->setChecked($common['juridical']);
         $this->common->basestore->setValue($common['basestore']);
-        $this->common->manager->setKey($common['manager']);
-        $this->common->manager->setText($common['managername']);
-        $this->common->accounter->setKey($common['accounter']);
-        $this->common->accounter->setText($common['accountername']);
-        $this->common->ownerfiz->setKey($common['owner']);
-        $this->common->ownerfiz->setText($common['ownername']);
+        $this->common->manager->setValue($common['manager']);
+        $this->common->manager->setVisible($this->common->juridical->isChecked());
+        $this->common->accounter->setValue($common['accounter']);
+        $this->common->ownerfiz->setValue($common['owner']);
+        $this->common->ownerfiz->setVisible(!$this->common->juridical->isChecked());
 
 
         $tax = System::getOptions("tax");
@@ -182,12 +178,12 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $common['simpletax'] = $this->common->simpletax->isChecked();
         $common['juridical'] = $this->common->juridical->isChecked();
         $common['basestore'] = $this->common->basestore->getValue();
-        $common['manager'] = $this->common->manager->getKey();
-        $common['managername'] = $this->common->manager->getText();
-        $common['accounter'] = $this->common->accounter->getKey();
-        $common['accountername'] = $this->common->accounter->getText();
-        $common['owner'] = $this->common->ownerfiz->getKey();
-        $common['ownername'] = $this->common->ownerfiz->getText();
+        $common['manager'] = $this->common->manager->getValue();
+        $common['managername'] = $this->common->manager->getValueName();
+        $common['accounter'] = $this->common->accounter->getValue();
+        $common['accountername'] = $this->common->accounter->getValueName();
+        $common['owner'] = $this->common->ownerfiz->getValue();
+        $common['ownername'] = $this->common->ownerfiz->getValueName();
 
         System::setOptions("common", $common);
         $this->setSuccess('Настройки сохранены');
@@ -210,33 +206,21 @@ class Options extends \ZippyERP\ERP\Pages\Base
         System::setOptions("tax", $tax);
         $this->setSuccess('Настройки сохранены');
     }
-
-    public function OnAutoEmployee($sender)
-    {
-        $text = $sender->getValue();
-        return \ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null and  fullname  like '%{$text}%' ");
-    }
-
-    public function OnAutoContact($sender)
-    {
-        $text = $sender->getValue();
-        return \ZippyERP\ERP\Entity\Contact::findArray("fullname", "    fullname  like '%{$text}%' ");
-    }
+  
 
     public function OnJFChange($sender)
     {
         if ($sender->isChecked()) {
             $this->common->ownerfiz->setVisible(false);
             ;
-            $this->common->manager->setKey(0);
-            $this->common->manager->setText('');
+            $this->common->manager->setValue(0);
             $this->common->manager->setVisible(true);
             ;
         } else {
             $this->common->ownerfiz->setVisible(true);
             ;
-            $this->common->ownerfiz->setKey(0);
-            $this->common->ownerfiz->setText('');
+            $this->common->ownerfiz->setValue(0);
+         
             $this->common->manager->setVisible(false);
             ;
         }

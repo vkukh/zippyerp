@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -52,8 +52,8 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         //   $this->editdetail->add(new TextInput('editpayed')) ;
         //    $this->editdetail->add(new TextInput('editamount'));
-        $this->editdetail->add(new AutocompleteTextInput('editemployee'))->onText($this, "OnAutoEmployee");
-        $this->editdetail->editemployee->onChange($this, 'OnChangeEmployee');
+        $this->editdetail->add(new DropDownChoice('editemployee',Employee::findArray("fullname", " hiredate is not null  ","fullname")))->onChange($this, 'OnChangeEmployee');
+        
 
 
         $this->editdetail->add(new TextInput('basesalary', 0));
@@ -142,8 +142,8 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->setVisible(false);
 
 
-        $this->editdetail->editemployee->setKey($emp->employee_id);
-        $this->editdetail->editemployee->setText($emp->getInitName());
+        $this->editdetail->editemployee->setValue($emp->employee_id);
+        
 
 
         $this->editdetail->basesalary->setText(H::fm($emp->salary));
@@ -162,7 +162,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
     public function calcrowOnClick($sender)
     {
 
-        $id = $this->editdetail->editemployee->getKey();
+        $id = $this->editdetail->editemployee->getValue();
         if ($id == 0) {
             $this->setError("Не выбран сотрудник");
             return;
@@ -236,7 +236,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->editemployee->getKey();
+        $id = $this->editdetail->editemployee->getValue();
         if ($id == 0) {
             $this->setError("Не выбран сотрудник");
             return;
@@ -353,17 +353,13 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-    public function OnAutoEmployee($sender)
-    {
-        $text = $sender->getValue();
-        return Employee::findArray("fullname", " hiredate is not null and  fullname  like '%{$text}%' ");
-    }
+    
 
     public function OnChangeEmployee($sender)
     {
         if ($this->_os)
             return;
-        $id = $sender->getKey();
+        $id = $sender->getValue();
         $emp = Employee::load($id);
         //$amount = 0;
 

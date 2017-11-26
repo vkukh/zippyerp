@@ -2,7 +2,7 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
@@ -43,7 +43,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('editemp'))->setVisible(false);
         ;
-        $this->editemp->add(new AutocompleteTextInput('editemployee'))->onText($this, "OnAutoEmp");
+        $this->editemp->add(new DropDownChoice('editemployee',Employee::findArray('fullname', "","fullname")));
         $this->editemp->add(new TextInput('editincome'));
         $this->editemp->add(new TextInput('editoutcome'));
         $this->editemp->add(new TextInput('edittax'));
@@ -88,8 +88,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
     public function editOnClick($sender)
     {
         $emp = $sender->getOwner()->getDataItem();
-        $this->editemp->editemployee->setKey($emp->employee_id);
-        $this->editemp->editemployee->setText($emp->fullname);
+        $this->editemp->editemployee->setValue($emp->employee_id);
         $this->editemp->editincome->setText(H::fm($emp->income));
         $this->editemp->editoutcome->setText(H::fm($emp->outcome));
         $this->editemp->edittax->setText(H::fm($emp->tax));
@@ -100,11 +99,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $this->editemp->setVisible(true);
     }
 
-    public function OnAutoEmp($sender)
-    {
-        $text = $sender->getValue();
-        return Employee::findArray('fullname', "fullname like '%{$text}%' ");
-    }
+    
 
     public function deleteOnClick($sender)
     {
@@ -118,7 +113,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
     public function saverowOnClick($sender)
     {
 
-        $id = $this->editemp->editemployee->getKey();
+        $id = $this->editemp->editemployee->getValue();
         if ($id == 0) {
             $this->setError("Не выбран сотрудник");
             return;

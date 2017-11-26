@@ -64,7 +64,9 @@
             </div>
             <div class="form-group">
                 <label data-label="editcustomer" for="editcustomer" class="  control-label">Контрагент</label>
-                <input class="form-control" type="text" zippy="editcustomer" required="required">
+                <select class="form-control select2" type="text" zippy="editcustomer" >
+                  <option value="0">Не выбран</option>
+                </select>
             </div>
             <div class="form-group">
                 <div class="checkbox">
@@ -104,7 +106,7 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" zippy="editnoentry"> Не выполнять проводки
+                        <input type="checkbox" zippy="editnoentry"> <span data-label="editnoentry">Не выполнять проводки</span>
                     </label>
                 </div>
             </div>

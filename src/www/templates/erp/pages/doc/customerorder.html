@@ -23,7 +23,9 @@
                 <label for="customer" class="col-xs-2 control-label">Заказчик</label>
                 <div class="col-xs-3">
 
-                    <input class="form-control" type="text" zippy="customer" placeholder="Начните вводить">
+                    <select class="form-control select2" type="text" zippy="customer" >
+                    <option value="0">Не выбран</option>
+                    </select>
 
                 </div>
             </div>
@@ -91,7 +93,9 @@
 
             <div class="form-group">
                 <label for="editname">Наименование </label>
-                <input class="form-control" zippy="edititem" placeholder="Введите  ниаменование">
+                <select class="form-control select2" zippy="edititem" >
+                    <option value="0">Не выбран</option>
+                    </select>                
                 Наличие на дату заказа: <span zippy="qtystore"></span>
             </div>
             <div class="form-group">

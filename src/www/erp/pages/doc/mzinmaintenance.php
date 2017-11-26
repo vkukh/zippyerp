@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -41,7 +41,10 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
 
-        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->onChange($this, 'OnChangeStore');
+        
+        
+        $this->docform->add(new DropDownChoice('store',Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->onChange($this, 'OnChangeStore');
+        $this->docform->store->selectFirst();
         $this->docform->add(new DropDownChoice('expenses', $this->_expenses));
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
@@ -53,8 +56,8 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
-        $this->editdetail->edittovar->onChange($this, 'OnChangeItem');
+        $this->editdetail->add(new DropDownChoice('edittovar'))->onChange($this, 'OnChangeItem');
+        
 
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
@@ -80,6 +83,8 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
+        
+        $this->OnChangeStore($this->docform->store);
     }
 
     public function detailOnRow($row)
@@ -111,8 +116,8 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->docform->setVisible(false);
         $this->_rowid = 0;
         //очищаем  форму
-        $this->editdetail->edittovar->setKey(0);
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
+        
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -131,8 +136,8 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
 
 
         //  $list = Stock::findArrayEx("closed  <> 1   and store_id={$stock->store_id}");
-        $this->editdetail->edittovar->setKey($stock->stock_id);
-        $this->editdetail->edittovar->setText($stock->itemname);
+        $this->editdetail->edittovar->setValue($stock->stock_id);
+        
 
 
         $this->_rowid = $stock->stock_id;
@@ -140,7 +145,7 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран МЦ");
             return;
@@ -151,7 +156,7 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
             $stock->stock_id = time();
             $stock->measure_name = "шт.";
             $stock->item_id = $id;  //необоротный актив
-            $stock->itemname = $this->editdetail->edittovar->getText();
+            $stock->itemname = $this->editdetail->edittovar->getValueName();
         } else {
             $stock = Stock::load($id);
         }
@@ -258,18 +263,18 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
         //очистка  списка  товаров
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
+        
+        $list = array();
+        if ($this->_os) {
+            $list = CapitalAsset::findArray("itemname", "detail like '%<typeos>11</typeos>%' ", "itemname");
+        } else {
+             $store_id = $this->docform->store->getValue();
+             $list = Stock::findArrayEx("store_id={$store_id} and closed <> 1 and stock_id in( select stock_id from erp_account_subconto where account_id = 22 or  account_id = 153)", "itemname");
+        }
+        $this->editdetail->edittovar->setOptionList($list);        
     }
 
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
-        if ($this->_os) {
-            return CapitalAsset::findArray("itemname", "detail like '%<typeos>11</typeos>%' and  itemname  like '%{$text}%'", "itemname");
-        } else {
-            $store_id = $this->docform->store->getValue();
-            return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and stock_id in( select stock_id from erp_account_subconto where account_id = 22 or  account_id = 153)");
-        }
-    }
+
 
     public function OnChangeItem($sender)
     {

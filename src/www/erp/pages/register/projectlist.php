@@ -50,6 +50,7 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         $editform->add(new TextInput('editprojectname'));
         $editform->add(new Date('editstartdate', time()));
         $editform->add(new Date('editenddate', time()));
+        $editform->add(new Date('editenddate', time()));
         $editform->add(new TextArea('editdesc'));
         $editform->add(new AutocompleteTextInput('editbase'))->onText($this, 'editbaseOnAutocomplete');
         $editform->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');

@@ -4,7 +4,7 @@ namespace ZippyERP\ERP\Pages\Reference;
 
 use ZCL\DB\EntityDataSource as EDS;
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -33,7 +33,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeetable->add(new DataView('employeelist', new EDS('\ZippyERP\ERP\Entity\employee'), $this, 'employeelistOnRow'))->Reload();
         $this->employeetable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('employeedetail'))->setVisible(false);
-        $this->employeedetail->add(new AutocompleteTextInput('editcontact'))->onText($this, "onContact");
+        $this->employeedetail->add(new DropDownChoice('editcontact')) ;
         $this->employeedetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
         $this->employeedetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
         $this->employeedetail->add(new DropDownChoice('editdepartment', Department::findArray('department_name', '', 'department_name')));
@@ -80,8 +80,8 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeetable->setVisible(false);
         $this->employeedetail->setVisible(true);
         $this->employeedetail->editlogin->setText($this->_employee->login);
-        $this->employeedetail->editcontact->setText($this->_employee->fullname);
-        $this->employeedetail->editcontact->setKey($this->_employee->contact_id);
+        $this->employeedetail->editcontact->setOptionList(Contact::findArray("fullname", " (employee = 0 and customer = 0 ) or contact_id={$this->_employee->contact_id}", "fullname"));
+        $this->employeedetail->editcontact->setValue($this->_employee->contact_id);
         $this->employeedetail->editcontact->setAttribute('readonly', 'readonly');
         $this->employeedetail->editposition->setValue($this->_employee->position_id);
         $this->employeedetail->editdepartment->setValue($this->_employee->department_id);
@@ -118,7 +118,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
 
     public function saveOnClick($sender)
     {
-        $this->_employee->contact_id = $this->employeedetail->editcontact->getKey();
+        $this->_employee->contact_id = $this->employeedetail->editcontact->getValue();
         if ($this->_employee->contact_id == 0) {
             $this->setError("Выберите контакт");
             return;
@@ -171,12 +171,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->contactview->setVisible(false);
     }
 
-    public function onContact($sender)
-    {
-        $text = $sender->getValue();
-
-        return Contact::findArray("fullname", " employee = 0 and customer = 0  and  fullname  like '%{$text}%' ", "fullname", 20);
-    }
+ 
 
     //редактирование  контакта
     public function OpenOnClick($sender)
@@ -206,8 +201,8 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
     public function OnDetail($saved = false, $id = 0)
     {
         $contact = Contact::load($this->contactdetail->getItem()->contact_id);
-        $this->employeedetail->editcontact->setText($contact->fullname);
-        $this->employeedetail->editcontact->setKey($contact->contact_id);
+        
+        $this->employeedetail->editcontact->setValue($contact->contact_id);
         $this->contactdetail->setVisible(false);
         $this->employeedetail->setVisible(true);
         if ($saved) {  //обновляем  данные  сотрудника  из  контакта

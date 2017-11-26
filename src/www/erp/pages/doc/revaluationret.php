@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -38,6 +38,8 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('store'))->onChange($this, 'OnChangeStore');
         $this->docform->store->setOptionList(Store::findArray("storename", "store_type=" . Store::STORE_TYPE_RET));
+        $this->docform->store->selectFirst();
+ 
 
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
@@ -47,8 +49,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 
 
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, 'OnAutocompleteItem');
-        $this->editdetail->edititem->onChange($this, 'OnChangeItem');
+        $this->editdetail->add(new DropDownChoice('edititem'))->onChange($this, 'OnChangeItem');
         $this->editdetail->add(new TextInput('editprice'))->setText("0");
 
         $this->editdetail->add(new Label('qtystock'));
@@ -71,6 +72,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
+          $this->OnChangeStore( $this->docform->store);
     }
 
     public function detailOnRow($row)
@@ -104,9 +106,9 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
         }
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
-        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setValue(0);
         $this->editdetail->qtystock->setText('');
-        $this->editdetail->edititem->setText('');
+        
     }
 
     public function editOnClick($sender)
@@ -119,8 +121,8 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($stock->newprice));
 
 
-        $this->editdetail->edititem->setKey($stock->stock_id);
-        $this->editdetail->edititem->setText($stock->itemname);
+        $this->editdetail->edititem->setValue($stock->stock_id);
+        
         $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate()) . ' ' . $stock->measure_name);
 
         $this->_rowid = $stock->stock_id;
@@ -128,7 +130,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edititem->getKey();
+        $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не выбран ТМЦ");
             return;
@@ -220,7 +222,7 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
 
     public function OnChangeItem($sender)
     {
-        $stock_id = $sender->getKey();
+        $stock_id = $sender->getValue();
         $stock = Stock::load($stock_id);
         $this->editdetail->qtystock->setText(Stock::getQuantity($stock_id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
     }
@@ -231,15 +233,13 @@ class RevaluationRet extends \ZippyERP\ERP\Pages\Base
             //очистка  списка  товаров
             $this->_itemlist = array();
             $this->docform->detail->Reload();
+       $store_id = $sender->getValue();
+
+       $this->editdetail->edititem->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 "));
+            
         }
     }
 
-    public function OnAutocompleteItem($sender)
-    {
-        $text = $sender->getValue();
-        $store_id = $this->docform->store->getValue();
-
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
-    }
+    
 
 }

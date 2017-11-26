@@ -35,7 +35,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "ftype=1")));
         $this->docform->add(new CheckBox('tax'));
-        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoContragent");
+        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', "",'customer_name')));
         ;
         $this->docform->add(new TextInput('amount'));
         $this->docform->add(new TextInput('nds'));
@@ -63,8 +63,8 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
             $this->docform->basedoc->setText($this->_doc->headerdata['basedocname']);
 
 
-            $this->docform->customer->setKey($this->_doc->headerdata['customer']);
-            $this->docform->customer->setText($this->_doc->headerdata['customername']);
+            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+            
         } else {
             $this->_doc = Document::create('TransferOrder');
             $this->docform->document_number->setText($this->_doc->nextNumber());
@@ -77,11 +77,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function OnAutoContragent($sender)
-    {
-        $text = $sender->getValue();
-        return Customer::findArray('customer_name', "customer_name like '%{$text}%' ");
-    }
+    
 
     public function backtolistOnClick($sender)
     {
@@ -90,13 +86,13 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
 
     public function savedocOnClick($sender)
     {
-        if ($this->docform->customer->getKey() <= 0) {
+        if ($this->docform->customer->getValue() <= 0) {
             $this->setError('Не выбран  контрагент');
             return;
         }
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getKey(),
-            'customername' => $this->docform->customer->getText(),
+            'customer' => $this->docform->customer->getValue(),
+            'customername' => $this->docform->customer->getValueName(),
             'bankaccount' => $this->docform->bankaccount->getValue(),
             'tax' => $this->docform->tax->getValue(),
             'notes' => $this->docform->notes->getText(),

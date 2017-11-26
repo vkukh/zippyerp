@@ -45,8 +45,8 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes()))->onChange($this, 'typeOnClick');
-        $this->editdetail->add(new AutocompleteTextInput('editcustomer'))->onText($this, "OnAutoContragent");
+        $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes(),BS::IN))->onChange($this, 'typeOnClick');
+        $this->editdetail->add(new DropDownChoice('editcustomer'));
         $this->editdetail->add(new CheckBox('editprepayment'))->setChecked(1);
 
         $this->editdetail->add(new DropDownChoice('editpayment'))->setOptionList(\ZippyERP\ERP\Consts::getTaxesList());
@@ -82,6 +82,8 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_list')), $this, 'detailOnRow'));
 
         $this->docform->detail->Reload();
+        
+        $this->typeOnClick($this->editdetail->editoptype);
     }
 
     public function detailOnRow($row)
@@ -119,7 +121,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->setError("Не выбран документ  или счет");
             return;
         }
-        if ($this->editdetail->editcustomer->isVisible() && $this->editdetail->editcustomer->getKey() <= 0) {
+        if ($this->editdetail->editcustomer->isVisible() && $this->editdetail->editcustomer->getValue() <= 0) {
             $this->setError('Не выбран  контрагент');
             return;
         }
@@ -130,8 +132,8 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
 
         $entry->doc = $this->editdetail->editdoc->getKey();
         $entry->docnumber = $this->editdetail->editdoc->getValue();
-        $entry->customer = $this->editdetail->editcustomer->getKey();
-        $entry->customername = $this->editdetail->editcustomer->getText();
+        $entry->customer = $this->editdetail->editcustomer->getValue();
+        $entry->customername = $this->editdetail->editcustomer->getValueName();
         $entry->prepayment = $this->editdetail->editprepayment->isChecked();
 
         $entry->amount = $this->editdetail->editamount->getText() * 100;
@@ -150,9 +152,8 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editpayment->setValue(0);
         $this->editdetail->editdoc->setKey(0);
         $this->editdetail->editdoc->setText('');
-        $this->editdetail->editcustomer->setKey(0);
-        ;
-        $this->editdetail->editcustomer->setText('');
+        $this->editdetail->editcustomer->setValue(0);
+    
         ;
         $this->editdetail->editamount->setText("0");
         $this->editdetail->editnds->setText("0");
@@ -234,8 +235,9 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprepayment->setVisible(true);
         $this->editdetail->editnoentry->setVisible(true);
         //$list = array();
-
-        if ($sender->getValue() == BS::TAX) {
+        $type = $sender->getValue();
+        
+        if ($type == BS::TAX) {
 
             $this->editdetail->editnds->setVisible(false);
             $this->editdetail->editdoc->setVisible(false);
@@ -246,20 +248,20 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->editdetail->editpayment->setVisible(false);
             $this->editdetail->editcustomer->setVisible(true);
         }
-        if ($sender->getValue() == BS::CASHIN || $sender->getValue() == BS::CASHOUT) {
+        if ($type == BS::CASHIN || $sender->getValue() == BS::CASHOUT) {
             $this->editdetail->editnds->setVisible(false);
             $this->editdetail->editdoc->setVisible(false);
             $this->editdetail->editcustomer->setVisible(false);
             $this->editdetail->editprepayment->setVisible(false);
         }
-        if ($sender->getValue() == BS::OUT_COMMON) {
+        if ($type == BS::OUT_COMMON) {
             $this->editdetail->editnds->setVisible(false);
             $this->editdetail->editdoc->setVisible(false);
             $this->editdetail->editcustomer->setVisible(false);
             $this->editdetail->editprepayment->setVisible(false);
             $this->editdetail->editpayment->setVisible(false);
         }
-        if ($sender->getValue() == BS::OUT_CARD) {
+        if ($type == BS::OUT_CARD) {
             $this->editdetail->editnds->setVisible(false);
             $this->editdetail->editdoc->setVisible(false);
             $this->editdetail->editcustomer->setVisible(false);
@@ -267,39 +269,36 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->editdetail->editpayment->setVisible(false);
             $this->editdetail->editnoentry->setVisible(false);
         }
-        $this->editdetail->editcustomer->setKey(0);
+        
 
-        $this->editdetail->editcustomer->setText('');
-    }
-
-    public function OnAutoContragent($sender)
-    {
-        $type = $this->editdetail->editoptype->getValue();
-        $text = $sender->getValue();
+        
+         
         $where = "";
         if ($type == BS::IN) {
             //если  приход то  продавца
-            $where = "  and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "    ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
         }
         if ($type == BS::IN_BACK) {
             //если  возврат от  покупателя
-            $where = "  and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "    ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
         }
         if ($type == BS::OUT_BACK) {
             //если  возврат продавцу
-            $where = "  and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "    ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
         }
         if ($type == BS::OUT) {
             //если  расход  то  покупатели
-            $where = "  and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "    ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
         }
         if ($type == BS::TAX) {
             // оплата  налогов  и  сборов
-            $where = "  and  cust_type=" . Customer::TYPE_GOV;
+            $where = "     cust_type=" . Customer::TYPE_GOV;
         }
-        return Customer::findArray('customer_name', "customer_name like '%{$text}%'  " . $where);
+        $this->editdetail->editcustomer->setOptionList(Customer::findArray('customer_name',  $where,'customer_name'));
+        $this->editdetail->editcustomer->setValue(0);
     }
 
+   
     public function OnDocAutocomplete($sender)
     {
         $text = $sender->getValue();

@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
+ 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -42,8 +42,9 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new CheckBox('plan'));
 
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
-        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, "OnAutoContragent");
-
+        $this->docform->store->selectFirst();
+        
+        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
@@ -55,8 +56,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, "OnAutoItem");
-        $this->editdetail->edittovar->onChange($this, 'OnChangeItem');
+        $this->editdetail->add(new DropDownChoice('edittovar'))->onChange($this, 'OnChangeItem',true);
 
         $this->editdetail->add(new Label('qtystock'));
 
@@ -85,6 +85,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
+        $this->OnChangeStore($this->docform->store);
     }
 
     public function detailOnRow($row)
@@ -127,8 +128,8 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
 
         //$list = Stock::findArrayEx("closed  <> 1 and   store_id={$stock->store_id}");
-        $this->editdetail->edittovar->setKey($stock->stock_id);
-        $this->editdetail->edittovar->setText($stock->itemname);
+        $this->editdetail->edittovar->setValue($stock->stock_id);
+        
 
         $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate()) . ' ' . $stock->measure_name);
 
@@ -137,7 +138,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
     public function saverowOnClick($sender)
     {
-        $id = $this->editdetail->edittovar->getKey();
+        $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не выбран товар");
             return;
@@ -154,8 +155,8 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setKey(0);
-        $this->editdetail->edittovar->setText('');
+        $this->editdetail->edittovar->setValue(0);
+        
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
@@ -275,25 +276,18 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         //очистка  списка  товаров
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
-    }
-
-    public function OnAutoContragent($sender)
-    {
-        $text = $sender->getValue();
-        return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
-    }
-
-    public function OnAutoItem($sender)
-    {
-        $text = $sender->getValue();
         $store_id = $this->docform->store->getValue();
-
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' ");
+        
+        $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 ",'itemname'));
     }
+
+    
+
+    
 
     public function OnChangeItem($sender)
     {
-        $id = $sender->getKey();
+        $id = $sender->getValue();
         $stock = Stock::load($id);
         //$item = Item::load($stock->item_id);
         $this->editdetail->editprice->setText(H::fm($stock->price));

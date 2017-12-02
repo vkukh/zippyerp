@@ -36,9 +36,9 @@ class Product extends \ZCL\DB\Entity
         $conn = \ZCL\DB\DB::getConnect();
         $conn->Execute("delete from shop_attributevalues where  product_id=" . $this->product_id);
         foreach ($this->attributevalues as $key => $value) {
-            if ($value != null) {
-                $conn->Execute("insert  into shop_attributevalues (attribute_id,product_id,attributevalue) values ({$key},{$this->product_id}," . $conn->qstr($value) . ")");
-            }
+            //if ($value != null) {
+            $conn->Execute("insert  into shop_attributevalues (attribute_id,product_id,attributevalue) values ({$key},{$this->product_id}," . $conn->qstr($value) . ")");
+            // }
         }
     }
 
@@ -66,6 +66,8 @@ class Product extends \ZCL\DB\Entity
 
         foreach ($attrlist as $attr) {
             $attr->value = @$attrvalues[$attr->attribute_id];
+            if (strlen($attr->value) == 0)
+                $attr->nodata = true;
             $ret[] = $attr;
         }
 

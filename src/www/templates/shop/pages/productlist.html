@@ -121,39 +121,46 @@
                                 <select zippy="estock"   class="form-control"  >
                                 </select>
                             </div>       
-                            <div   zippy="attrlist">
+                            <table class="table table-condensed">
+                                <tr  zippy="attrlist">
+                                    <td>
+                                        <div zippy="attrdata"></div> 
+                                    </td>
+                                    <td>   
+                                        <div class="checkbox"  > <label>
+                                                <input zippy="nodata" type="checkbox"> Нет данных 
+                                            </label>   </div>  
+                                    </td>
+                                </tr></table>    
 
-                                <div zippy="attrdata"></div> 
-
-                            </div>       
                             <div class="checkbox"  >
                                 <label>
                                     <input zippy="edisabled" type="checkbox"> <span data-label="edisabled">Снят с  продажи </span>
                                 </label>   
 
-                            </div>  
-                            <div class="form-group">
-                                <label for="egroup">Группа&nbsp;<i zippy="tt" class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Выбор другой группы для перемещения товара"></i></label>
-                                <select zippy="egroup"   class="form-control select2"  >
-                                </select>
-                            </div> 
 
-                            <div class="form-group"  >
-                                <a zippy="bback"  class="btn btn-default btn-sm">Назад</a>
-                                &nbsp;<a zippy="bcancel"  class="btn btn-default  btn-sm">Отмена</a>
-                                &nbsp;<input type="submit"    class="btn btn-default  btn-sm" value="Сохранить" >
-                                &nbsp;<a zippy="bdelete"  class="btn btn-danger  btn-sm">Удалить</a>
+                                <div class="form-group">
+                                    <label for="egroup">Группа&nbsp;<i zippy="tt" class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Выбор другой группы для перемещения товара"></i></label>
+                                    <select zippy="egroup"   class="form-control select2"  >
+                                    </select>
+                                </div> 
 
-                            </div>        
+                                <div class="form-group"  >
+                                    <a zippy="bback"  class="btn btn-default btn-sm">Назад</a>
+                                    &nbsp;<a zippy="bcancel"  class="btn btn-default  btn-sm">Отмена</a>
+                                    &nbsp;<input type="submit"    class="btn btn-default  btn-sm" value="Сохранить" >
+                                    &nbsp;<a zippy="bdelete"  class="btn btn-danger  btn-sm">Удалить</a>
+
+                                </div>        
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-  <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
-  </script>        
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+        </script>        
     </body>
 </html>

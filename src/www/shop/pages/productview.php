@@ -106,6 +106,22 @@ class ProductView extends Base
         \ZippyERP\System\Session::getSession()->recently = $recently;
     }
 
+    public function OnAddAttributeRow(\Zippy\Html\DataList\DataRow $datarow) {
+        $item = $datarow->getDataItem();
+        $datarow->add(new Label("attrname", $item->attributename));
+        $meashure = "";
+        $value = $item->attributevalue;
+        if ($item->attributetype == 2)
+            $meashure = $item->valueslist;
+        if ($item->attributetype == 1) {
+            $value = $item->attributevalue == 1 ? "Есть" : "Нет";
+        }
+        $value = $value . $meashure;
+        if ($item->attributevalue == '')
+            $value = "Н/Д";
+        $datarow->add(new Label("attrvalue", $value));
+    }
+
     //добавление в корзину
     public function OnBuy($sender) {
         $product = Product::load($this->product_id);
@@ -172,19 +188,6 @@ class ProductView extends Base
         $datarow->add(new Label("created", date('Y-m-d H:i', $item->created)));
         $datarow->add(new TextInput("rate"))->setText($item->rating);
         $datarow->add(new ClickLink('deletecomment', $this, 'OnDeleteComment'))->SetVisible(System::getUser()->userlogin == "admin" && $item->moderated != 1);
-    }
-
-    public function OnAddAttributeRow(\Zippy\Html\DataList\DataRow $datarow) {
-        $item = $datarow->getDataItem();
-        $datarow->add(new Label("attrname", $item->attributename));
-        $meashure = "";
-        if ($item->attributetype == 2)
-            $meashure = $item->valueslist;
-        if ($item->attributetype == 1) {
-            $item->attributevalue = $item->attributetype == 1 ? "Есть" : "Нет";
-        }
-
-        $datarow->add(new Label("attrvalue", $item->attributevalue . $meashure));
     }
 
     //удалить коментарий

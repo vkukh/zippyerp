@@ -64,12 +64,16 @@
                             <th>Наименование</th>
                             <th >Тип</th>
                             <th style="width:200px;">Значения</th>
+                            <th style="width:16px;">&nbsp;</th>
+                            <th style="width:16px;">&nbsp;</th>
                             <th>&nbsp;</th>
                         </tr>
                         <tr zippy="attritem">
                             <td zippy="itemname"></td>
                             <td zippy="itemtype"></td>
                             <td  zippy="itemvalues"></td>
+                            <td><a zippy="orderup"><i class="fa fa-long-arrow-up"></i></a></td>
+                            <td><a zippy="orderdown"><i class="fa fa-long-arrow-down"></i></a></td>
                             <td><a zippy="itemedit"><i class="fa fa-edit"></i></a> <a zippy="itemdel"><i class="fa fa-remove"></i></a></td>
                         </tr>
                     </table>
@@ -111,10 +115,10 @@
 
             </div>
         </div>
-  <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
-  </script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+        </script>
     </body>
 </html>

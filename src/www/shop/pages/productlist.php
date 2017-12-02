@@ -40,7 +40,7 @@ class ProductList extends Base
 
         $op = System::getOptions("shop");
         $this->shop = $op["store"];
-        if($this->shop==""){
+        if ($this->shop == "") {
             $setError("Не задан склад");
         }
         $tree = $this->add(new Tree("tree"));
@@ -200,7 +200,6 @@ class ProductList extends Base
         $this->editpanel->editform2->setVisible(false);
         $this->editpanel->editform->setVisible(true);
         $this->editpanel->editform->egroup->setValue($this->group->group_id);
-         
     }
 
 //строка товара
@@ -242,14 +241,13 @@ class ProductList extends Base
         $this->attrlist = $this->product->getAttrList();
         $this->editpanel->editform->attrlist->Reload();
         $this->editpanel->editform->egroup->setValue($this->group->group_id);
-         
     }
 
 //строка  атрибута
     public function attrlistOnRow($row) {
         $attr = $row->getDataItem();
 
-
+        $row->add(new CheckBox("nodata", new \Zippy\Binding\PropertyBinding($attr, "nodata")));
         $row->add(new AttributeComponent('attrdata', $attr));
     }
 
@@ -295,7 +293,7 @@ class ProductList extends Base
             }
 
             $image = new \ZippyERP\Shop\Entity\Image();
-            $image->content =  file_get_contents($file['tmp_name']) ; 
+            $image->content = file_get_contents($file['tmp_name']);
             $image->mime = $imagedata['mime'];
             $th = new \JBZoo\Image\Image($file['tmp_name']);
             $th = $th->resize(256, 256);
@@ -317,6 +315,8 @@ class ProductList extends Base
         foreach ($rows as $r) {
             $a = $r->getDataItem();
             $this->product->attributevalues[$a->attribute_id] = "" . $a->attributevalue;
+            if ($a->nodata)
+                $this->product->attributevalues[$a->attribute_id] = '';
         }
 
         $this->product->save();

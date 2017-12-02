@@ -22,6 +22,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
 
     private $group = null, $rootgroup;
     public $attrlist = array();
+    private $mm;
 
     public function __construct() {
         parent::__construct();
@@ -50,7 +51,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         $attrpanel = $this->add(new Panel('attrpanel'));
         $attrpanel->add(new \Zippy\Html\DataList\DataView('attritem', new \Zippy\Html\DataList\ArrayDataSource(new Bind($this, 'attrlist')), $this, 'OnAddRow'));
 
-        $this->UpdateAttrList();
+        //$this->UpdateAttrList();
 
         $attrpanel->add(new ClickLink('addattr'))->onClick($this, 'OnAddAttribute');
         $form = $attrpanel->add(new Form('attreditform'));
@@ -60,7 +61,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         $form->add(new TextInput('attrid'));
         $form->add(new \Zippy\Html\Form\DropDownChoice('attrtype', Helper::getAttributeTypes()))->onChange($this, 'OnAttrType');
         $form->add(new Label('attrtypename'));
-        $form->add(new Label('tt'))->setAttribute("title","Атрибут 'Есть/Нет' указывает наличие или  отсутствие какойго либо параметра. Наприме FM-тюнер");
+        $form->add(new Label('tt'))->setAttribute("title", "Атрибут 'Есть/Нет' указывает наличие или  отсутствие какойго либо параметра. Наприме FM-тюнер");
         $form->add(new CheckBox('showinlist'));
 
         $form->add(new Panel('attrvaluespanel'));
@@ -187,11 +188,11 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
             }
             $th = new \JBZoo\Image\Image($filedata['tmp_name']);
             $th = $th->resize(256, 256);
-             
+
             $image = new \ZippyERP\Shop\Entity\Image();
             $image->content = $th->getBinary();
-             
-   
+
+
             $image->mime = $imagedata['mime'];
             $image->save();
             $this->group->image_id = $image->image_id;
@@ -202,6 +203,9 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
 
     //обновить атрибуты
     protected function UpdateAttrList() {
+        $conn = \ZCL\DB\DB::getConnect();
+        $this->mm = $conn->GetRow("select coalesce(max(ordern),0) as mm,coalesce(min(ordern),0) as mi from shop_attributes_order where  pg_id=" . $this->group->group_id);
+
         $this->attrlist = Helper::getProductAttributeListByGroup($this->group->group_id, true);
         $this->attrpanel->attritem->Reload();
     }
@@ -214,6 +218,8 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         $datarow->add(new Label("itemvalues", $item->valueslist));
         $datarow->add(new ClickLink("itemdel", $this, 'OnDeleteAtribute'))->setVisible($this->group->group_id == $item->group_id);
         $datarow->add(new ClickLink("itemedit", $this, 'OnEditAtribute'))->setVisible($this->group->group_id == $item->group_id);
+        $datarow->add(new ClickLink("orderup", $this, 'OnUp'))->setVisible($item->ordern > $this->mm["mi"]);
+        $datarow->add(new ClickLink("orderdown", $this, 'OnDown'))->setVisible($item->ordern < $this->mm["mm"]);
 
         return $datarow;
     }
@@ -244,20 +250,20 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         if ($type == 3 || $type == 4) {
             $this->attrpanel->attreditform->attrvaluespanel->setVisible(true);
         }
-        if($type==1){
-             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Есть/Нет' указывает наличие или  отсутствие какойго либо параметра. Наприме FM-тюнер");
+        if ($type == 1) {
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Есть/Нет' указывает наличие или  отсутствие какойго либо параметра. Наприме FM-тюнер");
         }
-        if($type==2){
-             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Число' - числовой параметр (наприме  емкость акумулятора). Список для фильтра  отбора  формируется  на основании значений атрибута заданных для товаров.");
+        if ($type == 2) {
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Число' - числовой параметр (наприме  емкость акумулятора). Список для фильтра  отбора  формируется  на основании значений атрибута заданных для товаров.");
         }
-        if($type==3){
-             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Список' предназначен для набора из  котрог можено выбрать только одно значчение. Например цвет.  Задается списком через запятую.");
+        if ($type == 3) {
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Список' предназначен для набора из  котрог можено выбрать только одно значчение. Например цвет.  Задается списком через запятую.");
         }
-        if($type==4){
-             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Набор' предназначен для  набора из  которого  можно выбрать несколько значений. Например диапазоны приема сигнала. Задается списком через запятую. ");
+        if ($type == 4) {
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Набор' предназначен для  набора из  которого  можно выбрать несколько значений. Например диапазоны приема сигнала. Задается списком через запятую. ");
         }
-        if($type==5){
-             $this->attrpanel->attreditform->tt->setAttribute("title","Атрибут 'Строка'- просто строковый параметр (например тип процессора). Обычно не участвоет в фильтре. ");
+        if ($type == 5) {
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Строка'- просто строковый параметр (например тип процессора). Обычно не участвоет в фильтре. ");
         }
     }
 
@@ -320,9 +326,40 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         $attr->showinlist = $form->showinlist->isChecked() ? 1 : 0;
 
         $attr->Save();
+
+        if ($attrid == "0") {
+            $conn = \ZCL\DB\DB::getConnect();
+            $no = $conn->GetOne("select coalesce(max(ordern),0)+1 from shop_attributes_order");
+            $conn->Execute("insert into shop_attributes_order (pg_id,attr_id,ordern)values({$attr->group_id},{$attr->attribute_id},{$no} )");
+        }
+
         $this->UpdateAttrList();
 
         $form->setVisible(false);
+    }
+
+    public function OnUp($sender) {
+        $a1 = $sender->getOwner()->getDataItem();
+
+        //предыдущий
+        $a2 = ProductAttribute::getFirst("group_id={$this->group->group_id} and ordern < {$a1->ordern}", "ordern desc");
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->Execute("update shop_attributes_order set ordern={$a2->ordern} where pg_id={$this->group->group_id} and attr_id={$a1->attribute_id}");
+        $conn->Execute("update shop_attributes_order set ordern={$a1->ordern} where pg_id={$this->group->group_id} and attr_id={$a2->attribute_id}");
+
+        $this->UpdateAttrList();
+    }
+
+    public function OnDown($sender) {
+        $a1 = $sender->getOwner()->getDataItem();
+
+        //следующий
+        $a2 = ProductAttribute::getFirst("group_id={$this->group->group_id} and ordern > {$a1->ordern}", "ordern asc");
+        $conn = \ZCL\DB\DB::getConnect();
+        $conn->Execute("update shop_attributes_order set ordern={$a2->ordern} where pg_id={$this->group->group_id} and attr_id={$a1->attribute_id}");
+        $conn->Execute("update shop_attributes_order set ordern={$a1->ordern} where pg_id={$this->group->group_id} and attr_id={$a2->attribute_id}");
+
+        $this->UpdateAttrList();
     }
 
     public function OnDeleteAtribute($sender) {

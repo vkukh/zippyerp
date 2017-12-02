@@ -16,6 +16,4 @@ class OrderDetail extends \ZCL\DB\Entity
         $this->orderdetail_id = 0;
     }
 
-  
-
 }

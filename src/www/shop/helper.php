@@ -204,7 +204,7 @@ class Helper
         $grs = str_split($gr, 8);
         $grlist = implode(',', $grs);
 //                  
-        $sql = "select attribute_id,showinlist, group_id,attributename,attributetype,valueslist from  shop_attributes   where group_id  in($grlist)  order  by group_id";
+        $sql = "select attribute_id,showinlist, group_id,attributename,attributetype,valueslist,ordern from  shop_attributes_view   where group_id  in($grlist)  order  by group_id";
 
         $attrtypes = self::getAttributeTypes();
         $rs = $conn->Execute($sql);
@@ -251,7 +251,7 @@ class Helper
      * @param mixed $contact
      * @param mixed $user_id
      */
-    public static function saveOrder($basket, $contact,$delivery) {
+    public static function saveOrder($basket, $contact, $delivery) {
         $conn = DB::getConnect();
         $amount = 0;
         foreach ($basket->list as $product) {
@@ -262,7 +262,7 @@ class Helper
         $order->description = $contact;
         $order->delivery = $delivery;
         $order->save();
-         
+
 
         foreach ($basket->list as $product) {
             $sql = "insert into shop_orderdetails (order_id,product_id,quantity,price) values({$order->order_id},{$product->product_id},{$product->quantity},{$product->price})";

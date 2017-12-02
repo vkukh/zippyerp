@@ -18,7 +18,11 @@ class Store extends \ZCL\DB\Entity
 
     protected function beforeDelete()
     {
-        return false;
+        
+        $conn = \ZDB\DB::getConnect();
+        $sql = "  select count(*)  from  erp_store_stock where   store_id = {$this->store_id}";
+        $cnt = $conn->GetOne($sql);
+        return $cnt == 0;
     }
 
     /**

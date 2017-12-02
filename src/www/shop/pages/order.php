@@ -29,7 +29,7 @@ class Order extends Base
         $form->add(new Label('summa', new \Zippy\Binding\PropertyBinding($this, 'sum')));
         $this->OnUpdate($this);
         $form = $this->add(new Form('orderform'));
-        $form->add(new DropDownChoice('delivery',array(1=>'Почта',2=>'Курьер',3=>'Самлвывоз')));
+        $form->add(new DropDownChoice('delivery', array(1 => 'Почта', 2 => 'Курьер', 3 => 'Самлвывоз')));
         $form->add(new TextArea('contact'));
         $form->onSubmit($this, 'OnSave');
     }
@@ -80,7 +80,7 @@ class Order extends Base
         if (count($this->basketlist) == 0)
             return;
 
-        Helper::saveOrder(Basket::getBasket(), $contact,$delivery);
+        Helper::saveOrder(Basket::getBasket(), $contact, $delivery);
 
 
         $this->orderform->contact->setText('');

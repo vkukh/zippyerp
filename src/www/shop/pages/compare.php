@@ -42,17 +42,24 @@ class CompareGrid extends \Zippy\Html\CustomComponent implements \Zippy\Interfac
             $result .= ( "<th ><img style=\"height:128px\" src=\"/simage/{$product->product_id}/t\"><br><a href=\"/sp/{$product->product_id}\">" . $product->productname . "</a> <a href=\"{$url}:{$product->product_id}\"><i class=\"fa fa-remove\" ></a></th>");
             $attributes = Helper::getAttributeValuesByProduct($product);
             //цикл по  атрибутам для  получения значений
+
             foreach ($attributes as $attr) {
+                $value = $attr->attributevalue;
                 if (false == in_array($attr->attribute_id, $attrlist)) {
                     $attrlist[] = $attr->attribute_id;
                 }
                 $attrnames[$attr->attribute_id] = $attr->attributename;
-
-                if ($attr->attributetype == 1) {
-                    $attr->attributevalue = $attr->attributevalue == 1 ? "Ecть" : "Нет";
+                if ($attr->attributetype == 2) {
+                    $attrnames[$attr->attribute_id] = $attr->attributename . ',' . $attr->valueslist;
                 }
 
-                $attrvalues[$attr->attribute_id][$product->product_id] = $attr->attributevalue;
+                if ($attr->attributetype == 1) {
+                    $value = $attr->attributevalue == 1 ? "Ecть" : "Нет";
+                }
+                if ($attr->attributevalue == '')
+                    $value = "Н/Д";
+
+                $attrvalues[$attr->attribute_id][$product->product_id] = $value;
             }
         }
         $result .= "</tr>";

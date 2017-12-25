@@ -17,7 +17,10 @@ class UserProfile extends \ZippyERP\System\Pages\Base
         parent::__construct();
 
         $this->user = System::getUser();
- 
+      
+        if ($this->user->user_id == 0) {
+            App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
+        }
         //форма   профиля
         $form = new \Zippy\Html\Form\Form('profileform') ;
         $form->add(new Label('userlogin', $this->user->userlogin));

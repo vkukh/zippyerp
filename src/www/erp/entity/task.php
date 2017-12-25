@@ -36,7 +36,7 @@ class Task extends \ZCL\DB\Entity
         $list[2] = "Закончена";
         $list[3] = "Закрыта";
         $list[4] = "Проверка";
-        $list[5] = "На  исправлении";
+        $list[5] = "На исправлении";
         return $list;
     }
 
@@ -50,12 +50,38 @@ class Task extends \ZCL\DB\Entity
         return $list;
     }
 
-    //список возможных  исполнителей
-    public static function getAssignedList()
+    //список    исполнителей
+    public   function getAssignedList()
     {
 
         // return \ZippyERP\System\User::findArray('userlogin');
-        return \ZippyERP\ERP\Entity\Employee::findArray('shortname');
+        return Employee::find("  employee_id  in (select employee_id from erp_task_task_emp where task_id={$this->task_id})");
     }
+    public   function updateAssignedList($list)
+    {
 
+         $conn = \ZDB\DB::getConnect();
+         $conn->Execute("delete from erp_task_task_emp  where task_id =" . $this->task_id);
+         foreach($list as $emp){
+            $conn->Execute("insert into erp_task_task_emp (task_id,employee_id) values({$this->task_id},{$emp->employee_id})");    
+         }
+   }
+
+   //запись статуса  в  историю
+   public function addStatus($date,$user){
+       $conn = \ZDB\DB::getConnect();
+       $conn->Execute("insert into erp_task_sh (task_id,username,status,sdate) values({$this->task_id},".$conn->qstr($user).",{$this->status},". $conn->DBTimeStamp($date) .")"   );
+   
+   }
+   
+   public function getStatusHistory(){
+       $conn = \ZDB\DB::getConnect();
+       $list = array();
+       $rs = $conn->Execute("select * from erp_task_sh where task_id = {$this->task_id} order by  sdate " );
+       foreach($rs as $row){
+           $list[] = new \ZippyERP\ERP\DataItem($row);
+       }
+       return $list;
+   }
+   
 }

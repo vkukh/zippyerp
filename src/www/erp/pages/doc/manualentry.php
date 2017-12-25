@@ -38,21 +38,22 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     public $_caarr = array();
     public $_farr = array();
     public $_acclist = array();  //список  счетов  из  проводок
+    public $_accalllist = array();  //список  счетов  из  проводок
     private $_doc;
     private $_edited = false;
 
     public function __construct($docid = 0)
     {
         parent::__construct();
-
+        $this->_accalllist = Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)');
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new TextArea('description'));
         $this->docform->add(new Date('document_date'));
         //проводки
         $this->docform->add(new DataView('acctable', new ArrayDataSource($this, '_entryarr'), $this, 'acctableOnRow'));
-        $this->docform->add(new DropDownChoice('e_acclistd', Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
-        $this->docform->add(new DropDownChoice('e_acclistc', Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)')));
+        $this->docform->add(new DropDownChoice('e_acclistd', $this->_accalllist));
+        $this->docform->add(new DropDownChoice('e_acclistc', $this->_accalllist));
         $this->docform->add(new TextInput('e_accsumma'));
         $this->docform->add(new SubmitButton('addaccbtn'))->onClick($this, 'addaccbtnOnClick');
         //ТМЦ
@@ -127,8 +128,8 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     {
         $entry = $row->getDataItem();
 
-        $row->add(new Label('acccodec', $entry->acc_c == -1 ? "" : $entry->acc_c));
-        $row->add(new Label('acccoded', $entry->acc_d == -1 ? "" : $entry->acc_d));
+        $row->add(new Label('acccodec', $entry->acc_c == -1 ? "" : $this->_accalllist[$entry->acc_c]));
+        $row->add(new Label('acccoded', $entry->acc_d == -1 ? "" : $this->_accalllist[$entry->acc_d]));
         $row->add(new Label('accvalue', H::fm($entry->amount) . " " . $entry->dc));
         $row->add(new ClickLink('delacc'))->onClick($this, 'delaccOnClick');
     }
@@ -139,6 +140,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_entryarr = array_diff_key($this->_entryarr, array($item->entry_id => $this->_entryarr[$item->entry_id]));
         $this->docform->acctable->Reload();
         $this->updateAccList();
+        $this->goAnkor("a1");
     }
 
     public function addaccbtnOnClick($sender)
@@ -159,6 +161,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->acctable->Reload();
         $this->docform->e_accsumma->setText('0');
         $this->updateAccList();
+        $this->goAnkor("a1");
     }
 
     public function updateAccList()
@@ -196,6 +199,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->_itemarr = array_diff_key($this->_itemarr, array($item->item_id => $this->_itemarr[$item->item_id]));
         $this->docform->itemtable->Reload();
+        $this->goAnkor("a2");  
     }
 
     public function additembtnOnClick($sender)
@@ -244,6 +248,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->itemtable->Reload();
         $this->docform->e_quantity->setText('1');
         $this->docform->e_price->setText('0');
+        $this->goAnkor("a2");   
     }
 
     public function emptableOnRow($row)
@@ -262,6 +267,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->_emparr = array_diff_key($this->_emparr, array($item->employee_id => $this->_emparr[$item->employee_id]));
         $this->docform->emptable->Reload();
+        $this->goAnkor("a3");  
     }
 
     public function addempbtnOnClick($sender)
@@ -284,6 +290,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_emparr[$id] = $emp;
         $this->docform->emptable->Reload();
         $this->docform->e_empamount->setText('');
+        $this->goAnkor("a3");  
     }
 
    
@@ -304,6 +311,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->_carr = array_diff_key($this->_carr, array($item->customer_id => $this->_carr[$item->customer_id]));
         $this->docform->ctable->Reload();
+        $this->goAnkor("a4");  
     }
 
     public function addсbtnOnClick($sender)
@@ -320,6 +328,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->ctable->Reload();
         $this->docform->e_сamount->setText('0');
         $this->docform->e_сlist->setValue(0);
+        $this->goAnkor("a4");  
     }
 
 
@@ -340,6 +349,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->_farr = array_diff_key($this->_farr, array($item->id => $this->_farr[$item->id]));
         $this->docform->ftable->Reload();
+        $this->goAnkor("a5");  
     }
 
     public function addfbtnOnClick($sender)
@@ -355,6 +365,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_farr[$id] = $f;
         $this->docform->ftable->Reload();
         $this->docform->e_famount->setText('');
+        $this->goAnkor("a5");  
     }
 
 
@@ -376,6 +387,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $this->_caarr = array_diff_key($this->_caarr, array($item->item_id => $this->_caarr[$item->item_id]));
         $this->docform->catable->Reload();
+        $this->goAnkor("a6");  
     }
 
     public function addcabtnOnClick($sender)
@@ -407,6 +419,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->catable->Reload();
         $this->docform->e_caquantity->setText('1');
         $this->docform->e_caprice->setText('0');
+        $this->goAnkor("a6");  
     }
 
     public function backtolistOnClick($sender)

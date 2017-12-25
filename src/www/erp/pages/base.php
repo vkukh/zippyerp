@@ -35,6 +35,9 @@ class Base extends \Zippy\Html\WebPage
 
         $this->add(new ClickLink('logout', $this, 'LogoutClick'));
         $this->add(new Label('username', $user->userlogin));
+        
+        $cntn= \ZippyERP\System\Notify::isNotify($user->user_id);
+        $this->add(new Label('newnotcnt', "".$cntn))->setVisible($cntn>0); 
 
     
         $this->add(new ClickLink("pageinfo"));

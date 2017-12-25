@@ -130,43 +130,45 @@
     </div>
     <div class="col-xs-10" zippy="taskstab">
         <a zippy="tolist2">К списку проектов</a>
-        <h3 zippy="showname2"></h3>
+        <h2 zippy="showname2"></h2>
 
-
-        <div zippy="tasklisttab">
-            <a zippy="taskaddnew">Создать задание </a> <a zippy="togantt">Диаграмма Ганта </a>
+            <h4>Список задач</h4>
+     
+            <a zippy="taskaddnew">Создать задание </a> 
             <table class="table table-striped table-condensed ">
                 <tr>
                     <th>Код</th>
                     <th>Наименование</th>
                     <th>Дата нач.</th>
                     <th>Кол. часов</th>
+                    <th>Оплата</th>
                     <th>Статус</th>
                     <th>Приоритет</th>
-                    <th>Ответственный</th>
-                    <th></th>
+               
+                    <th> </th>
 
                 </tr>
                 <tr zippy="tasklist">
                     <td zippy="taskcode" align="right"></td>
                     <td zippy="taskname"></td>
                     <td zippy="taskstartdate"></td>
-                    <td zippy="taskhours" align="center"></td>
+                    <td zippy="taskhours" align="right"></td>
+                    <td zippy="taskcost"  align="right"></td>
                     <td zippy="taskstatus"></td>
                     <td zippy="taskpriority"></td>
-                    <td zippy="taskassignedtoname"></td>
+                
                     <td>
+                        <a zippy="taskusers" title="Исполнители"><i class="fa fa-users"></i></a>
                         <a zippy="taskedit" title="Редактирование"><i class="fa fa-pencil-square-o"></i></a>
                         <a zippy="taskdelete" title="Удалить"><i class="fa fa-trash"></i></a>
                     </td>
 
                 </tr>
             </table>
-        </div>
-        <div zippy="ganttab">
-            <a zippy="fromgantt">К списку задач </a>
+        
             <div zippy="gantt" data-slidew="600"></div>
-        </div>
+    
+      
 
     </div>
     <div class="col-xs-4" zippy="edittasktab">
@@ -185,6 +187,11 @@
                        required="required">
             </div>
             <div class="form-group">
+                <label for="edittaskcost">Оплата</label>
+                <input style="width: 70px" zippy="edittaskcost" pattern="[0-9]+" class="form-control" type="number"
+                        >
+            </div>
+            <div class="form-group">
                 <label for="edittaskstatus">Статус</label>
                 <select zippy="edittaskstatus" class="form-control">
                 </select>
@@ -196,12 +203,7 @@
                 </select>
 
             </div>
-            <div class="form-group">
-                <label for="editassignedto">Ответственный</label>
-                <select zippy="editassignedto" class="form-control">
-                </select>
-
-            </div>
+           
 
             <div class="form-group">
                 <label for="edittaskdesc">Описание</label>
@@ -212,6 +214,25 @@
 
         </form>
     </div>
+       <div class="col-xs-6" zippy="edituserstab">
+       <h4>Исполнители</h4>
+           <form zippy="usersform" class="navbar-form navbar-left" >
+              <div class="form-group">
+                <label for="editassignedto">Исполнитель</label>
+                <select zippy="editassignedto" class="form-control">
+              </select>
+
+             &nbsp;          
+              <input type="submit" value="Добавить" class="btn btn-default navbar-btn">
+            </div>            
+           </form>
+           <table class="table table condenced">
+              <tr zippy="userslist"><td zippy="usershortname"></td>
+                <td><a zippy="usersdelete" title="Удалить"><i class="fa fa-trash"></i></a></td>
+              </tr>
+           </table>
+           <a zippy="cancelusers" class="btn btn-default">Отмена</a>&nbsp;<a zippy="saveusers" class="btn btn-default">Записать</a>
+       </div>
 </div>
 </body>
 </html>

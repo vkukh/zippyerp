@@ -2,23 +2,24 @@
 
 namespace ZippyERP\ERP\Pages\Register;
 
-use ZCL\DB\EntityDataSource as EDS;
-use Zippy\Binding\PropertyBinding as Prop;
-use Zippy\Html\DataList\ArrayDataSource;
-use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\DropDownChoice;
-use Zippy\Html\Form\File;
-use Zippy\Html\Form\Form;
-use Zippy\Html\Form\TextArea;
-use Zippy\Html\Form\TextInput;
-use Zippy\Html\Label;
-use Zippy\Html\Link\ClickLink;
-use Zippy\Html\Link\RedirectLink;
-use Zippy\Html\Panel;
-use ZippyERP\ERP\Entity\Project;
-use ZippyERP\ERP\Entity\Task;
-use ZippyERP\ERP\Helper;
-use ZippyERP\System\System;
+use \ZCL\DB\EntityDataSource as EDS;
+use \Zippy\Binding\PropertyBinding as Prop;
+use \Zippy\Html\DataList\ArrayDataSource;
+use \Zippy\Html\DataList\DataView;
+use \Zippy\Html\Form\DropDownChoice;
+use \Zippy\Html\Form\File;
+use \Zippy\Html\Form\Form;
+use \Zippy\Html\Form\TextArea;
+use \Zippy\Html\Form\TextInput;
+use \Zippy\Html\Label;
+use \Zippy\Html\Link\ClickLink;
+use \Zippy\Html\Link\RedirectLink;
+use \Zippy\Html\Panel;
+use \ZippyERP\ERP\Entity\Project;
+use \ZippyERP\ERP\Entity\Task;
+use \ZippyERP\ERP\Helper;
+use \ZippyERP\System\System;
+use \ZippyERP\ERP\Entity\Employee;
 
 class TaskList extends \ZippyERP\ERP\Pages\Base
 {
@@ -27,17 +28,18 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
     private $_taskds;
     public $_fileslist = array();
     public $_msglist = array();
+    public $_shlist = array();
 
     public function __construct($task_id = 0)
     {
         parent::__construct();
 
-        $this->_taskds = new EDS('\ZippyERP\ERP\Entity\Task');
+        $this->_taskds = new EDS('\ZippyERP\ERP\Entity\Task',"","start_date");
 
         $this->add(new Panel('listtab'));
         $this->listtab->add(new Form('filterform'))->onSubmit($this, 'OnFilter');
         $this->listtab->filterform->add(new DropDownChoice('filterproject', Project::findArray('projectname'), 0));
-        $this->listtab->filterform->add(new DropDownChoice('filterassignedto', Task::getAssignedList(), 0));
+        $this->listtab->filterform->add(new DropDownChoice('filterassignedto', Employee::findArray('shortname','employee_id in(select employee_id from erp_task_task_emp )','shortname'), 0));
         $this->listtab->filterform->add(new DropDownChoice('filterstatus', Task::getStatusList(), -1));
         $this->listtab->filterform->add(new DropDownChoice('filtersorting'));
 
@@ -52,8 +54,8 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
         $this->contenttab->add(new Label('showtaskname'));
         $this->contenttab->add(new Form('editform'))->onSubmit($this, 'OnEdit');
         $this->contenttab->editform->add(new DropDownChoice('editstatus', Task::getStatusList(), 0));
-        $this->contenttab->editform->add(new DropDownChoice('editassignedto', Task::getAssignedList(), 0));
-
+        $this->contenttab->editform->add(new \ZCL\BT\DateTimePicker('editdatestatus',time()));
+        
 
         $this->contenttab->add(new DataView('dw_msglist', new ArrayDataSource(new Prop($this, '_msglist')), $this, 'dw_msglistOnRow'));
         $this->contenttab->add(new Form('addmsgform'))->onSubmit($this, 'OnMsgSubmit');
@@ -65,12 +67,20 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
         $this->contenttab->add(new ClickLink('tolist'))->onClick($this, 'tolistOnClick');
 
 
+        $this->contenttab->add(new DataView('history', new ArrayDataSource(new Prop($this, '_shlist')), $this, 'historyOnRow'));
+        
+        
         //$this->_taskds->setWhere('task_id=' . ($task_id > 0 ? $task_id : 0 ));
         //$this->listtab->tasklist->Reload();
         if ($task_id > 0) {
             $this->_task = Task::load($task_id);
             $this->OpenTask();
         }
+        
+        $this->listtab->add(new \ZCL\Gantt\Gantt('gantt'))->setAjaxEvent($this, 'OnGantt');
+        
+        $this->OnFilter($this->listtab->filterform);
+        $this->updateGantt();        
     }
 
     public function OnFilter($sender)
@@ -91,15 +101,16 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
             $where .= " and  project_id=" . $project;
         $user = $sender->filterassignedto->getValue();
         if ($user > 0)
-            $where .= " and  assignedto=" . $user;
+            $where .= " and  task_id in (select task_id from erp_task_task_emp where employee_id={$user}) "   ;
         $status = $sender->filterstatus->getValue();
         if ($status == -1)
-            $where .= " and  status <> 3 "; // все  назакрытые
+            $where .= " and  status <> 3 "; // все  незакрытые
         else
             $where .= " and  status = " . $status;
 
         $this->_taskds->setWhere($where);
         $this->listtab->tasklist->Reload();
+         $this->updateGantt(); 
     }
 
     public function OnSearch($sender)
@@ -108,6 +119,7 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
         $this->_taskds->setWhere('task_id=' . ($code > 0 ? $code : 0));
         $this->listtab->tasklist->Reload();
         $this->listtab->searchform->searchcode->setText('');
+         $this->updateGantt();  
     }
 
     public function tasklistOnRow($row)
@@ -120,21 +132,28 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
         if ($task->start_date > 0)
             $row->add(new Label('startdate', date('Y-m-d', $task->start_date)));
         $row->add(new Label('hours', $task->hours));
+        $row->add(new Label('cost', $task->cost));
         $statuslist = Task::getStatusList();
         $row->add(new Label('status', $statuslist[$task->status]));
-        $row->add(new Label('assignedtoname', $task->assignedtoname));
+    
         if ($task->updated > 0)
             $row->add(new Label('updated', date('Y-m-d H:i', $task->updated)));
 
         $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
     }
 
+    //смена статуса
     public function OnEdit($sender)
     {
         $this->_task->status = $this->contenttab->editform->editstatus->getValue();
-        $this->_task->assignedto = $this->contenttab->editform->editassignedto->getValue();
-
         $this->_task->save();
+        
+         
+        $author = System::getUser()->userlogin;
+        $date =  $this->contenttab->editform->editdatestatus->getDate();       
+        $this->_task->addStatus($date,$author);
+        $this->updateHistory();
+        
     }
 
     public function editOnClick($sender)
@@ -147,13 +166,13 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
     {
         $this->contenttab->showtaskname->setText($this->_task->taskname);
         $this->contenttab->editform->editstatus->setValue($this->_task->status);
-        $this->contenttab->editform->editassignedto->setValue($this->_task->assignedto);
-
+     
         $this->listtab->setVisible(false);
 
         $this->contenttab->setVisible(true);
         $this->updateFiles();
         $this->updateMessages();
+        $this->updateHistory();
     }
 
     public function tolistOnClick($sender)
@@ -161,6 +180,7 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
         $this->listtab->setVisible(true);
         $this->contenttab->setVisible(false);
         $this->listtab->tasklist->Reload();
+         $this->updateGantt(); 
     }
 
     public function dw_msglistOnRow($row)
@@ -239,4 +259,63 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
         $this->contenttab->dw_msglist->Reload();
     }
 
+    
+    public function historyOnRow($row)
+    {
+        $statuslist = Task::getStatusList();
+ 
+        $item = $row->getDataItem();
+        $row->add(new Label("huser",  $item->username   ));
+        $row->add(new Label("hdate",  date("Y-m-d H:i",strtotime($item->sdate))   ));
+        $row->add(new Label("hstatus",  $statuslist[$item->status] ));
+
+        
+    }  
+    
+    private function updateHistory()
+    {
+        $this->_shlist =  $this->_task->getStatusHistory();
+        $this->contenttab->history->Reload();
+    }      
+   
+   
+    public function updateGantt()
+    {
+ 
+            $tasks = array();
+            $items = $this->_taskds->getItems();
+            foreach ($items as $item) {
+                $col = "#00ff00";
+                if($item->priority==0)  $col = "#ff0000";
+                if($item->priority==3)  $col = "#00ff00";
+                if($item->priority==5)  $col = "#ffdd00";
+                if($item->status==3)  $col = "#a0a0a0";
+                $tasks[] = new \ZCL\Gantt\GanttItem($item->task_id, $item->taskname  , $item->start_date, $item->end_date, $col);
+            }
+
+            $this->listtab->gantt->setData($tasks);
+        
+    }   
+    
+    //Изменения  на  диаграмме
+    public function OnGantt($sender, $eventdata)
+    {
+
+        $action = $eventdata['action'];
+        $task = Task::load($eventdata['id']);
+        if ($action == "drag") {
+            $task->start_date = $eventdata['start'];
+            $task->end_date = $eventdata['end'];
+            $task->save();
+        }
+        if ($action == "resize") {
+            $task->start_date = $eventdata['start'];
+            $task->end_date = $eventdata['end'];
+            $task->hours = ($task->end_date - $task->start_date) / 3600;
+            $task->updated = time();
+            $task->save();
+        }
+        $this->listtab->tasklist->Reload();
+         
+    }    
 }

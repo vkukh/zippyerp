@@ -30,7 +30,11 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
         
         
         $this->add(new Panel('customertable'))->setVisible(true);
-        $this->customertable->add(new DataView('customerlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Customer'), $this, 'customerlistOnRow'))->Reload();
+        $this->customertable->add(new DataView('customerlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Customer'), $this, 'customerlistOnRow'));
+        $this->customertable->customerlist->setPageSize(25);
+        $this->customertable->add(new \Zippy\Html\DataList\Paginator('pag', $this->customertable->customerlist));
+        $this->customertable->customerlist->Reload();
+        
         $this->customertable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->customertable->add(new ClickLink('addf'))->onClick($this, 'addOnClick');
         $this->add(new Form('customerdetail'))->setVisible(false);
@@ -69,6 +73,9 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
         if (strlen($this->filter->searchkey->getText()) == 0) return;
         
         $this->customertable->customerlist->getDataSource()->setWhere("customer_name like  ". Customer::qstr('%' . $this->filter->searchkey->getText().'%') ) ; 
+        $this->customertable->customerlist->setPageSize(6);
+        $this->add(new \Zippy\Html\DataList\Paginator('pag', $this->customertable->customerlist));
+         
         $this->customertable->customerlist->Reload();
     }
     

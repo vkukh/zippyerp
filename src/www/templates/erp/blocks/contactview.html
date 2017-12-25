@@ -1,17 +1,16 @@
-<!DOCTYPE html>
 <html>
 <head>
 
 </head>
 <body>
 <div class="row">
-<div class="col-xs-12">
-    <h4 zippy="contentname"></h4>
+<div class="col-xs-12">   
+    <h3 zippy="contentname"></h3>
     <h5 zippy="contentdescription" style="font-style: italic;"></h5>
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-4 ">
             <h5><b>Коментарии</b></h5>
-            <table class="ctable">
+            <table class="table table-condensed">
                 <tr zippy="dw_msglist">
                     <td><span zippy="msgdate"></span>, <span style="color:navy" zippy="msguser"></span>:
                         <p zippy="msgdata"></p>
@@ -24,15 +23,15 @@
                 <div class="form-group">
                     <label for="addmsg">Коментарий</label>
                     <textarea required="required" class="form-control" zippy="addmsg"
-                              style="width:200px;height:120px;"></textarea>
+                              style=" height:120px;"></textarea>
                 </div>
                 <input class="btn btn-default btn-small" type="submit" value="Добавить">
             </form>
         </div>
         <div class="col-xs-4">
             <h5><b>Прикрепленные файлы</b></h5>
-            <table class="ctable">
-                <tr zippy="dw_files" style="font-size: smaller ">
+            <table class="table table-condensed">
+                <tr zippy="dw_files"  >
                     <td><a zippy="filename" target="_blank"></a></td>
                     <td style="width: 30px;"><a zippy="delfile"><i class="fa fa-trash"></i></a></td>
                 </tr>
@@ -55,7 +54,43 @@
 
             </form>
         </div>
-
+          <div class="col-xs-4 ">
+            <h5><b>Расписание событий</b></h5>
+            <table class="table table-condensed">
+                <tr zippy="dw_eventlist">
+                    <td> <span zippy="eventdate"></span><br>
+                    <a href="#q1-2" data-toggle="collapse"  zippy="eventtitle"  > </a> 
+                    <p id="q1-2" class="collapse" zippy="eventdesc" > 
+                      </p>
+                    </td>
+                    
+                    <td valign="top" style="width: 30px;"><a zippy="delevent"><i class="fa fa-trash"></i></a></td>
+                </tr>
+            </table>
+            <div zippy="eventpag"></div>
+            <hr>
+            <form zippy="addeventform">
+                <div class="form-group">
+                    <label for="addeventdate">Дата, время</label>
+                    <input class="form-control" zippy="addeventdate" >
+                </div>
+                <div class="form-group">
+                    <label for="addeventtitle">Заголовок, тип события</label>
+                    <input required="required" class="form-control" zippy="addeventtitle" >
+                </div>
+                <div class="form-group">
+                    <label for="addeventdesc">Коментарий</label>
+                    <textarea   class="form-control" zippy="addeventdesc"  style=" height:120px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="addeventnotify">Напомнить уведомлением за</label>
+                    <select   class="form-control" zippy="addeventnotify">
+                        <option value="0">Не напоминать</option>
+                    </select>
+                </div>
+                <input class="btn btn-default btn-small" type="submit" value="Добавить">
+            </form>
+        </div>
     </div>
     </div>
 </div>

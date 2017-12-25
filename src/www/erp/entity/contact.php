@@ -25,6 +25,7 @@ class Contact extends \ZCL\DB\Entity
         //упаковываем  данные в detail
         $this->detail = "<detail><address>{$this->address}</address>";
         $this->detail .= "<url>{$this->url}</url>";
+        $this->detail .= "<email>{$this->email}</email>";
         $this->detail .= "<phone>{$this->phone}</phone>";
         $this->detail .= "</detail>";
 
@@ -38,6 +39,7 @@ class Contact extends \ZCL\DB\Entity
             $xml = simplexml_load_string($this->detail);
             $this->url = (string) ($xml->url[0]);
             $this->address = (string) ($xml->address[0]);
+            $this->email = (string) ($xml->email[0]);
             $this->phone = (string) ($xml->phone[0]);
         }
         parent::afterLoad();

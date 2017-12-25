@@ -8,8 +8,10 @@ use Zippy\Html\DataList\DataView;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\TextArea;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
+use Zippy\Html\Link\BookmarkableLink;
 use ZippyERP\ERP\Helper;
 use ZippyERP\System\System;
 
@@ -22,6 +24,7 @@ class ContactView extends \Zippy\Html\PageFragment
     private $_item;
     public $_fileslist = array();
     public $_msglist = array();
+    public $_eventlist = array();
 
     /**
      *
@@ -38,9 +41,22 @@ class ContactView extends \Zippy\Html\PageFragment
         $this->addfileform->add(new \Zippy\Html\Form\File('addfile'));
         $this->addfileform->add(new TextInput('adddescfile'));
         $this->add(new DataView('dw_files', new ArrayDataSource(new Bind($this, '_fileslist')), $this, 'fileListOnRow'));
+        
         $this->add(new Form('addmsgform'))->onSubmit($this, 'OnMsgSubmit');
         $this->addmsgform->add(new TextArea('addmsg'));
         $this->add(new DataView('dw_msglist', new ArrayDataSource(new Bind($this, '_msglist')), $this, 'msgListOnRow'));
+        
+        $this->add(new Form('addeventform'))->onSubmit($this, 'OnEventSubmit');
+        $this->addeventform->add(new \ZCL\BT\DateTimePicker('addeventdate',time()));
+        $this->addeventform->add(new TextInput('addeventtitle'));
+        $this->addeventform->add(new TextArea('addeventdesc'));
+        $this->addeventform->add(new DropDownChoice('addeventnotify',array(1=>"1 час",2=>"2 часа",4=>"4 часа",8=>"8 часов",16=>"16 часов",24=>"24 часа"),0));
+        $this->add(new DataView('dw_eventlist', new ArrayDataSource(new Bind($this, '_eventlist')), $this, 'eventListOnRow'));
+        $this->dw_eventlist->setPageSize(10);
+        $this->add(new \Zippy\Html\DataList\Paginator('pag', $this->dw_eventlist));
+         
+        
+        
     }
 
     /**
@@ -52,12 +68,13 @@ class ContactView extends \Zippy\Html\PageFragment
     {
 
         $this->_item = $item;
-        $this->contentname->setText($item->lastname);
+        $this->contentname->setText($item->lastname .' '. $item->firstname);
         $this->contentdescription->setText($item->description);
 
         $this->setVisible(true);
         $this->updateFiles();
         $this->updateMessages();
+        $this->updateEvents();
     }
 
     /**
@@ -134,6 +151,7 @@ class ContactView extends \Zippy\Html\PageFragment
         $this->dw_msglist->Reload();
     }
 
+
     //вывод строки  коментария
     public function msgListOnRow($row)
     {
@@ -154,4 +172,59 @@ class ContactView extends \Zippy\Html\PageFragment
         $this->updateMessages();
     }
 
+
+    public function OnEventSubmit($sender)
+    {
+        $event = new \ZippyERP\ERP\Entity\Event();
+        $event->title = $this->addeventform->addeventtitle->getText();
+        $event->description = $this->addeventform->addeventdesc->getText();
+        $event->eventdate = $this->addeventform->addeventdate->getDate();
+        $event->user_id = System::getUser()->user_id;
+        $event->contact_id = $this->_item->contact_id;
+        
+        if (strlen($event->title) == 0)
+            return;
+        $event->save();
+        
+        $nt = $this->addeventform->addeventnotify->getValue();
+        if($nt  >0){
+            
+            $n = new \ZippyERP\System\Notify();
+            $n->user_id =  System::getUser()->user_id;
+            $n->dateshow = $event->eventdate - ($nt * 3600) ;
+            $n->message =  "<b>".$event->title . "</b>" . "<br>" . $event->description ;
+            $n->message .=  "<br><br><b> Контакт: </b> <a href=\"?p=ZippyERP/ERP/Pages/Reference/ContactList&arg={$this->_item->contact_id}\">{$this->_item->lastname} {$this->_item->firstname}</a>";            
+            $n->save()  ;
+        }
+        $this->addeventform->clean();
+        $this->updateEvents();
+    }
+   
+    //список   событий
+    private function updateEvents()
+    {
+        $this->_eventlist = \ZippyERP\ERP\Entity\Event::find('  contact_id=' . $this->_item->contact_id);
+        $this->dw_eventlist->Reload();
+    }
+    //вывод строки  коментария
+    public function eventListOnRow($row)
+    {
+        $event = $row->getDataItem();
+
+        
+    $row->add(new BookmarkableLink('eventtitle', '#eventdesc_' . $row->getNumber()))->setValue($event->title);
+           
+        $row->add(new Label("eventdesc" ))->setText($event->description);
+        $row->add(new Label("eventdate", date("Y-m-d H:i", $event->eventdate)));
+
+        $row->add(new ClickLink('delevent'))->onClick($this, 'deleteEventOnClick');
+    }
+
+    //удаление коментария
+    public function deleteEventOnClick($sender)
+    {
+        $event = $sender->owner->getDataItem();
+        \ZippyERP\ERP\Entity\Event::delete($event->event_id);
+        $this->updateEvents();
+    }    
 }

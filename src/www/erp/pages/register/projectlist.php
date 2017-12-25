@@ -2,27 +2,28 @@
 
 namespace ZippyERP\ERP\Pages\Register;
 
-use ZCL\DB\EntityDataSource as EDS;
-use Zippy\Binding\PropertyBinding as Prop;
-use Zippy\Html\DataList\ArrayDataSource;
-use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Form\Button;
-use Zippy\Html\Form\Date;
-use Zippy\Html\Form\DropDownChoice;
-use Zippy\Html\Form\File;
-use Zippy\Html\Form\Form;
-use Zippy\Html\Form\SubmitButton;
-use Zippy\Html\Form\TextArea;
-use Zippy\Html\Form\TextInput;
-use Zippy\Html\Label;
-use Zippy\Html\Link\ClickLink;
-use Zippy\Html\Panel;
-use ZippyERP\ERP\Entity\Doc\Document;
-use ZippyERP\ERP\Entity\Project;
-use ZippyERP\ERP\Entity\Task;
-use ZippyERP\ERP\Helper;
-use ZippyERP\System\System;
+use \ZCL\DB\EntityDataSource as EDS;
+use \Zippy\Binding\PropertyBinding as Prop;
+use \Zippy\Html\DataList\ArrayDataSource;
+use \Zippy\Html\DataList\DataView;
+use \Zippy\Html\Form\AutocompleteTextInput;
+use \Zippy\Html\Form\Button;
+use \Zippy\Html\Form\Date;
+use \Zippy\Html\Form\DropDownChoice;
+use \Zippy\Html\Form\File;
+use \Zippy\Html\Form\Form;
+use \Zippy\Html\Form\SubmitButton;
+use \Zippy\Html\Form\TextArea;
+use \Zippy\Html\Form\TextInput;
+use \Zippy\Html\Label;
+use \Zippy\Html\Link\ClickLink;
+use \Zippy\Html\Panel;
+use \ZippyERP\ERP\Entity\Doc\Document;
+use \ZippyERP\ERP\Entity\Project;
+use \ZippyERP\ERP\Entity\Task;
+use \ZippyERP\ERP\Entity\Employee;
+use \ZippyERP\ERP\Helper;
+use \ZippyERP\System\System;
 
 class ProjectList extends \ZippyERP\ERP\Pages\Base
 {
@@ -33,12 +34,13 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
     public $_msglist = array();
     private $_task;
     private $_taskds;
+    public $_users= array();
 
     public function __construct()
     {
         parent::__construct();
         $this->_projectds = new EDS('\ZippyERP\ERP\Entity\Project');
-        $this->_taskds = new EDS('\ZippyERP\ERP\Entity\Task');
+        $this->_taskds = new EDS('\ZippyERP\ERP\Entity\Task',"","task_id");
 
         $this->add(new Panel('listtab'));
         $this->listtab->add(new ClickLink('addnew'))->onClick($this, 'addnewOnClick');
@@ -69,30 +71,40 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
 
         //задачи
         $this->add(new Panel('taskstab'))->setVisible(false);
-        $this->taskstab->add(new Panel('tasklisttab'));
+ 
         $this->taskstab->add(new ClickLink('tolist2'))->onClick($this, 'cancelOnClick');
         $this->taskstab->add(new Label('showname2'));
 
-        $this->taskstab->tasklisttab->add(new ClickLink('taskaddnew'))->onClick($this, 'addnewtaskOnClick');
-        $this->taskstab->tasklisttab->add(new ClickLink('togantt'))->onClick($this, 'toogleGantt');
-        $this->taskstab->tasklisttab->add(new DataView('tasklist', $this->_taskds, $this, 'tasklistOnRow'));
+        $this->taskstab->add(new ClickLink('taskaddnew'))->onClick($this, 'addnewtaskOnClick');
+        
+        $this->taskstab->add(new DataView('tasklist', $this->_taskds, $this, 'tasklistOnRow'));
 
 
         $this->add(new Panel('edittasktab'))->setVisible(false);
         $edittaskform = $this->edittasktab->add(new Form('edittaskform'));
         $edittaskform->add(new TextInput('edittaskname'));
         $edittaskform->add(new TextInput('edittaskhours'));
+        $edittaskform->add(new TextInput('edittaskcost'));
         $edittaskform->add(new Date('edittaskstartdate'));
         $edittaskform->add(new TextArea('edittaskdesc'));
         $edittaskform->add(new DropDownChoice('edittaskstatus', Task::getStatusList(), 0));
         $edittaskform->add(new DropDownChoice('edittaskspriority', Task::getPriorityList(), 3));
-        $edittaskform->add(new DropDownChoice('editassignedto', Task::getAssignedList(), 0));
         $edittaskform->add(new SubmitButton('tasksave'))->onClick($this, 'tasksaveOnClick');
         $edittaskform->add(new Button('taskcancel'))->onClick($this, 'taskcancelOnClick');
 
-        $this->taskstab->add(new Panel('ganttab'))->setVisible(false);
-        $this->taskstab->ganttab->add(new ClickLink('fromgantt'))->onClick($this, 'toogleGantt');
-        $this->taskstab->ganttab->add(new \ZCL\Gantt\Gantt('gantt'))->setAjaxEvent($this, 'OnGantt');
+        
+        $this->add(new Panel('edituserstab'))->setVisible(false);
+        $this->edituserstab->add(new ClickLink('cancelusers'))->onClick($this, 'usersCancelOnClick');
+        $this->edituserstab->add(new ClickLink('saveusers'))->onClick($this, 'usersSaveOnClick');
+        $usersform = $this->edituserstab->add(new Form('usersform'));
+        $usersform->add(new DropDownChoice('editassignedto',  Employee::findArray('shortname','','shortname'), 0));
+        $this->edituserstab->add(new DataView('userslist', new ArrayDataSource(new Prop($this, '_users')), $this, 'usersOnRow'));
+        
+        $usersform->onSubmit($this,"onAddUser");
+       
+        
+        $this->taskstab->add(new \ZCL\Gantt\Gantt('gantt'))->setAjaxEvent($this, 'OnGantt');
+        $this->updateGantt();
     }
 
     // новый   проект
@@ -163,6 +175,7 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         Project::delete($item->project_id);
         $this->listtab->projectlist->Reload();
+         $this->updateGantt();
     }
 
     public function editbaseOnAutocomplete($sender)
@@ -192,6 +205,7 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         $this->listtab->setVisible(true);
         $this->edittab->setVisible(false);
         $this->listtab->projectlist->Reload();
+        $this->updateGantt(); 
     }
 
     public function cancelOnClick($sender)
@@ -289,7 +303,8 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         $this->taskstab->showname2->setText($this->_project->projectname);
 
         $this->_taskds->setWhere('project_id =' . $this->_project->project_id);
-        $this->taskstab->tasklisttab->tasklist->Reload();
+        $this->taskstab->tasklist->Reload();
+         $this->updateGantt();
     }
 
     // новая  задача
@@ -316,12 +331,16 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         if ($task->start_date > 0)
             $row->add(new Label('taskstartdate', date('Y-m-d', $task->start_date)));
         $row->add(new Label('taskhours', $task->hours));
+        $row->add(new Label('taskcost', $task->cost));
         $statuslist = Task::getStatusList();
         $row->add(new Label('taskstatus', $statuslist[$task->status]));
+        $prlist = Task::getPriorityList();
+        $row->add(new Label('taskpriority', $prlist[$task->priority]));
      
-        $row->add(new Label('taskassignedtoname', $task->assignedtoname));
+ 
         $row->add(new ClickLink('taskedit'))->onClick($this, 'taskeditOnClick');
         $row->add(new ClickLink('taskdelete'))->onClick($this, 'taskdeleteOnClick');
+        $row->add(new ClickLink('taskusers'))->onClick($this, 'usersOnClick');
     }
 
     public function taskeditOnClick($sender)
@@ -333,9 +352,10 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         $this->edittasktab->edittaskform->edittaskname->setText($this->_task->taskname);
         $this->edittasktab->edittaskform->edittaskdesc->setText($this->_task->description);
         $this->edittasktab->edittaskform->edittaskhours->setText($this->_task->hours);
+        $this->edittasktab->edittaskform->edittaskcost->setText($this->_task->cost);
         $this->edittasktab->edittaskform->edittaskstatus->setValue($this->_task->status);
         $this->edittasktab->edittaskform->edittaskspriority->setValue($this->_task->priority);
-        $this->edittasktab->edittaskform->editassignedto->setValue($this->_task->assignedto);
+        
         $this->edittasktab->edittaskform->edittaskstartdate->setDate($this->_task->start_date);
     }
 
@@ -346,25 +366,28 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         $this->_task->taskname = $this->edittasktab->edittaskform->edittaskname->getText();
         $this->_task->description = $this->edittasktab->edittaskform->edittaskdesc->getText();
         $this->_task->hours = $this->edittasktab->edittaskform->edittaskhours->getText();
+        $this->_task->cost = $this->edittasktab->edittaskform->edittaskcost->getText();
         $this->_task->status = $this->edittasktab->edittaskform->edittaskstatus->getValue();
         $this->_task->priority = $this->edittasktab->edittaskform->edittaskspriority->getValue();
-        $this->_task->assignedto = $this->edittasktab->edittaskform->editassignedto->getValue();
+        
         $this->_task->start_date = $this->edittasktab->edittaskform->edittaskstartdate->getDate();
-        $this->_task->end_date = $this->_task->start_date + 3600 * $this->_task->hours;
+        $this->_task->end_date = $this->_task->start_date + 3*3600 * $this->_task->hours;
         $this->_task->updated = time();
 
         $this->_task->save();
 
         $this->taskstab->setVisible(true);
         $this->edittasktab->setVisible(false);
-        $this->taskstab->tasklisttab->tasklist->Reload();
+        $this->taskstab->tasklist->Reload();
+         $this->updateGantt();
     }
 
     public function taskdeleteOnClick($sender)
     {
         $task = $sender->owner->getDataItem();
         Task::delete($task->task_id);
-        $this->taskstab->tasklisttab->tasklist->Reload();
+        $this->taskstab->tasklist->Reload();
+        $this->updateGantt(); 
     }
 
     public function taskcancelOnClick($sender)
@@ -373,6 +396,54 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
         $this->edittasktab->setVisible(false);
     }
 
+    //панель исполнителей
+    public function usersOnClick($sender)
+    {
+          $this->_task = $sender->owner->getDataItem();
+        $this->_users = $this->_task->getAssignedList();  
+        $this->edituserstab->userslist->Reload();
+        
+        
+        $this->taskstab->setVisible(false);
+        $this->edituserstab->setVisible(true);
+    }
+    
+    public function usersOnRow($row)
+    {
+       $user= $row->getDataItem(); 
+       $row->add(new Label('usershortname', $user->shortname));
+ 
+       $row->add(new ClickLink('usersdelete'))->onClick($this, 'onDeleteUser');
+    }    
+    
+    public function onAddUser($sender)
+    {    
+        $employee = Employee::load($sender->editassignedto->getValue());
+        $this->_users[$employee->employee_id] = $employee;
+         $this->edituserstab->userslist->Reload();
+    }
+
+    public function onDeleteUser($sender)
+    {
+       $user = $sender->getOwner()->getDataItem();
+       $this->_users = array_diff_key($this->_users, array($user->employee_id => $this->_users[$user->employee_id]));
+        
+       $this->edituserstab->userslist->Reload();
+       
+    }    
+
+    public function usersSaveOnClick($sender)
+    {
+        $this->_task->updateAssignedList($this->_users);
+        $this->taskstab->setVisible(true);
+        $this->edituserstab->setVisible(false);
+    }    
+    public function usersCancelOnClick($sender)
+    {
+        $this->taskstab->setVisible(true);
+        $this->edituserstab->setVisible(false);
+    }    
+    
     //Изменения  на  диаграмме
     public function OnGantt($sender, $eventdata)
     {
@@ -391,25 +462,26 @@ class ProjectList extends \ZippyERP\ERP\Pages\Base
             $task->updated = time();
             $task->save();
         }
+        $this->taskstab->tasklist->Reload();
+         
     }
 
-    public function toogleGantt($sender)
+    public function updateGantt()
     {
-        if ($sender->id == "togantt") {
-            $this->taskstab->ganttab->setVisible(true);
-            $this->taskstab->tasklisttab->setVisible(false);
+ 
             $tasks = array();
             $items = $this->_taskds->getItems();
             foreach ($items as $item) {
-                $tasks[] = new \ZCL\Gantt\GanttItem($item->task_id, $item->taskname, $item->start_date, $item->end_date, "#ffaaaa");
+                $col = "#00ff00";
+                if($item->priority==0)  $col = "#ff0000";
+                if($item->priority==3)  $col = "#00ff00";
+                if($item->priority==5)  $col = "#ffdd00";
+                if($item->status==3)  $col = "#a0a0a0";
+                $tasks[] = new \ZCL\Gantt\GanttItem($item->task_id, $item->taskname, $item->start_date, $item->end_date, $col);
             }
 
-            $this->taskstab->ganttab->gantt->setData($tasks);
-        } else {
-            $this->taskstab->ganttab->setVisible(false);
-            $this->taskstab->tasklisttab->setVisible(true);
-            $this->taskstab->tasklisttab->tasklist->Reload();
-        }
+            $this->taskstab->gantt->setData($tasks);
+        
     }
 
 }

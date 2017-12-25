@@ -459,6 +459,7 @@ CREATE TABLE IF NOT EXISTS erp_task_task (
   start_date date DEFAULT NULL,
   end_date date DEFAULT NULL,
   hours int(11) DEFAULT NULL,
+  cost int(11) DEFAULT NULL,
   status tinyint(4) UNSIGNED NOT NULL,
   taskname varchar(255) DEFAULT NULL,
   createdby int(11) DEFAULT NULL,
@@ -489,7 +490,15 @@ CHARACTER SET utf8
 COLLATE utf8_general_ci
 COMMENT = '  ';
 
---
+DROP TABLE IF EXISTS erp_task_sh;
+CREATE TABLE `erp_task_sh` (
+  `task_sh` int(11) NOT NULL,
+  `task_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `sdate` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='история статуса задач';
+
 -- Описание для таблицы system_options
 --
 DROP TABLE IF EXISTS system_options;
@@ -723,16 +732,28 @@ DROP VIEW IF EXISTS erp_task_project_view CASCADE;
 CREATE
 VIEW erp_task_project_view
 AS
-SELECT
-  `erp_task_project`.`project_id` AS `project_id`,
-  `erp_task_project`.`doc_id` AS `doc_id`,
-  `erp_task_project`.`description` AS `description`,
-  `erp_task_project`.`start_date` AS `start_date`,
-  `erp_task_project`.`end_date` AS `end_date`,
-  `erp_task_project`.`projectname` AS `projectname`,
-  1 AS `taskall`,
-  0 AS `taskclosed`
-FROM `erp_task_project`;
+  select 
+    `erp_task_project`.`project_id` AS `project_id`,
+    `erp_task_project`.`doc_id` AS `doc_id`,
+    `erp_task_project`.`description` AS `description`,
+    `erp_task_project`.`start_date` AS `start_date`,
+    `erp_task_project`.`end_date` AS `end_date`,
+    `erp_task_project`.`projectname` AS `projectname`,
+    (
+  select 
+    count(0) AS `count(*)` 
+  from 
+    `erp_task_task` 
+  where 
+    (`erp_task_task`.`project_id` = `erp_task_project`.`project_id`)) AS `taskall`,(
+  select 
+    count(0) AS `count(*)` 
+  from 
+    `erp_task_task` 
+  where 
+    ((`erp_task_task`.`project_id` = `erp_task_project`.`project_id`) and (`erp_task_task`.`status` = 3))) AS `taskclosed` 
+  from 
+  `erp_task_project`;
 
 --
 -- Описание для представления erp_account_entry_view
@@ -783,33 +804,31 @@ WHERE COALESCE((`erp_item_view`.`item_type` <> 3));
 -- Описание для представления erp_task_task_view
 --
 DROP VIEW IF EXISTS erp_task_task_view CASCADE;
-CREATE
-VIEW erp_task_task_view
-AS
-SELECT
-  `t`.`task_id` AS `task_id`,
-  `t`.`project_id` AS `project_id`,
-  `t`.`description` AS `description`,
-  `t`.`start_date` AS `start_date`,
-  `t`.`end_date` AS `end_date`,
-  `t`.`hours` AS `hours`,
-  `t`.`status` AS `status`,
-  `t`.`taskname` AS `taskname`,
-  `t`.`createdby` AS `createdby`,
-  `t`.`assignedto` AS `assignedto`,
-  `t`.`priority` AS `priority`,
-  `t`.`updated` AS `updated`,
-  `u`.`userlogin` AS `creatwedbyname`,
-  CONCAT_WS(' ', `a`.`lastname`, `a`.`firstname`) AS `assignedtoname`,
-  `p`.`projectname` AS `projectname`
-FROM (((`erp_task_task` `t`
-  JOIN `erp_task_project` `p`
-    ON ((`t`.`project_id` = `p`.`project_id`)))
-  JOIN `system_users` `u`
-    ON ((`t`.`createdby` = `u`.`user_id`)))
-  LEFT JOIN `erp_staff_employee_view` `a`
-    ON ((`t`.`assignedto` = `a`.`employee_id`)));
-
+CREATE   VIEW `erp_task_task_view` AS
+  select 
+    `t`.`task_id` AS `task_id`,
+    `t`.`project_id` AS `project_id`,
+    `t`.`description` AS `description`,
+    `t`.`start_date` AS `start_date`,
+    `t`.`end_date` AS `end_date`,
+    `t`.`hours` AS `hours`,
+    `t`.`status` AS `status`,
+    `t`.`taskname` AS `taskname`,
+    `t`.`createdby` AS `createdby`,
+    `t`.`priority` AS `priority`,
+    `t`.`cost` AS `cost`,
+    `t`.`updated` AS `updated`,
+    `u`.`userlogin` AS `creatwedbyname`,
+    `p`.`projectname` AS `projectname`,
+    (
+  select 
+    count(0) 
+  from 
+    `erp_task_task_emp` 
+  where 
+    (`erp_task_task_emp`.`task_id` = `t`.`task_id`)) AS `empcnt` 
+  from 
+    ((`erp_task_task` `t` join `erp_task_project` `p` on((`t`.`project_id` = `p`.`project_id`))) join `system_users` `u` on((`t`.`createdby` = `u`.`user_id`)));
 --
 -- Описание для представления erp_account_subconto_view
 --
@@ -1024,6 +1043,16 @@ CREATE TABLE IF NOT EXISTS `shop_prod_comments` (
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8   ;
 
+
+CREATE TABLE IF NOT EXISTS`shop_attributes_order` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `attr_id` int(11) NOT NULL,
+  `pg_id` int(11) NOT NULL,
+  `ordern` int(11) NOT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=MyISAM   DEFAULT CHARSET=utf8;
+
+
 CREATE VIEW `shop_orderdetails_view` AS
   select
     `od`.`orderdetail_id` AS `orderdetail_id`,
@@ -1119,4 +1148,57 @@ CREATE  VIEW `shop_products_view` AS
     (`erp_account_subconto`.`stock_id` = `p`.`erp_stock_id`)) AS `cntonstore` 
   from 
     ((`shop_products` `p` join `shop_productgroups` `g` on((`p`.`group_id` = `g`.`group_id`))) left join `shop_manufacturers` `m` on((`p`.`manufacturer_id` = `m`.`manufacturer_id`)));	
+	
+CREATE  VIEW `shop_attributes_view` AS
+  select 
+    `shop_attributes`.`attribute_id` AS `attribute_id`,
+    `shop_attributes`.`attributename` AS `attributename`,
+    `shop_attributes`.`group_id` AS `group_id`,
+    `shop_attributes`.`attributetype` AS `attributetype`,
+    `shop_attributes`.`valueslist` AS `valueslist`,
+    `shop_attributes`.`showinlist` AS `showinlist`,
+    `shop_attributes_order`.`ordern` AS `ordern` 
+  from 
+    (`shop_attributes` join `shop_attributes_order` on(((`shop_attributes`.`attribute_id` = `shop_attributes_order`.`attr_id`) and (`shop_attributes`.`group_id` = `shop_attributes_order`.`pg_id`)))) 
+  order by 
+    `shop_attri	
+	
+CREATE TABLE `erp_event` (
+  `user_id` int(11) NOT NULL,
+  `eventdate` datetime NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `notify_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
+  `contact_id` int(11) NOT NULL,
+  PRIMARY KEY (`event_id`),
+  KEY `user_id` (`user_id`),
+  KEY `contact_id` (`contact_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `system_notifies` (
+  `notify_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `dateshow` datetime NOT NULL,
+  `checked` tinyint(1) NOT NULL DEFAULT '0',
+  `message` text NOT NULL,
+  PRIMARY KEY (`notify_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;	
+	
+	
+CREATE  VIEW `erp_event_view` AS
+  select 
+    `e`.`user_id` AS `user_id`,
+    `e`.`eventdate` AS `eventdate`,
+    `e`.`title` AS `title`,
+    `e`.`description` AS `description`,
+    `e`.`notify_id` AS `notify_id`,
+    `e`.`event_id` AS `event_id`,
+    `e`.`contact_id` AS `contact_id`,
+    `c`.`firstname` AS `firstname`,
+    `c`.`lastname` AS `lastname` 
+  from 
+    (`erp_event` `e` left join `erp_contact` `c` on((`e`.`contact_id` = `c`.`contact_id`)));	
+	
 	

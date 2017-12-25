@@ -35,6 +35,7 @@ class Contact extends \Zippy\Html\PageFragment
         $this->contactdetail->add(new TextInput('editfirstname'));
         $this->contactdetail->add(new TextInput('editmiddlename'));
         $this->contactdetail->add(new TextInput('editemail'));
+        $this->contactdetail->add(new TextInput('editphone'));
         $this->contactdetail->add(new TextArea('editdescription'));
         $this->contactdetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
         $this->contactdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
@@ -47,6 +48,7 @@ class Contact extends \Zippy\Html\PageFragment
         $this->item->firstname = trim($this->contactdetail->editfirstname->getText());
         $this->item->middlename = trim($this->contactdetail->editmiddlename->getText());
         $this->item->email = trim($this->contactdetail->editemail->getText());
+        $this->item->phone = trim($this->contactdetail->editphone->getText());
         $this->item->description = $this->contactdetail->editdescription->getText();
         $isnew = $this->item->contact_id == 0;
         $this->item->Save();
@@ -74,6 +76,7 @@ class Contact extends \Zippy\Html\PageFragment
         $this->contactdetail->editfirstname->setText($item->firstname);
         $this->contactdetail->editmiddlename->setText($item->middlename);
         $this->contactdetail->editemail->setText($item->email);
+        $this->contactdetail->editphone->setText($item->phone);
         $this->contactdetail->editdescription->setText($item->description);
 
         $this->setVisible(true);

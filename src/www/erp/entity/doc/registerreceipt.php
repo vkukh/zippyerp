@@ -106,7 +106,7 @@ class RegisterReceipt extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['Warranty'] = 'Гарантийный талон';
+        $list['Warranty'] = 'Гарантійний талон';
 
         return $list;
     }

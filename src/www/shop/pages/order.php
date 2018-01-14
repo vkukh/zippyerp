@@ -43,7 +43,7 @@ class Order extends Base
         foreach ($rows as $row) {
             $product = $row->GetDataItem();
             if (!is_numeric($product->quantity)) {
-                $this->setError('Неверное количество');
+                $this->setError('Невірна кількість');
                 break;
             }
 
@@ -69,11 +69,11 @@ class Order extends Base
         $contact = $this->orderform->contact->getText();
         $delivery = $this->orderform->delivery->getValue();
         if ($contact == '') {
-            $this->setError("Введите контакты");
+            $this->setError("Введіть контакти");
             return;
         }
         if ($delivery == 0) {
-            $this->setError("Выберите тип доставки");
+            $this->setError("Виберіть тип доставки");
             return;
         }
 

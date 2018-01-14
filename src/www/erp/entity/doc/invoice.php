@@ -67,9 +67,9 @@ class Invoice extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['GoodsIssue'] = 'Расходная накладная';
-        $list['ServiceAct'] = 'Акт выполненных работ';
-        $list['TaxInvoice'] = 'Налоговая  накладная';
+        $list['GoodsIssue'] = 'Видаткова накладна ';
+        $list['ServiceAct'] = 'Акт виконаних робіт';
+        $list['TaxInvoice'] = 'Налогова   накладна ';
         return $list;
     }
 

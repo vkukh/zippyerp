@@ -70,16 +70,16 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
     {
         $optype = $this->docform->optype->getValue();
         if ($optype == Consts::TYPEOP_CUSTOMER_OUT) {
-            $this->docform->lblopdetail->setText('Покупатель');
+            $this->docform->lblopdetail->setText('Покупець');
         }
         if ($optype == Consts::TYPEOP_CUSTOMER_OUT_BACK) {
-            $this->docform->lblopdetail->setText('Поставщик');
+            $this->docform->lblopdetail->setText('Постачальник');
         }
         if ($optype == Consts::TYPEOP_BANK_OUT) {
-            $this->docform->lblopdetail->setText('Р/счет');
+            $this->docform->lblopdetail->setText('Р/рахунок');
         }
         if ($optype == Consts::TYPEOP_CASH_OUT) {
-            $this->docform->lblopdetail->setText('Сотрудник');
+            $this->docform->lblopdetail->setText('Співробітник');
         }
         $this->docform->opdetail->setKey(0);
         $this->docform->opdetail->setText('');

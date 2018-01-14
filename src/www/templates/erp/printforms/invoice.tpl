@@ -13,10 +13,10 @@
 
     <tr>
         <td></td>
-        <td>Поствщик</td>
+        <td>Постачальник</td>
         <td>{{firmname}}</td>
         <td></td>
-        <td colspan="3" style="font-size:larger;font-weight:bolder; ">Счет-фактура</td>
+        <td colspan="3" style="font-size:larger;font-weight:bolder; ">Рахунок-фактура</td>
     </tr>
     <tr>
         <td></td>
@@ -30,7 +30,7 @@
         <td>Р/c</td>
         <td>{{account}}</td>
         <td></td>
-        <td colspan="3" style="font-size:larger;font-weight:bolder; ">от {{date}}</td>
+        <td colspan="3" style="font-size:larger;font-weight:bolder; ">від {{date}}</td>
     </tr>
     <tr>
         <td></td>
@@ -49,28 +49,28 @@
     </tr>
     <tr>
         <td></td>
-        <td>Получатель</td>
+        <td>Отримувач</td>
         <td colspan="5">{{customername}}</td>
     </tr>
     <tr>
         <td></td>
-        <td>Плательщик</td>
-        <td colspan="5">Тот же</td>
+        <td>Платник</td>
+        <td colspan="5">Той же</td>
     </tr>
 
     <tr>
         <td colspan="7">
-            <br>Основание:{{base}}<br>
+            <br>Підстава:{{base}}<br>
         </td>
     </tr>
 
     <tr style="font-weight: bolder;">
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="30">№</th>
-        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Наименование</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Ед.изм</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кол.</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="60">Цена</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">Сумма</th>
+        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Назва</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Од.вим.</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кіл.</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="60">Ціна</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">Сума</th>
     </tr>
     {{#_detail}}
     <tr>
@@ -83,15 +83,15 @@
     </tr>
     {{/_detail}}
     <tr style="font-weight: bolder;">
-        <td style="border-top:1px #000 solid;" colspan="6" align="right">Всего:</td>
+        <td style="border-top:1px #000 solid;" colspan="6" align="right">Всього:</td>
         <td style="border-top:1px #000 solid;" align="right">{{total}}</td>
     </tr>
     <tr style="font-weight: bolder;">
-        <td colspan="6" align="right">Всего с НДС:</td>
+        <td colspan="6" align="right">Всього з ПДВ:</td>
         <td align="right">{{totalnds}}</td>
     </tr>
     <tr>
-        <td colspan="7" valign="middle"><br><br><span>Всего на сумму:</span> <span
+        <td colspan="7" valign="middle"><br><br><span>Всього на суму:</span> <span
                     style="font-weight: bolder;">{{summa}}</span> <br><br><br></td>
     </tr>
 

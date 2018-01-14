@@ -146,7 +146,7 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран ТМЦ");
+            $this->setError("Не вибраний ТМЦ");
             return;
         }
 
@@ -157,7 +157,7 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
         $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
         $stock->realquantity = 1000 * $this->editdetail->editrealquantity->getText();
         if ($stock->quantity == $stock->realquantity) {
-            $this->setError("Одинаковое количество");
+            $this->setError("Однакова кількість");
             return;
         }
 
@@ -273,7 +273,7 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_itemlist) == 0) {
-            $this->setError("Не введен ни один  ТМЦ");
+            $this->setError("Не введений ні один  ТМЦ");
         }
 
         return !$this->isError();

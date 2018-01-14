@@ -24,20 +24,20 @@ class CashReceiptIn extends Document
         $optype = $this->headerdata['optype'];
 
         if ($optype == C::TYPEOP_CUSTOMER_IN) {
-            $header['optype'] = "Оплата от покупателя";
+            $header['optype'] = "Оплата покупця";
         }
         if ($optype == C::TYPEOP_CASH_IN) {
-            $header['optype'] = "Возврат из подотчета";
+            $header['optype'] = "Повернення з підзвіту";
         }
         if ($optype == C::TYPEOP_BANK_IN) {
-            $header['optype'] = "Снятие с банковского счета";
+            $header['optype'] = "Зняття з банкіського рахунку";
         }
         if ($optype == C::TYPEOP_RET_IN) {
-            $header['optype'] = "Выручка   с розницы";
+            $header['optype'] = "Выручка з роздрібу";
         }
         if ($optype == C::TYPEOP_CUSTOMER_IN_BACK) {
 
-            $header['optype'] = "Возврат  поставщику";
+            $header['optype'] = "Повернення постачальнику";
         }
         $header['opdetail'] = $this->headerdata["opdetailname"];
 
@@ -127,11 +127,11 @@ class CashReceiptIn extends Document
     public static function getTypes()
     {
         $list = array();
-        $list[C::TYPEOP_CUSTOMER_IN] = "Оплата покупателя";
-        $list[C::TYPEOP_CUSTOMER_IN_BACK] = "Возврат от  поставщика";
-        $list[C::TYPEOP_BANK_IN] = "Снятие  со  счета";
-        $list[C::TYPEOP_CASH_IN] = "Приход  с  подотчета";
-        $list[C::TYPEOP_RET_IN] = "Приход с розницы";
+        $list[C::TYPEOP_CUSTOMER_IN] = "Оплата покупцеві";
+        $list[C::TYPEOP_CUSTOMER_IN_BACK] = "Повернення від  постачальника";
+        $list[C::TYPEOP_BANK_IN] = "Зняття  з рахунку";
+        $list[C::TYPEOP_CASH_IN] = "Прибуток  з  пілзвіту";
+        $list[C::TYPEOP_RET_IN] = "Прибуток з роздрібу";
         return $list;
     }
 

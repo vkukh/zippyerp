@@ -67,7 +67,7 @@ class DepartmentList extends \ZippyERP\ERP\Pages\Base
     {
         $this->_department->department_name = $this->departmentdetail->editdepartmentname->getText();
         if ($this->_department->department_name == '') {
-            $this->setError("Введите имя");
+            $this->setError("Введіть найменування");
             return;
         }
 

@@ -4,11 +4,11 @@
 
 
 <form zippy="docform" class="form-horizontal">
-    <h3>Начисление зарплаты</h3>
+    <h3>Нарахування зарплати</h3>
     <div class="row">
 
         <div class="form-group">
-            <label for="document_number" class="col-xs-2  control-label">Номер документа</label>
+            <label for="document_number" class="col-xs-2  control-label">Номер документу</label>
             <div class="col-xs-3">
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-group  ">
-            <label for="month" class="col-xs-2  control-label">Период</label>
+            <label for="month" class="col-xs-2  control-label">Період</label>
             <div class="col-xs-3">
                 <select class="form-control" style="width:110px;display:inline" zippy="month"></select>&nbsp;
                 <select class="form-control" style="width:85px;display:inline" zippy="year"></select>
@@ -43,18 +43,18 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <a zippy="addrow">Добавить сотрудника</a>
+            <a zippy="addrow">Додати співробітника</a>
             <table class="table table-condenced">
                 <tr>
                     <th>ФИО</th>
 
                     <th>Зарплата</th>
-                    <th>Отпуск.</th>
-                    <th>Больн.</th>
+                    <th>Відпустка.</th>
+                    <th>Лік.</th>
                     <th>ECB</th>
-                    <th>НДФЛ</th>
-                    <th>В. сбор</th>
-                    <th>К выплате</th>
+                    <th>ПДФО</th>
+                    <th>В. збір</th>
+                    <th>До виплати</th>
 
                     <th width="80px"></th>
                 </tr>
@@ -78,8 +78,8 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default  ">
+            <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
             &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default ">
 
         </div>
@@ -89,7 +89,7 @@
 </form>
 <form zippy="editdetail" class="form-horizontal">
     <input type="hidden" zippy="taxfot">
-    <h4>Ввод начислений и удержаний</h4>
+    <h4>Нарахування та утримання</h4>
     <div class="row">
 
 
@@ -97,25 +97,25 @@
             <label for="editemployee" class="col-xs-3 control-label">ФИО </label>
             <div class="col-xs-4 ">
                 <select class="form-control select2" type="text" zippy="editemployee" >
-                  <option value="0">Не выбран</option>
+                  <option value="0">Не вибрано</option>
                 </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="basesalary" class="col-xs-3 control-label">Основная зарплата </label>
+            <label for="basesalary" class="col-xs-3 control-label">Основна  зарплата </label>
             <div class="col-xs-2 ">
                 <input zippy="basesalary" class="form-control" type="text" value="0" pattern="[0-9\.]+">
             </div>
         </div>
         <div class="form-group">
-            <label for="vacation" class="col-xs-3 control-label"> Отпускные </label>
+            <label for="vacation" class="col-xs-3 control-label"> Відпускні </label>
             <div class="col-xs-2 ">
                 <input zippy="vacation" class="form-control" type="text" value="0" pattern="[0-9\.]+">
             </div>
         </div>
         <div class="form-group">
-            <label for="sick" class="col-xs-3 control-label"> Больничный </label>
+            <label for="sick" class="col-xs-3 control-label"> Лікарняний </label>
             <div class="col-xs-2 ">
                 <input zippy="sick" class="form-control" type="text" pattern="[0-9\.]+">
             </div>
@@ -124,11 +124,11 @@
         <div class="form-group">
             <label class="col-xs-3 control-label"> </label>
             <div class="col-xs-3 ">
-                <input type="submit" zippy="submitcalc" value="Рассчитать" class="btn btn-default ">
+                <input type="submit" zippy="submitcalc" value="Розрахувати " class="btn btn-default ">
             </div>
         </div>
         <div class="form-group">
-            <label for="taxfl" class="col-xs-3 control-label">Подоходный</label>
+            <label for="taxfl" class="col-xs-3 control-label">Подоходний</label>
             <div class="col-xs-2 ">
                 <input zippy="taxfl" class="form-control" type="text" value="0" pattern="[0-9\.]+">
             </div>
@@ -140,7 +140,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="taxmil" class="col-xs-3 control-label">Военный сбор</label>
+            <label for="taxmil" class="col-xs-3 control-label">Війсковий збір</label>
             <div class="col-xs-2 ">
                 <input zippy="taxmil" class="form-control" type="text" pattern="[0-9\.]+">
             </div>
@@ -149,9 +149,9 @@
 
         <div class="form-group">
             <div class="col-xs-3 ">
-                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default ">
+                <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-default ">
                 &nbsp;&nbsp;
-                <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default ">
+                <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-default ">
             </div>
         </div>
 

@@ -4,11 +4,11 @@
 
 
 <form zippy="docform">
-    <h3>Ликвидация ОС</h3>
+    <h3>Ліквідація ОЗ</h3>
     <div class="row">
         <div class="col-xs-3">
             <div class="form-group">
-                <label for="document_number" class="  control-label">Номер документа</label>
+                <label for="document_number" class="  control-label">Номер документу</label>
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
             <div class="form-group">
@@ -22,12 +22,12 @@
     </div>
     <div class="row">
         <div class="col-xs-8">
-            <a zippy="addrow">Добавить ОС</a>
+            <a zippy="addrow">Додати ОЗ</a>
             <table class="table table-condenced">
                 <tr>
-                    <th>Наименование</th>
+                    <th>Назва</th>
 
-                    <th>Инв. номер</th>
+                    <th>Інв. номер</th>
 
                     <th width="50"></th>
                 </tr>
@@ -44,8 +44,8 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default  ">
+            <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
             &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default ">
 
         </div>
@@ -58,9 +58,9 @@
     <div class="row">
         <div class="col-xs-4">
             <div class="form-group">
-                <label for="edittovar" class="  control-label">Наименование</label>
+                <label for="edittovar" class="  control-label">Назва</label>
          <select class="form-control select2" zippy="edittovar" >
-                  <option value="0">Не выбран</option>
+                  <option value="0">Не вибрано</option>
                 </select>  
 
 
@@ -72,31 +72,31 @@
               </div> -->
 
             <div class="form-group">
-                <label for="editprice" class="  control-label">Начальная стоимость </label>
+                <label for="editprice" class="  control-label">Початкова вартість </label>
                 <span style="width:100px" zippy="editvalue" class="form-control"></span>
 
             </div>
             <div class="form-group">
-                <label for="editdeprecation" class="  control-label">Начисленная амортизация </label>
+                <label for="editdeprecation" class="  control-label">Нараховна амортизація </label>
                 <span style="width:100px" zippy="editdeprecation" class="form-control"></span>
 
             </div>
             <div class="form-group">
-                <label for="editcancelvalue" class="  control-label">Ликвидационная стоимость </label>
+                <label for="editcancelvalue" class="  control-label">Ліквідаційна вартість </label>
                 <span style="width:100px" zippy="editcancelvalue" class="form-control"></span>
 
             </div>
             <div class="form-group">
-                <label for="editcanceltype" class="  control-label">Как списать</label>
+                <label for="editcanceltype" class="  control-label">Як списувати</label>
                 <select zippy="editcanceltype" class="form-control">
                     <option value="1">Потери</option>
-                    <option value="2">На основной склад</option>
+                    <option value="2">На основний склад</option>
                 </select>
 
             </div>
             <div class="form-group">
-                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default ">
-                &nbsp; <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default ">
+                <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-default ">
+                &nbsp; <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-default ">
             </div>
 
         </div>

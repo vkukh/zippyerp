@@ -120,7 +120,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
     {
         $this->_employee->contact_id = $this->employeedetail->editcontact->getValue();
         if ($this->_employee->contact_id == 0) {
-            $this->setError("Выберите контакт");
+            $this->setError("Виберіть контакт");
             return;
         }
 
@@ -129,17 +129,17 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $login = trim($this->employeedetail->editlogin->getText());
         if (strlen($login) > 0) {
             if ($login == "admin") {
-                $this->setError('Недопустимое значение логина');
+                $this->setError('Недопустимий логін');
                 return;
             }
             $_emp = Employee::getFirst("login = '{$login}'");
             if ($_emp != null && $_emp->employee_id != $this->_employee->employee_id) {
-                $this->setError('Логин  занят сотрудником ' . $_emp->getInitName());
+                $this->setError('Логін вже має  ' . $_emp->getInitName());
                 return;
             }
             $user = \ZippyERP\System\User::getByLogin($login);
             if ($user == null) {
-                $this->setError('Несуществующий логин');
+                $this->setError('Неіснуючий логін');
                 return;
             }
         }

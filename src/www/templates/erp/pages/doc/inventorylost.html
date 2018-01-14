@@ -4,11 +4,11 @@
 
 
 <form zippy="docform">
-    <h3>Списание ТМЦ на потери</h3>
+    <h3>Списання ТМЦ на втрати</h3>
     <div class="row">
         <div class="col-xs-3">
             <div class="form-group">
-                <label for="document_number" class="  control-label">Номер документа</label>
+                <label for="document_number" class="  control-label">Номер документу</label>
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
             <div class="form-group">
@@ -22,7 +22,7 @@
                 </select>
             </div>
             <div class="form-group  ">
-                <label for="expenses" class="  control-label">Тип потерь</label>
+                <label for="expenses" class="  control-label">Тип втрат</label>
                 <select class="form-control" zippy="expenses">
                 </select>
             </div>
@@ -31,15 +31,15 @@
     </div>
     <div class="row">
         <div class="col-xs-8">
-            <a zippy="addrow">Добавить ТМЦ</a>
+            <a zippy="addrow">Додати ТМЦ</a>
 
             <table class="table table-condenced">
                 <tr>
-                    <th>Наименование</th>
-                    <th width="50">Ед.изм.</th>
-                    <th width="40">Кол.</th>
-                    <th width="60">Цена</th>
-                    <th width="60">Сумма</th>
+                    <th>Найменування</th>
+                    <th width="50">Од.вим..</th>
+                    <th width="40">Кіл.</th>
+                    <th width="60">Ціна</th>
+                    <th width="60">Сума</th>
                     <th width="50"></th>
                 </tr>
                 <tr zippy="detail">
@@ -58,8 +58,8 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default  ">
+            <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
             &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default ">
 
         </div>
@@ -79,26 +79,26 @@
             </div>
 
             <div class="form-group">
-                <label for="edititem" class="  control-label">Наименование</label>
+                <label for="edititem" class="  control-label">Найменування</label>
                    <select class="form-control select2"  zippy="edititem" >
-                 <option value="0">Не выбран</option>
+                 <option value="0">Не вибрано</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="editquantity" class="  control-label">Количество</label>
+                <label for="editquantity" class="  control-label">Кількість</label>
                 <input class="form-control" type="text" zippy="editquantity" required="required" pattern="[0-9\.]+"
                        style="width: 70px;">
 
             </div>
             <div class="form-group">
-                <label for="editprice" class="  control-label">Цена </label>
+                <label for="editprice" class="  control-label">Ціна </label>
                 <input class="form-control" type="text" zippy="editprice" required="required" pattern="[0-9\.]+"
                        style="width: 70px;" readonly="readonly">
 
             </div>
             <div class="form-group">
-                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default ">
-                &nbsp; <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default ">
+                <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-default ">
+                &nbsp; <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-default ">
             </div>
 
 

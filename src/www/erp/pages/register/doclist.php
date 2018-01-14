@@ -158,7 +158,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
 
         $doc = $sender->owner->getDataItem();
         if ($doc->checkDeleted() == false) {
-            $this->setError("Документ не  может  быть  удален");
+            $this->setError("Документ не  може бути видалений");
             return;
         }
         Document::delete($doc->document_id);

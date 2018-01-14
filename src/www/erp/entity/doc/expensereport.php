@@ -94,14 +94,14 @@ class ExpenseReport extends Document
 
 
         $list = array();
-        $list[0] = "Выбрать";
-        $list[22] = "МБП";
-        $list[281] = "Товары  на  складе";
-        $list[201] = "Сырье  и материалы";
-        $list[23] = "Прямые производственные затраты";
-        $list[91] = "Общепроизводственные затраты";
-        $list[92] = "Административные затраты";
-        $list[93] = "Затраты  на сбыт";
+        $list[0] = "Выбрати";
+        $list[22] = "МШП";
+        $list[281] = "Товари  на  складі";
+        $list[201] = "Сировина  та  матеріали";
+        $list[23] = "Прямі віробничі витрати";
+        $list[91] = "Загальновиробничі витрати";
+        $list[92] = "Адміністративні витрати";
+        $list[93] = "Витрати на збут";
 
         return $list;
     }
@@ -109,7 +109,7 @@ class ExpenseReport extends Document
     public function getRelationBased()
     {
         $list = array();
-        //  $list['TaxInvoiceIncome'] = 'Входящая НН';
+        //  $list['TaxInvoiceIncome'] = 'Вхідна ПН';
 
         return $list;
     }

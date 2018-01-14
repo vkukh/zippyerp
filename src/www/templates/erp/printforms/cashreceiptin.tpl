@@ -3,10 +3,10 @@
 <table class="ctable" width="400" border="0" cellspacing="0" cellpadding="2">
 
     <tr>
-        <td colspan="2" align="center"><b> ПКО № {{document_number}} от {{date}}</b></td>
+        <td colspan="2" align="center"><b> ПКО № {{document_number}} від {{date}}</b></td>
     </tr>
     <tr>
-        <td><b>Сумма:</b></td>
+        <td><b>Сума:</b></td>
         <td> {{amount}} </td>
     </tr>
     <tr>
@@ -14,11 +14,11 @@
         <td>{{optype}}</td>
     </tr>
     <tr>
-        <td><b>Детализация:</b></td>
+        <td><b>Деталізація:</b></td>
         <td>{{opdetail}}</td>
     </tr>
     <tr>
-        <td><b>Прмечание:</b></td>
+        <td><b>Примітка:</b></td>
         <td>{{notes}}</td>
     </tr>
 

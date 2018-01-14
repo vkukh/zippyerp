@@ -5,7 +5,7 @@
 
     <tr style="font-weight: bolder;">
         <td>
-            Финансовые результаты {{document_number}}
+            Финансові результати {{document_number}}
         </td>
         <td>
             от {{date}}

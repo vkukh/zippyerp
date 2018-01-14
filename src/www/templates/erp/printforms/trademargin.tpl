@@ -5,10 +5,10 @@
 
     <tr style="font-weight: bolder;">
         <td>
-            Списание торговой наценки {{document_number}}
+            Списання торгової націнки {{document_number}}
         </td>
         <td>
-            от {{date}}
+            від {{date}}
         </td>
     </tr>
     <tr>

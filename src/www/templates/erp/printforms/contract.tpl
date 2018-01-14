@@ -6,13 +6,13 @@
         <td colspan="5">Контрагент: {{customer}}</td>
     </tr>
     <tr>
-        <td colspan="5" align="center"><b> Договор № {{document_number}} от {{date}}</b></td>
+        <td colspan="5" align="center"><b> Угода № {{document_number}} від {{date}}</b></td>
     </tr>
     <tr>
-        <td colspan="5">С <b>{{startdate}}</b> по <b>{{enddate}}</b></td>
+        <td colspan="5">З <b>{{startdate}}</b> по <b>{{enddate}}</b></td>
     </tr>
     <tr>
-        <td colspan="5">Сумма: {{amount}} </td>
+        <td colspan="5">Сума: {{amount}} </td>
     </tr>
     <tr>
         <td colspan="5">{{description}}</td>

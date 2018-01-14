@@ -65,12 +65,12 @@ class Consts
     public static function getTaxesList()
     {
         $list = array();
-        $list[self::TAX_NDS] = "НДС";
-        $list[self::TAX_INCOME] = "Налог на прибыль";
-        $list[self::TAX_ONE] = "Единый налог";
-        $list[self::TAX_NDFL] = "НДФЛ";
-        $list[self::TAX_MIL] = "Военный сбор";
-        $list[self::TAX_ECB] = "ECB";
+        $list[self::TAX_NDS] = "ПДВ";
+        $list[self::TAX_INCOME] = "Податок  на прибуток";
+        $list[self::TAX_ONE] = "Єдиний полаток";
+        $list[self::TAX_NDFL] = "ПДФЛ";
+        $list[self::TAX_MIL] = "Війсковий збір";
+        $list[self::TAX_ECB] = "ЄCB";
 
         return $list;
     }

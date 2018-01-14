@@ -59,15 +59,15 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
         $store = Store::load($this->docform->store->getValue());
 
         if ($store == false) {
-            $this->setError("Не  выбран  магазин");
+            $this->setError("Не  вибраний  магазин");
             return;
         }
         if ($this->docform->summa->getText() == 0) {
-            $this->setError("Не введена сумма");
+            $this->setError("Не введена сума");
             return;
         }
         if ($this->docform->summa->getText() == $this->docform->actual->getText()) {
-            $this->setError("Не изменена сумма");
+            $this->setError("Не змінена сумма");
             return;
         }
         $this->_doc->document_number = $this->docform->document_number->getText();

@@ -47,8 +47,8 @@ class Inventory extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['InventoryLost'] = 'Списание ТМЦ (потери)';
-        $list['InventoryGain'] = 'Оприходование  излищков';
+        $list['InventoryLost'] = 'Списання ТМЦ (втрати)';
+        $list['InventoryGain'] = 'Оприходування злишків';
 
         return $list;
     }

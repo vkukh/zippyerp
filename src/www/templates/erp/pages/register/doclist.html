@@ -4,7 +4,7 @@
     <div class="col-xs-12">
     <div class="box">
     <div class="box-title">
-         <h3>Журнал документов </h3>
+         <h3>Журнал документів </h3>
     </div>
     <div class="box-body">
 
@@ -13,7 +13,7 @@
 
         <form zippy="filter" class="navbar-form ">
             <div class="form-group">
-                <label for="from">С</label>
+                <label for="from">З</label>
                 <input type="text" class="form-control" zippy="from" style="width:100px">
             </div>
             <div class="form-group">
@@ -21,9 +21,9 @@
                 <input type="text" class="form-control" style="width:100px" zippy="to">
             </div>
             <div class="form-group">
-                <label for="docgroup">Группа</label>
+                <label for="docgroup">Група</label>
                 <select class="form-control" zippy="docgroup">
-                    <option value="0">Все</option>
+                    <option value="0">Всі</option>
                 </select>
             </div>
             <div class="form-group">
@@ -31,12 +31,12 @@
                 <input class="form-control" type="text" zippy="searchnumber" style="width:100px">
             </div>
             <div class="form-group">
-                <label for="onlymy">Только мои </label>
+                <label for="onlymy">Тільки мої</label>
                 <input   type="checkbox" zippy="onlymy">
             </div>
 
             <div class="form-group">
-                <input type="submit" class="  btn btn-default  " value="Ввод">
+                <input type="submit" class="  btn btn-default  " value="Вибрати">
                 
             </div>
 
@@ -44,10 +44,10 @@
         </form>
         <table class="table table-striped  table-condensed ">
             <tr>
-                <th>Наименование</th>
+                <th>Найменування</th>
                 <th>Номер</th>
                 <th>Дата</th>
-                <th>Сумма</th>
+                <th>Сума</th>
                 <th>Статус</th>
                 <th></th>
                 <th></th>
@@ -62,19 +62,19 @@
                 <td zippy="state"></td>
 
                 <td style="white-space:   nowrap">
-                    <a zippy="show" title="Просмотр"><i class="icon-preview"></i></a>
-                    <a zippy="edit" title="Редактировать"><i class="icon-edit"></a>
-                    <a zippy="cancel" title="Отменить"><i class="icon-undo"></i> </a>
+                    <a zippy="show" title="Перегляд"><i class="icon-preview"></i></a>
+                    <a zippy="edit" title="Редагувати"><i class="icon-edit"></a>
+                    <a zippy="cancel" title="Відмінити проведення"><i class="icon-undo"></i> </a>
 
                 </td>
                 <td>
-                    <a zippy="delete" title="Удаление"><i class="icon-trash"></i></a>
+                    <a zippy="delete" title="Видалення"><i class="icon-trash"></i></a>
                 </td>
                 <td>
                     <div class="btn-group" zippy="basedon">
-                        <button title="Создать на  основании" type="button"
+                        <button title="Створити на  підставі" type="button"
                                 class="btn btn-default btn-sm  dropdown-toggle" data-toggle="dropdown">
-                            Создать <span class="caret"></span>
+                            Створити <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" zippy="basedlist">
 
@@ -102,7 +102,7 @@
 
 <script>
     function check_delete() {
-        return confirm("Удалить  документ?")
+        return confirm("Видалити  документ?")
     }
 </script>
 </body>

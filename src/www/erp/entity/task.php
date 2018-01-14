@@ -31,12 +31,12 @@ class Task extends \ZCL\DB\Entity
     public static function getStatusList()
     {
         $list = array();
-        $list[0] = "Новая";
-        $list[1] = "В работе";
-        $list[2] = "Закончена";
-        $list[3] = "Закрыта";
-        $list[4] = "Проверка";
-        $list[5] = "На исправлении";
+        $list[0] = "Нове";
+        $list[1] = "Виконуєтся";
+        $list[2] = "Закінчене";
+        $list[3] = "Закрити";
+        $list[4] = "Перевірка";
+        $list[5] = "Виправляєтся";
         return $list;
     }
 

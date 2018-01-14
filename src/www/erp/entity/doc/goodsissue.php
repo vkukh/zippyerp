@@ -163,8 +163,8 @@ class GoodsIssue extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['TaxInvoice'] = 'Налоговая накладная';
-        $list['ReturnGoodsIssue'] = 'Возвратная накладная';
+        $list['TaxInvoice'] = 'Податкова накладна';
+        $list['ReturnGoodsIssue'] = 'Накладна на  повернення';
 
         return $list;
     }

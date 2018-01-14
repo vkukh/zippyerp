@@ -13,7 +13,7 @@
 
     <tr>
         <td></td>
-        <td>Продавец</td>
+        <td>Продавець</td>
         <td colspan="5">{{firmname}}</td>
     </tr>
     <tr>
@@ -29,17 +29,17 @@
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7" valign="middle">
-            <br><br> Чек ЭККА № {{document_number}} от {{date}}  {{#return}} (возврат) {{/return}} <br><br><br>
+            <br><br> Чек ЭККА № {{document_number}} от {{date}}  {{#return}} (повернення) {{/return}} <br><br><br>
         </td>
     </tr>
 
     <tr style="font-weight: bolder;">
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="30">№</th>
-        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Наименование</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Ед.изм</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кол.</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="60">Цена</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">Сумма</th>
+        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Найменування</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Од.вим.</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кіл.</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="60">Ціна</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">Сума</th>
     </tr>
     {{#_detail}}
     <tr>
@@ -52,12 +52,12 @@
     </tr>
     {{/_detail}}
     <tr style="font-weight: bolder;">
-        <td style="border-top:1px #000 solid;" colspan="6" align="right">Всего:</td>
+        <td style="border-top:1px #000 solid;" colspan="6" align="right">Всього:</td>
         <td style="border-top:1px #000 solid;" align="right">{{total}}</td>
     </tr>
 
     <tr style="font-weight: bolder;">
-        <td colspan="6" align="right">В т.ч. НДС:</td>
+        <td colspan="6" align="right">В т.ч. ПДВ:</td>
         <td align="right">{{totalnds}}</td>
     </tr>
 

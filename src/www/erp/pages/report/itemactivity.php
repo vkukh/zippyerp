@@ -42,7 +42,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         $itemid = $this->filter->item->getValue();
         $item = Item::load($itemid);
         if ($item == null) {
-            $this->setError('Не выбран ТМЦ');
+            $this->setError('Не вибраний ТМЦ');
             return;
         }
         $html = $this->generateReport();

@@ -50,7 +50,7 @@ class ContactView extends \Zippy\Html\PageFragment
         $this->addeventform->add(new \ZCL\BT\DateTimePicker('addeventdate',time()));
         $this->addeventform->add(new TextInput('addeventtitle'));
         $this->addeventform->add(new TextArea('addeventdesc'));
-        $this->addeventform->add(new DropDownChoice('addeventnotify',array(1=>"1 час",2=>"2 часа",4=>"4 часа",8=>"8 часов",16=>"16 часов",24=>"24 часа"),0));
+        $this->addeventform->add(new DropDownChoice('addeventnotify',array(1=>"1 годину",2=>"2 години",4=>"4 години",8=>"8 годин",16=>"16 годин",24=>"24 години"),0));
         $this->add(new DataView('dw_eventlist', new ArrayDataSource(new Bind($this, '_eventlist')), $this, 'eventListOnRow'));
         $this->dw_eventlist->setPageSize(10);
         $this->add(new \Zippy\Html\DataList\Paginator('pag', $this->dw_eventlist));
@@ -87,7 +87,7 @@ class ContactView extends \Zippy\Html\PageFragment
 
         $file = $this->addfileform->addfile->getFile();
         if ($file['size'] > 10000000) {
-            $this->getOwnerPage()->setError("Файл более 10М !");
+            $this->getOwnerPage()->setError("Файл більше 10М !");
             return;
         }
 

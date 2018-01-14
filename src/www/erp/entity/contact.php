@@ -69,7 +69,7 @@ class Contact extends \ZCL\DB\Entity
     {
         $type = "";
         if ($this->employee > 0)
-            $type = "Сотрудник";
+            $type = "Співробітник";
         if ($this->customer > 0)
             $type = "Контрагент '{$this->customer_name}'";
         return $type;

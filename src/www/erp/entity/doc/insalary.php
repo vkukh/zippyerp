@@ -139,7 +139,7 @@ class InSalary extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['OutSalary'] = 'Выплата зарплаты';
+        $list['OutSalary'] = 'Виплата зарплати';
 
         return $list;
     }

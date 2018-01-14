@@ -3,31 +3,31 @@
 
 </head>
 <body>
-<h3>Данные аналитического учета</h3>
+<h3>Дані аналітичного обліку</h3>
 <div class="row">
 
 
     <form zippy="filter">
         <div class="col-xs-3">
             <div class="form-group">
-                <label for="viewtype" class="  control-label">Тип просмотра</label>
+                <label for="viewtype" class="  control-label">Тип перегляду</label>
                 <select class="form-control" zippy="viewtype">
                     <option value="1">Плоский список</option>
-                    <option value="2">Обороты</option>
+                    <option value="2">Обороти</option>
                     <option value="3">Сальдо</option>
                 </select>
             </div>
             {{#list}}
             <div class="form-group">
-                <label for="from" class="  control-label">Начало периода</label>
+                <label for="from" class="  control-label">Початок періоду</label>
                 <input class="form-control" type="text" zippy="from" style="width:100px">
             </div>
             <div class="form-group">
-                <label for for="to" class="  control-label">Конец периода</label>
+                <label for for="to" class="  control-label">Кінець періоду</label>
                 <input class="form-control" type="text" zippy="to" style="width:100px">
             </div>
             <div class="form-group">
-                <label for="searchkey" class="  control-label">Поиск (по всем полям)</label>
+                <label for="searchkey" class="  control-label">Пошук (по всім полям)</label>
                 <input class="form-control" type="text" zippy="searchkey">
             </div>
             {{/list}}
@@ -40,19 +40,19 @@
 
 
             <div class="form-group">
-                <input type="submit" zippy="submitrow" value="Сформировать" class="btn btn-default ">
+                <input type="submit" zippy="submitrow" value="Зформувати" class="btn btn-default ">
             </div>
         </div>
         <div class="col-xs-3">
             {{#list}}
             <div class="form-group">
-                <label data-label="chaccount" class="  control-label">Столбцы</label>
+                <label data-label="chaccount" class="  control-label">Стовбці</label>
 
             </div>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" zippy="chaccount">
-                    Синтетические счета
+                    Синтетичні рахунки
                 </label>
             </div>
 
@@ -60,7 +60,7 @@
             <div class="checkbox">
                 <label>
                     <input type="checkbox" zippy="chcustomer">
-                    Контрагенты
+                    Контрагенти
                 </label>
             </div>
             <div class="checkbox">
@@ -73,39 +73,39 @@
             <div class="checkbox">
                 <label>
                     <input type="checkbox" zippy="chos">
-                    ОС и НМА
+                    ОЗ та НМА
                 </label>
             </div>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" zippy="chstore">
-                    Склады
+                    Склади
                 </label>
             </div>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" zippy="chemployee">
-                    Сотрудники
+                    Співробітники
                 </label>
             </div>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" zippy="chmoneyfund">
-                    Денежные счета
+                    Грошові рахунки
                 </label>
             </div>
             {{/list}}
             {{^list}}
             <div class="form-group">
-                <label data-label="groupby" for="groupby" class="  control-label">Группировка по</label>
+                <label data-label="groupby" for="groupby" class="  control-label">Згрупувати по</label>
                 <select class="form-control" zippy="groupby">
-                    <option value="1">Счет</option>
+                    <option value="1">Рахунок</option>
                     <option value="2">Контрагент</option>
                     <option value="3">ТМЦ</option>
-                    <option value="4">ОС</option>
+                    <option value="4">ОЗ</option>
                     <option value="5">Склад</option>
-                    <option value="6">Сотрудник</option>
-                    <option value="7">Денежный счет</option>
+                    <option value="6">Співробітник</option>
+                    <option value="7">Грошовий рахунок</option>
                 </select>
             </div>
             {{/list}}

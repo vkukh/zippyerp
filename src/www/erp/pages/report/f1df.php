@@ -115,7 +115,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
 
         $id = $this->editemp->editemployee->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран сотрудник");
+            $this->setError("Не вибраний співробітник");
             return;
         }
         $emp = Employee::load($id);

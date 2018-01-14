@@ -43,10 +43,10 @@ class Item extends \ZCL\DB\Entity
     {
         $list = array();
 
-        $list[self::ITEM_TYPE_SERVICE] = 'Услуга';
+        $list[self::ITEM_TYPE_SERVICE] = 'Послуга';
         $list[self::ITEM_TYPE_STUFF] = 'ТМЦ';
-        //$list[self::ITEM_TYPE_GOODS] = 'Товары';
-        //  $list[self::ITEM_TYPE_MBP] = 'МБП';
+        //$list[self::ITEM_TYPE_GOODS] = 'Товари';
+        //  $list[self::ITEM_TYPE_MBP] = 'МШП';
         //  $list[self::ITEM_TYPE_MNMA] = 'МНМА';
 
 

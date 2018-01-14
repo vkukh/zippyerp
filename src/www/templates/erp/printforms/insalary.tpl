@@ -18,7 +18,7 @@
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="10" valign="middle">
-            <br><br>Начисление зарплаты № {{document_number}} от {{date}} <br><br>
+            <br><br>Нарахування зарплати № {{document_number}} від {{date}} <br><br>
         </td>
     </tr>
     <tr>
@@ -30,14 +30,14 @@
 
     <tr style="font-weight: bolder;">
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="30">№</th>
-        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">ФИО</th>
+        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">ПІБ</th>
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Зарплата</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Отп.</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Больн.</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Відп.</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Лік.</th>
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">ЕСВ</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">НДФЛ</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">В. сбор</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">К оплате</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;">ПДФО</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">В. збір</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="80">До виплати</th>
     </tr>
     {{#_detail}}
     <tr>
@@ -55,7 +55,7 @@
     <tr style="font-weight: bolder;">
         <td style="border-top:1px #000 solid; " width="30"></td>
         <td colspan="2" style="border-top:1px #000 solid; "></td>
-        <td style="border-top:1px #000 solid; " align="right">Итого:</td>
+        <td style="border-top:1px #000 solid; " align="right">Всього:</td>
         <td style="border-top:1px #000 solid; "></td>
         <td style="border-top:1px #000 solid; "></td>
         <td style="border-top:1px #000 solid; " align="right"> {{totecb}}</td>

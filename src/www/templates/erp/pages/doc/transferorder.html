@@ -2,16 +2,16 @@
 
 <body>
 
-<h3>Платежное поручение</h3>
+<h3>Платіжне доручення</h3>
 <form zippy="docform">
     <div class="row">
         <div class="col-xs-3">
             <div class="form-group">
-                <label for="document_number" class="  control-label">Номер документа</label>
+                <label for="document_number" class="  control-label">Номер документу</label>
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
             <div class="form-group">
-                <label for="bankaccount" class="  control-label">Расчетный счет</label>
+                <label for="bankaccount" class="  control-label">Розрахунковий рахунок</label>
                 <select class="form-control" zippy="bankaccount">
                 </select>
             </div>
@@ -19,15 +19,15 @@
             <div class="form-group">
                 <label for="customer" class="  control-label">Контрагент</label>
                 <select class="form-control select2" zippy="customer" >
-                  <option value="0">Не выбран</option>
+                  <option value="0">Не вибрано</option>
                  </select> 
             </div>
             <div class="form-group">
-                <label for="basedoc" class="  control-label">Документ - основание</label>
+                <label for="basedoc" class="  control-label">Документ - підстава</label>
                 <input class="form-control" type="text" zippy="basedoc">
             </div>
             <div class="form-group">
-                <label for="notes" class="  control-label">Назначение</label>
+                <label for="notes" class="  control-label">Призначення</label>
                 <textarea class="form-control" zippy="notes"></textarea>
             </div>
 
@@ -38,18 +38,18 @@
                 <input class="form-control" type="text" zippy="document_date" required="required">
             </div>
             <div class="form-group">
-                <label for="amount" class="  control-label">Сумма</label>
+                <label for="amount" class="  control-label">Сума</label>
                 <input class="form-control" type="text" zippy="amount" required="required" pattern="[0-9\.]+"
                        style="width: 100px;">
             </div>
             <div class="form-group">
-                <label for="nds" class="  control-label">В т.ч. НДС</label>
+                <label for="nds" class="  control-label">В т.ч. ПДВ</label>
                 <input class="form-control" type="text" zippy="nds" pattern="[0-9\.]+" style="width: 100px;">
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" zippy="tax"> Уплата налогов и сборов
+                        <input type="checkbox" zippy="tax"> Виплата  податків
                     </label>
                 </div>
             </div>
@@ -58,8 +58,8 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default ">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default ">
+            <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default ">
+            <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default ">
             &nbsp;<input zippy="execdoc" type="submit" value="Оплачено" class="btn btn-default ">
 
         </div>

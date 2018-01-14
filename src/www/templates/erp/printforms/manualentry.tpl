@@ -1,8 +1,8 @@
 <html>
 <body>
 
-<h4> Ручная хоз. операция № {{document_number}} Дата: {{date}} </h4>
-Описание:<br>{{description}}
+<h4> Ручна хоз. операція № {{document_number}} Дата: {{date}} </h4>
+Опис:<br>{{description}}
 <br>
 
 {{#entry?}}
@@ -11,7 +11,7 @@
     <tr>
         <th style="width:40px;border-bottom: black solid 1px;">Дт</th>
         <th style="width:40px;border-bottom: black solid 1px;">Кт</th>
-        <th style="width:60px;border-bottom: black solid 1px;">Сумма</th>
+        <th style="width:60px;border-bottom: black solid 1px;">Сума</th>
     </tr>
     {{#entry}}
     <tr>
@@ -27,12 +27,12 @@
 <br><b>ТМЦ:</b>
 <table class="ctable" cellpadding="2">
     <tr>
-        <th style="border-bottom: black solid 1px;">Счет</th>
+        <th style="border-bottom: black solid 1px;">Рахунок</th>
         <th style="border-bottom: black solid 1px;">Склад</th>
         <th style="border-bottom: black solid 1px;">ТМЦ</th>
-        <th style="border-bottom: black solid 1px;">Кол.</th>
-        <th style="border-bottom: black solid 1px;">Цена</th>
-        <th style="border-bottom: black solid 1px;">Сумма</th>
+        <th style="border-bottom: black solid 1px;">Кіл.</th>
+        <th style="border-bottom: black solid 1px;">Ціна</th>
+        <th style="border-bottom: black solid 1px;">Сума</th>
 
     </tr>
     {{#item}}
@@ -50,12 +50,12 @@
 {{/item?}}
 
 {{#emp?}}
-<br><b>Сотрудники:</b>
+<br><b>Співробітники:</b>
 <table class="ctable" cellpadding="2">
     <tr>
-        <th style="border-bottom: black solid 1px;">Счет</th>
-        <th style="border-bottom: black solid 1px;">ФИО</th>
-        <th style="border-bottom: black solid 1px;">Сумма</th>
+        <th style="border-bottom: black solid 1px;">Рахунок</th>
+        <th style="border-bottom: black solid 1px;">ПІБ</th>
+        <th style="border-bottom: black solid 1px;">Сума</th>
 
     </tr>
     {{#emp}}
@@ -68,13 +68,13 @@
 {{/emp?}}
 
 {{#c?}}
-<br><b>Контрагенты:</b>
+<br><b>Контрагенти:</b>
 <table class="ctable" cellpadding="2">
     <tr>
-        <th style="border-bottom: black solid 1px;">Счет</th>
+        <th style="border-bottom: black solid 1px;">Рахунок</th>
 
-        <th style="border-bottom: black solid 1px;">Наименование</th>
-        <th style="border-bottom: black solid 1px;">Сумма</th>
+        <th style="border-bottom: black solid 1px;">Назва</th>
+        <th style="border-bottom: black solid 1px;">Сума</th>
 
     </tr>
     {{#c}}
@@ -88,12 +88,12 @@
 {{/c?}}
 
 {{#f?}}
-<br><b>Денежные счета:</b>
+<br><b>Грошові рахунки:</b>
 <table class="ctable" cellpadding="2">
     <tr>
-        <th style="border-bottom: black solid 1px;">Счет</th>
-        <th style="border-bottom: black solid 1px;">Наименование</th>
-        <th style="border-bottom: black solid 1px;">Сумма</th>
+        <th style="border-bottom: black solid 1px;">Рахунок</th>
+        <th style="border-bottom: black solid 1px;">Назва</th>
+        <th style="border-bottom: black solid 1px;">Сума</th>
 
     </tr>
     {{#f}}
@@ -107,13 +107,13 @@
 {{/f?}}
 
 {{#ca?}}
-<br><b>Необортные активы:</b>
+<br><b>Необортні активи:</b>
 <table class="ctable" cellpadding="2">
     <tr>
-        <th style="border-bottom: black solid 1px;">Счет</th>
-        <th style="border-bottom: black solid 1px;">Наименование</th>
-        <th style="border-bottom: black solid 1px;">Кол.</th>
-        <th style="border-bottom: black solid 1px;">Цена</th>
+        <th style="border-bottom: black solid 1px;">Рахунок</th>
+        <th style="border-bottom: black solid 1px;">Назва</th>
+        <th style="border-bottom: black solid 1px;">Кіл.</th>
+        <th style="border-bottom: black solid 1px;">Ціна</th>
 
     </tr>
     {{#ca}}

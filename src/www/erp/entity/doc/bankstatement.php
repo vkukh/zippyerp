@@ -226,15 +226,15 @@ class BankStatement extends Document
     public static function getTypes()
     {
         $list = array();
-        $list[self::IN] = "Оплата от покупателя";
-        $list[self::OUT] = "Оплата поставщику";
-        $list[self::CASHIN] = "Поступление наличности";
-        $list[self::CASHOUT] = "Снятие наличности";
-        $list[self::TAX] = "Оплата  налогов";
-        $list[self::IN_BACK] = "Возврат от  поставщика";
-        $list[self::OUT_BACK] = "Возврат покупателю";
-        $list[self::OUT_COMMON] = "Общие накладные расходы";
-        $list[self::OUT_CARD] = "Оплата кредиткой";
+        $list[self::IN] = "Оплата від покупця";
+        $list[self::OUT] = "Оплата постачальнику";
+        $list[self::CASHIN] = "Поступила  готівка";
+        $list[self::CASHOUT] = "Зняття готівки";
+        $list[self::TAX] = "Оплата податків";
+        $list[self::IN_BACK] = "Повернення від постачальника";
+        $list[self::OUT_BACK] = "Повернення покупцеві";
+        $list[self::OUT_COMMON] = "Загальні накладні видатки";
+        $list[self::OUT_CARD] = "Оплата кредиткою";
         return $list;
     }
 

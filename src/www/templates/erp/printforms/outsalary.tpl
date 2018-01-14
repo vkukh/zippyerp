@@ -14,7 +14,7 @@
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7" valign="middle">
-            <br><br>Выплата зарплаты № {{document_number}} от {{date}} <br><br>
+            <br><br>Виплата зарплаты № {{document_number}} від {{date}} <br><br>
         </td>
     </tr>
     <tr>
@@ -25,10 +25,10 @@
 
     <tr style="font-weight: bolder;">
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="30">№</th>
-        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">ФИО</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="100">К оплате</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="100">Выплачено</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="100">Подпись</th>
+        <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">ПІБ</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="100">До виплати</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="100">Виплачено</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="100">Підпис</th>
     </tr>
     {{#_detail}}
     <tr>

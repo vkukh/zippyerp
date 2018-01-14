@@ -70,7 +70,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         try {
             Store::delete($sender->owner->getDataItem()->store_id);
         } catch (\Exception $e) {
-            $this->setError("Нельзя удалить этот  склад");
+            $this->setError("Не можна видаляти цей  склад");
         }
         $this->storetable->storelist->Reload();
     }
@@ -92,7 +92,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->_store->description = $this->storeform->storeeditdesc->getText();
         $this->_store->store_type = $this->storeform->storeedittype->getValue();
         if ($this->_store->storename == '') {
-            $this->setError("Введите имя");
+            $this->setError("Введіть найменування");
             return;
         }
 

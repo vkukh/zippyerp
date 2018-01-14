@@ -41,7 +41,7 @@ class ProductList extends Base
         $op = System::getOptions("shop");
         $this->shop = $op["store"];
         if ($this->shop == "") {
-            $setError("Не задан склад");
+            $setError("Не заданий склад");
         }
         $tree = $this->add(new Tree("tree"));
         $tree->onSelectNode($this, "onTree");
@@ -180,7 +180,7 @@ class ProductList extends Base
         $this->product->item_code = $item->code;
 
         if ($this->product->erp_item_id == 0) {
-            $this->setError('Не выбран  товар');
+            $this->setError('Не вибраний  товар');
             return;
         }
         $this->editpanel->editform->edisabled->setVisible(false);
@@ -260,7 +260,7 @@ class ProductList extends Base
         $this->product->manufacturer_id = $sender->emanuf->getValue();
 
         if ($this->product->manufacturer_id == 0) {
-            $this->setError('Не выбран производитель');
+            $this->setError('Не вибраний виробник');
             return;
         }
 
@@ -278,17 +278,17 @@ class ProductList extends Base
             $imagedata = getimagesize($file["tmp_name"]);
 
             if (preg_match('/(gif|png|jpeg)$/', $imagedata['mime']) == 0) {
-                $this->setError('Неверный формат');
+                $this->setError('Невірний формат');
                 return;
             }
 
             if ($imagedata[0] * $imagedata[1] > 1000000) {
-                $this->setError('Слишком большой размер изображения');
+                $this->setError('Надто великий розмір зображення');
                 return;
             }
             $r = ((double) $imagedata[0]) / $imagedata[1];
             if ($r > 1.05 || $r < 0.95) {
-                $this->setError('Изображение должно  быть квадратным');
+                $this->setError('Зображення має бути квадратним');
                 return;
             }
 

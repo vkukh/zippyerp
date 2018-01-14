@@ -44,13 +44,13 @@ class UserProfile extends \ZippyERP\System\Pages\Base
         $confirm = $sender->confirmpassword->getText();
         
         if ($pass == '') {
-            $this->setError('Введите пароль');
+            $this->setError('Введіть пароль');
         } else
         if ($confirm == '') {
-            $this->setError('Подтвердите пароль');
+            $this->setError('Підтвердити пароль');
         } else
         if ($confirm != $pass) {
-            $this->setError('Неверное подтверждение');
+            $this->setError('Невірне підтвердження');
         }
 
 

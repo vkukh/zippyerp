@@ -5,7 +5,7 @@
 
     <tr style="font-weight: bolder;">
         <td>
-            Амортизация {{document_number}}
+            Амортизація {{document_number}}
         </td>
         <td>
             от {{date}}
@@ -14,7 +14,7 @@
     <tr>
         <td>
             {{#tax}}
-            Налоговый учет
+            Податковий облік
             {{/tax}}
         </td>
         <td>

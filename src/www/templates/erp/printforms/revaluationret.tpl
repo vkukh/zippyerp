@@ -18,7 +18,7 @@
     </tr>
     <tr style="font-weight: bolder;">
         <td colspan="2" align="center">
-            Переоценка в рознице № {{document_number}}
+            Переоцінка в  роздрібі № {{document_number}}
         </td>
     </tr>
 
@@ -27,10 +27,10 @@
 <table class="ctable" width="500px" cellspacing="0" cellpadding="1" border="1">
     <tr style="font-weight: bolder;">
         <th width="20px">№</th>
-        <th width="180px">Наименование</th>
-        <th width="60px">Ед.изм</th>
-        <th width="60px">Цена</th>
-        <th width="100px">Новая цена</th>
+        <th width="180px">Найменування</th>
+        <th width="60px">Од.вим.</th>
+        <th width="60px">Ціна</th>
+        <th width="100px">Нова  ціна</th>
     </tr>
     {{#_detail}}
     <tr>

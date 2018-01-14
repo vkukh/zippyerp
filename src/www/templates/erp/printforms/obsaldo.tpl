@@ -2,17 +2,17 @@
 
 <body>
 
-<h3 style="font-size: 16px;">Оборотно-сальдовая ведомость c {{from}} по {{to}}</h3>
+<h3 style="font-size: 16px;">Оборотно-сальдова відомість c {{from}} по {{to}}</h3>
 <br>
 <table class="ctable" cellspacing="0" cellpadding="1" border="1">
     <tr style="font-weight: bolder;">
         <th width="50px"></th>
-        <th colspan="2">Начальное сальдо</th>
-        <th colspan="2">Обороты</th>
-        <th colspan="2">Конечное сальдо</th>
+        <th colspan="2">Початкове сальдо</th>
+        <th colspan="2">Обороти</th>
+        <th colspan="2">Кінцеве сальдо</th>
     </tr>
     <tr style="font-weight: bolder;">
-        <th width="50px">Счет</th>
+        <th width="50px">Рахунок</th>
         <th>Дебет</th>
         <th>Кредит</th>
         <th>Дебет</th>
@@ -32,7 +32,7 @@
     </tr>
     {{/_detail}}
     <tr style="font-weight: bolder;">
-        <th width="50px">Итого:</th>
+        <th width="50px">Всього:</th>
         <th align="right">{{totstartdt}}</th>
         <th align="right">{{totstartct}}</th>
         <th align="right">{{totobdt}}</th>

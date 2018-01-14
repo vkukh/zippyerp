@@ -13,7 +13,7 @@
 
     <tr>
         <td></td>
-        <td>Поставщик</td>
+        <td>Постачальник</td>
         <td colspan="5">{{customername}}</td>
     </tr>
     <tr>
@@ -23,13 +23,13 @@
     </tr>
     <tr>
         <td></td>
-        <td>Получатель</td>
+        <td>Отримувач</td>
         <td colspan="5">{{firmname}}</td>
     </tr>
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7" valign="middle">
-            <br><br> Входящая НН № {{document_number}} от {{date}} <br><br><br>
+            <br><br> Вхідна ПН № {{document_number}} від {{date}} <br><br><br>
         </td>
     </tr>
 </table>
@@ -37,12 +37,12 @@
 <table class="ctable" width="500" cellspacing="0" cellpadding="1" border="0">
     <tr style="font-weight: bolder;">
         <th width="20" style="border: 1px solid black;">№</th>
-        <th style="border: 1px solid black;" width="180">Наименование</th>
-        <th style="border: 1px solid black;" width="50">Ед.изм</th>
-        <th style="border: 1px solid black;" width="50">Кол.</th>
-        <th style="border: 1px solid black;" width="50">Цена-</th>
-        <th style="border: 1px solid black;" width="50">Цена+</th>
-        <th style="border: 1px solid black;" width="50">Сумма</th>
+        <th style="border: 1px solid black;" width="180">Найменування</th>
+        <th style="border: 1px solid black;" width="50">Од.вим.</th>
+        <th style="border: 1px solid black;" width="50">Кіл.</th>
+        <th style="border: 1px solid black;" width="50">Ціна-</th>
+        <th style="border: 1px solid black;" width="50">Ціна+</th>
+        <th style="border: 1px solid black;" width="50">Сума</th>
     </tr>
     {{#_detail}}
     <tr>
@@ -56,12 +56,12 @@
     </tr>
     {{/_detail}}
     <tr style="font-weight: bolder;">
-        <td colspan="6" style="border-top: 1px solid black;" align="right">Всего:</td>
+        <td colspan="6" style="border-top: 1px solid black;" align="right">Всього:</td>
         <td width="50" style="border-top: 1px solid black;" align="right">{{total}} </td>
     </tr>
     {{#totalnds}}
     <tr style="font-weight: bolder;">
-        <td colspan="6" align="right">В т.ч. НДС:</td>
+        <td colspan="6" align="right">В т.ч. ПДВ:</td>
         <td align="right">{{totalnds}} </td>
     </tr>
     {{/totalnds}}

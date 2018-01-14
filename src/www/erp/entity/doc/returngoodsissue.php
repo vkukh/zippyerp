@@ -127,7 +127,7 @@ class ReturnGoodsIssue extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['PurchaseInvoice'] = 'Счет входящий';
+        $list['PurchaseInvoice'] = 'Вхідний рахунок';
 
         return $list;
     }

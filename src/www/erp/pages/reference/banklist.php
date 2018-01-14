@@ -70,7 +70,7 @@ class BankList extends \ZippyERP\ERP\Pages\Base
         $this->_bank->bank_name = $this->bankdetail->editbankname->getText();
         $this->_bank->mfo = $this->bankdetail->editmfo->getText();
         if ($this->_bank->bank_name == '') {
-            $this->setError("Введите имя");
+            $this->setError("Введіть найменування");
             return;
         }
 

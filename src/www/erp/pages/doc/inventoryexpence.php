@@ -143,7 +143,7 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран ТМЦ");
+            $this->setError("Не вибраний ТМЦ");
             return;
         }
 
@@ -247,7 +247,7 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_itemlist) == 0) {
-            $this->setError("Не введен ни один  ТМЦ");
+            $this->setError("Не введений ні один  ТМЦ");
         }
 
         return !$this->isError();

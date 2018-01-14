@@ -33,7 +33,7 @@ class AccountActivity extends \ZippyERP\ERP\Pages\Base
     public function OnSubmit($sender)
     {
         if ($this->filter->acc->getValue() == 0) {
-            $this->setError('Не  выбран  счет');
+            $this->setError('Не  вибраний рахунок');
             return;
         }
 

@@ -187,7 +187,7 @@ class TaxInvoice2 extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран товар");
+            $this->setError("Не вибраний товар");
             return;
         }
         $item = Item::load($id);
@@ -296,7 +296,7 @@ class TaxInvoice2 extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         return !$this->isError();
     }

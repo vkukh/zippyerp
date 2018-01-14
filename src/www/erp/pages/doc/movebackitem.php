@@ -107,7 +107,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
     public function addrowOnClick($sender)
     {
         if ($this->docform->storefrom->getValue() == 0) {
-            $this->setError("Выберите склад-источник");
+            $this->setError("Виберіть склад-джерело");
             return;
         }
         $this->editdetail->setVisible(true);
@@ -137,7 +137,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран ТМЦ");
+            $this->setError("Не вибраний ТМЦ");
             return;
         }
 
@@ -157,7 +157,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $stockfrom = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and price={$stock->price} and partion={$stock->partion} and closed <> 1");
 
         if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET  ) {
-            $this->setError('Товар  с  такой  ценой и партией не найден  в  магазине');
+            $this->setError('Товар  с  такою ціною та парті\ю не знайдений в  магазині');
             return;
         }
 
@@ -234,10 +234,10 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_itemlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->storeto->getValue() == $this->docform->storefrom->getValue()) {
-            $this->setError("Выбран  тот  же  склад для  получения");
+            $this->setError("Вибраний  той самий склад-отримувач");
         }
 
 

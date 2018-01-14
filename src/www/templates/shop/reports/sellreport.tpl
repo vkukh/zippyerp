@@ -1,5 +1,5 @@
  
-<h3>Отчeт  по  продажам с {{datefrom}} по {{dateto}}  </h3>
+<h3>Звіт  по  продажам з {{datefrom}} по {{dateto}}  </h3>
 
 <table class="ctable" border="0" cellspacing="0" cellpadding="2">
     <tr  > <th style="border-bottom: 1px solid black;">Товар</th>

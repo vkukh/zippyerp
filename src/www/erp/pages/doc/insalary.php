@@ -164,7 +164,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
 
         $id = $this->editdetail->editemployee->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран сотрудник");
+            $this->setError("Не вибраний співробітник");
             return;
         }
 
@@ -186,7 +186,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
 
             $list = Document::search($this->_doc->type_id, null, null, array('year' => $this->docform->year->getValue(), 'month' => $this->docform->month->getValue(), 'isavans' => 1));
             if (count($list) == 0) {
-                $this->setError('Не найдено начисление аванса');
+                $this->setError('Не знайлено начислення авансу');
                 return;
             }
             $list = array_values($list);
@@ -238,7 +238,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->editemployee->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран сотрудник");
+            $this->setError("Не вибраний співробітник");
             return;
         }
 
@@ -334,7 +334,7 @@ class InSalary extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_emplist) == 0) {
-            $this->setError("Не введен ни один  сотрудник");
+            $this->setError("Не вибраний ні один  співробітник");
         }
 
 

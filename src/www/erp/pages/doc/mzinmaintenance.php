@@ -147,7 +147,7 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран МЦ");
+            $this->setError("Не вибраний МЦ");
             return;
         }
 
@@ -240,7 +240,7 @@ class MZInMaintenance extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
 
         return !$this->isError();

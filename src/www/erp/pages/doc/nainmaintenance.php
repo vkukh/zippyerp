@@ -127,13 +127,13 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
-            $this->setError("Не выбрано ОС");
+            $this->setError("Не вибраний ОЗ");
             return;
         }
         $ca = CapitalAsset::load($id);
         //$ca->inventory =  $this->editdetail->editinventory->getValue();
         if (strlen($ca->inventory) == 0) {
-            //  $this->setError("Не выбран инвентарный номер");
+            //  $this->setError("Не вибраний інвентарний номер");
             //   return;
         }
         // $stock->partion = $stock->price;
@@ -218,7 +218,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введена ни  одна позиция");
+            $this->setError("Не ввелено жодної позиції");
         }
 
         return !$this->isError();

@@ -56,7 +56,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
     public function submitOnClick($sender)
     {
         if ($this->docform->customer->getValue() == 0) {
-            $this->setError("Не выюран контрагент");
+            $this->setError("Не вибраний контрагент");
             return false;
         }
         $this->_doc->amount = 100 * $this->docform->amount->getText();

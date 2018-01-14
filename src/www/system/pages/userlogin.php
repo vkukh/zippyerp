@@ -33,10 +33,10 @@ class UserLogin extends \Zippy\Html\WebPage
     {
         $this->setError('');
         if ($this->_login == '') {
-            $this->setError('Введите логин');
+            $this->setError('Введіть логін');
         } else
         if ($this->_password == '') {
-            $this->setError('Введите пароль');
+            $this->setError('Введіть пароль');
         }
 
         if (strlen($this->_login) > 0 && strlen($this->_password)) {
@@ -56,7 +56,7 @@ class UserLogin extends \Zippy\Html\WebPage
                  
                 App::RedirectHome();
             } else {
-                $this->setError('Неверный  логин');
+                $this->setError('Невірний  логін');
             }
         }
 

@@ -350,25 +350,25 @@ class Document extends \ZCL\DB\Entity
 
         switch ($state) {
             case Document::STATE_NEW:
-                return "Новый";
+                return "Новий";
             case Document::STATE_EDITED:
-                return "Отредактирован";
+                return "Відредагований";
             case Document::STATE_CANCELED:
-                return "Отменен";
+                return "Відмінений";
             case Document::STATE_EXECUTED:
-                return "Проведен";
+                return "Проведеній";
             case Document::STATE_CLOSED:
-                return "Закрыт";
+                return "Закритий";
             case Document::STATE_APPROVED:
-                return "Утвержден";
+                return "Затверджений";
             case Document::STATE_DELETED:
-                return "Удален";
+                return "Видалений";
             case Document::STATE_WP:
-                return "Ожидает оплату";
+                return "Очікує оплату";
             case Document::STATE_WA:
-                return "Ждет утверждения";
+                return "Очікує затвердження";
             default:
-                return "Неизвестный статус";
+                return "Невідомий статус";
         }
     }
 
@@ -414,9 +414,9 @@ class Document extends \ZCL\DB\Entity
     public static function getStatesList()
     {
         $list = array();
-        $list[Document::STATE_NEW] = 'Новый';
-        $list[Document::STATE_EDITED] = 'Отредактирован';
-        $list[Document::STATE_EXECUTED] = 'Проведен';
+        $list[Document::STATE_NEW] = 'Новий';
+        $list[Document::STATE_EDITED] = 'Відредагований';
+        $list[Document::STATE_EXECUTED] = 'Проведений';
 
         return $list;
     }

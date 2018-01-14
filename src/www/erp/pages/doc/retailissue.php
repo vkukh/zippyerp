@@ -140,7 +140,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран товар");
+            $this->setError("Не вибраний товар");
             return;
         }
         $stock = Stock::load($id);
@@ -251,10 +251,10 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->customer->getKey() == 0) {
-            $this->setError("Не введен   покупатель");
+            $this->setError("Не введений   покупець");
         }
         return !$this->isError();
     }

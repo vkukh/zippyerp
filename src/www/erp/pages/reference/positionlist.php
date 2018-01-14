@@ -67,7 +67,7 @@ class PositionList extends \ZippyERP\ERP\Pages\Base
     {
         $this->_position->position_name = $this->positiondetail->editpositionname->getText();
         if ($this->_position->position_name == '') {
-            $this->setError("Введите имя");
+            $this->setError("Введіть найменування");
             return;
         }
 

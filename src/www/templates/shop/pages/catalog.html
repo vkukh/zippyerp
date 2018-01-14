@@ -12,19 +12,19 @@
 
                 <form zippy="sfilter">
                     <div class="form-group"> 
-                        <label>Поиск</label>  
+                        <label>Пошук</label>  
                         <input zippy="searchkey" class="form-control">
                         <div class="form-group  ">
-                            <label>Цена</label> 
+                            <label>Ціна</label> 
                         </div>  
                         <div class="input-group  ">
-                            <span class="input-group-addon"  > с</span>
+                            <span class="input-group-addon"  > з</span>
                             <input pattern="[0-9]+"  type="text" zippy="pricefrom" class="form-control"  style="width:60px;"/>
                             <span  class="input-group-addon"   >по</span>
                             <input pattern="[0-9]+" type="text" zippy="priceto" class="form-control"  style="width:60px;"/>
                         </div>                              
                     </div>                         
-                    <a href="#manflist" data-toggle="collapse" class="filtertiem" > Призводитель  <span class="caret"></span>  </a>
+                    <a href="#manflist" data-toggle="collapse" class="filtertiem" > Виробник  <span class="caret"></span>  </a>
                     <div id="manflist" class="collapse">
                         <div zippy="mlist"> </div>
                     </div>
@@ -44,17 +44,17 @@
                             <td ><a zippy="cartdel"><i class="fa fa-remove"></i></a></td>
                         </tr>
                     </table>
-                    <a href="/?p=/ZippyERP/Shop/Pages/Order">Открыть</a>
+                    <a href="/?p=/ZippyERP/Shop/Pages/Order">Відкрити</a>
                 </div>
                 <div zippy="complistpanel">
-                    <h5><b>Список сравнения</b></h5>
+                    <h5><b>Список порівнянь</b></h5>
                     <table class="table table-condensed">
                         <tr zippy="complist">
                             <td zippy="compname"></td>
                             <td ><a zippy="compdel"><i class="fa fa-remove"></i></a></td>
                         </tr>
                     </table>                    
-                    <a href="/?p=/ZippyERP/Shop/Pages/Compare">Открыть</a>
+                    <a href="/?p=/ZippyERP/Shop/Pages/Compare">Відкрити</a>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-9  col-lg-10">    
@@ -63,14 +63,14 @@
                         <form zippy="sortform" class="navbar-form  ">
 
                             <div class="form-group">
-                                <label>Сортировать</label>
+                                <label>Сортувати</label>
                                 <select class="form-control" zippy="sortorder" >
-                                    <option value="0">По возрастанию цены</option>
-                                    <option value="1">По уменьшению цены</option>
+                                    <option value="0">По зростанню ціни</option>
+                                    <option value="1">По зменшенню ціни</option>
                                     <option value="2">По рейтингу</option>
-                                    <option value="3">По количеству отзывав</option>
-                                    <option value="4">По количеству продаж</option>
-                                    <option value="5">По наименованию</option>
+                                    <option value="3">По кількості відгуків</option>
+                                    <option value="4">По кількості продаж</option>
+                                    <option value="5">По найменуванню</option>
                                 </select>
                             </div> 
                         </form>                          
@@ -85,7 +85,7 @@
                         <h5><b><a zippy="scatname"></a></b></h5>
                         <input readonly="readonly"   type="hidden" class="rating"  zippy="srated"   value="0"  data-filled="fa fa-star" data-empty="fa fa-star-o"/>
                         &nbsp;&nbsp;&nbsp;<strike><b style="color:red" zippy="soldprice"></b></strike>&nbsp;<b zippy="sprice"></b> грн <br>
-                        <a zippy="sbuy" class="btn btn-success btn-xs">Купить</a>
+                        <a zippy="sbuy" class="btn btn-success btn-xs">Купити</a>
                         <p zippy="sshortdesc"></p>
                     </div>
                     <div zippy="pag" class="col-xs-12">    
@@ -95,7 +95,7 @@
 
                 <div class="row" zippy="recentlyp">    
 
-                    <h4>Недавно просмотренные</h4>
+                    <h4>Недавно переглянуті</h4>
                     <div class="col-xs-12 col-sm-3  "  zippy="rlist">                        
                         <a zippy="rimage" ><img style="width:100px;"></a>
                         <h5 ><a zippy="rname"></a> </h5>

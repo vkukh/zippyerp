@@ -124,7 +124,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
 
                                 $this->_tovarlist[$stock->stock_id] = $stock;
                             } else {
-                                $this->setError('Не найден на складе  товар ' . $item->itemname);
+                                $this->setError('Не знайдений на складі  товар ' . $item->itemname);
                             }
                         }
                     }
@@ -192,7 +192,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран товар");
+            $this->setError("Не вибраний товар");
             return;
         }
 
@@ -305,10 +305,10 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->customer->getValue() == 0) {
-            $this->setError("Не введен   покупатель");
+            $this->setError("Не введений   покупець");
         }
          return !$this->isError();
     }

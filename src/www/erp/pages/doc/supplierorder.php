@@ -158,7 +158,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран товар");
+            $this->setError("Не вибраний товар");
             return;
         }
         $item = Item::load($id);
@@ -196,10 +196,10 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_itemlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->supplier->getValue() == 0) {
-            $this->setError("Не выбран  поставщик");
+            $this->setError("Не вибраний постачальник");
         }
         return !$this->isError();
     }

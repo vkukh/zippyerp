@@ -130,7 +130,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
         } else {
             $pcnt = Product::findCnt("group_id=" . $this->group->parent_id);
             if ($pcnt > 0) {
-                $this->setError('Нельзя добавить дочернюю в группу с товарами');
+                $this->setError('Не можна додати дочірню  в групу с товарами');
                 return;
             }
         }
@@ -157,7 +157,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
     public function OnDelGroup($sender) {
         $pcnt = Product::findCnt("group_id=" . $this->group->group_id);
         if ($pcnt > 0) {
-            $this->setError('Нельзя удалить группу с товарами');
+            $this->setError('Не можна видалити групу с товарами');
             return;
         }
         ProductGroup::delete($this->group->group_id);
@@ -173,17 +173,17 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
             $imagedata = getimagesize($filedata["tmp_name"]);
 
             if (preg_match('/(gif|png|jpeg)$/', $imagedata['mime']) == 0) {
-                $this->setError('Неверный формат');
+                $this->setError('Невірний формат');
                 return;
             }
 
             if ($imagedata[0] * $imagedata[1] > 1000000) {
-                $this->setError('Слишком большой размер изображения');
+                $this->setError('Надто  великий розмвр зображення');
                 return;
             }
             $r = ((double) $imagedata[0]) / $imagedata[1];
             if ($r > 1.05 || $r < 0.95) {
-                $this->setError('Изображение должно  быть квадратным');
+                $this->setError('Зображення має бути квадратним');
                 return;
             }
             $th = new \JBZoo\Image\Image($filedata['tmp_name']);
@@ -251,19 +251,19 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
             $this->attrpanel->attreditform->attrvaluespanel->setVisible(true);
         }
         if ($type == 1) {
-            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Есть/Нет' указывает наличие или  отсутствие какойго либо параметра. Наприме FM-тюнер");
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Є/Нема' вказує наявність або  вітсутність деякої характеристики. Наприклад FM-тюнер");
         }
         if ($type == 2) {
-            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Число' - числовой параметр (наприме  емкость акумулятора). Список для фильтра  отбора  формируется  на основании значений атрибута заданных для товаров.");
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Число' - числовий параметр (наприклад ємність акумулятора). Список для   фільтра відбору формується  на підставі значень атрибута заданих для товарів.");
         }
         if ($type == 3) {
-            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Список' предназначен для набора из  котрог можено выбрать только одно значчение. Например цвет.  Задается списком через запятую.");
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Список' призначений для переліку з якого  можна вибрати тільки одне значення. Наприклад колір. Задаєтся списком  через кому");
         }
         if ($type == 4) {
-            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Набор' предназначен для  набора из  которого  можно выбрать несколько значений. Например диапазоны приема сигнала. Задается списком через запятую. ");
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Набор' призначений для  переліку  з котрого можна вібрати кілька значень. Наприклад діапазони прийому сигналу. Задаєтся списком  через кому. ");
         }
         if ($type == 5) {
-            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Строка'- просто строковый параметр (например тип процессора). Обычно не участвоет в фильтре. ");
+            $this->attrpanel->attreditform->tt->setAttribute("title", "Атрибут 'Строка'- просто текстовий параметр (наприклад тип процессора). Зазвичай не використувуєтся в  фільтрі. ");
         }
     }
 
@@ -312,7 +312,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
 
 
         if (strlen($attr->attributename) == 0) {
-            $this->setError("Введите наименование!");
+            $this->setError("Введіть найменування!");
 
             return;
         }

@@ -3,7 +3,7 @@
 
 
 <form zippy="docform" class="form-horizontal">
-    <h3>Заказ клиента</h3>
+    <h3>Замовлення покупця</h3>
     <div class="row">
         <div class="col-xs-12">
             <div class="form-group">
@@ -20,17 +20,17 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="customer" class="col-xs-2 control-label">Заказчик</label>
+                <label for="customer" class="col-xs-2 control-label">Замовник</label>
                 <div class="col-xs-3">
 
                     <select class="form-control select2" type="text" zippy="customer" >
-                    <option value="0">Не выбран</option>
+                    <option value="0">Не вибрано</option>
                     </select>
 
                 </div>
             </div>
             <div class="form-group row">
-                <label for="orderstate" class="col-xs-2 control-label">Состояние</label>
+                <label for="orderstate" class="col-xs-2 control-label">Статус</label>
                 <div class="col-xs-3">
                     <select zippy="orderstate" class="form-control">
                     </select>
@@ -48,14 +48,14 @@
 
     <div class="row">
         <div class="col-xs-8">
-            <a zippy="addrow">Добавить позицию</a>
+            <a zippy="addrow">Додати позицію</a>
             <table class="table  table-condensed" style="width:500px;">
                 <tr>
-                    <th>Наименование</th>
-                    <th width="50">Ед.изм.</th>
-                    <th width="31">Кол.</th>
-                    <th width="52">Цена</th>
-                    <th width="67">Сумма</th>
+                    <th>Назва</th>
+                    <th width="50">Од.вим..</th>
+                    <th width="31">Кіл.</th>
+                    <th width="52">Ціна</th>
+                    <th width="67">Сума</th>
                     <th width="20"></th>
                 </tr>
                 <tr zippy="detail">
@@ -70,7 +70,7 @@
 
             <table class="ctable" width="500px">
                 <tr>
-                    <td align="right">Итого:</td>
+                    <td align="right">Всього:</td>
                     <td zippy="total" align="right" width="100px" style="font-weight: bolder;"></td>
                 </tr>
             </table>
@@ -78,8 +78,8 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default ">
-            &nbsp; <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default ">
+            <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default ">
+            &nbsp; <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default ">
         </div>
     </div>
 
@@ -89,28 +89,28 @@
 <div class="row">
     <div class="col-xs-4">
         <form zippy="editdetail">
-            <h3>Ввод позиции </h3>
+            <h3>Ввод позиції </h3>
 
             <div class="form-group">
-                <label for="editname">Наименование </label>
+                <label for="editname">Назва </label>
                 <select class="form-control select2" zippy="edititem" >
-                    <option value="0">Не выбран</option>
+                    <option value="0">Не вибрано</option>
                     </select>                
-                Наличие на дату заказа: <span zippy="qtystore"></span>
+                Наявність на дату замовленя: <span zippy="qtystore"></span>
             </div>
             <div class="form-group">
-                <label for="editquantity">Количество</label>
+                <label for="editquantity">Кількість</label>
                 <input class="form-control" type="text" zippy="editquantity" required="required" pattern="[0-9\.]+"
                        style="width: 100px;"></input>
             </div>
             <div class="form-group">
-                <label for="editprice">Цена</label>
+                <label for="editprice">Ціна</label>
                 <input class="form-control" type="text" zippy="editprice" required="required" pattern="[0-9\.]+"
                        style="width: 100px;">
             </div>
-            <input zippy="saverow" type="submit" value="Сохранить" class="btn btn-default ">&nbsp; <input type="button"
+            <input zippy="saverow" type="submit" value="Зберегти" class="btn btn-default ">&nbsp; <input type="button"
                                                                                                           zippy="cancelrow"
-                                                                                                          value="Отменить"
+                                                                                                          value="Відмінити"
                                                                                                           class="btn btn-default ">
         </form>
     </div>

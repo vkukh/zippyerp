@@ -76,14 +76,14 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
             $this->docform->lblopdetail->setText('Покупатель');
         }
         if ($optype == Consts::TYPEOP_CUSTOMER_IN_BACK) {
-            $this->docform->lblopdetail->setText('Поставщик');
+            $this->docform->lblopdetail->setText('Постачальник');
         }
 
         if ($optype == Consts::TYPEOP_CASH_IN) {
-            $this->docform->lblopdetail->setText('Сотрудник');
+            $this->docform->lblopdetail->setText('Срівробітник');
         }
         if ($optype == Consts::TYPEOP_RET_IN) {
-            $this->docform->lblopdetail->setText('Магазины');
+            $this->docform->lblopdetail->setText('Магазини');
         }
         $this->docform->nds->setVisible($optype == Consts::TYPEOP_CUSTOMER_IN);
         $this->docform->opdetail->setKey(0);

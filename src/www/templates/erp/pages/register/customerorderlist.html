@@ -4,7 +4,7 @@
     <div class="col-xs-10">
 
 
-        <h3>Журнал заказов клиента </h3>
+        <h3>Журнал замовлень покупця </h3>
 
         <form zippy="filter" class="navbar-form  navbar-left">
             <div class="form-group">
@@ -14,17 +14,17 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="customerlist">Заказчик</label>
+                <label for="customerlist">Замовник</label>
                 <select class="form-control  select2" zippy="customerlist">
                     <option value="0">Все</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="notpayed">Неоплаченные</label>
+                <label for="notpayed">Неоплачені</label>
                 <input class="form-control" type="checkbox" zippy="notpayed">
             </div>
             <div class="form-group">
-                <input type="submit" class="btn  btn-default" value="Ввод">
+                <input type="submit" class="btn  btn-default" value="ОК">
             </div>
 
 
@@ -33,9 +33,9 @@
             <tr>
 
                 <th>Номер</th>
-                <th>Заказчик</th>
+                <th>Замовник</th>
                 <th>Дата</th>
-                <th>Сумма</th>
+                <th>Сума</th>
                 <th>Статус</th>
                 <th>Оплата</th>
 
@@ -50,9 +50,7 @@
                 <td zippy="amount" align="right"></td>
                 <td zippy="state"></td>
                 <td zippy="payment" align="right"></td>
-                <td><a zippy="show" title="Просмотр"><i class="fa fa-search"></i></a> <a zippy="edit"
-                                                                                         title="Редактировать"><i
-                        class="fa fa-pencil-square-o"></i></a></td>
+                <td><a zippy="show" title="Перегляд"><i class="fa fa-search"></i></a> <a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a></td>
 
             </tr>
         </table>

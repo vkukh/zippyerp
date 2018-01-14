@@ -166,7 +166,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
 
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран ТМЦ");
+            $this->setError("Не вибраний ТМЦ");
             return;
         }
         $item = Item::load($id);
@@ -273,10 +273,10 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
 
         $tz = $this->docform->expensetype->getValue();
         if ($tz == 0) {
-            $this->setError("Не выбран  тип затрат");
+            $this->setError("Не вибраний  тип видатків");
         }
         if ($this->docform->employee->getValue() == 0) {
-            $this->setError("Не выбран  сотрудник");
+            $this->setError("Не вибраний  співробітник");
         }
         if ($tz == 22 || $tz == 201 || $tz == 281) {
             if (count($this->_itemlist) == 0) {
@@ -284,7 +284,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
             }
         } else {
             if (100 * $this->docform->expenseamount->getText() == 0) {
-                $this->setError("Не введена сумма");
+                $this->setError("Не введена сума");
             }
         }
         return !$this->isError();

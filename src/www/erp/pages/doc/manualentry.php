@@ -154,7 +154,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $entry->acc_d = $dt;
         $entry->amount = 100 * $this->docform->e_accsumma->getText();
         if ($entry->amount == 0) {
-            $this->setError('Введите сумму');
+            $this->setError('Введіть суму');
             return;
         }
         $this->_entryarr[$entry->entry_id] = $entry;
@@ -206,22 +206,22 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->docform->e_itemlist->getValue();
         if (isset($this->_itemarr[$id])) {
-            $this->setError('Дублирование строки');
+            $this->setError('Дублювання строки');
             return;
         }
         if ($id == 0) {
-            $this->setError('Не выбран  ТМЦ');
+            $this->setError('Не вибраний  ТМЦ');
             return;
         }
         $item = Item::load($id);
         $item->op = $this->docform->e_itemop->getValue();
         if ($item->op == 0) {
-            $this->setError('Не выбран  счет');
+            $this->setError('Не вибраний  рахунок');
             return;
         }
         $item->store_id = $this->docform->e_storelist->getValue();
         if ($item->store_id == 0) {
-            $this->setError('Не выбран склад');
+            $this->setError('Не вибраний склад');
             return;
         }
 
@@ -233,13 +233,13 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         // $item->partion = 100 * $this->docform->e_price->getText();
         $item->price = 100 * $this->docform->e_price->getText();
         if ($item->price == 0) {
-            $this->setError('Введите  цену');
+            $this->setError('Введіть ціну');
             return;
         }
         if (strpos($item->op, '_c') > 0) {
             $stock = \ZippyERP\ERP\Entity\Stock::getStock($item->store_id, $id, $item->price, false);
             if ($stock == null) {
-                $this->setError("Не найдена  партия " . H::fm($item->price));
+                $this->setError("Не знайдена  партія " . H::fm($item->price));
                 return;
             }
         }
@@ -278,12 +278,12 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         $emp->op = $this->docform->e_empop->getValue();
         if ($emp->op == 0) {
-            $this->setError('Не выбран  счет');
+            $this->setError('Не вибраний  рахунок');
             return;
         }
 
         if (isset($this->_emparr[$id])) {
-            $this->setError('Дублирование строки');
+            $this->setError('Дублювання строки');
             return;
         }
         $emp->val = 100 * $this->docform->e_empamount->getText();
@@ -318,7 +318,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->docform->e_сlist->getValue();
         if (isset($this->_carr[$id])) {
-            $this->setError('Дублирование строки');
+            $this->setError('Дублювання строки');
             return;
         }
         $c = Customer::load($id);
@@ -356,7 +356,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->docform->e_flist->getValue();
         if (isset($this->_farr[$id])) {
-            $this->setError('Дублирование строки');
+            $this->setError('Дублювання строки');
             return;
         }
         $f = MoneyFund::load($id);
@@ -397,19 +397,19 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
             $this->setError('Дублирование строки');
         }
         if ($id == 0) {
-            $this->setError('Не выбран  ТМЦ');
+            $this->setError('Не вибраний  ТМЦ');
         }
         $item = Item::load($id);
         $item->op = $this->docform->e_caop->getValue();
         if ($item->op == 0) {
-            $this->setError('Не выбран  счет');
+            $this->setError('Не вибраний  рахунок');
         }
 
 
         $item->qty = 1000 * $this->docform->e_caquantity->getText();
         $item->price = 100 * $this->docform->e_caprice->getText();
         if ($item->price == 0) {
-            $this->setError('Введите  цену');
+            $this->setError('Введіть  ціну');
         }
 
         if ($this->isError())

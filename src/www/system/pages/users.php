@@ -78,7 +78,7 @@ class Users extends \ZippyERP\System\Pages\Base
        $user = User::getByLogin($this->user->userlogin);
        if($user instanceof User){
            if($user->user_id != $this->user->user_id){
-               $this->setError('Неуникальный логин');
+               $this->setError('Неунікальний логин');
                return;
            }
        }
@@ -86,7 +86,7 @@ class Users extends \ZippyERP\System\Pages\Base
            $user = User::getByEmail($this->user->email);
            if($user instanceof User ){
                if($user->user_id != $this->user->user_id){
-                   $this->setError('Неуникальный email');
+                   $this->setError('Неунікальний email');
                    return;
                }
            }

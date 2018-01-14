@@ -165,7 +165,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран товар");
+            $this->setError("Не вибрний товар");
             return;
         }
         $item = Item::load($id);
@@ -282,10 +282,10 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_itemlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->customer->getValue() <= 0) {
-            $this->setError("Не выбран  поставщик");
+            $this->setError("Не введений постачальник");
         }
         return !$this->isError();
     }

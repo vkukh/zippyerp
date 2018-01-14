@@ -18,10 +18,10 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     {
         parent::__construct();
 
-        $this->typelist[1] = "Товары,  прибыль";
-        $this->typelist[2] = "Поставщики, объем поставок";
-        $this->typelist[3] = "Покупатели, объем продаж";
-        $this->typelist[4] = "Услуги, выручка";
+        $this->typelist[1] = "Товари,  прибуток";
+        $this->typelist[2] = "Постачальники, об'єм поставок";
+        $this->typelist[3] = "Покупець, об'єм продаж";
+        $this->typelist[4] = "Послуги, виручка";
 
         $dt = new \Carbon\Carbon;
         $dt->subMonth();

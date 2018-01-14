@@ -1,7 +1,7 @@
 <html>
 
 <body>
-<h3>Расходный кассовый ордер</h3>
+<h3>Видатковий кассовий ордер</h3>
 
 
 <form zippy="docform">
@@ -9,25 +9,25 @@
         <div class="col-xs-4">
 
             <div class="form-group">
-                <label for="optype" class="  control-label"> Тип операции</label>
+                <label for="optype" class="  control-label"> Тип операції</label>
                 <select class="form-control" zippy="optype"> </select>
             </div>
             <div class="form-group">
                 <label zippy="lblopdetail" for="opdetail" class="  control-label"> </label>
-                <input class="form-control" type="text" zippy="opdetail" placeholder="Начните ввод">
+                <input class="form-control" type="text" zippy="opdetail" placeholder="Почніть вводити">
             </div>
             <div class="form-group">
-                <label for="basedoc" class="  control-label"> Документ - основание</label>
+                <label for="basedoc" class="  control-label"> Документ - підстава</label>
                 <input class="form-control" type="text" zippy="basedoc">
             </div>
             <div class="form-group">
-                <label for="notes" class="  control-label"> Примечание</label>
+                <label for="notes" class="  control-label"> Примітка</label>
                 <textarea class="form-control" zippy="notes"></textarea>
             </div>
         </div>
         <div class="col-xs-3">
             <div class="form-group">
-                <label for="document_number" class="  control-label">Номер документа</label>
+                <label for="document_number" class="  control-label">Номер документу</label>
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
             <div class="form-group">
@@ -35,7 +35,7 @@
                 <input class="form-control" type="text" zippy="document_date" required="required">
             </div>
             <div class="form-group">
-                <label for="amount" class="  control-label"> Сумма</label>
+                <label for="amount" class="  control-label"> Сума</label>
                 <input class="form-control" type="text" zippy="amount" required="required" pattern="[0-9\.]+">
             </div>
 
@@ -45,8 +45,8 @@
 
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-            &nbsp;<input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default  ">
+            &nbsp;<input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
             &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default  ">
 
         </div>

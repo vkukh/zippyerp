@@ -112,8 +112,8 @@ class GoodsReceipt extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['TaxInvoiceIncome'] = 'Входящая НН';
-        $list['ReturnGoodsReceipt'] = 'Возврат поставщику';
+        $list['TaxInvoiceIncome'] = 'Вхідна ПН';
+        $list['ReturnGoodsReceipt'] = 'Повернення постачальнику';
 
         return $list;
     }

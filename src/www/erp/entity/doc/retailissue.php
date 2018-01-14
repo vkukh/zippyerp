@@ -87,8 +87,8 @@ class RetailIssue extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['Warranty'] = 'Гарантийный талон';
-        $list['ReturnRetailIssue'] = 'Возвратнаая накладная';
+        $list['Warranty'] = 'Гарантійний талон';
+        $list['ReturnRetailIssue'] = 'Накладна  на  повернення ';
 
         return $list;
     }

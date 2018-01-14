@@ -2,19 +2,20 @@
 
 namespace ZippyERP\ERP\Pages;
 
-use Zippy\Binding\PropertyBinding as Bind;
-use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\CheckBox;
-use Zippy\Html\Form\DropDownChoice;
-use Zippy\Html\Form\Form;
-use Zippy\Html\Form\TextArea;
-use Zippy\Html\Form\TextInput;
-use Zippy\Html\Label;
-use Zippy\Html\Link\ClickLink;
-use Zippy\Html\Panel;
-use ZippyERP\ERP\ACL;
-use ZippyERP\System\System;
-use Zippy\WebApplication as App;
+use \Zippy\Binding\PropertyBinding as Bind;
+use \Zippy\Html\DataList\DataView;
+use \Zippy\Html\Form\CheckBox;
+use \Zippy\Html\Form\DropDownChoice;
+use \Zippy\Html\Form\Form;
+use \Zippy\Html\Form\TextArea;
+use \Zippy\Html\Form\TextInput;
+use \Zippy\Html\Label;
+use \Zippy\Html\Link\ClickLink;
+use \Zippy\Html\Panel;
+ 
+use \ZippyERP\ERP\ACL;
+use \ZippyERP\System\System;
+use \Zippy\WebApplication as App;
 
 class MetaData extends \ZippyERP\ERP\Pages\Base
 {
@@ -50,7 +51,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->editpan->editform->add(new TextInput('edit_menugroup'));
         $this->editpan->editform->add(new TextArea('edit_notes'));
         $this->editpan->editform->add(new CheckBox('edit_disabled'));
-        $this->editpan->editform->add(new DropDownChoice('edit_meta_type'));
+        $this->editpan->editform->add(new DropDownChoice('edit_meta_type',\ZippyERP\ERP\Entity\MetaData::getNames()));
         $this->editpan->add(new ClickLink('cancel'))->onClick($this, 'cancelOnClick');
         $this->editpan->editform->add(new DataView('rolerow', $this->roleaccessds, $this, 'rolerowOnRow'));
         //  $this->editpan->editform->add(new Panel('eipan'));

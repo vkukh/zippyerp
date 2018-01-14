@@ -4,7 +4,7 @@
     <tr>
 
         <td align="center" colspan="8">
-            Период c: {{datefrom}} по {{dateto}}
+            Період з: {{datefrom}} по {{dateto}}
         </td>
     </tr>
     <tr>
@@ -15,7 +15,7 @@
     </tr>
     <tr style="font-weight: bolder;">
         <td align="center" colspan="8">
-            Движение по складу
+            Рух по складу
         </td>
     </tr>
 
@@ -23,12 +23,12 @@
     <tr style="font-weight: bolder;">
         <th style="border: solid black 1px" width="20">№</th>
         <th style="border: solid black 1px" width="70">Дата</th>
-        <th style="border: solid black 1px" width="60">Цена</th>
-        <th style="border: solid black 1px">Начало</th>
-        <th style="border: solid black 1px">Приход</th>
-        <th style="border: solid black 1px">Расход</th>
-        <th style="border: solid black 1px">Конец</th>
-        <th style="border: solid black 1px">Документы</th>
+        <th style="border: solid black 1px" width="60">Ціна</th>
+        <th style="border: solid black 1px">Початок</th>
+        <th style="border: solid black 1px">Прибуток</th>
+        <th style="border: solid black 1px">Видаток</th>
+        <th style="border: solid black 1px">Кінець</th>
+        <th style="border: solid black 1px">Документи</th>
     </tr>
     {{#_detail}}
     <tr>

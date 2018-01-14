@@ -5,9 +5,9 @@
     <div class="col-xs-12">
 
         <ul class="nav nav-tabs" role="tablist">
-            <li class="active"><a href="#commontab" data-toggle="tab">Общие</a></li>
-            <li><a href="#attrtab" data-toggle="tab">Реквизиты предприятия</a></li>
-            <li><a href="#taxtab" data-toggle="tab">Налоги и отчисления</a></li>
+            <li class="active"><a href="#commontab" data-toggle="tab">Загальні</a></li>
+            <li><a href="#attrtab" data-toggle="tab">Реквізити підприємства</a></li>
+            <li><a href="#taxtab" data-toggle="tab">Податки та  відрахування</a></li>
         </ul>
         <div class="tab-content">
             <div id="commontab" class="tab-pane  active">
@@ -15,30 +15,30 @@
                     <div class="row">
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <label for="closeddate">Дата закрытия периода</label>
+                                <label for="closeddate">Дата закриття періоду</label>
                                 <input type="text" class="form-control " zippy="closeddate">
                             </div>
 
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" zippy="hasnds"> Плательщик НДС
+                                    <input type="checkbox" zippy="hasnds"> Платник ПДВ
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" zippy="simpletax"> Единый налог
+                                    <input type="checkbox" zippy="simpletax"> Єдиний податок
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" zippy="juridical"> Юридическое лицо
+                                    <input type="checkbox" zippy="juridical"> Юридична особа
                                 </label>
                             </div>
-                            <input zippy="commonsave" type="submit" value="Сохранить" class="btn btn-default  ">
+                            <input zippy="commonsave" type="submit" value="Зберегти" class="btn btn-default  ">
                         </div>
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <label for="bank">Основной склад</label>
+                                <label for="bank">Основний склад</label>
                                 <select zippy="basestore" class="form-control ">
                                 </select>
                             </div>
@@ -46,19 +46,19 @@
                             <div class="form-group">
                                 <label data-label="manager" for="manager">Директор</label>
                                 <select class="form-control select2 " zippy="manager">
-                                <option value="0">Не выбран</option>
+                                <option value="0">Не вибраний</option>
                                 </select> 
                             </div>
                             <div class="form-group">
-                                <label data-label="ownerfiz" for="ownerfiz">Владелец</label>
+                                <label data-label="ownerfiz" for="ownerfiz">Власник</label>
                                 <select class="form-control select2 " zippy="ownerfiz"  >
-                                 <option value="0">Не выбран</option>
+                                 <option value="0">Не вибраний</option>
                                 </select>         
                             </div>
                             <div class="form-group">
                                 <label for="accounter">Бухгалтер</label>
                                 <select class="form-control select2 " zippy="accounter" >
-                                 <option value="0">Не выбран</option>
+                                 <option value="0">Не вибраний</option>
                                 </select>         
                             </div>
 
@@ -75,15 +75,15 @@
                     <div class="row">
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <label for="name">Наименование</label>
+                                <label for="name">Найменування</label>
                                 <input type="text" class="form-control " zippy="name" required="required">
                             </div>
                             <div class="form-group">
-                                <label for="city">Город</label>
+                                <label for="city">Місто</label>
                                 <input type="text" class="form-control " zippy="city">
                             </div>
                             <div class="form-group">
-                                <label for="street">Улица, дом</label>
+                                <label for="street">Вулиця, дім/label>
                                 <input type="text" class="form-control " zippy="street">
                             </div>
                             <div class="form-group">
@@ -96,20 +96,20 @@
                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                             </div>
                             <div class="form-group">
-                                <label for="bankaccount">Номер основного счета</label>
+                                <label for="bankaccount">Номер основного рахунку</label>
                                 <input class="form-control " type="number" zippy="bankaccount">
                             </div>
                             <div class="form-group">
-                                <label for="bank">В банке</label>
+                                <label for="bank">В банку</label>
                                 <select zippy="bank" class="form-control ">
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="bankaccount2">Номер дополнительного счета</label>
+                                <label for="bankaccount2">Номер додаткового рахунку</label>
                                 <input class="form-control " type="number" zippy="bankaccount2">
                             </div>
                             <div class="form-group">
-                                <label for="bank2">В банке</label>
+                                <label for="bank2">В банку</label>
                                 <select zippy="bank2" class="form-control ">
                                 </select>
                             </div>
@@ -136,11 +136,11 @@
                                 <input class="form-control " zippy="kved">
                             </div>
                             <div class="form-group">
-                                <label for="gni">Код ГНИ</label>
+                                <label for="gni">Код ДПІ</label>
                                 <input class="form-control " type="number" zippy="gni">
                             </div>
                             <div class="form-group">
-                                <label for="inn">ИНН</label>
+                                <label for="inn">ІНН</label>
                                 <input class="form-control " type="number" zippy="inn">
                             </div>
 
@@ -148,7 +148,7 @@
                     </div>
 
 
-                    <input zippy="detailsave" type="submit" value="Сохранить" class="btn btn-default ">
+                    <input zippy="detailsave" type="submit" value="Зберегти" class="btn btn-default ">
 
                 </form>
                 <br>
@@ -162,23 +162,23 @@
                     <div class="row">
                         <div class="col-xs-3">
                             <div class="form-group ">
-                                <label for="minsalary" class="  control-label">Мин. зарплата </label>
+                                <label for="minsalary" class="  control-label">Мін. зарплата </label>
                                 <input type="text" class="form-control " zippy="minsalary" pattern="[0-9\.]+">
                             </div>
                             <div class="form-group ">
-                                <label for="minnsl" class="  control-label">Предел НСЛ</label>
+                                <label for="minnsl" class="  control-label">Границя ПСП</label>
                                 <input type="text" class="form-control " zippy="minnsl" pattern="[0-9\.]+">
                             </div>
                             <div class="form-group ">
-                                <label for="nsl" class="  control-label">НСЛ</label>
+                                <label for="nsl" class="  control-label">ПСП</label>
                                 <input type="text" class="form-control " zippy="nsl" pattern="[0-9\.]+">
                             </div>
                             <div class="form-group ">
-                                <label for="nds" class="  control-label">НДС % </label>
+                                <label for="nds" class="  control-label">ПДВ % </label>
                                 <input type="text" class="form-control " zippy="nds" pattern="[0-9\.]+">
                             </div>
                             <div class="form-group">
-                                <label for="onetax" class=" control-label">Единый налог </label>
+                                <label for="onetax" class=" control-label">Єдиний податок </label>
 
                                 <input type="text" class="form-control " zippy="onetax" pattern="[0-9\.]+">
 
@@ -194,19 +194,19 @@
 
                             </div>
                             <div class="form-group">
-                                <label for="ecbinv" class=" -label">ЕСВ (инвалид.) </label>
+                                <label for="ecbinv" class=" -label">ЕСВ (інвалід.) </label>
 
                                 <input type="text" class="form-control " zippy="ecbinv" pattern="[0-9\.]+">
 
                             </div>
                             <div class="form-group">
-                                <label for="military" class=" -label">Военный сбор </label>
+                                <label for="military" class=" -label">Війсковмй збір </label>
 
                                 <input type="text" class="form-control " zippy="military" pattern="[0-9\.]+">
 
                             </div>
                             <div class="form-group">
-                                <label for="taxfl" class=" control-label">Подоходный ФЛ </label>
+                                <label for="taxfl" class=" control-label">Подоходний ФО </label>
 
                                 <input type="text" class="form-control " zippy="taxfl" pattern="[0-9\.]+">
 
@@ -216,7 +216,7 @@
                     </div>
 
 
-                    <input zippy="taxsave" type="submit" value="Сохранить" class="btn btn-default ">
+                    <input zippy="taxsave" type="submit" value="Зберегти" class="btn btn-default ">
 
                 </form>
             </div>

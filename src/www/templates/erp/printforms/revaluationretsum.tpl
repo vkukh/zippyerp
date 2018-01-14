@@ -5,19 +5,19 @@
 
     <tr style="font-weight: bolder;">
         <td>
-            Переоценка в суммовом учете № {{document_number}}
+            Переоцінка в сумовому обліку № {{document_number}}
         </td>
         <td>
-            от {{date}}
+            від {{date}}
         </td>
     </tr>
     <tr>
         <td>Магазин: {{storename}}</td>
-        <td>Учетная сумма {{actual}} </td>
+        <td>Облікова сума {{actual}} </td>
     </tr>
     <tr>
         <td>Тип: {{typename}}</td>
-        <td>Новая сумма {{summa}} </td>
+        <td>Нова  сума {{summa}} </td>
     </tr>
 </table>
 <br> <br>

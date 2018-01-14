@@ -155,7 +155,7 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
 
         $this->_customer->customer_name = $this->customerdetail->editcustomername->getText();
         if ($this->_customer->customer_name == '') {
-            $this->setError("Введите имя");
+            $this->setError("Введіть найменування");
             return;
         }
         $this->_customer->code = $this->customerdetail->editcode->getText();

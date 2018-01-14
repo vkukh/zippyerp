@@ -59,9 +59,9 @@ class PurchaseInvoice extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['GoodsReceipt'] = 'Приходная накладная';
-        $list['TaxInvoiceIncome'] = 'Входящая НН';
-        $list['ServiceIncome'] = 'Оказанные услуги';
+        $list['GoodsReceipt'] = 'Прибуткова накладна';
+        $list['TaxInvoiceIncome'] = 'Вхідна ПН';
+        $list['ServiceIncome'] = 'Виконані послуги';
         return $list;
     }
 

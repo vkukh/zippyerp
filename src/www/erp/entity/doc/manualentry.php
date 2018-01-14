@@ -158,7 +158,7 @@ class ManualEntry extends Document
             $op = str_replace('_c', ' Кредит', $op);
             $arr[] = array("no" => $i++,
                 "opname" => $op,
-                "optype" => $item->type == 1 ? "Покупатель" : "Поставщик",
+                "optype" => $item->type == 1 ? "Покупець" : "Постачальник",
                 "name" => $item->customer_name,
                 "amount" => H::fm($item->val));
         }

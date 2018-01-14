@@ -13,14 +13,14 @@
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="6" valign="middle">
-            <br><br>Ликвидация ОС № {{document_number}} от {{date}} <br><br>
+            <br><br>Ліквідація ОС № {{document_number}} від {{date}} <br><br>
         </td>
     </tr>
 
 
     <tr style="font-weight: bolder;">
 
-        <th colspan="3" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Наименование</th>
+        <th colspan="3" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Назва</th>
         <th colspan="3" style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="200">Инвентарный номер
         </th>
     </tr>

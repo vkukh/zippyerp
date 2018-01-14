@@ -182,7 +182,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран товар");
+            $this->setError("Не вибраний товар");
             return;
         }
         $item = Item::load($id);
@@ -295,10 +295,10 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->customer->getValue() == 0) {
-            $this->setError("Не выбран покупатель");
+            $this->setError("Не вибраний покупатель");
         }
         return !$this->isError();
     }

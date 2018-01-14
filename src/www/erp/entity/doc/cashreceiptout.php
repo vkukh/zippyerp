@@ -25,19 +25,19 @@ class CashReceiptOut extends Document
 
         if ($optype == C::TYPEOP_CUSTOMER_OUT) {
 
-            $header['optype'] = "Оплата поставщику";
+            $header['optype'] = "Оплата постачальнику";
         }
         if ($optype == C::TYPEOP_CASH_OUT) {
 
-            $header['optype'] = "В  подотчет";
+            $header['optype'] = "В  підзвіт";
         }
         if ($optype == C::TYPEOP_BANK_OUT) {
 
-            $header['optype'] = "Перечисление на счет";
+            $header['optype'] = "Переказ на  роахунок";
         }
         if ($optype == C::TYPEOP_CUSTOMER_OUT_BACK) {
 
-            $header['optype'] = "Возврат  покупателю";
+            $header['optype'] = "Повернення покупцеві";
         }
         $header['opdetail'] = $this->headerdata["opdetailname"];
         $report = new \ZippyERP\ERP\Report('cashreceiptout.tpl');
@@ -111,11 +111,11 @@ class CashReceiptOut extends Document
     public static function getTypes()
     {
         $list = array();
-        $list[C::TYPEOP_CUSTOMER_OUT] = "Оплата поставщику";
-        $list[C::TYPEOP_CUSTOMER_OUT_BACK] = "Возврат покупателю";
-        $list[C::TYPEOP_BANK_OUT] = "Пополнение  счета";
-        $list[C::TYPEOP_CASH_OUT] = "Расход на подотчета";
-        $list[C::TYPEOP_COMMON_EXPENCES] = "Общие накладные расходы";
+        $list[C::TYPEOP_CUSTOMER_OUT] = "Оплата постачальнику";
+        $list[C::TYPEOP_CUSTOMER_OUT_BACK] = "Повернення покупцеві";
+        $list[C::TYPEOP_BANK_OUT] = "Поповнення рахунку";
+        $list[C::TYPEOP_CASH_OUT] = "Видаьтки для пілзвіту";
+        $list[C::TYPEOP_COMMON_EXPENCES] = "Загальні накладні видатки";
         return $list;
     }
 

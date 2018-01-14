@@ -2,7 +2,7 @@
 
 <body>
 
-<h3 style="font-size: 16px;">Шахматка c {{from}} по {{to}} </h3>
+<h3 style="font-size: 16px;">Шахматка з {{from}} по {{to}} </h3>
 <br>
 <table class="ctable" cellspacing="0" cellpadding="1" border="1">
 

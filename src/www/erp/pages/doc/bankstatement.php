@@ -118,11 +118,11 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
 
         $doc = $this->editdetail->editdoc->getKey();
         if ($doc == 0 && $this->editdetail->editdoc->isVisible()) {
-            $this->setError("Не выбран документ  или счет");
+            $this->setError("Не вибраний документ  або");
             return;
         }
         if ($this->editdetail->editcustomer->isVisible() && $this->editdetail->editcustomer->getValue() <= 0) {
-            $this->setError('Не выбран  контрагент');
+            $this->setError('Не вибраний  контрагент');
             return;
         }
 
@@ -216,7 +216,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_list) == 0) {
-            $this->setError("Не введена ни одна строка");
+            $this->setError("Не введена ні одна строка");
         }
 
         return !$this->isError();

@@ -170,7 +170,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран товар");
+            $this->setError("Не вибраний товар");
             return;
         }
         $item = Item::load($id);
@@ -287,13 +287,13 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_itemlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->customer->getValue() <= 0) {
-            $this->setError("Не выбран  поставщик");
+            $this->setError("Не вибраний  постачальник");
         }
         if ($this->docform->cash->isChecked() && $this->docform->prepayment->isChecked()) {
-            $this->setError("Должно  быть либо  предоплата либо  оплата  наличными");
+            $this->setError("Має бути  або  предоплата  або  оплата  готівкою");
         }
         return !$this->isError();
     }

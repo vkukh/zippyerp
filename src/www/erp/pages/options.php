@@ -136,7 +136,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
     {
 
         if ($this->detail->name->getText() == '') {
-            $this->setError("Введите имя");
+            $this->setError("Введіть им'я");
             return;
         }
         $detail = array();

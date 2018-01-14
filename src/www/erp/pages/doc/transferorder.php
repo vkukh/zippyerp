@@ -87,7 +87,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
     public function savedocOnClick($sender)
     {
         if ($this->docform->customer->getValue() <= 0) {
-            $this->setError('Не выбран  контрагент');
+            $this->setError('Не вибраний  контрагент');
             return;
         }
         $this->_doc->headerdata = array(

@@ -24,7 +24,7 @@ class UserInfo extends \ZippyERP\System\Pages\Base
         $this->add(new Label('login', $this->user->userlogin));
         $this->add(new Label('createdate', date('Y-m-d', $this->user->registration_date)));
         $this->add(new Label('email', $this->user->email));
-        $this->add(new Label('userrole', $this->user->userrole));
+     
 
     }
 

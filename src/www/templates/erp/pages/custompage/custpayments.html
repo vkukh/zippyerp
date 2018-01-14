@@ -5,32 +5,32 @@
 <body>
 <div class="row">
     <div class="col-xs-12">
-        <h3>Взаиморасчеты с контрагентами</h3>
+        <h3>Взаєморозрахунки з  контрагентами</h3>
         <div zippy="clistpanel">
             <form zippy="clistfilter" class="navbar-form ">
                 <div class="form-group">
-                    <label for="clistsort">Сортировать по</label>
+                    <label for="clistsort">Сортувати по</label>
                     <select zippy="clistsort" class="form-control">
-                        <option value="0">Наименованию</option>
-                        <option value="1">Возрастанию долга</option>
-                        <option value="2">Уменьшению долга</option>
+                        <option value="0">Назві</option>
+                        <option value="1">Зростанню боргу</option>
+                        <option value="2">Зменшенню боргу</option>
                     </select>
 
                 </div>
                 <div class="checkbox">
                     <label>
-                    <input type="checkbox" zippy="clistshowall"> Показать всех
+                    <input type="checkbox" zippy="clistshowall"> Показати всіх
                     </label>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-default  " value="Ввод">
+                    <input type="submit" class="btn btn-default  " value="ОК">
                 </div>
             </form>
             <table class="table table-bordered    " style="width:500px">
                 <tr>
-                    <th>Наименование</th>
-                    <th>Долг нам</th>
-                    <th>Долг наш</th>
+                    <th>Назва</th>
+                    <th>Борг нам</th>
+                    <th>Борг наш</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -39,20 +39,20 @@
                     <td zippy="debet" style="text-align: right;"></td>
                     <td zippy="credit" style="text-align: right;"></td>
 
-                    <td><a zippy="edit" title="Движение по счету"><i class="fa fa-calculator"></i></a></td>
-                    <td><a zippy="invoice" title="Счета  к  оплате"><i class="fa fa-file-text"></i></a></td>
+                    <td><a zippy="edit" title="Рух  по рахунку"><i class="fa fa-calculator"></i></a></td>
+                    <td><a zippy="invoice" title="Рахунки до сплати"><i class="fa fa-file-text"></i></a></td>
                 </tr>
             </table>
 
         </div>
 
         <div zippy="doclist">
-            <a zippy="backtolist">К списку</a>
-            <h4>Движения по контрагенту <span zippy="custname1"></span></h4>
+            <a zippy="backtolist">До списку</a>
+            <h4>Рух по контрагенту <span zippy="custname1"></span></h4>
             <table class="table table-bordered   table-condensed" style="width:500px">
                 <tr>
-                    <th>Долг нам</th>
-                    <th>Долг наш</th>
+                    <th>Борг нам</th>
+                    <th>Борг наш</th>
                     <th>Дата</th>
                     <th>Документ</th>
                 </tr>
@@ -65,14 +65,14 @@
             </table>
         </div>
         <div zippy="invoicelist">
-            <a zippy="backtolist2">К списку</a>
-            <h4>Счета к оплате контрагента <span zippy="custname2"></span></h4>
+            <a zippy="backtolist2">До списку</a>
+            <h4>Рахунки до сплати   <span zippy="custname2"></span></h4>
 
             <table class="table table-bordered   table-condensed" style="width:400px">
                 <tr>
                     <th>Документ</th>
-                    <th>Сумма</th>
-                    <th>Дата оплаты</th>
+                    <th>Сума</th>
+                    <th>Дата сплати</th>
 
                 </tr>
                 <tr zippy="ilist">

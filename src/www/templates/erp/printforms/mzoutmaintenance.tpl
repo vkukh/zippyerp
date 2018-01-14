@@ -10,7 +10,7 @@
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7" valign="middle">
-            Списание МЦ с эксплуатации № {{document_number}} от {{date}} <br><br>
+            Списання МЦ з екслуатації № {{document_number}} від {{date}} <br><br>
         </td>
     </tr>
 
@@ -20,9 +20,9 @@
         ="230"  style="border-top: 1px #000 solid
         ;
             border-bottom: 1px #000 solid
-        ;" >Наименование</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Ед.изм</th>
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кол.</th>
+        ;" >Назва</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Од.вим.</th>
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кіл.</th>
     </tr>
     {{#_detail}}
     <tr>

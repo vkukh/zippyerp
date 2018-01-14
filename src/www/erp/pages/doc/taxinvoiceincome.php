@@ -188,7 +188,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
-            $this->setError("Не выбрана позиция");
+            $this->setError("Не вибрана позиція");
             return;
         }
         $item = Item::load($id);
@@ -296,10 +296,10 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
     private function checkForm()
     {
         if ($this->docform->customer->getValue() == 0) {
-            $this->setError("Не выбран поставщик");
+            $this->setError("Не вибраний постачальник");
         }
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         return !$this->isError();
     }

@@ -54,14 +54,14 @@ class CustomerOrder extends Document
     public static function getStatesList()
     {
         $list = array();
-        $list[Document::STATE_NEW] = 'Новый';
-        $list[Document::STATE_WA] = 'Ждет подтвержения';
-        $list[Document::STATE_APPROVED] = 'Утвержден';
-        $list[Document::STATE_WORK] = 'В работе';
-        $list[Document::STATE_CLOSED] = 'Закрыт';
-        $list[Document::STATE_WORK] = 'В производстве';
-        $list[Document::STATE_WP] = 'Ожидает оплату';
-        $list[Document::STATE_INSHIPMENT] = 'Отгружен';
+        $list[Document::STATE_NEW] = 'Новий';
+        $list[Document::STATE_WA] = 'Очікує підтвердження';
+        $list[Document::STATE_APPROVED] = 'Затврджений';
+        $list[Document::STATE_WORK] = 'Виконується';
+        $list[Document::STATE_CLOSED] = 'Закритий';
+        $list[Document::STATE_WORK] = 'В процесі виробництва';
+        $list[Document::STATE_WP] = 'Очікує оплату оплату';
+        $list[Document::STATE_INSHIPMENT] = 'Відгрудений';
 
         return $list;
     }
@@ -69,7 +69,7 @@ class CustomerOrder extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['Invoice'] = 'Счет-фактура';
+        $list['Invoice'] = 'Рахунок-фактура';
         return $list;
     }
 

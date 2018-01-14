@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>
-            Со склада: {{from}}
+            Зі складу: {{from}}
         </td>
 
         <td>
@@ -18,7 +18,7 @@
     </tr>
     <tr style="font-weight: bolder;">
         <td colspan="2" align="center">
-            Перемещение ТМЦ № {{document_number}}
+            Переміщення ТМЦ № {{document_number}}
         </td>
     </tr>
 
@@ -27,10 +27,10 @@
 <table class="ctable" width="500px" cellspacing="0" cellpadding="1" border="1">
     <tr style="font-weight: bolder;">
         <th width="20px">№</th>
-        <th width="180px">Наименование</th>
-        <th width="50px">Ед.изм</th>
-        <th width="50px">Кол.</th>
-        <th width="50px">Цена</th>
+        <th width="180px">Назва</th>
+        <th width="50px">Од.вим.</th>
+        <th width="50px">Кіл.</th>
+        <th width="50px">Ціна</th>
     </tr>
     {{#_detail}}
     <tr>

@@ -26,17 +26,17 @@ class SubConto extends \ZCL\DB\Entity
             $this->document_id = $document->document_id;
             $this->document_date = $document->document_date;
         } else {
-            throw new \ZippyERP\System\Exception("Не задан документ для субконто");
+            throw new \ZippyERP\System\Exception("Не заданий документ для субконто");
         }
         if ($account_id > 0) {
             $this->account_id = $account_id;
         } else {
-            throw new \ZippyERP\System\Exception("Не задан счет для субконто");
+            throw new \ZippyERP\System\Exception("Не заданий рахунок для субконто");
         }
         if ($amount != 0) {
             $this->amount = $amount;
         } else {
-            throw new \ZippyERP\System\Exception("Не задана ссумма для субконто");
+            throw new \ZippyERP\System\Exception("Не задана сума для субконто");
         }
     }
 

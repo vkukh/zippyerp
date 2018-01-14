@@ -13,7 +13,7 @@
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="4">
-            Банковская выписка № {{document_number}}
+            Банківска  виписка № {{document_number}}
             <br><br></td>
     </tr>
 
@@ -21,8 +21,8 @@
     <tr style="font-weight: bolder;">
         <td width="200" style="border-bottom: 1px solid #000000">Тип</td>
         <td width="150" style="border-bottom: 1px solid #000000">Контрагент</td>
-        <td width="50" style="border-bottom: 1px solid #000000">Сумма</td>
-        <td style="border-bottom: 1px solid #000000">Примечание</td>
+        <td width="50" style="border-bottom: 1px solid #000000">Сума</td>
+        <td style="border-bottom: 1px solid #000000">Примітка</td>
     </tr>
     {{#_detail}}
     <tr>

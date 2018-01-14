@@ -5,13 +5,13 @@
 
 <table class="ctable" cellspacing="0" cellpadding="1">
     <tr colspan="4" style="font-weight: bolder;">
-        <h3 style="font-size: 16px;">АВС анализ '{{type}}' c {{from}} по {{to}}</h3>
+        <h3 style="font-size: 16px;">АВС аналіз '{{type}}' з {{from}} по {{to}}</h3>
 
     </tr>
     <tr style="font-weight: bolder;">
 
-        <th width="300px" style="border-bottom:1px #000 solid;">Наименование</th>
-        <th width="100px" style="border-bottom:1px #000 solid;">Знач., тыс.</th>
+        <th width="300px" style="border-bottom:1px #000 solid;">Назва</th>
+        <th width="100px" style="border-bottom:1px #000 solid;">Знач., тис.</th>
         <th width="50px" style="border-bottom:1px #000 solid;">%</th>
         <th width="20px" style="border-bottom:1px #000 solid;"></th>
     </tr>

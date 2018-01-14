@@ -3,7 +3,7 @@
     <script>
         function check_rowdelete() {
 
-            return confirm("Удалить  объект?")
+            return confirm("Видалити  объект?")
 
         }
 
@@ -16,42 +16,42 @@
         <div zippy="listpan">
             <div class="row">
                 <div class="col-xs-10">
-                    <h4> Объекты метаданных </h4>
+                    <h3> Об'єкти метаданих </h3>
                     <form zippy="filter" class="navbar-form" role="form">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" zippy="fdoc">Документы  &nbsp;
+                                <input type="checkbox" zippy="fdoc">Документи  &nbsp;
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" zippy="fdic">Справочники  &nbsp;
+                                <input type="checkbox" zippy="fdic">Довідники  &nbsp;
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" zippy="frep">Отчеты  &nbsp;
+                                <input type="checkbox" zippy="frep">Звіти  &nbsp;
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" zippy="freg">Журналы  &nbsp;
+                                <input type="checkbox" zippy="freg">Журнали  &nbsp;
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" zippy="fpage">Страницы  &nbsp;
+                                <input type="checkbox" zippy="fpage">Сторінки  &nbsp;
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-default  ">Обновить</button>
+                        <button type="submit" class="btn btn-default  ">Оновити</button>
                     </form>
-                    <a class="btn btn-default   " zippy="addnew">Создать</a>
+                    <a class="btn btn-default   " zippy="addnew">Додати</a>
                     <table class="table table-bordered table-striped  ">
                         <tr>
-                            <th>Обозначение</th>
-                            <th>Имя класса</th>
+                            <th>Найменування</th>
+                            <th>Назва PHP классу</th>
                             <th>Тип</th>
-                            <th>Группа</th>
+                            <th>Група</th>
                             <th></th>
                         </tr>
                         <tr zippy="metarow">
@@ -67,51 +67,47 @@
             </div>
         </div>
         <div zippy="editpan">
-            <h4> Редактирование объекта</h4>
+            <h3> Редагування об'єкту</h3>
             <form zippy="editform" role="form">
                 <input type="hidden" zippy="meta_id" value="0">
                 <div class="row">
                     <div class="col-xs-4">
-                        <h5>Елементы объекта</h5>
+                        <h5>Елементи об'єкту</h5>
                         <div class="form-group">
-                            <label for="edit_description">Название</label>
+                            <label for="edit_description">Найменування</label>
                             <input class="form-control" zippy="edit_description" required="required">
                         </div>
                         <div class="form-group">
-                            <label for="edit_meta_name">Имя класса</label>
+                            <label for="edit_meta_name">Назва PHP классу</label>
                             <input class="form-control" zippy="edit_meta_name" required="required">
                         </div>
                         <div class="form-group">
-                            <label for="edit_menugroup">Группа</label>
+                            <label for="edit_menugroup">Група</label>
                             <input class="form-control" zippy="edit_menugroup">
                         </div>
                         <div class="form-group">
                             <label for="edit_menugroup">Тип</label>
                             <select class="form-control" zippy="edit_meta_type">
-                                <option value="1">Документ</option>
-                                <option value="2">Отчет</option>
-                                <option value="3">Журнал</option>
-                                <option value="4">Справочник</option>
-                                <option value="5">Страница</option>
+                                
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="edit_menugroup">Описание</label>
+                            <label for="edit_menugroup">Опис</label>
                             <textarea style="height: 120px;" class="form-control" zippy="edit_notes"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="edit_disabled">Не показывать в меню</label>
+                            <label for="edit_disabled">Не показувати в меню</label>
                             <input type="checkbox" zippy="edit_disabled">
                         </div>
                     </div>
                     <div class="col-xs-4 col-xs-offset-1">
-                        <h5>Права доступа</h5>
+                        <h4>Заборони</h4>
                         <table class="table table-bordered table-striped table-condensed">
                             <tr>
-                                <th>Пользователь</th>
-                                <th style="width:16px"><i title="Просмотр" class="fa fa-search"></i></th>
-                                <th style="width:16px"><i title="Редактирвание/Создание/Удаление" class="fa fa-pencil-square-o"></i></th>
-                                <th style="width:16px"><i title="Выполнение" class="fa fa-cog"></i></th>
+                                <th>Користувач</th>
+                                <th style="width:16px"><i title="Перегляд" class="fa fa-search"></i></th>
+                                <th style="width:16px"><i title="Редагування/Створення/Видалення" class="fa fa-pencil-square-o"></i></th>
+                                <th style="width:16px"><i title="Виконання" class="fa fa-cog"></i></th>
                             </tr>
                             <tr zippy="rolerow">
                                 <td><span zippy="rolename"></span></td>
@@ -123,8 +119,8 @@
                         </table>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-default btn-sm">Сохранить</button>
-                &nbsp;&nbsp;&nbsp; <a zippy="cancel" class="btn btn-default btn-sm">Отменить</a>
+                <button type="submit" class="btn btn-default btn-sm">Зберегти</button>
+                &nbsp;&nbsp;&nbsp; <a zippy="cancel" class="btn btn-default btn-sm">Відмінити</a>
             </form>
         </div>
 

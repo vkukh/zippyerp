@@ -102,7 +102,7 @@ class ServiceAct extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['TaxInvoice'] = 'Налоговая накладная';
+        $list['TaxInvoice'] = 'Податкова накладна';
 
         return $list;
     }

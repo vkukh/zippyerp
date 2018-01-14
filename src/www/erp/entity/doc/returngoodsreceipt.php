@@ -116,7 +116,7 @@ class ReturnGoodsReceipt extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list[''] = 'Корректировка (Додаток 2)';
+        $list[''] = 'Корректування (Додаток 2)';
 
         return $list;
     }

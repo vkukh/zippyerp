@@ -106,7 +106,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
     public function addrowOnClick($sender)
     {
         if ($this->docform->storefrom->getValue() == 0) {
-            $this->setError("Выберите склад-источник");
+            $this->setError("Виберіть склад-джерело");
             return;
         }
         $this->editdetail->setVisible(true);
@@ -139,7 +139,7 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран ТМЦ");
+            $this->setError("Не вибраний ТМЦ");
             return;
         }
 
@@ -227,10 +227,10 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_itemlist) == 0) {
-            $this->setError("Не введен ни один  товар");
+            $this->setError("Не введений ні один  товар");
         }
         if ($this->docform->storeto->getValue() == $this->docform->storefrom->getValue()) {
-            $this->setError("Выбран  тот  же  склад для  получения");
+            $this->setError("Вибраний той самий склад-отримувач");
         }
 
 

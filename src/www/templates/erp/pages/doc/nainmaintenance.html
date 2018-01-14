@@ -4,11 +4,11 @@
 
 
 <form zippy="docform">
-    <h3>Ввод ОС в эксплуатацию</h3>
+    <h3>Ввод ОЗ в експлуатацію</h3>
     <div class="row">
         <div class="col-xs-3">
             <div class="form-group">
-                <label for="document_number" class="  control-label">Номер документа</label>
+                <label for="document_number" class="  control-label">Номер документу</label>
                 <input class="form-control" type="text" zippy="document_number" required="required">
             </div>
             <div class="form-group">
@@ -22,12 +22,12 @@
     </div>
     <div class="row">
         <div class="col-xs-8">
-            <a zippy="addrow">Добавить ОС</a>
+            <a zippy="addrow">Додати ОЗ</a>
             <table class="table table-condenced">
                 <tr>
-                    <th>Наименование</th>
+                    <th>Найменування</th>
 
-                    <th>Инв. номер</th>
+                    <th>Інв. номер</th>
                     <th width="50"></th>
                 </tr>
                 <tr zippy="detail">
@@ -44,8 +44,8 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" value="Отменить" zippy="backtolist" class="btn btn-default  ">
-            <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-default  ">
+            <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default  ">
+            <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
             &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default ">
 
         </div>
@@ -54,13 +54,13 @@
 
 </form>
 <form zippy="editdetail">
-    <h4>Ввод ОС </h4>
+    <h4>Ввод ОЗ </h4>
     <div class="row">
         <div class="col-xs-4">
             <div class="form-group">
-                <label for="edittovar" class="  control-label">Наименование</label>
+                <label for="edittovar" class="  control-label">Найменування</label>
          <select class="form-control select2" zippy="edittovar" >
-                  <option value="0">Не выбран</option>
+                  <option value="0">Не вибрано</option>
                 </select>  
 
 
@@ -72,14 +72,14 @@
               </div> -->
 
             <div class="form-group">
-                <label for="editprice" class="  control-label">Стоимость </label>
+                <label for="editprice" class="  control-label">Вартість </label>
                 <input class="form-control" type="text" zippy="editprice" required="required" pattern="[0-9\.]+"
                        style="width: 70px;">
 
             </div>
             <div class="form-group">
-                <input type="submit" zippy="submitrow" value="Сохранить" class="btn btn-default ">
-                &nbsp; <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-default ">
+                <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-default ">
+                &nbsp; <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-default ">
             </div>
 
         </div>

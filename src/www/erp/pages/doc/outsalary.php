@@ -167,7 +167,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
     {
         $id = $this->editdetail->editemployee->getValue();
         if ($id == 0) {
-            $this->setError("Не выбран сотрудник");
+            $this->setError("Не вибраний співробітник");
             return;
         }
 
@@ -258,7 +258,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
     {
 
         if (count($this->_emplist) == 0) {
-            $this->setError("Не введен ни один  сотрудник");
+            $this->setError("Не введено жодного співробітника");
         }
 
         return !$this->isError();

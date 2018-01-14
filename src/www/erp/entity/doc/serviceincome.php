@@ -94,7 +94,7 @@ class ServiceIncome extends Document
     public function getRelationBased()
     {
         $list = array();
-        $list['TaxInvoiceIncome'] = 'Входящая НН';
+        $list['TaxInvoiceIncome'] = 'Вхідна ПН';
 
         return $list;
     }

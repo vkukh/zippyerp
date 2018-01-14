@@ -83,10 +83,10 @@ class Orderlist extends Base
         $this->currentorder->delivery = $this->details->orderform->delivery->getValue();
         $this->currentorder->payment = $this->details->orderform->payment->getValue();
         if ($this->currentorder->payment == 0) {
-            $this->setError('Не выбрана оплата');
+            $this->setError('Не вибрана оплата');
         }
         if ($this->currentorder->delivery == 0) {
-            $this->setError('Не выбрана доставка');
+            $this->setError('Не вибрана доставка');
         }
         if ($sender->id == 'inprocess') {
             $this->currentorder->status = 1;

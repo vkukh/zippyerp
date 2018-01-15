@@ -35,6 +35,7 @@ class Users extends \ZippyERP\System\Pages\Base
         $this->add(new Panel("editpan"))->setVisible(false);       
         $this->editpan->add(new Form('editform'));
         $this->editpan->editform->add(new TextInput('editlogin'));
+        $this->editpan->editform->add(new TextInput('editpass'));
         $this->editpan->editform->add(new TextInput('editemail'));
         $this->editpan->editform->add(new DropDownChoice('editerpacl'));
         $this->editpan->editform->add(new CheckBox('editshopcontent'));
@@ -75,6 +76,7 @@ class Users extends \ZippyERP\System\Pages\Base
          
        $this->user->email =  $this->editpan->editform->editemail->getText();  
        $this->user->userlogin = $this->editpan->editform->editlogin->getText();  
+        
        $user = User::getByLogin($this->user->userlogin);
        if($user instanceof User){
            if($user->user_id != $this->user->user_id){
@@ -95,10 +97,25 @@ class Users extends \ZippyERP\System\Pages\Base
        $this->user->shopcontent = $this->editpan->editform->editshopcontent->isChecked(); 
        $this->user->shoporders = $this->editpan->editform->editshoporders->isChecked(); 
        
+ 
+        
+       $pass = $this->editpan->editform->editpass->getText(); 
+       if(strlen($pass)>0) 
+       {
+           $this->user->userpass = (\password_hash($pass, PASSWORD_DEFAULT));;
+       }
+       if($this->user->user_id == 0 && strlen($pass)==0) 
+       {
+         $this->setError("Введіть пароль нового користувача");
+          return;
+ 
+       }
        $this->user->save();        
        $this->listpan->userrow->Reload();  
        $this->listpan->setVisible(true);
-       $this->editpan->setVisible(false);        
+       $this->editpan->setVisible(false);  
+       $this->editpan->editform->editpass->setText(''); 
+           
      }
      public function cancelOnClick($sender){
         $this->listpan->setVisible(true);

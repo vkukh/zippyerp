@@ -235,8 +235,8 @@ CREATE TABLE IF NOT EXISTS erp_item (
   description varchar(255) DEFAULT NULL,
   measure_id varchar(32) DEFAULT NULL,
  
-  detail text NOT NULL COMMENT 'цена  для   прайса',
-  item_code varchar(16) DEFAULT NULL,
+  detail text NOT NULL ,
+  item_code varchar(64) DEFAULT NULL,
   item_type smallint(6) DEFAULT NULL,
   PRIMARY KEY (item_id),
   UNIQUE INDEX item_code (item_code)
@@ -1149,19 +1149,40 @@ CREATE  VIEW `shop_products_view` AS
   from 
     ((`shop_products` `p` join `shop_productgroups` `g` on((`p`.`group_id` = `g`.`group_id`))) left join `shop_manufacturers` `m` on((`p`.`manufacturer_id` = `m`.`manufacturer_id`)));	
 	
-CREATE  VIEW `shop_attributes_view` AS
-  select 
-    `shop_attributes`.`attribute_id` AS `attribute_id`,
-    `shop_attributes`.`attributename` AS `attributename`,
-    `shop_attributes`.`group_id` AS `group_id`,
-    `shop_attributes`.`attributetype` AS `attributetype`,
-    `shop_attributes`.`valueslist` AS `valueslist`,
-    `shop_attributes`.`showinlist` AS `showinlist`,
-    `shop_attributes_order`.`ordern` AS `ordern` 
-  from 
-    (`shop_attributes` join `shop_attributes_order` on(((`shop_attributes`.`attribute_id` = `shop_attributes_order`.`attr_id`) and (`shop_attributes`.`group_id` = `shop_attributes_order`.`pg_id`)))) 
-  order by 
-    `shop_attri	
+CREATE
+VIEW shop_attributes_view
+AS
+SELECT
+  `shop_attributes`.`attribute_id` AS `attribute_id`,
+  `shop_attributes`.`attributename` AS `attributename`,
+  `shop_attributes`.`group_id` AS `group_id`,
+  `shop_attributes`.`attributetype` AS `attributetype`,
+  `shop_attributes`.`valueslist` AS `valueslist`,
+  `shop_attributes`.`showinlist` AS `showinlist`,
+  `shop_attributes_order`.`ordern` AS `ordern`
+FROM (`shop_attributes`
+  JOIN `shop_attributes_order`
+    ON (((`shop_attributes`.`attribute_id` = `shop_attributes_order`.`attr_id`)
+    AND (`shop_attributes`.`group_id` = `shop_attributes_order`.`pg_id`))))
+ORDER BY `shop_attributes_order`.`ordern`;
+
+
+
+CREATE  VIEW    shop_attributes_view
+AS
+SELECT
+  `shop_attributes`.`attribute_id` AS `attribute_id`,
+  `shop_attributes`.`attributename` AS `attributename`,
+  `shop_attributes`.`group_id` AS `group_id`,
+  `shop_attributes`.`attributetype` AS `attributetype`,
+  `shop_attributes`.`valueslist` AS `valueslist`,
+  `shop_attributes`.`showinlist` AS `showinlist`,
+  `shop_attributes_order`.`ordern` AS `ordern`
+FROM (`shop_attributes`
+  JOIN `shop_attributes_order`
+    ON (((`shop_attributes`.`attribute_id` = `shop_attributes_order`.`attr_id`)
+    AND (`shop_attributes`.`group_id` = `shop_attributes_order`.`pg_id`))))
+ORDER BY `shop_attributes_order`.`ordern`;
 	
 CREATE TABLE `erp_event` (
   `user_id` int(11) NOT NULL,

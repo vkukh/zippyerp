@@ -1,10 +1,7 @@
 
 SET NAMES 'utf8';
 
-INSERT INTO `system_users` ( `userlogin`, `userpass`, `createdon`, `active`) VALUES
-( 'admin', 'admin', '2012-08-23', 1);
-
- 
+INSERT   INTO `system_users` (`user_id`, `userlogin`, `userpass`, `createdon`, `active`, `email`, `username`, `acl`) VALUES(4, 'admin', 'admin', '2012-08-23', 1, 'rr@rr.rr', '', '');
 
 INSERT INTO erp_item_measures(measure_id, measure_name, measure_code) VALUES(1, 'шт.', '2009');
 INSERT INTO erp_item_measures(measure_id, measure_name, measure_code) VALUES(2, 'кг', '0301');

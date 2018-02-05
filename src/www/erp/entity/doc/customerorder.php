@@ -10,13 +10,11 @@ use ZippyERP\ERP\Helper as H;
 class CustomerOrder extends Document
 {
 
-    protected function init()
-    {
+    protected function init() {
         parent::init();
     }
 
-    public function generateReport()
-    {
+    public function generateReport() {
         $i = 1;
         $detail = array();
         $total = 0;
@@ -36,6 +34,7 @@ class CustomerOrder extends Document
             "customername" => $this->headerdata["customername"],
             "document_number" => $this->document_number,
             "base" => $this->base,
+            "empname" => $this->headerdata["empname"],
             "total" => H::fm($total));
 
         $report = new \ZippyERP\ERP\Report('customerorder.tpl');
@@ -45,14 +44,12 @@ class CustomerOrder extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         return true;
     }
 
     //список состояний  для   выпадающих списков
-    public static function getStatesList()
-    {
+    public static function getStatesList() {
         $list = array();
         $list[Document::STATE_NEW] = 'Новий';
         $list[Document::STATE_WA] = 'Очікує підтвердження';
@@ -60,16 +57,16 @@ class CustomerOrder extends Document
         $list[Document::STATE_WORK] = 'Виконується';
         $list[Document::STATE_CLOSED] = 'Закритий';
         $list[Document::STATE_WORK] = 'В процесі виробництва';
-        $list[Document::STATE_WP] = 'Очікує оплату оплату';
-        $list[Document::STATE_INSHIPMENT] = 'Відгрудений';
+        $list[Document::STATE_WP] = 'Очікує оплату';
+        $list[Document::STATE_INSHIPMENT] = 'В доставці';
 
         return $list;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['Invoice'] = 'Рахунок-фактура';
+        $list['RetailIssue'] = 'Роздрібна накладна';
         return $list;
     }
 

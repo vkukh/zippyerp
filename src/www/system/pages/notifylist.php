@@ -14,26 +14,24 @@ use Zippy\Html\Panel;
 class NotifyList extends \ZippyERP\System\Pages\Base
 {
 
-    public $user=null;
+    public $user = null;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $user = System::getUser();
         if ($user->user_id == 0) {
             App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
         }
-           
-        
-         
-        
+
+
+
+
         $this->add(new DataView("nlist", new EntityDataSource("\\ZippyERP\\System\\Notify", "dateshow <= now() and user_id=" . $user->user_id, " dateshow desc"), $this, 'OnRow'));
         $this->nlist->setPageSize(25);
         $this->add(new \Zippy\Html\DataList\Pager("pag", $this->nlist));
-        $this->nlist->Reload();  
-        
+        $this->nlist->Reload();
+
         \ZippyERP\System\Notify::markRead($user->user_id);
-   
     }
 
     public function OnRow($row) {
@@ -43,10 +41,5 @@ class NotifyList extends \ZippyERP\System\Pages\Base
         $row->add(new Label("ndate", date("Y-m-d H:i", $notify->dateshow)));
         $row->add(new Label("newn", "New"))->setVisible($notify->checked == 0);
     }
- 
-
-  
 
 }
-
- 

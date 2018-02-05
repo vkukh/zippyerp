@@ -14,8 +14,7 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
 
     public $datalist;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->_tvars['list'] = true;
@@ -57,8 +56,7 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
     }
 
-    public function typeOnClick($sender)
-    {
+    public function typeOnClick($sender) {
 
 
         if ($this->filter->viewtype->getValue() == 1) {
@@ -78,8 +76,7 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
         $this->docview->setVisible(false);
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
 
 
         $this->datalist->removeAllColumns();
@@ -139,16 +136,14 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
         $this->docview->setVisible(false);
     }
 
-    public function OnClickCell($sender, $data)
-    {
+    public function OnClickCell($sender, $data) {
         $item = $data['dataitem'];
         $this->docview->setDoc(\ZippyERP\ERP\Entity\Doc\Document::load($item->document_id));
 
         $this->docview->setVisible(true);
     }
 
-    public function OnDrowCell($sender, $data)
-    {
+    public function OnDrowCell($sender, $data) {
         $item = $data['dataitem'];
         if ($data['field'] != 'extcode')
             return null;
@@ -178,8 +173,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
 
     private $page;
 
-    private function getSQL()
-    {
+    private function getSQL() {
         $conn = \ZDB\DB::getConnect();
 
         if ($this->page->filter->viewtype->getValue() == 1) {
@@ -223,8 +217,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
         return $sql;
     }
 
-    private function getFields()
-    {
+    private function getFields() {
         $fields = "";
         if ($this->page->filter->viewtype->getValue() == 1) {
 
@@ -264,13 +257,11 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
         return $fields;
     }
 
-    public function __construct($page)
-    {
+    public function __construct($page) {
         $this->page = $page;
     }
 
-    public function getItemCount()
-    {
+    public function getItemCount() {
         $conn = \ZDB\DB::getConnect();
         if ($this->page->filter->viewtype->getValue() == 1) {
             $sql = "select count(*) as cnt " . $this->getSQL();
@@ -282,8 +273,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
         return $conn->GetOne($sql);
     }
 
-    public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
+    public function getItems($start, $count, $sortfield = null, $asc = null) {
         $conn = \ZDB\DB::getConnect();
 
         if ($this->page->filter->viewtype->getValue() == 1) {
@@ -309,8 +299,7 @@ class AWDataSource implements \Zippy\Interfaces\DataSource
         return $list;
     }
 
-    public function getItem($id)
-    {
+    public function getItem($id) {
         
     }
 

@@ -12,13 +12,15 @@ use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Helper as H;
 use Zippy\WebApplication as App;
 
+/**
+ * Шахматная ведомость
+ */
 class Shahmatka extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_updatejs = false;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
@@ -33,8 +35,7 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new ClickLink('loader'))->onClick($this, "onReport", true);
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
 
         //$html = $this->generateReport();
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
@@ -59,8 +60,7 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $this->_updatejs = true;
     }
 
-    private function generateReport()
-    {
+    private function generateReport() {
 
         $acclist = Account::find("acc_code>=10 and acc_code<1000", "cast(acc_code as char)");
 
@@ -120,8 +120,7 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         return $html;
     }
 
-    public function onReport($sender)
-    {
+    public function onReport($sender) {
         $html = $this->generateReport();
 
         $this->detail->preview->setText($html, true);
@@ -131,8 +130,7 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $this->updateAjax(array(), "$('#preview').attr('src','/?p=ZippyERP/ERP/Pages/ShowReport&arg=preview/shaxmatkareport')");
     }
 
-    protected function beforeRender()
-    {
+    protected function beforeRender() {
         parent::beforeRender();
 
         if ($this->_updatejs) {

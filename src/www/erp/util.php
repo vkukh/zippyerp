@@ -13,8 +13,7 @@ class Util
      *
      * @param mixed $number
      */
-    public static function money2str($number)
-    {
+    public static function money2str($number) {
 
         return money2str_ru($number, M2S_KOPS_MANDATORY + M2S_KOPS_DIGITS + M2S_KOPS_SHORT);
     }
@@ -24,8 +23,7 @@ class Util
      *
      * @param mixed $str
      */
-    public static function ucfirst($str)
-    {
+    public static function ucfirst($str) {
 
         return mb_ucfirst($str);
     }
@@ -41,8 +39,7 @@ define('M2S_KOPS_DIGITS', 0x01);    // digital copecks
 define('M2S_KOPS_MANDATORY', 0x02);    // mandatory copecks
 define('M2S_KOPS_SHORT', 0x04);    // shorten copecks
 
-function money2str_ru($money, $options = 0)
-{
+function money2str_ru($money, $options = 0) {
 
     $money = preg_replace('/[\,\-\=]/', '.', $money);
 
@@ -120,14 +117,12 @@ function money2str_ru($money, $options = 0)
 }
 
 // service function to select the group of digits
-function dec_digits_group($number, $power, $digits = 1)
-{
+function dec_digits_group($number, $power, $digits = 1) {
     return (int) bcmod(bcdiv($number, bcpow(10, $power * $digits, 8)), bcpow(10, $digits, 8));
 }
 
 // service function to get plural form for the number
-function sk_plural_form($d)
-{
+function sk_plural_form($d) {
     $d = $d % 100;
     if ($d > 20)
         $d = $d % 10;
@@ -203,8 +198,7 @@ function sk_plural_form($d)
 
 if (!function_exists('mb_ucfirst') && function_exists('mb_substr')) {
 
-    function mb_ucfirst($string)
-    {
+    function mb_ucfirst($string) {
         $string = mb_ereg_replace("^[\ ]+", "", $string);
         $string = mb_strtoupper(mb_substr($string, 0, 1, "UTF-8"), "UTF-8") . mb_substr($string, 1, mb_strlen($string), "UTF-8");
         return $string;

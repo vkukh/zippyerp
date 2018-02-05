@@ -14,8 +14,7 @@ use ZippyERP\ERP\Entity\SubConto;
 class NADeprecation extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -30,8 +29,7 @@ class NADeprecation extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $date = new Carbon();
         $date->setTimestamp($this->document_date);
         $beginmonth = $date->startOfMonth()->getTimestamp();  //месяц начислниея

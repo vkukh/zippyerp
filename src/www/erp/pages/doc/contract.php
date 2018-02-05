@@ -24,8 +24,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
 
     private $_doc;
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -53,8 +52,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function submitOnClick($sender)
-    {
+    public function submitOnClick($sender) {
         if ($this->docform->customer->getValue() == 0) {
             $this->setError("Не вибраний контрагент");
             return false;
@@ -96,8 +94,7 @@ class Contract extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         App::RedirectBack();
     }
 

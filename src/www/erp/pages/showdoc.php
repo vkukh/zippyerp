@@ -8,8 +8,7 @@ use ZippyERP\ERP\Entity\Doc\Document;
 class ShowDoc extends \Zippy\Html\WebPage
 {
 
-    public function __construct($type, $docid)
-    {
+    public function __construct($type, $docid) {
 
         $doc = Document::load($docid);
         if ($doc == null) {

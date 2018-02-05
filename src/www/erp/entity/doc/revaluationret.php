@@ -14,8 +14,7 @@ use ZippyERP\ERP\Helper as H;
 class RevaluationRet extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -41,8 +40,7 @@ class RevaluationRet extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $diffall = 0;
         foreach ($this->detaildata as $value) {
 

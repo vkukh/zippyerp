@@ -18,8 +18,7 @@ use ZippyERP\ERP\Helper as H;
 class MoveBackItem extends Document
 {
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
@@ -75,8 +74,7 @@ class MoveBackItem extends Document
         return true;
     }
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $header = array(

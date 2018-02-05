@@ -13,8 +13,7 @@ use ZippyERP\ERP\Helper as H;
 class InventoryExpence extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -31,7 +30,7 @@ class InventoryExpence extends Document
         }
 
         $firm = \ZippyERP\System\System::getOptions("firmdetail");
-        // $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
+        
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
             "storename" => $this->headerdata["storename"],
@@ -45,8 +44,7 @@ class InventoryExpence extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 

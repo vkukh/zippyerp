@@ -3,7 +3,6 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -31,8 +30,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_rowid = 0;
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -82,8 +80,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->OnItemType($this->editdetail->edittype);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('item', $item->itemname));
@@ -95,8 +92,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $item = $sender->owner->getDataItem();
         // unset($this->_itemlist[$item->item_id]);
 
@@ -104,8 +100,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         if ($this->docform->storefrom->getValue() == 0) {
             $this->setError("Виберіть склад-джерело");
             return;
@@ -113,12 +108,9 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->editdetail->edititem->setValue(0);
-
-        
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $stock = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -127,14 +119,13 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 
 
         $this->editdetail->edititem->setValue($stock->stock_id);
-        
+
 
         $this->editdetail->edittype->setValue($stock->type);
         $this->_rowid = $stock->stock_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний ТМЦ");
@@ -156,7 +147,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         // $fromstock = Stock::getStock($this->docform->storefrom->getValue(),$stock->item_id,$stock->price,false);
         $stockfrom = Stock::getFirst("store_id={$store->store_id} and item_id={$stock->item_id} and price={$stock->price} and partion={$stock->partion} and closed <> 1");
 
-        if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET  ) {
+        if ($stockfrom == null && $store->store_type == Store::STORE_TYPE_RET) {
             $this->setError('Товар  с  такою ціною та парті\ю не знайдений в  магазині');
             return;
         }
@@ -169,23 +160,21 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edititem->setValue(0);
-        
+
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editprice->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
         $this->editdetail->edititem->setValue(0);
-        
+
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editprice->setText("");
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -230,8 +219,7 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введений ні один  товар");
@@ -244,13 +232,11 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function OnChangeItem($sender)
-    {
+    public function OnChangeItem($sender) {
         $stock_id = $sender->getValue();
         $stock = Stock::load($stock_id);
         $store = Store::load($this->docform->storeto->getValue());
@@ -259,13 +245,12 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         } else {
             //$item = Item::load($stock->item_id);
         }
-        if ($store->store_type == Store::STORE_TYPE_RET ) {
+        if ($store->store_type == Store::STORE_TYPE_RET) {
             
         }
     }
 
-    public function OnChangeStore($sender)
-    {
+    public function OnChangeStore($sender) {
         if ($sender->id == 'storefrom') {
             //очистка  списка  товаров
             $this->_itemlist = array();
@@ -276,19 +261,14 @@ class MoveBackItem extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function OnItemType($sender)
-    {
+    public function OnItemType($sender) {
         //   $stock_id = $this->editdetail->edititem->getValue();
         //     $stock = Stock::load($stock_id);
         //    if($stock==null) return;
-
         //    $this->editdetail->editquantity->setText("1");
         $store_id = $this->docform->storeto->getValue();
 
         return Stock::findArrayEx("store_id={$store_id} and closed <> 1  and   stock_id in(select stock_id  from  erp_account_subconto  where  account_id= " . $this->editdetail->edittype->getValue() . ") ");
-          
     }
-
-    
 
 }

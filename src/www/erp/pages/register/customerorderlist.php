@@ -26,19 +26,16 @@ class CustomerOrderList extends \ZippyERP\ERP\Pages\Base
      * @param mixed $docid Документ  должен  быть  показан  в  просмотре
      * @return DocList
      */
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
         $filter = Filter::getFilter("CustomerOrderList");
         $this->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
         $this->filter->add(new DropDownChoice('statelist', CustomerOrder::getStatesList()));
-        $this->filter->add(new DropDownChoice('customerlist', Customer::findArray('customer_name')));
-        $this->filter->add(new CheckBox('notpayed'));
+        $this->filter->add(new DropDownChoice('customerlist', Customer::findArray('customer_name', "cust_type in(1,3,5)")));
         if (strlen($filter->state) > 0)
             $this->filter->statelist->setValue($filter->state);
         if (strlen($filter->customer) > 0)
             $this->filter->customerlist->setValue($filter->customer);
-        $this->filter->notpayed->setChecked($filter->notpayed);
 
         $doclist = $this->add(new DataView('doclist', new DocCODataSource(), $this, 'doclistOnRow'));
         $doclist->setSelectedClass('success');
@@ -53,8 +50,7 @@ class CustomerOrderList extends \ZippyERP\ERP\Pages\Base
         $this->add(new \Zippy\Html\DataList\Paginator('pag', $doclist));
     }
 
-    public function doclistOnRow($row)
-    {
+    public function doclistOnRow($row) {
         $item = $row->getDataItem();
         $customer = Customer::load($item->intattr1);
         $item = $item->cast();
@@ -62,7 +58,6 @@ class CustomerOrderList extends \ZippyERP\ERP\Pages\Base
         $row->add(new Label('date', date('d-m-Y', $item->document_date)));
         $row->add(new Label('customer', ($customer) ? $customer->customer_name : ""));
         $row->add(new Label('amount', ($item->amount > 0) ? H::fm($item->amount) : ""));
-        $row->add(new Label('payment', ($item->intattr2 > 0) ? H::fm($item->intattr2) : ""));
 
         $row->add(new Label('state', Document::getStateName($item->state)));
         $row->add(new ClickLink('show'))->onClick($this, 'showOnClick');
@@ -74,19 +69,17 @@ class CustomerOrderList extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function filterOnSubmit($sender)
-    {
+    public function filterOnSubmit($sender) {
         $this->docview->setVisible(false);
         //запоминаем  форму   фильтра
         $filter = Filter::getFilter("CustomerOrderList");
         $filter->state = $this->filter->statelist->getValue();
         $filter->customer = $this->filter->customerlist->getValue();
-        $filter->notpayed = $this->filter->notpayed->isChecked();
+
         $this->doclist->Reload();
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $type = H::getMetaType($item->type_id);
         $class = "\\ZippyERP\\ERP\\Pages\\Doc\\" . $type['meta_name'];
@@ -94,8 +87,7 @@ class CustomerOrderList extends \ZippyERP\ERP\Pages\Base
         App::Redirect($class, $item->document_id);
     }
 
-    public function showOnClick($sender)
-    {
+    public function showOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->docview->setVisible(true);
         $this->docview->setDoc($item);
@@ -111,8 +103,7 @@ class CustomerOrderList extends \ZippyERP\ERP\Pages\Base
 class DocCODataSource implements \Zippy\Interfaces\DataSource
 {
 
-    private function getWhere()
-    {
+    private function getWhere() {
 
         //$conn = \ZDB\DB::getConnect();
         $filter = Filter::getFilter("CustomerOrderList");
@@ -124,24 +115,19 @@ class DocCODataSource implements \Zippy\Interfaces\DataSource
         if ($filter->customer > 0) {
             $where .= " and intattr1 =  " . $filter->customer;
         }
-        if ($filter->notpayed == true) {
-            $where .= " and intattr2 = 0 ";
-        }
+
         return $where;
     }
 
-    public function getItemCount()
-    {
+    public function getItemCount() {
         return Document::findCnt($this->getWhere());
     }
 
-    public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
+    public function getItems($start, $count, $sortfield = null, $asc = null) {
         return Document::find($this->getWhere(), "document_date " . $asc, $count, $start);
     }
 
-    public function getItem($id)
-    {
+    public function getItem($id) {
         
     }
 

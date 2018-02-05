@@ -20,33 +20,28 @@ class Base extends \Zippy\Html\WebPage
     private $_infomsg;
     protected $_module;
 
-    public function __construct($params = null)
-    {
+    public function __construct($params = null) {
 
-           
+
         \Zippy\Html\WebPage::__construct();
-        
- 
-      
-      
+
+
+
+
         $user = System::getUser();
-       
-       
-            $this->_tvars["islogined"] = $user->user_id > 0 ;
-               
-            $this->_tvars["isadmin"] = $user->userlogin == 'admin';
-            $this->_tvars["isconman"] = $user->userlogin == 'admin' || $user->shopcontent >0;         
-            $this->_tvars["isorderman"] = $user->userlogin == 'admin' || $user->shoporders >0;         
-        
-            $this->add(new ClickLink('logout', $this, 'LogoutClick'));
-            $this->add(new Label('username', $user->userlogin));            
-       
-        
-   
+
+
+        $this->_tvars["islogined"] = $user->user_id > 0;
+
+        $this->_tvars["isadmin"] = $user->userlogin == 'admin';
+        $this->_tvars["isconman"] = $user->userlogin == 'admin' || $user->shopcontent > 0;
+        $this->_tvars["isorderman"] = $user->userlogin == 'admin' || $user->shoporders > 0;
+
+        $this->add(new ClickLink('logout', $this, 'LogoutClick'));
+        $this->add(new Label('username', $user->userlogin));
     }
 
-    public function LogoutClick($sender)
-    {
+    public function LogoutClick($sender) {
         setcookie("remember", '', 0);
         System::setUser(new \ZippyERP\System\User());
         $_SESSION['user_id'] = 0;
@@ -56,16 +51,15 @@ class Base extends \Zippy\Html\WebPage
     }
 
     /**
-    * Вывод информации о  странице
-    * 
-    */
-    public function getPageInfo()
-    {
+     * Вывод информации о  странице
+     * 
+     */
+    public function getPageInfo() {
         return '';
     }
 
     //вывод ошибки,  используется   в дочерних страницах
-   public function setError($msg) {
+    public function setError($msg) {
 
 
         $this->_errormsg = $msg;
@@ -83,18 +77,15 @@ class Base extends \Zippy\Html\WebPage
         $this->_infomsg = $msg;
     }
 
-    final protected function isError()
-    {
+    final protected function isError() {
         return strlen($this->_errormsg) > 0;
     }
 
-    protected function beforeRender()
-    {
-         
+    protected function beforeRender() {
+        
     }
 
-    protected function afterRender()
-    {
+    protected function afterRender() {
         if (strlen($this->_errormsg) > 0)
             App::$app->getResponse()->addJavaScript("toastr.error('{$this->_errormsg}')        ", true);
         if (strlen($this->_warnmsg) > 0)

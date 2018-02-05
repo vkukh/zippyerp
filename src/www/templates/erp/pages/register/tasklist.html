@@ -1,141 +1,156 @@
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="/vendor/leon-mbs/zippy/zcl/gantt/jquery.ganttView.css"/>
-    <script type="text/javascript" src="/vendor/leon-mbs/zippy/zcl/gantt/date.js"></script>
-    <script type="text/javascript" src="/vendor/leon-mbs/zippy/zcl/gantt/jquery.ganttView.js"></script>
-    
- 
-</head> 
-<body>
- <h3>Список завдань по проектах</h3>
-<div zippy="listtab" class="row">
+    <head>
+        <link rel="stylesheet" type="text/css" href="/vendor/leon-mbs/zippy/zcl/gantt/jquery.ganttView.css"/>
+        <script type="text/javascript" src="/vendor/leon-mbs/zippy/zcl/gantt/date.js"></script>
+        <script type="text/javascript" src="/vendor/leon-mbs/zippy/zcl/gantt/jquery.ganttView.js"></script>
 
-    <div class="col-xs-6">
-         <form zippy="filterform" class="form-horizontal">
-            <div class="form-group  ">
-                <label for="filterproject" class="col-xs-4 control-label">Проект</label>
-                <div class="col-xs-6">
-                    <select class="form-control" zippy="filterproject">
-                        <option value="0">Все</option>
-                    </select>
+
+    </head> 
+    <body>
+        <h2>Список завдань по проектах</h2>
+        <div zippy="listtab" class="row">
+
+            <div class="col-xs-6">
+                <form zippy="filterform" class="form-horizontal">
+                    <div class="form-group  ">
+                        <label for="filterproject" class="col-xs-4 control-label">Проект</label>
+                        <div class="col-xs-6">
+                            <select class="form-control" zippy="filterproject">
+                                <option value="0">Все</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label for="filterassignedto" class="col-xs-4 control-label">Виконавець</label>
+                        <div class="col-xs-6">
+                            <select class="form-control" zippy="filterassignedto">
+                                <option value="0">Всі</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label for="filterstatus" class="col-xs-4 control-label">Статус</label>
+                        <div class="col-xs-6">
+                            <select class="form-control" zippy="filterstatus">
+                                <option value="-1">Відкрите</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label for="filtersorting" class="col-xs-4 control-label">Сортувати по</label>
+                        <div class="col-xs-6">
+                            <select class="form-control" zippy="filtersorting">
+                                <option value="0">Коду</option>
+                                <option value="1">Даті зміни</option>
+                                <option value="2">Пріорітету</option>
+                                <option value="3">Статусу</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label   class="col-xs-4 control-label"></label>
+                        <div class="col-xs-6">
+                            <button type="submit" class="btn btn-primary  ">Застосувати</button>
+                        </div>
+                    </div>
+                </form>
+            </div>  
+            <div class="col-xs-6">    
+
+                <form zippy="searchform" class="navbar-form">
+                    <div class="form-group">
+                        <label for="searchcode" class="  control-label">Пошук по коду</label>
+
+                        <input class="form-control" zippy="searchcode" type="text" pattern="[0-9]+" required="required"                            >
+
+                    </div>
+                    <div class="form-group">
+
+
+                        <button type="submit" class="btn btn-primary   ">Шукати</button>
+
+                    </div>
+                </form>
+
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table table-striped table-condensed ">
+                        <tr>
+                            <th>Код</th>
+                            <th>Назва</th>
+                            <th>Проект</th>
+                            <th>Дата поч.</th>
+
+                            <th>Кіл. г.</th>
+                            <th>Оплата</th>
+                            <th>Статус</th>
+
+
+
+                        </tr>
+                        <tr zippy="tasklist">
+                            <td align="right"><a zippy="code" title="Посилання на  завдання"></a></td>
+                            <td ><a zippy="name"></a></td>
+                            <td zippy="projectname"></td>
+
+                            <td zippy="startdate" style="white-space:   nowrap"></td>
+
+                            <td zippy="hours" align="right"></td>
+                            <td zippy="cost" align="right"></td>
+                            <td zippy="status"></td>
+
+
+
+                        </tr>
+                    </table>
+
+
+                    <div zippy="gantt" data-slidew="600"></div>
+
                 </div>
             </div>
-            <div class="form-group  ">
-                <label for="filterassignedto" class="col-xs-4 control-label">Виконавець</label>
-                <div class="col-xs-6">
-                    <select class="form-control" zippy="filterassignedto">
-                        <option value="0">Всі</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group  ">
-                <label for="filterstatus" class="col-xs-4 control-label">Статус</label>
-                <div class="col-xs-6">
-                    <select class="form-control" zippy="filterstatus">
-                        <option value="-1">Відкрита</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group  ">
-                <label for="filtersorting" class="col-xs-4 control-label">Сортувати по</label>
-                <div class="col-xs-6">
-                    <select class="form-control" zippy="filtersorting">
-                        <option value="0">Номеру</option>
-                        <option value="1">Даті зміни</option>
-                        <option value="2">Пріорітету</option>
-                        <option value="3">Статусу</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group  ">
-                <label for="filtersorting" class="col-xs-4 control-label"></label>
-                <div class="col-xs-6">
-                    <button type="submit" class="btn btn-default  ">Застосувти</button>
-                </div>
-            </div>
-        </form>
-     </div>  
-   <div class="col-xs-6">    
-      
-        <form zippy="searchform" class="form-horizontal">
-            <div class="form-group">
-                <label for="searchcode" class="col-xs-4 control-label">Пошук по коду</label>
-                <div class="col-xs-6">
-                    <input class="form-control" zippy="searchcode" type="text" pattern="[0-9]+" required="required"
-                           style="width:60px">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="searchcode" class="col-xs-4 control-label"> </label>
-                <div class="col-xs-6">
-                    <button type="submit" class="btn btn-default  navbar-btn">Искать</button>
-                </div>
-            </div>
-        </form>
 
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <table class="table table-striped table-condensed ">
-                <tr>
-                    <th>Код</th>
-                    <th>Проект</th>
-                    <th>Назва</th>
-                    <th>Дата поч.</th>
-                    
-                    <th>Кіл. г.</th>
-                    <th>Оплата</th>
-                    <th>Статус</th>
-                    <th>Змінено</th>
-                    <th> </th>
-
-                </tr>
-                <tr zippy="tasklist">
-                    <td align="right"><a zippy="code" title="Посилання на  завдання"></a></td>
-                    <td zippy="projectname"></td>
-                    <td zippy="name"></td>
-                    <td zippy="startdate" style="white-space:   nowrap"></td>
-                    
-                    <td zippy="hours" align="right"></td>
-                    <td zippy="cost" align="right"></td>
-                    <td zippy="status"></td>
-                    <td zippy="updated" style="white-space:   nowrap"></td>
-
-                    <td>
-                        <a zippy="edit" title="Перегляд"><i class="fa fa-search"></i></a>
-
-                    </td>
-
-                </tr>
-            </table>
-
-       
-            <div zippy="gantt" data-slidew="600"></div>
-  
         </div>
-    </div>
+        <div   zippy="contenttab">
+            <div class="row"  >
+                <div class="col-xs-12" >
 
-</div>
-<div   zippy="contenttab">
-<div class="row"  >
-    <div class="col-xs-12" >
-        
-        <a zippy="tolist">До списку задач</a><br>
-        <h3 zippy="showtaskname"></h3>
-        <form zippy="editform" class="navbar-form navbar-left" >
-            <div class="form-group">
-                <label>Статус</label>
-                 <select class="form-control" zippy="editstatus"></select> 
-                 &nbsp;
-                 <label>Дата</label>  
-                  <input class="form-control" zippy="editdatestatus">
-                &nbsp;
-                <button type="submit" class="btn btn-default   navbar-btn">Застосувати</button>
-            </div>
-        </form>
-         </div> 
-    <div class="row"  >    
-        <div class="col-xs-4">
+                    <a zippy="tolist"><i class="fa fa-arrow-left"></i> До списку завдать</a><br>
+                    <h3 zippy="showtaskname"></h3>
+                    <form zippy="editform" class="navbar-form navbar-left" >
+                        <div class="form-group">
+                            <label>Статус</label>
+                            <select class="form-control" zippy="editstatus"></select> 
+                            &nbsp;
+                            <label>Дата</label>  
+                            <input class="form-control" zippy="editdatestatus">
+                            &nbsp;
+                            <button type="submit" class="btn btn-primary">Застосувати</button>
+                        </div>
+                    </form>
+                </div> 
+            </div> 
+            <div class="row"  >
+                <div class="col-xs-12 col-lg-4" > 
+                    <h4>Виконавці</h4> 
+                    <span zippy="emplist"></span>    
+                </div>
+
+                <div class="col-xs-12 col-sm-8" > 
+                    <h4>ТМЦ</h4> 
+                    <table class="table table-condensed table-bordered">
+                        <tr>
+                            <td>Найменування</td>
+                            <td>Кіл.</td>
+                            <td>Ціна</td>
+                        </tr>
+
+                    </table>    
+                </div>
+            </div>         
+            <div class="row"  >    
+                <div class="col-xs-4">
                     <h4>Коментарі</h4>
                     <table class="table table-condensed">
                         <tr zippy="dw_msglist" style="font-size: smaller ">
@@ -154,8 +169,8 @@
                         </div>
                         <input class="btn btn-default btn-small" type="submit" value="Додати">
                     </form>
- </div>
- <div class="col-xs-4">
+                </div>
+                <div class="col-xs-4">
                     <h4>Прикріплені файлы</h4>
                     <table class="table table-condensed">
                         <tr zippy="dw_files" style="font-size: smaller ">
@@ -180,8 +195,8 @@
                         <input class="btn btn-default  " type="submit" value="Додати">
 
                     </form>
-   </div>
-   <div class="col-xs-4">
+                </div>
+                <div class="col-xs-4">
                     <h4>Історія змін</h4>
                     <table  class="table table-condensed">
                         <tr>
@@ -195,11 +210,11 @@
                             <td zippy="huser"></td>
                         </tr>
                     </table>
-    </div>
+                </div>
 
 
-    </div>
-</div>
-</div>
-</body>
+            </div>
+        </div>
+
+    </body>
 </html>

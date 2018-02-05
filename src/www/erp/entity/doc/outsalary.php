@@ -14,8 +14,7 @@ use ZippyERP\ERP\Helper as H;
 class OutSalary extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -44,8 +43,7 @@ class OutSalary extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $a66 = 0;
 
         foreach ($this->detaildata as $emp) {
@@ -67,8 +65,7 @@ class OutSalary extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
 
         return $list;

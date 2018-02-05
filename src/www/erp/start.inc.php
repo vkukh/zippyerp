@@ -5,8 +5,7 @@ namespace ZippyERP\ERP;
 define("ERP_DIR", __DIR__ . '/');
 define("ERP_TPL", _ROOT . '/templates/erp/templates');  //шаблоны печатных форм
 
-function autoload($className)
-{
+function autoload($className) {
     $className = str_replace("\\", "/", ltrim($className, '\\'));
 
 
@@ -22,21 +21,19 @@ function autoload($className)
 
 spl_autoload_register('\ZippyERP\ERP\autoload');
 
-function getTemplate( $className)
-{
+function getTemplate($className) {
     $className = str_replace("\\", "/", ltrim($className, '\\'));
-          $templatepath = _ROOT . 'templates/';
+    $templatepath = _ROOT . 'templates/';
 
     $path = "";
     if (strpos($className, 'ZippyERP/ERP/') === 0) {
         $path = $templatepath . (str_replace("ZippyERP/", "", $className)) . ".html";
     }
-    return  @file_get_contents(strtolower($path));
+    return @file_get_contents(strtolower($path));
 }
 
-function Route($uri)
-{
-     
+function Route($uri) {
+
     $api = explode('/', $uri);
 
     if ($api[0] == 'erpapi' && count($api) > 2) {
@@ -56,20 +53,18 @@ function Route($uri)
                 $class = "\\ZippyERP\\ERP\\API\\" . $class;
 
                 $page = new $class;
-                
+
                 //если RESTFul
-                if($page instanceof \ZippyERP\System\RestFul)
-                {
-                    $page->Execute($api[2]); 
+                if ($page instanceof \ZippyERP\System\RestFul) {
+                    $page->Execute($api[2]);
                     die;
                 }
-                
-                
+
+
                 $response = call_user_func_array(array($page, $api[2]), $params);
-                
             } catch (Exception $e) {
 
-             
+
                 $response = "<error>" . $e->getMessage() . "</error>";
             }
         }

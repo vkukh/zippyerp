@@ -2,10 +2,10 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
-
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Label;
 use Zippy\Html\Link\RedirectLink;
 use Zippy\Html\Panel;
@@ -13,19 +13,22 @@ use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
 
+/**
+ * Движение товара
+ */
 class ItemActivity extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', time()));
         $this->filter->add(new DropDownChoice('store', Store::findArray("storename", "")));
-        $this->filter->add(new DropDownChoice('item', Item::findArray('itemname', "  item_type in (" . Item::ITEM_TYPE_RETSUM . "," . Item::ITEM_TYPE_STUFF . ")","itemname"))) ;
 
+        $this->filter->store->selectFirst();
+        $this->filter->add(new AutocompleteTextInput('item'))->onText($this, 'OnAutoItem');
 
         $this->add(new Panel('detail'))->setVisible(false);
         $this->detail->add(new RedirectLink('print', "movereport"));
@@ -35,11 +38,20 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
-   
+    public function OnAutoItem($sender) {
+        $r = array();
 
-    public function OnSubmit($sender)
-    {
-        $itemid = $this->filter->item->getValue();
+
+        $text = Item::qstr('%' . $sender->getText() . '%');
+        $list = Item::findArray('itemname', " itemname like {$text} and item_type in (" . Item::ITEM_TYPE_RETSUM . "," . Item::ITEM_TYPE_STUFF . ")");
+        foreach ($list as $k => $v) {
+            $r[$k] = $v;
+        }
+        return $r;
+    }
+
+    public function OnSubmit($sender) {
+        $itemid = $this->filter->item->getKey();
         $item = Item::load($itemid);
         if ($item == null) {
             $this->setError('Не вибраний ТМЦ');
@@ -67,11 +79,10 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         $this->detail->setVisible(true);
     }
 
-    private function generateReport()
-    {
+    private function generateReport() {
 
         $storeid = $this->filter->store->getValue();
-        $itemid = $this->filter->item->getValue();
+        $itemid = $this->filter->item->getKey();
         $item = Item::load($itemid);
         $from = $this->filter->from->getDate();
         $to = $this->filter->to->getDate();

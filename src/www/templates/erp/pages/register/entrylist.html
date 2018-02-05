@@ -1,74 +1,74 @@
 <html>
- 
 
-<body>
-<div class="row">
-    <div class="col-xs-10">
-        <h3>Журнал проводок </h3>
 
-        <form zippy="filter" class="form-horizontal">
-            <div class="form-group  ">
-                <label for="from" class="col-xs-2 control-label">З</label>
-                <div class="col-xs-3">
-                    <input type="text" class="form-control" zippy="from">
-                </div>
+    <body>
+        <div class="row">
+            <div class="col-xs-10">
+                <h3>Журнал проводок </h3>
+
+                <form zippy="filter" class="form-horizontal">
+                    <div class="form-group  ">
+                        <label for="from" class="col-xs-2 control-label">З</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" zippy="from">
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label for="to" class="col-xs-2 control-label">по</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" zippy="to">
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label for="dt" class="col-xs-2 control-label">Рахунок</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" zippy="dt">
+                                <option value="0">Выбрать</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label for="ct" class="col-xs-2 control-label"> Корр. рахунок </label>
+                        <div class="col-xs-5">
+                            <select class="form-control" zippy="ct">
+                                <option value="0">Вибрати</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group  ">
+                        <div class="col-xs-2 col-xs-offset-2">
+                            <input class="btn btn-default  " type="submit" value="ОК">
+                        </div>
+                    </div>
+
+                </form>
+                <table class="table table-bordered  table-condensed" style="width:600px;">
+                    <tr>
+                        <th style="width:90px;">Дата</th>
+                        <th style="width:30px;">Дт</th>
+                        <th style="width:30px;">Кт</th>
+                        <th style="width:40px;">Сума</th>
+                        <th style="width:240px;">Документ</th>
+
+                    </tr>
+                    <tr zippy="entrylist">
+                        <td zippy="created"></td>
+                        <td zippy="acc_d"></td>
+                        <td zippy="acc_c"></td>
+                        <td zippy="amount" align="right"></td>
+                        <td><a zippy="show"></a></td>
+
+
+                    </tr>
+                </table>
+                <div zippy="paginator"></div>
+                <br>
+                <div zippy="docview"></div>
+
             </div>
-            <div class="form-group  ">
-                <label for="to" class="col-xs-2 control-label">по</label>
-                <div class="col-xs-3">
-                    <input type="text" class="form-control" zippy="to">
-                </div>
-            </div>
-            <div class="form-group  ">
-                <label for="dt" class="col-xs-2 control-label">Рахунок</label>
-                <div class="col-xs-5">
-                    <select class="form-control" zippy="dt">
-                        <option value="0">Выбрать</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group  ">
-                <label for="ct" class="col-xs-2 control-label"> Корр. рахунок </label>
-                <div class="col-xs-5">
-                    <select class="form-control" zippy="ct">
-                        <option value="0">Вибрати</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group  ">
-                <div class="col-xs-2 col-xs-offset-2">
-                    <input class="btn btn-default  " type="submit" value="ОК">
-                </div>
-            </div>
-
-        </form>
-        <table class="table table-bordered  table-condensed" style="width:600px;">
-            <tr>
-                <th style="width:90px;">Дата</th>
-                <th style="width:30px;">Дт</th>
-                <th style="width:30px;">Кт</th>
-                <th style="width:40px;">Сума</th>
-                <th style="width:240px;">Документ</th>
-
-            </tr>
-            <tr zippy="entrylist">
-                <td zippy="created"></td>
-                <td zippy="acc_d"></td>
-                <td zippy="acc_c"></td>
-                <td zippy="amount" align="right"></td>
-                <td><a zippy="show"></a></td>
-
-
-            </tr>
-        </table>
-        <div zippy="paginator"></div>
-        <br>
-        <div zippy="docview"></div>
-
-    </div>
-</div>
-</body>
+        </div>
+    </body>
 
 </html>
 

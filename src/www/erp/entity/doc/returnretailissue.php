@@ -14,8 +14,7 @@ use ZippyERP\ERP\Util;
 class ReturnRetailIssue extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -50,8 +49,7 @@ class ReturnRetailIssue extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $ret = 0;
         $cost = 0;
         foreach ($this->detaildata as $value) {
@@ -80,8 +78,7 @@ class ReturnRetailIssue extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
 
 

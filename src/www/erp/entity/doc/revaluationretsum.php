@@ -13,8 +13,7 @@ use ZippyERP\ERP\Helper as H;
 class RevaluationRetSum extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -43,8 +42,7 @@ class RevaluationRetSum extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $diff = $this->headerdata['summa'] - $this->headerdata['actual'];
         ;
 

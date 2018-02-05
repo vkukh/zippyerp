@@ -13,8 +13,7 @@ use ZippyERP\ERP\Entity\SubConto;
 class NAOutMaintenance extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -40,8 +39,7 @@ class NAOutMaintenance extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
 
         foreach ($this->detaildata as $value) {
@@ -87,8 +85,7 @@ class NAOutMaintenance extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
 
         return $list;

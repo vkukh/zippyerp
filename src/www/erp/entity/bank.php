@@ -13,8 +13,7 @@ class Bank extends \ZCL\DB\Entity
 
     public $mfo, $code, $city, $zip, $address, $url, $phone;
 
-    protected function beforeSave()
-    {
+    protected function beforeSave() {
         parent::beforeSave();
         //упаковываем  данные в detail
         $this->detail = "<detail><mfo>{$this->mfo}</mfo>";
@@ -23,8 +22,7 @@ class Bank extends \ZCL\DB\Entity
         return true;
     }
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
         //распаковываем  данные из detail
         $xml = simplexml_load_string($this->detail);
         $this->mfo = (string) ($xml->mfo[0]);

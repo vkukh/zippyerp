@@ -34,8 +34,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
     private $_rowid = 0;
     private $_basedocid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -43,7 +42,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new Date('document_date'))->setDate(time());
 
-        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", 'customer_name')));
 
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 
@@ -59,7 +58,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
 
-        $this->editdetail->add(new DropDownChoice('edittovar',Item::findArray('itemname', " item_type <> " . Item::ITEM_TYPE_RETSUM,'itemname')));
+        $this->editdetail->add(new DropDownChoice('edittovar', Item::findArray('itemname', " item_type <> " . Item::ITEM_TYPE_RETSUM, 'itemname')));
         $this->editdetail->edittovar->onChange($this, 'OnChangeItem');
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
@@ -82,7 +81,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
             $this->docform->contract->setText($this->_doc->headerdata['contractnumber']);
 
             $this->docform->customer->setValue($this->_doc->headerdata['customer']);
-            
+
 
             //$basedoc = Document::load($this->_doc->headerdata['based']);
 
@@ -107,7 +106,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
                     if ($basedoc->meta_name == 'GoodsIssue') {
 
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
-                        
+
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -119,7 +118,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
                     if ($basedoc->meta_name == 'Invoice') {
 
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
-                        
+
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -135,8 +134,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('tovar', $item->itemname));
@@ -149,8 +147,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $tovar = $sender->owner->getDataItem();
         // unset($this->_tovarlist[$tovar->tovar_id]);
 
@@ -158,16 +155,14 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
         $this->_rowid = 0;
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -178,14 +173,13 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
 
 
         $this->editdetail->edittovar->setValue($item->item_id);
-  
+
 
 
         $this->_rowid = $item->item_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний товар");
@@ -211,14 +205,12 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editpricends->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -277,8 +269,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
             $total = $total + $tovar->price * ($tovar->quantity / 1000);
@@ -293,8 +284,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введений ні один  товар");
@@ -302,8 +292,7 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
 
         $this->calcTotal();
@@ -311,13 +300,11 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function OnItem(DropDownChoice $sender)
-    {
+    public function OnItem(DropDownChoice $sender) {
         $id = $sender->getValue();
         $item = Item::load($id);
         $this->editdetail->editprice->setText(H::fm($item->priceopt));
@@ -327,18 +314,12 @@ class TaxInvoice extends \ZippyERP\ERP\Pages\Base
         $this->updateAjax(array('editprice', 'editpricends'));
     }
 
-    
-
-    public function OnAutoContract($sender)
-    {
+    public function OnAutoContract($sender) {
         $text = $sender->getValue();
         return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
     }
 
-    
-
-    public function OnChangeItem($sender)
-    {
+    public function OnChangeItem($sender) {
 
         $item = Item::load($this->editdetail->edittovar->getValue());
         $this->editdetail->editprice->setText(H::fm($item->priceopt));

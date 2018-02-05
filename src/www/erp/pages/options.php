@@ -14,8 +14,7 @@ use Zippy\WebApplication as App;
 class Options extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         if (System::getUser()->userlogin !== 'admin') {
             App::Redirect('\ZippyERP\System\Pages\Error', 'Вы не админ');
@@ -49,11 +48,11 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $this->common->add(new CheckBox('juridical'))->onChange($this, "OnJFChange");
         $this->common->add(new SubmitButton('commonsave'))->onClick($this, 'saveCommonOnClick');
         $this->common->add(new DropDownChoice('basestore', \ZippyERP\ERP\Entity\Store::findArray('storename', '')));
-        $this->common->add(new DropDownChoice('manager',\ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ","fullname"))) ;
-        $this->common->add(new DropDownChoice('accounter',\ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ","fullname")) ) ;
-        $this->common->add(new DropDownChoice('ownerfiz',\ZippyERP\ERP\Entity\Contact::findArray("fullname", "","fullname"))) ;
+        $this->common->add(new DropDownChoice('manager', \ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ", "fullname")));
+        $this->common->add(new DropDownChoice('accounter', \ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ", "fullname")));
+        $this->common->add(new DropDownChoice('ownerfiz', \ZippyERP\ERP\Entity\Contact::findArray("fullname", "", "fullname")));
         $this->common->ownerfiz->setVisible(true);
-       
+
         $this->common->manager->setVisible(false);
 
         $this->add(new Form('tax'));
@@ -132,8 +131,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $this->tax->military->setText($tax['military']);
     }
 
-    public function saveDetailOnClick($sender)
-    {
+    public function saveDetailOnClick($sender) {
 
         if ($this->detail->name->getText() == '') {
             $this->setError("Введіть им'я");
@@ -170,8 +168,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $this->setSuccess('Настройки сохранены');
     }
 
-    public function saveCommonOnClick($sender)
-    {
+    public function saveCommonOnClick($sender) {
         $common = array();
         $common['closeddate'] = $this->common->closeddate->getDate();
         $common['hasnds'] = $this->common->hasnds->isChecked();
@@ -189,8 +186,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $this->setSuccess('Настройки сохранены');
     }
 
-    public function saveTaxOnClick($sender)
-    {
+    public function saveTaxOnClick($sender) {
         $tax = array();
 
         $tax['minsalary'] = $this->tax->minsalary->getText();
@@ -206,10 +202,8 @@ class Options extends \ZippyERP\ERP\Pages\Base
         System::setOptions("tax", $tax);
         $this->setSuccess('Настройки сохранены');
     }
-  
 
-    public function OnJFChange($sender)
-    {
+    public function OnJFChange($sender) {
         if ($sender->isChecked()) {
             $this->common->ownerfiz->setVisible(false);
             ;
@@ -220,7 +214,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
             $this->common->ownerfiz->setVisible(true);
             ;
             $this->common->ownerfiz->setValue(0);
-         
+
             $this->common->manager->setVisible(false);
             ;
         }

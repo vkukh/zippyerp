@@ -15,8 +15,7 @@ class Report
      *
      * @param mixed $template
      */
-    public function __construct($template)
-    {
+    public function __construct($template) {
         $this->_template = $template;
     }
 
@@ -27,8 +26,7 @@ class Report
      * @param mixed $detail Двумерный массив  табличной  части
      * @param mixed $summary Список  полей  по  которым  вычисляются  итоговые  данные табличной части
      */
-    public function generate(array $header, array $detail = array(), array $detail2 = array())
-    {
+    public function generate(array $header, array $detail = array(), array $detail2 = array()) {
 
         $header['_detail'] = $detail;
         $header['_detail2'] = $detail2;

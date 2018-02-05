@@ -1,114 +1,114 @@
 <html>
-<head>
-</head>
+    <head>
+    </head>
 
-<body>
+    <body>
 
-<div zippy="itemtable">
-    <div class="row">
-        <div class="col-xs-8">
-            <h3>Довідник ОЗ та НМА </h3>
-            <a zippy="addnew" class="btn btn-default  ">Додати</a>
-            <table class="table table-bordered ">
-                <tr>
-                    <th>Назва</th>
-                    <th>Інв. номер</th>
+        <div zippy="itemtable">
+            <div class="row">
+                <div class="col-xs-8">
+                    <h3>Довідник ОЗ та НМА </h3>
+                    <a zippy="addnew" class="btn btn-default  ">Додати</a>
+                    <table class="table table-bordered ">
+                        <tr>
+                            <th>Назва</th>
+                            <th>Інв. номер</th>
 
-                    <th></th>
-                </tr>
-                <tr zippy="itemlist">
-                    <td zippy="itemname"></td>
-                    <td zippy="inventory"></td>
-
-
-                    <td style="width:75px">
-                        <a zippy="copy" title="Копія"><i class="fa fa-files-o"></i></a>
-                        <a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a>
-                        <a zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>
-            </table>
+                            <th></th>
+                        </tr>
+                        <tr zippy="itemlist">
+                            <td zippy="itemname"></td>
+                            <td zippy="inventory"></td>
 
 
-        </div>
-    </div>
-</div>
+                            <td style="width:75px">
+                                <a zippy="copy" title="Копія"><i class="fa fa-files-o"></i></a>
+                                <a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a>
+                                <a zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    </table>
 
-<form zippy="itemdetail" method="post">
-    <div class="row">
-        <div class="col-xs-4">
 
-            <div class="form-group">
-                <label for="edititemname">Назва</label>
-                <input class="form-control" zippy="edititemname" required="required"/>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="edittypeos">Тип</label>
-                <select class="form-control" zippy="edittypeos"></select>
-            </div>
-            <div class="form-group">
-                <label for="editinventory">Інвентарний  номер</label>
-                <input class="form-control" zippy="editinventory"/>
-            </div>
-
-            <div class="form-group">
-                <label for="editdepreciation">Метод зносу</label>
-                <select class="form-control" zippy="editdepreciation">
-                    <option value="1">Лінійний</option>
-                </select>
-            </div>
-            <div class="form-group  ">
-                <label for="editexpenses" class="  control-label">Тип витрат</label>
-                <select class="form-control" zippy="editexpenses">
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="editdescription">Опис</label>
-                <textarea class="form-control" zippy="editdescription"></textarea></td>
-            </div>
-
-            <input zippy="save" type="submit" value="Зберегти" class="btn btn-default ">&nbsp;&nbsp;
-            <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default  ">
         </div>
 
-        <div class="col-xs-4">
-            <div class="form-group">
-                <label for="editvalue">Первісна вартість</label>
-                <input class="form-control" style="width:100px;" zippy="editvalue" pattern="[0-9\.]+"/>
-            </div>
+        <form zippy="itemdetail" method="post">
+            <div class="row">
+                <div class="col-xs-4">
 
-            <div class="form-group">
-                <label for="editcancelvalue">Ліквідаційна вартість</label>
-                <input class="form-control" style="width:100px;" zippy="editcancelvalue" pattern="[0-9\.]+"/>
-            </div>
-            <div class="form-group">
-                <label for="editterm">Срок використання, міс.</label>
-                <input class="form-control" style="width:100px;" zippy="editterm" pattern="[0-9]+"/>
-            </div>
-            <div class="form-group">
-                <label for="editnorma">Норма щорічної амортизації</label>
-                <input class="form-control" style="width:100px;" zippy="editnorma" pattern="[0-9\.]+"/>
-            </div>
-            <div class="form-group">
-                <label for="editterm">Дата вводу в експлуатацію</label>
-                <input class="form-control" style="width:100px;" zippy="editdatemaint"/>
+                    <div class="form-group">
+                        <label for="edititemname">Назва</label>
+                        <input class="form-control" zippy="edititemname" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="edittypeos">Тип</label>
+                        <select class="form-control" zippy="edittypeos"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editinventory">Інвентарний  номер</label>
+                        <input class="form-control" zippy="editinventory"/>
+                    </div>
 
-            </div>
-            <div class="form-group  ">
-                <label for="editgroup" class="  control-label">Податковий облік</label>
-                <select class="form-control" zippy="editgroup">
-                    <option value="0">Невиробничий</option>
-                    <option value="1">Группа 1</option>
-                    <option value="2">Группа 2</option>
-                    <option value="3">Группа 3</option>
-                    <option value="4">Группа 4</option>
-                </select>
-            </div>
+                    <div class="form-group">
+                        <label for="editdepreciation">Метод зносу</label>
+                        <select class="form-control" zippy="editdepreciation">
+                            <option value="1">Лінійний</option>
+                        </select>
+                    </div>
+                    <div class="form-group  ">
+                        <label for="editexpenses" class="  control-label">Тип витрат</label>
+                        <select class="form-control" zippy="editexpenses">
+                        </select>
+                    </div>
 
-        </div>
-</form>
+                    <div class="form-group">
+                        <label for="editdescription">Опис</label>
+                        <textarea class="form-control" zippy="editdescription"></textarea></td>
+                    </div>
+
+                    <input zippy="save" type="submit" value="Зберегти" class="btn btn-default ">&nbsp;&nbsp;
+                    <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default  ">
+                </div>
+
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="editvalue">Первісна вартість</label>
+                        <input class="form-control" style="width:100px;" zippy="editvalue" pattern="[0-9\.]+"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editcancelvalue">Ліквідаційна вартість</label>
+                        <input class="form-control" style="width:100px;" zippy="editcancelvalue" pattern="[0-9\.]+"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editterm">Срок використання, міс.</label>
+                        <input class="form-control" style="width:100px;" zippy="editterm" pattern="[0-9]+"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editnorma">Норма щорічної амортизації</label>
+                        <input class="form-control" style="width:100px;" zippy="editnorma" pattern="[0-9\.]+"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editterm">Дата вводу в експлуатацію</label>
+                        <input class="form-control" style="width:100px;" zippy="editdatemaint"/>
+
+                    </div>
+                    <div class="form-group  ">
+                        <label for="editgroup" class="  control-label">Податковий облік</label>
+                        <select class="form-control" zippy="editgroup">
+                            <option value="0">Невиробничий</option>
+                            <option value="1">Группа 1</option>
+                            <option value="2">Группа 2</option>
+                            <option value="3">Группа 3</option>
+                            <option value="4">Группа 4</option>
+                        </select>
+                    </div>
+
+                </div>
+        </form>
 
 
-</body>
+    </body>
 </html>

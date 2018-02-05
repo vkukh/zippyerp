@@ -3,7 +3,6 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -29,10 +28,9 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
     public $_itemlist = array();
     private $_doc;
     private $_rowid = 0;
-    private $_expenses = array(23 => "Производство", 91 => "Общепроизводственные затраты", 92 => "Административные затраты");
+    private $_expenses = array(23 => "Виробництво", 91 => "Загальновиробничі витрати", 92 => "Адміністративні витрати");
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -51,9 +49,8 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new DropDownChoice('edititem'));
-        $this->editdetail->edititem->onChange($this, 'OnChangeItem',true);
+        $this->editdetail->edititem->onChange($this, 'OnChangeItem', true);
         $this->editdetail->add(new DropDownChoice('edittype', array(201 => 'Материал', 25 => 'Полуфабрикат'), 201))->onChange($this, "OnItemType");
-
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
@@ -63,8 +60,7 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_number->setText($this->_doc->document_number);
 
             $this->docform->document_date->setDate($this->_doc->document_date);
-
-
+ 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->expenses->setValue($this->_doc->headerdata['expenses']);
 
@@ -79,11 +75,9 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
         $this->OnItemType($this->editdetail->edittype);
-        
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('item', $item->itemname));
@@ -95,8 +89,7 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $item = $sender->owner->getDataItem();
         // unset($this->_itemlist[$item->item_id]);
 
@@ -104,22 +97,20 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
 
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
         //очищаем  форму
         $this->editdetail->edititem->setValue(0);
-    
+
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
 
         $stock = $sender->getOwner()->getDataItem();
 
@@ -129,27 +120,22 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editquantity->setText($stock->quantity / 1000);
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
-
         //  $list = Stock::findArrayEx("closed  <> 1   and store_id={$stock->store_id}");
         $this->editdetail->edititem->setValue($stock->stock_id);
-        
-        $this->editdetail->edittype->setValue($stock->type);
 
+        $this->editdetail->edittype->setValue($stock->type);
 
         $this->_rowid = $stock->stock_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний ТМЦ");
             return;
         }
 
-
         $stock = Stock::load($id);
-
 
         $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
         // $stock->partion = $stock->price;
@@ -163,14 +149,12 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -219,32 +203,27 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         
     }
 
-    public function OnItemType($sender)
-    {
+    public function OnItemType($sender) {
         $this->editdetail->edititem->setValue(0);
-        
+
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editprice->setText(" ");
-        
+
         $store_id = $this->docform->store->getValue();
-         $account_id = $this->editdetail->edittype->getValue();
-                                                 
+        $account_id = $this->editdetail->edittype->getValue();
+
         $this->editdetail->edititem->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and stock_id in(select stock_id  from  erp_account_subconto  where  account_id={$account_id}) "));
-         
-        
     }
 
     /**
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введений ні один  ТМЦ");
@@ -253,29 +232,23 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
 
         $this->calcTotal();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function OnChangeStore($sender)
-    {
+    public function OnChangeStore($sender) {
         //очистка  списка  товаров
         $this->_itemlist = array();
         $this->docform->detail->Reload();
     }
 
-    
-
-    public function OnChangeItem($sender)
-    {
+    public function OnChangeItem($sender) {
 
         $id = $sender->getValue();
         $stock = Stock::load($id);

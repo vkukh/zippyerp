@@ -11,8 +11,7 @@ use ZippyERP\ERP\Helper as H;
 class TransferOrder extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
         $myfirm = \ZippyERP\System\System::getOptions("firmdetail");
         $myaccount = \ZippyERP\ERP\Entity\MoneyFund::load($this->headerdata['bankaccount']);
         $mybank = \ZippyERP\ERP\Entity\Bank::load($myaccount->bank);
@@ -46,8 +45,7 @@ class TransferOrder extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
         return true;
     }

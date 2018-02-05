@@ -1,131 +1,131 @@
 <html>
 
 
-<body>
-<div class="row">
-    <div class="col-xs-12">
-        <h3>Форма 1ДФ</h3>
+    <body>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Форма 1ДФ</h3>
 
-        <br>
-        <form zippy="filter" class="navbar-form ">
+                <br>
+                <form zippy="filter" class="navbar-form ">
 
-            <div class="form-group">
-                <label for="yr">Рік</label>
-                <select zippy="yr" class="form-control">
+                    <div class="form-group">
+                        <label for="yr">Рік</label>
+                        <select zippy="yr" class="form-control">
 
-                    <option value="2016">2016</option>
-                    <option value="2017">2017</option>
-                    <option value="2018">2018</option>
-                </select>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="qw">квартал</label>
+                        <select zippy="qw" class="form-control">
+
+                            <option value="1">I</option>
+                            <option value="2">II</option>
+                            <option value="3">III</option>
+                            <option value="4">IV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <a zippy="load">Заповнити</a>
+                    </div>
+                    <div class="form-group">
+                        <a zippy="show">Показати</a>
+                    </div>
+
+
+                </form>
             </div>
-            <div class="form-group">
-                <label for="qw">квартал</label>
-                <select zippy="qw" class="form-control">
-
-                    <option value="1">I</option>
-                    <option value="2">II</option>
-                    <option value="3">III</option>
-                    <option value="4">IV</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <a zippy="load">Заповнити</a>
-            </div>
-            <div class="form-group">
-                <a zippy="show">Показати</a>
-            </div>
-
-
-        </form>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-xs-8" zippy="listp">
-        <a zippy="addrow">Додати</a>
-        <table class="table table-condenced">
-            <tr>
-                <th>Им'я</th>
-                <th>Нараховано</th>
-                <th>Виплачено</th>
-                <th>Податок</th>
-                <th>Код</th>
-                <th></th>
-            </tr>
-            <tr zippy="list">
-                <td zippy="emp"></td>
-                <td align="right" zippy="income"></td>
-                <td align="right" zippy="outcome"></td>
-                <td align="right" zippy="tax"></td>
-                <td zippy="code"></td>
-                <td><a zippy="edit"><i class="fa fa-pencil-square-o"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a></td>
-            </tr>
-
-        </table>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-xs-4">
-        <form zippy="editemp">
-            <h4>Редагування співробітника</h4>
-            <div class="form-group">
-                <label for="editemployee" class="  control-label">Им'я</label>
-                <select class="form-control select2" type="text" zippy="editemployee" required="required">
-                   <option value="0">Не вибрано</option>
-                </select>   
-
-            </div>
-            <div class="form-group">
-                <label for="editincome" class="  control-label">Нараховано</label>
-                <input class="form-control" type="text" zippy="editincome" required="required" pattern="[0-9\.]+"
-                       style="width: 70px;">
-
-            </div>
-            <div class="form-group">
-                <label for="editoutcome" class="  control-label">Утримано</label>
-                <input class="form-control" type="text" zippy="editoutcome" required="required" pattern="[0-9\.]+"
-                       style="width: 70px;">
-
-            </div>
-            <div class="form-group">
-                <label for="edittax" class="  control-label">Податок</label>
-                <input class="form-control" type="text" zippy="edittax" required="required" pattern="[0-9\.]+"
-                       style="width: 70px;">
-
-            </div>
-            <div class="form-group">
-                <label for="editcode" class="  control-label">Код</label>
-                <input class="form-control" type="text" zippy="editcode" required="required" pattern="[0-9]+"
-                       style="width: 70px;">
-
-            </div>
-            <div class="form-group">
-                <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-default ">
-                &nbsp; <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-default ">
-            </div>
-
-        </form>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-11" zippy="detail">
-        <div>
-            <a zippy="print" target="_blank" title="Друк"><img class="icon20" src="/assets/images/print_32.png"></a>
-            <a zippy="html" target="_blank" title="Експорт в HTML"><img class="icon20"
-                                                                        src="/assets/images/html.png"></a>
-            <a zippy="excel" target="_blank" title="Експорт в Excel"><img class="icon20"
-                                                                          src="/assets/images/excel_32.png"></a>
-            <a zippy="xml" target="_blank" title="XML (ДПА)"><img class="icon20" src="/assets/images/xml.png"></a>
-
         </div>
 
-        <iframe style="border:0px;" zippy="preview" src="/templates/wait.html" width="900px" height="800px"></iframe>
+        <div class="row">
+            <div class="col-xs-8" zippy="listp">
+                <a zippy="addrow">Додати</a>
+                <table class="table table-condenced">
+                    <tr>
+                        <th>Им'я</th>
+                        <th>Нараховано</th>
+                        <th>Виплачено</th>
+                        <th>Податок</th>
+                        <th>Код</th>
+                        <th></th>
+                    </tr>
+                    <tr zippy="list">
+                        <td zippy="emp"></td>
+                        <td align="right" zippy="income"></td>
+                        <td align="right" zippy="outcome"></td>
+                        <td align="right" zippy="tax"></td>
+                        <td zippy="code"></td>
+                        <td><a zippy="edit"><i class="fa fa-pencil-square-o"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <form zippy="editemp">
+                    <h4>Редагування співробітника</h4>
+                    <div class="form-group">
+                        <label for="editemployee" class="  control-label">Им'я</label>
+                        <select class="form-control select2" type="text" zippy="editemployee" required="required">
+                            <option value="0">Не вибрано</option>
+                        </select>   
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editincome" class="  control-label">Нараховано</label>
+                        <input class="form-control" type="text" zippy="editincome" required="required" pattern="[0-9\.]+"
+                               style="width: 70px;">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editoutcome" class="  control-label">Утримано</label>
+                        <input class="form-control" type="text" zippy="editoutcome" required="required" pattern="[0-9\.]+"
+                               style="width: 70px;">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="edittax" class="  control-label">Податок</label>
+                        <input class="form-control" type="text" zippy="edittax" required="required" pattern="[0-9\.]+"
+                               style="width: 70px;">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editcode" class="  control-label">Код</label>
+                        <input class="form-control" type="text" zippy="editcode" required="required" pattern="[0-9]+"
+                               style="width: 70px;">
+
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-default ">
+                        &nbsp; <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-default ">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-11" zippy="detail">
+                <div>
+                    <a zippy="print" target="_blank" title="Друк"><img class="icon20" src="/assets/images/print_32.png"></a>
+                    <a zippy="html" target="_blank" title="Експорт в HTML"><img class="icon20"
+                                                                                src="/assets/images/html.png"></a>
+                    <a zippy="excel" target="_blank" title="Експорт в Excel"><img class="icon20"
+                                                                                  src="/assets/images/excel_32.png"></a>
+                    <a zippy="xml" target="_blank" title="XML (ДПА)"><img class="icon20" src="/assets/images/xml.png"></a>
+
+                </div>
+
+                <iframe style="border:0px;" zippy="preview" src="/templates/wait.html" width="900px" height="800px"></iframe>
 
 
-    </div>
+            </div>
 
-</div>
-</body>
+        </div>
+    </body>
 
 </html>

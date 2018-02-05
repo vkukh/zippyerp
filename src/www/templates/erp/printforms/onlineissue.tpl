@@ -21,7 +21,7 @@
 
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7" valign="middle">
-            <br><br> Накладная № {{document_number}} від {{date}} <br><br><br>
+            <br><br> Накладна № {{document_number}} від {{date}} <br><br><br>
         </td>
     </tr>
 

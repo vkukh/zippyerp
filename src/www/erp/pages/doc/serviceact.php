@@ -31,14 +31,13 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
     private $_rowid = 0;
     private $_basedocid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER,'customer_name'))) ;
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', " cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER, 'customer_name')));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
         $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
         $this->docform->add(new CheckBox('cash'));
@@ -51,7 +50,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('edititem',Item::findArray('itemname', "item_type =" . Item::ITEM_TYPE_SERVICE,'itemname')));
+        $this->editdetail->add(new DropDownChoice('edititem', Item::findArray('itemname', "item_type =" . Item::ITEM_TYPE_SERVICE, 'itemname')));
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new TextInput('editpricends'));
@@ -107,8 +106,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnItem'))->setVisible(false);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('item', $item->itemname));
@@ -121,8 +119,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -134,8 +131,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         $this->_rowid = $item->item_id;
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $item = $sender->owner->getDataItem();
         // unset($this->_itemlist[$item->item_id]);
 
@@ -143,15 +139,13 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edititem->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний товар");
@@ -175,14 +169,12 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -244,8 +236,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
 
         $total = 0;
         $totalnds = 0;
@@ -263,8 +254,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введений ні один  товар");
@@ -275,8 +265,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
         $this->docform->totalnds->setVisible($this->docform->isnds->isChecked());
         $this->calcTotal();
@@ -284,8 +273,7 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         App::$app->getResponse()->addJavaScript("var _nds = " . H::nds() . ";var nds_ = " . H::nds(true) . ";");
     }
 
-    public function onIsnds($sender)
-    {
+    public function onIsnds($sender) {
         foreach ($this->_itemlist as $item) {
             if ($sender->isChecked() == false) {
                 $item->price = $item->pricends;
@@ -296,24 +284,18 @@ class ServiceAct extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function addItemOnClick($sender)
-    {
+    public function addItemOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->itemdetail->open();
     }
 
-
-    public function OnAutoContract($sender)
-    {
+    public function OnAutoContract($sender) {
         $text = $sender->getValue();
         return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
     }
-
-
 
 }

@@ -43,8 +43,7 @@ class Document extends \ZCL\DB\Entity
      */
     public $detaildata = array();
 
-    protected function init()
-    {
+    protected function init() {
         $this->document_id = 0;
         $this->state = 0;
         $this->basedoc = '';
@@ -56,21 +55,18 @@ class Document extends \ZCL\DB\Entity
         $this->headerdata = array();
     }
 
-    protected static function getMetadata()
-    {
+    protected static function getMetadata() {
         return array('table' => 'erp_document', 'view' => 'erp_document_view', 'keyfield' => 'document_id');
     }
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
         $this->created = strtotime($this->created);
         $this->updated = strtotime($this->updated);
         $this->document_date = strtotime($this->document_date);
         $this->unpackData();
     }
 
-    protected function beforeSave()
-    {
+    protected function beforeSave() {
         $this->document_number = trim($this->document_number);
         $this->packData();
 
@@ -81,8 +77,7 @@ class Document extends \ZCL\DB\Entity
      * Упаковка  данных  в  XML
      *
      */
-    private function packData()
-    {
+    private function packData() {
 
 
         $this->content = "<doc><header>";
@@ -118,8 +113,7 @@ class Document extends \ZCL\DB\Entity
      * распаковка из  XML
      *
      */
-    private function unpackData()
-    {
+    private function unpackData() {
 
         $this->headerdata = array();
         if ($this->content == null || strlen($this->content) == 0) {
@@ -152,8 +146,7 @@ class Document extends \ZCL\DB\Entity
      * Генерация HTML  для  печатной формы
      *
      */
-    public function generateReport()
-    {
+    public function generateReport() {
         return "";
     }
 
@@ -161,8 +154,7 @@ class Document extends \ZCL\DB\Entity
      * Выполнение документа - обновление склада, бухгалтерские проводки и  т.д.
      *
      */
-    public function Execute()
-    {
+    public function Execute() {
 
         if (trim(get_class($this), "\\") == 'ZippyERP\ERP\Entity\Doc\Document') {
             //если  екземпляр  базового типа Document приводим  к  дочернему  типу
@@ -174,8 +166,7 @@ class Document extends \ZCL\DB\Entity
      * Отмена  документа
      *
      */
-    protected function Cancel()
-    {
+    protected function Cancel() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
         // если  метод не переопределен  в  наследнике удаляем  документ  со  всех  движений
@@ -198,8 +189,7 @@ class Document extends \ZCL\DB\Entity
      *
      * @param mixed $classname
      */
-    public static function create($classname)
-    {
+    public static function create($classname) {
         $arr = explode("\\", $classname);
         $classname = $arr[count($arr) - 1];
         $conn = \ZDB\DB::getConnect();
@@ -214,8 +204,7 @@ class Document extends \ZCL\DB\Entity
     /**
      * Приведение  типа  документа
      */
-    public function cast()
-    {
+    public function cast() {
 
         $type = Helper::getMetaType($this->type_id);
         $class = "\\ZippyERP\\ERP\\Entity\\Doc\\" . $type['meta_name'];
@@ -224,8 +213,7 @@ class Document extends \ZCL\DB\Entity
         return $doc;
     }
 
-    protected function beforeDelete()
-    {
+    protected function beforeDelete() {
         $conn = \ZDB\DB::getConnect();
         $conn->Execute("delete from erp_document_update_log  where document_id =" . $this->document_id);
         $conn->Execute("update erp_document set  state=" . self::STATE_DELETED . " where  document_id =" . $this->document_id);
@@ -233,8 +221,7 @@ class Document extends \ZCL\DB\Entity
         return true;
     }
 
-    protected function afterSave($update)
-    {
+    protected function afterSave($update) {
 
         //  if ($update == false) {   //новый  документ
         //    $this->updateStatus(self::STATE_NEW);
@@ -250,8 +237,7 @@ class Document extends \ZCL\DB\Entity
      *
      * @param mixed $id
      */
-    public function AddConnectedDoc($id)
-    {
+    public function AddConnectedDoc($id) {
         if ($id > 0) {
             $conn = \ZDB\DB::getConnect();
             $conn->Execute("delete from erp_docrel  where (doc1={$this->document_id} and doc2={$id} )  or (doc2={$this->document_id} and doc1={$id})");
@@ -264,8 +250,7 @@ class Document extends \ZCL\DB\Entity
      *
      * @param mixed $id
      */
-    public function RemoveConnectedDoc($id)
-    {
+    public function RemoveConnectedDoc($id) {
         if ($id > 0) {
             $conn = \ZDB\DB::getConnect();
             $conn->Execute("delete from erp_docrel  where (doc1={$this->document_id} and doc2={$id} )  or (doc2={$this->document_id} and doc1={$id})");
@@ -276,8 +261,7 @@ class Document extends \ZCL\DB\Entity
      * список  связанных  документов
      *
      */
-    public function ConnectedDocList()
-    {
+    public function ConnectedDocList() {
 
         $where = "document_id in (select doc1 from erp_docrel where doc2={$this->document_id}) or document_id in (select doc2 from erp_docrel where doc1={$this->document_id})";
         return Document::find($where);
@@ -287,8 +271,7 @@ class Document extends \ZCL\DB\Entity
      * список записей   в  логе   состояний
      *
      */
-    public function getLogList()
-    {
+    public function getLogList() {
 
 
         $conn = \ZDB\DB::getConnect();
@@ -312,8 +295,7 @@ class Document extends \ZCL\DB\Entity
      *
      * @param mixed $state
      */
-    public function updateStatus($state)
-    {
+    public function updateStatus($state) {
 
 
         if ($this->state == $state)
@@ -345,8 +327,7 @@ class Document extends \ZCL\DB\Entity
      * @param mixed $state
      * @return mixed
      */
-    public static function getStateName($state)
-    {
+    public static function getStateName($state) {
 
         switch ($state) {
             case Document::STATE_NEW:
@@ -356,7 +337,7 @@ class Document extends \ZCL\DB\Entity
             case Document::STATE_CANCELED:
                 return "Відмінений";
             case Document::STATE_EXECUTED:
-                return "Проведеній";
+                return "Проведений";
             case Document::STATE_CLOSED:
                 return "Закритий";
             case Document::STATE_APPROVED:
@@ -367,6 +348,8 @@ class Document extends \ZCL\DB\Entity
                 return "Очікує оплату";
             case Document::STATE_WA:
                 return "Очікує затвердження";
+            case Document::STATE_INSHIPMENT:
+                return "В доставці";
             default:
                 return "Невідомий статус";
         }
@@ -376,8 +359,7 @@ class Document extends \ZCL\DB\Entity
      * Возвращает  следующий  номер  при  автонумерации
      *
      */
-    public function nextNumber()
-    {
+    public function nextNumber() {
 
 
         $class = explode("\\", get_called_class());
@@ -400,8 +382,7 @@ class Document extends \ZCL\DB\Entity
      *  Возвращает  списки  документов которые  могут быть  созданы  на  основании
      *
      */
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
 
         return $list;
@@ -411,8 +392,7 @@ class Document extends \ZCL\DB\Entity
      * дефолтный список состояний  для   выпадающих списков
      * может  переружатся  для  уточнения  в  зависимости  от типа  документа
      */
-    public static function getStatesList()
-    {
+    public static function getStatesList() {
         $list = array();
         $list[Document::STATE_NEW] = 'Новий';
         $list[Document::STATE_EDITED] = 'Відредагований';
@@ -425,8 +405,7 @@ class Document extends \ZCL\DB\Entity
      * Проверяет  может  ли  документ  быть  удален
      *
      */
-    public function checkDeleted()
-    {
+    public function checkDeleted() {
         $conn = \ZDB\DB::getConnect();
 
         $cnt = $conn->GetOne("select  count(*) from erp_docrel where  doc1 = {$this->document_id}  or  doc2 = {$this->document_id}");
@@ -441,8 +420,7 @@ class Document extends \ZCL\DB\Entity
      * Перегружается  дочерними  для  добавление  специфических  типов
      *
      */
-    public function supportedExport()
-    {
+    public function supportedExport() {
         return array(self::EX_EXCEL);
     }
 
@@ -454,8 +432,7 @@ class Document extends \ZCL\DB\Entity
      * @param mixed $to конец  периода  или  null
      * @param mixed $header значения заголовка
      */
-    public static function search($type, $from, $to, $header = array())
-    {
+    public static function search($type, $from, $to, $header = array()) {
         $conn = $conn = \ZDB\DB::getConnect();
         ;
         $where = "state= " . Document::STATE_EXECUTED;

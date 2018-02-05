@@ -30,8 +30,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     public $_list = array();
     private $_doc;
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
         $this->add(new Form('docform'));
         $this->docform->add(new Date('document_date', time()));
@@ -45,7 +44,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes(),BS::IN))->onChange($this, 'typeOnClick');
+        $this->editdetail->add(new DropDownChoice('editoptype', BS::getTypes(), BS::IN))->onChange($this, 'typeOnClick');
         $this->editdetail->add(new DropDownChoice('editcustomer'));
         $this->editdetail->add(new CheckBox('editprepayment'))->setChecked(1);
 
@@ -82,12 +81,11 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_list')), $this, 'detailOnRow'));
 
         $this->docform->detail->Reload();
-        
+
         $this->typeOnClick($this->editdetail->editoptype);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
         $types = BS::getTypes();
         $row->add(new Label('optype', $types[$item->optype]));
@@ -98,8 +96,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $entry = $sender->owner->getDataItem();
         // unset($this->_entrylist[$tovar->tovar_id]);
 
@@ -107,14 +104,12 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
 
         $doc = $this->editdetail->editdoc->getKey();
         if ($doc == 0 && $this->editdetail->editdoc->isVisible()) {
@@ -153,21 +148,19 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editdoc->setKey(0);
         $this->editdetail->editdoc->setText('');
         $this->editdetail->editcustomer->setValue(0);
-    
+
         ;
         $this->editdetail->editamount->setText("0");
         $this->editdetail->editnds->setText("0");
         $this->editdetail->editcomment->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -212,8 +205,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_list) == 0) {
             $this->setError("Не введена ні одна строка");
@@ -222,13 +214,11 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function typeOnClick($sender)
-    {
+    public function typeOnClick($sender) {
         $this->editdetail->editnds->setVisible(true);
         $this->editdetail->editdoc->setVisible(true);
         $this->editdetail->editcustomer->setVisible(true);
@@ -236,7 +226,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editnoentry->setVisible(true);
         //$list = array();
         $type = $sender->getValue();
-        
+
         if ($type == BS::TAX) {
 
             $this->editdetail->editnds->setVisible(false);
@@ -269,10 +259,10 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             $this->editdetail->editpayment->setVisible(false);
             $this->editdetail->editnoentry->setVisible(false);
         }
-        
 
-        
-         
+
+
+
         $where = "";
         if ($type == BS::IN) {
             //если  приход то  продавца
@@ -294,13 +284,11 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
             // оплата  налогов  и  сборов
             $where = "     cust_type=" . Customer::TYPE_GOV;
         }
-        $this->editdetail->editcustomer->setOptionList(Customer::findArray('customer_name',  $where,'customer_name'));
+        $this->editdetail->editcustomer->setOptionList(Customer::findArray('customer_name', $where, 'customer_name'));
         $this->editdetail->editcustomer->setValue(0);
     }
 
-   
-    public function OnDocAutocomplete($sender)
-    {
+    public function OnDocAutocomplete($sender) {
         $text = $sender->getValue();
         $answer = array();
         $conn = \ZDB\DB::getConnect();
@@ -313,8 +301,7 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
     }
 
     //выбран документ
-    public function OnDocChange($sender)
-    {
+    public function OnDocChange($sender) {
         $id = $sender->getKey();
         $doc = Document::load($id);
         if ($doc instanceof Document) {

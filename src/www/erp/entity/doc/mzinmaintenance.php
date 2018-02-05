@@ -13,8 +13,7 @@ use ZippyERP\ERP\Helper as H;
 class MZInMaintenance extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -44,8 +43,7 @@ class MZInMaintenance extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $a22 = 0;
         $a15 = 0;
         $a1001 = 0;
@@ -92,8 +90,7 @@ class MZInMaintenance extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
 
         return $list;

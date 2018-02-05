@@ -20,13 +20,12 @@ class Helper
      * @param mixed $meta_type
      */
 
-    public static function generateMenu($meta_type)
-    {
+    public static function generateMenu($meta_type) {
         $conn = \ZDB\DB::getConnect();
         $rows = $conn->Execute("select *  from erp_metadata where meta_type= {$meta_type} and disabled <> 1 order  by  description ");
         $menu = array();
         $groups = array();
-
+        $smartmenu = "";
         foreach ($rows as $meta_id => $meta_object) {
             if (strlen($meta_object['menugroup']) == 0) {
                 $menu[$meta_id] = $meta_object;
@@ -35,6 +34,9 @@ class Helper
                     $groups[$meta_object['menugroup']] = array();
                 }
                 $groups[$meta_object['menugroup']][$meta_id] = $meta_object;
+            }
+            if ($meta_object->smart == 1) {
+                
             }
         }
         switch ($meta_type) {
@@ -55,6 +57,7 @@ class Helper
                 break;
         }
         $textmenu = "";
+
         foreach ($menu as $item) {
             $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
         }
@@ -74,12 +77,41 @@ class Helper
         return $textmenu;
     }
 
+    public static function generateSmartMenu() {
+        $conn = \ZDB\DB::getConnect();
+        $rows = $conn->Execute("select *  from erp_metadata where smart=1 and  disabled <> 1 order  by  description ");
+        $textmenu = "";
+
+        foreach ($rows as $item) {
+            switch ((int) $item['meta_type']) {
+                case 1 :
+                    $dir = "Pages/Doc";
+                    break;
+                case 2 :
+                    $dir = "Pages/Report";
+                    break;
+                case 3 :
+                    $dir = "Pages/Register";
+                    break;
+                case 4 :
+                    $dir = "Pages/Reference";
+                    break;
+                case 5 :
+                    $dir = "Pages/CustomPage";
+                    break;
+            }
+
+            $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+        }
+
+        return $textmenu;
+    }
+
     /**
      * список  групп документов
      *
      */
-    public static function getDocGroups()
-    {
+    public static function getDocGroups() {
         $conn = \ZDB\DB::getConnect();
         $groups = array();
 
@@ -96,8 +128,7 @@ class Helper
      * список единиц измерения
      *
      */
-    public static function getMeasureList()
-    {
+    public static function getMeasureList() {
         $list = array();
         $conn = DB::getConnect();
         $sql = "select measure_id,measure_name from  erp_item_measures ";
@@ -113,8 +144,7 @@ class Helper
      * список  групп товаров
      *
      */
-    public static function getItemGroupList()
-    {
+    public static function getItemGroupList() {
         $list = array();
         $conn = DB::getConnect();
         $sql = "select group_id,group_name from  erp_item_group ";
@@ -131,8 +161,7 @@ class Helper
      *
      * @param mixed $id
      */
-    public static function getMetaType($id)
-    {
+    public static function getMetaType($id) {
         if (is_array(self::$meta[$id]) == false) {
             $conn = DB::getConnect();
             $sql = "select * from  erp_metadata where meta_id = " . $id;
@@ -147,8 +176,7 @@ class Helper
      *
      * @param mixed $metaname
      */
-    public static function getMetaNotes($metaname)
-    {
+    public static function getMetaNotes($metaname) {
         $conn = DB::getConnect();
         $sql = "select notes from  erp_metadata where meta_name = '{$metaname}' ";
         return $conn->GetOne($sql);
@@ -159,8 +187,7 @@ class Helper
      *
      * @param mixed $bank true  если  банк иначе  касса
      */
-    public static function getMoneyFundsList($bank)
-    {
+    public static function getMoneyFundsList($bank) {
         $list = array();
         $conn = DB::getConnect();
         $sql = "select id, title from  erp_moneyfunds ";
@@ -183,8 +210,7 @@ class Helper
      * @param mixed $itemid ID  объекта
      * @param mixed $itemtype тип  объекта (документ - 0 )
      */
-    public static function addFile($file, $itemid, $comment, $itemtype = 0)
-    {
+    public static function addFile($file, $itemid, $comment, $itemtype = 0) {
         $conn = DB::getConnect();
         $filename = $file['name'];
 
@@ -206,8 +232,7 @@ class Helper
      * @param mixed $item_id
      * @param mixed $item_type
      */
-    public static function getFileList($item_id, $item_type = 0)
-    {
+    public static function getFileList($item_id, $item_type = 0) {
         $conn = \ZDB\DB::getConnect();
         $rs = $conn->Execute("select * from erp_files where item_id={$item_id} and item_type={$item_type} ");
         $list = array();
@@ -229,8 +254,7 @@ class Helper
      *
      * @param mixed $file_id
      */
-    public static function deleteFile($file_id)
-    {
+    public static function deleteFile($file_id) {
         $conn = \ZDB\DB::getConnect();
         $conn->Execute("delete  from  erp_files  where  file_id={$file_id}");
         $conn->Execute("delete  from  erp_filesdata  where  file_id={$file_id}");
@@ -241,8 +265,7 @@ class Helper
      *
      * @param mixed $file_id
      */
-    public static function loadFile($file_id)
-    {
+    public static function loadFile($file_id) {
         $conn = \ZDB\DB::getConnect();
         $rs = $conn->Execute("select filename,filedata from erp_files join erp_filesdata on erp_files.file_id = erp_filesdata.file_id  where erp_files.file_id={$file_id}  ");
         foreach ($rs as $row) {
@@ -257,8 +280,7 @@ class Helper
      *
      * @param mixed $value сумма   в   копейках
      */
-    public static function fm($value)
-    {
+    public static function fm($value) {
         return number_format($value / 100, 2, '.', '');
     }
 
@@ -267,8 +289,7 @@ class Helper
      *
      * @param mixed $value сумма   в   копейках
      */
-    public static function fm_t1($value)
-    {
+    public static function fm_t1($value) {
         if (abs($value) < 1000)
             $value = 0;
         return number_format($value / 100000, 1, '.', '');
@@ -279,8 +300,7 @@ class Helper
      *
      * @param mixed $revert возвращает  обратную  величину (наприме  если   20% (0.2)  возвращает 16.67% (0.1667) )
      */
-    public static function nds($revert = false)
-    {
+    public static function nds($revert = false) {
         $tax = System::getOptions("tax");
         //
         $nds = $tax['nds'] / 100;
@@ -295,8 +315,7 @@ class Helper
      *
      * @param mixed $data
      */
-    public static function addSpaces($string)
-    {
+    public static function addSpaces($string) {
         $_data = "";
         $strlen = mb_strlen($string);
         while ($strlen) {
@@ -312,8 +331,7 @@ class Helper
     /**
      * вовращает  список  лет
      */
-    public static function getYears()
-    {
+    public static function getYears() {
         $list = array();
         for ($i = 2016; $i <= 2030; $i++)
             $list[$i] = $i;
@@ -323,8 +341,7 @@ class Helper
     /**
      * вовращает  список  месяцев
      */
-    public static function getMonth()
-    {
+    public static function getMonth() {
         $list = array();
         $list[1] = "Січень";
         $list[2] = "Лютий";

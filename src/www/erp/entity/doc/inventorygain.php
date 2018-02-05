@@ -13,8 +13,7 @@ use ZippyERP\ERP\Helper as H;
 class InventoryGain extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -45,8 +44,7 @@ class InventoryGain extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 

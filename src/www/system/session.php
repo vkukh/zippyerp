@@ -13,18 +13,15 @@ class Session
     public $filter = array();
     public $printform;
 
-    public function __construct()
-    {
+    public function __construct() {
         
     }
 
-    public function __set($name, $value)
-    {
+    public function __set($name, $value) {
         $this->values[$name] = $value;
     }
 
-    public function __get($name)
-    {
+    public function __get($name) {
         return @$this->values[$name];
     }
 
@@ -32,14 +29,13 @@ class Session
      * Возвращает  инстанс  сессии
      * @return Session
      */
-    public static function getSession()
-    {
+    public static function getSession() {
         if ($_SESSION['ZippyERP_session'] instanceof Session) {
             
         } else {
-          $_SESSION['ZippyERP_session'] = new Session();    
+            $_SESSION['ZippyERP_session'] = new Session();
         }
-        
+
         return $_SESSION['ZippyERP_session'];
     }
 

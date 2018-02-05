@@ -20,8 +20,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
     public $_ilist = array();
     public $_custds;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Panel('clistpanel'));
@@ -34,7 +33,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $this->doclist->add(new ClickLink('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->doclist->add(new DataView('dlist', new \Zippy\Html\DataList\ArrayDataSource($this, "_dlist"), $this, 'dlistOnRow'));
-       // $this->doclist->dlist->setSelectedClass('success');
+        // $this->doclist->dlist->setSelectedClass('success');
         $this->doclist->add(new Label("custname1"));
         $this->add(new Panel('invoicelist'))->setVisible(false);
         $this->invoicelist->add(new ClickLink('backtolist2'))->onClick($this, 'backtolistOnClick');
@@ -44,16 +43,14 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
     }
 
-    public function clistfilterOnSubmit($sender)
-    {
+    public function clistfilterOnSubmit($sender) {
 
         $this->_custds->showall = $this->clistpanel->clistfilter->clistshowall->isChecked();
         $this->_custds->sort = $this->clistpanel->clistfilter->clistsort->getValue();
         $this->clistpanel->clist->Reload();
     }
 
-    public function clistOnRow($row)
-    {
+    public function clistOnRow($row) {
         $item = $row->getDataItem();
         $amount = $item->saldo;
         $row->add(new Label('customername', $item->customer_name));
@@ -63,8 +60,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('invoice'))->onClick($this, 'invoiceOnClick');
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $customer = $sender->getOwner()->getDataItem();
         $this->doclist->custname1->setText($customer->customer_name);
         $conn = \ZDB\DB::getConnect();
@@ -90,16 +86,14 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $this->doclist->setVisible(true);
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         $this->clistpanel->setVisible(true);
         $this->doclist->setVisible(false);
         $this->invoicelist->setVisible(false);
         $this->docview->setVisible(false);
     }
 
-    public function dlistOnRow($row)
-    {
+    public function dlistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('amountfrom', $item->amount < 0 ? H::fm(0 - $item->amount) : ''));
@@ -109,8 +103,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('ddoc', $this, 'ddocOnClick'))->setValue($item->description . ' ' . $item->document_number);
     }
 
-    public function ddocOnClick($sender)
-    {
+    public function ddocOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $this->doclist->dlist->setSelectedRow($sender->getOwner());
         $this->doclist->dlist->Reload();
@@ -118,8 +111,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $this->docview->setDoc(\ZippyERP\ERP\Entity\Doc\Document::load($item->document_id));
     }
 
-    public function invoiceOnClick($sender)
-    {
+    public function invoiceOnClick($sender) {
         $customer = $sender->getOwner()->getDataItem();
         $this->invoicelist->custname2->setText($customer->customer_name);
 
@@ -129,8 +121,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $this->invoicelist->setVisible(true);
     }
 
-    public function ilistOnRow($row)
-    {
+    public function ilistOnRow($row) {
         $item = $row->getDataItem();
 
         // $row->add(new Label('idoc', $item->document_number));
@@ -149,18 +140,15 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
     public $showall = false;
     public $sort = 0;
 
-    public function __construct()
-    {
+    public function __construct() {
         
     }
 
-    public function getItemCount()
-    {
+    public function getItemCount() {
         //no pagination
     }
 
-    public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
+    public function getItems($start, $count, $sortfield = null, $asc = null) {
         $conn = \ZDB\DB::getConnect();
         $sql = "select  coalesce(sum(sc.amount ),0) as  saldo,sc.customer_id ,c.customer_name
                 from  erp_account_subconto sc join erp_customer c on sc.customer_id = c.customer_id
@@ -184,8 +172,7 @@ class CPDataSource implements \Zippy\Interfaces\DataSource
         return $list;
     }
 
-    public function getItem($id)
-    {
+    public function getItem($id) {
         return Customer::load($id);
     }
 

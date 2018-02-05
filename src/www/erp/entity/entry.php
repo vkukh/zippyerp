@@ -12,8 +12,7 @@ namespace ZippyERP\ERP\Entity;
 class Entry extends \ZCL\DB\Entity
 {
 
-    protected function init()
-    {
+    protected function init() {
         $this->entry_id = 0;
     }
 
@@ -28,8 +27,7 @@ class Entry extends \ZCL\DB\Entity
      *
      * @return  mixed возвращает  сообщение  об  ошибке  иначе   пустую  строку
      */
-    public static function AddEntry($acc_d, $acc_c, $amount, $document_id, $document_date)
-    {
+    public static function AddEntry($acc_d, $acc_c, $amount, $document_id, $document_date) {
         if ($amount == 0)
             return null;
 
@@ -60,8 +58,7 @@ class Entry extends \ZCL\DB\Entity
         return "";
     }
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
         $this->document_date = strtotime($this->document_date);
     }
 

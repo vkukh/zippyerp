@@ -11,15 +11,12 @@ use ZippyERP\ERP\Helper as H;
 class Warranty extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
-
-        $i = 1;
         $detail = array();
         $total = 0;
         foreach ($this->detaildata as $value) {
-            $detail[] = array("no" => $i++,
+            $detail[] = array(
                 "tovar_name" => $value['itemname'],
                 "quantity" => $value['quantity'] / 1000,
                 "price" => H::fm($value['price']),
@@ -46,8 +43,7 @@ class Warranty extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
         return true;
     }

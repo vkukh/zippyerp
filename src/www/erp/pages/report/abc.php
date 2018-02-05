@@ -9,13 +9,15 @@ use Zippy\Html\Label;
 use Zippy\Html\Link\RedirectLink;
 use Zippy\Html\Panel;
 
+/**
+ * АВС анализ
+ */
 class ABC extends \ZippyERP\ERP\Pages\Base
 {
 
     private $typelist = array();
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->typelist[1] = "Товари,  прибуток";
@@ -41,8 +43,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
 
         $html = $this->generateReport();
         $this->detail->preview->setText($html, true);
@@ -63,8 +64,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         $this->detail->setVisible(true);
     }
 
-    private function generateReport()
-    {
+    private function generateReport() {
 
         $type = $this->filter->type->getValue();
 
@@ -102,8 +102,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         return $html;
     }
 
-    private function find1()
-    {
+    private function find1() {
         $list = array();
         $conn = \ZDB\DB::getConnect();
         $sql = "SELECT * FROM (
@@ -125,8 +124,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         return $list;
     }
 
-    private function find2()
-    {
+    private function find2() {
         $list = array();
         $conn = \ZDB\DB::getConnect();
         $sql = "SELECT * FROM (
@@ -148,8 +146,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         return $list;
     }
 
-    private function find3()
-    {
+    private function find3() {
         $list = array();
         $conn = \ZDB\DB::getConnect();
         $sql = "SELECT * FROM (
@@ -171,8 +168,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         return $list;
     }
 
-    private function find4()
-    {
+    private function find4() {
         $conn = \ZDB\DB::getConnect();
         //выбираем  по  Акту выполненых работ
         $where = "  meta_name ='ServiceAct'
@@ -193,8 +189,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
     }
 
     //выполняет расчет  АВС
-    private function calc($detail)
-    {
+    private function calc($detail) {
 
         //   $detail =  \Pinq\Traversable::from($detail)
         //       ->orderByAscending(function($row){return $row['value'];})

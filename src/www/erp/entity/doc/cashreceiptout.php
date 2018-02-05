@@ -14,8 +14,7 @@ use ZippyERP\ERP\Entity\SubConto;
 class CashReceiptOut extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
             "notes" => $this->headerdata['notes'],
@@ -47,8 +46,7 @@ class CashReceiptOut extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $mf = MoneyFund::getCash();
         $optype = $this->headerdata['optype'];
         if ($optype == C::TYPEOP_CUSTOMER_OUT) {
@@ -108,8 +106,7 @@ class CashReceiptOut extends Document
     }
 
     // Список  типов операций
-    public static function getTypes()
-    {
+    public static function getTypes() {
         $list = array();
         $list[C::TYPEOP_CUSTOMER_OUT] = "Оплата постачальнику";
         $list[C::TYPEOP_CUSTOMER_OUT_BACK] = "Повернення покупцеві";

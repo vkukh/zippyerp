@@ -5,12 +5,11 @@ namespace ZippyERP\ERP\API;
 /**
  * Класс  для  экспорта-импорта  прайсов
  */
-class Price extends \ZippyERP\System\RestFul    
+class Price extends \ZippyERP\System\RestFul
 {
 
- 
-   public  function get($id=0){
- 
+    public function get($id = 0) {
+
         $conn = \ZDB\DB::getConnect();
         $groups = array();
 
@@ -37,7 +36,7 @@ class Price extends \ZippyERP\System\RestFul
 
             $xml .= "</group>";
         }
-       $this->XMLAnswer($xml . "</price>");
+        $this->XMLAnswer($xml . "</price>");
     }
 
 }

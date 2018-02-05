@@ -14,8 +14,7 @@ use ZippyERP\ERP\Helper as H;
 class ReturnGoodsReceipt extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
         //$customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
 
@@ -51,8 +50,7 @@ class ReturnGoodsReceipt extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $types = array();
         //аналитика
         foreach ($this->detaildata as $item) {
@@ -113,8 +111,7 @@ class ReturnGoodsReceipt extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list[''] = 'Корректування (Додаток 2)';
 

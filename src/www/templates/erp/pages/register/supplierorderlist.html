@@ -1,66 +1,62 @@
 <html>
-<body>
-<div class="row">
-    <div class="col-xs-10">
+    <body>
+        <div class="row">
+            <div class="col-xs-10">
 
 
-        <h3>Журнал замовлень постачальнику </h3>
+                <h3>Журнал замовлень постачальнику </h3>
 
-        <form zippy="filter" class="navbar-form  navbar-left">
-            <div class="form-group">
-                <label for="statelist">Статус</label>
-                <select class="form-control" zippy="statelist">
-                    <option value="0">Все</option>
-                </select>
+                <form zippy="filter" class="navbar-form  navbar-left">
+                    <div class="form-group">
+                        <label for="statelist">Статус</label>
+                        <select class="form-control" zippy="statelist">
+                            <option value="0">Всі</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierlist">Постачальник</label>
+                        <select class="form-control select2" zippy="supplierlist">
+                            <option value="0">Всі</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn  btn-default" value="ОК">
+                    </div>
+
+
+                </form>
+                <table class="table table-striped  table-condensed ">
+                    <tr>
+
+                        <th>Номер</th>
+                        <th>Постачальник</th>
+                        <th>Дата</th>
+                        <th>Сума</th>
+                        <th>Статус</th>
+
+
+                        <th> </th>
+
+                    </tr>
+                    <tr zippy="doclist">
+
+                        <td zippy="number"></td>
+                        <td zippy="supplier"></td>
+                        <td zippy="date"></td>
+                        <td zippy="amount" align="right"></td>
+                        <td zippy="state"></td>
+                        <td><a zippy="show" title="Просмотр"><i class="fa fa-search"></i></a> <a zippy="edit"
+                                                                                                     title="Редактировать"><i
+                                    class="fa fa-pencil-square-o"></i></a></td>
+
+                    </tr>
+                </table>
+                <div zippy="pag"></div>
+                <br>
+                <div zippy="docview"></div>
+
             </div>
-            <div class="form-group">
-                <label for="supplierlist">Постачальник</label>
-                <select class="form-control select2" zippy="supplierlist">
-                    <option value="0">Все</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="notpayed">Неоплачені</label>
-                <input class="form-control" type="checkbox" zippy="notpayed">
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn  btn-default" value="ОК">
-            </div>
-
-
-        </form>
-        <table class="table table-striped  table-condensed ">
-            <tr>
-
-                <th>Номер</th>
-                <th>Постачальник</th>
-                <th>Дата</th>
-                <th>Сума</th>
-                <th>Статус</th>
-                <th>Оплата</th>
-
-                <th> </th>
-
-            </tr>
-            <tr zippy="doclist">
-
-                <td zippy="number"></td>
-                <td zippy="supplier"></td>
-                <td zippy="date"></td>
-                <td zippy="amount" align="right"></td>
-                <td zippy="state"></td>
-                <td zippy="payment" align="right"></td>
-                <td><a zippy="show" title="Просмотр"><i class="fa fa-search"></i></a> <a zippy="edit"
-                                                                                         title="Редактировать"><i
-                        class="fa fa-pencil-square-o"></i></a></td>
-
-            </tr>
-        </table>
-        <div zippy="pag"></div>
-        <br>
-        <div zippy="docview"></div>
-
-    </div>
-</div>
-</body>
+        </div>
+    </body>
 </html>

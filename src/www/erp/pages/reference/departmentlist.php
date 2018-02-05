@@ -17,8 +17,7 @@ class DepartmentList extends \ZippyERP\ERP\Pages\Base
 
     private $_department;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Panel('departmenttable'))->setVisible(true);
@@ -30,8 +29,7 @@ class DepartmentList extends \ZippyERP\ERP\Pages\Base
         $this->departmentdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
-    public function departmentlistOnRow($row)
-    {
+    public function departmentlistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('department_name', $item->department_name));
@@ -39,22 +37,19 @@ class DepartmentList extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         Department::delete($sender->owner->getDataItem()->department_id);
         $this->departmenttable->departmentlist->Reload();
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $this->_department = $sender->owner->getDataItem();
         $this->departmenttable->setVisible(false);
         $this->departmentdetail->setVisible(true);
         $this->departmentdetail->editdepartmentname->setText($this->_department->department_name);
     }
 
-    public function addOnClick($sender)
-    {
+    public function addOnClick($sender) {
         $this->departmenttable->setVisible(false);
         $this->departmentdetail->setVisible(true);
         // Очищаем  форму
@@ -63,8 +58,7 @@ class DepartmentList extends \ZippyERP\ERP\Pages\Base
         $this->_department = new Department();
     }
 
-    public function saveOnClick($sender)
-    {
+    public function saveOnClick($sender) {
         $this->_department->department_name = $this->departmentdetail->editdepartmentname->getText();
         if ($this->_department->department_name == '') {
             $this->setError("Введіть найменування");
@@ -77,8 +71,7 @@ class DepartmentList extends \ZippyERP\ERP\Pages\Base
         $this->departmenttable->departmentlist->Reload();
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->departmenttable->setVisible(true);
         $this->departmentdetail->setVisible(false);
     }

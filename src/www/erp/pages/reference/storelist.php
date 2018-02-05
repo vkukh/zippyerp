@@ -22,8 +22,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
 
     public $_store = null;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $storepanel = $this->add(new Panel('storetable'));
@@ -35,16 +34,17 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->storeform->add(new DropDownChoice('storeedittype'));
         $this->storeform->add(new SubmitButton('storesave'))->onClick($this, 'storesaveOnClick');
         $this->storeform->add(new Button('storecancel'))->onClick($this, 'storecancelOnClick');
-        $itempanel = $this->add(new Panel('itemtable'));
-        $itempanel->setVisible(false);
-        $itempanel->add(new DataView('itemlist', new StockDataSource($this), $this, 'itemlistOnRow'));
-        $itempanel->itemlist->setPageSize(10);
-        $itempanel->add(new Paginator('pag', $itempanel->itemlist));
+        $itemtable = $this->add(new Panel('itemtable'));
+        $itemtable->setVisible(false);
+        $itemtable->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
+        $itemtable->filter->add(new TextInput('sname'));
+        $itemtable->add(new DataView('itemlist', new StockDataSource($this), $this, 'itemlistOnRow'));
+        $itemtable->itemlist->setPageSize(10);
+        $itemtable->add(new Paginator('pag', $itemtable->itemlist));
         $storepanel->storelist->Reload();
     }
 
-    public function storelistOnRow($row)
-    {
+    public function storelistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('storename', $item->storename));
@@ -54,8 +54,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('storedelete'))->onClick($this, 'storedeleteOnClick');
     }
 
-    public function storeeditOnClick($sender)
-    {
+    public function storeeditOnClick($sender) {
         $this->_store = $sender->owner->getDataItem();
         $this->storetable->setVisible(false);
         $this->itemtable->setVisible(false);
@@ -65,18 +64,17 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->storeform->storeedittype->setValue($this->_store->store_type);
     }
 
-    public function storedeleteOnClick($sender)
-    {
-        try {
-            Store::delete($sender->owner->getDataItem()->store_id);
-        } catch (\Exception $e) {
+    public function storedeleteOnClick($sender) {
+
+        if (false == Store::delete($sender->owner->getDataItem()->store_id)) {
             $this->setError("Не можна видаляти цей  склад");
+            return;
         }
+
         $this->storetable->storelist->Reload();
     }
 
-    public function storeaddOnClick($sender)
-    {
+    public function storeaddOnClick($sender) {
         $this->storetable->setVisible(false);
         $this->itemtable->setVisible(false);
         $this->storeform->setVisible(true);
@@ -85,8 +83,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->_store = new Store();
     }
 
-    public function storesaveOnClick($sender)
-    {
+    public function storesaveOnClick($sender) {
 
         $this->_store->storename = $this->storeform->storeeditname->getText();
         $this->_store->description = $this->storeform->storeeditdesc->getText();
@@ -102,14 +99,13 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->storetable->storelist->Reload();
     }
 
-    public function storecancelOnClick($sender)
-    {
+    public function storecancelOnClick($sender) {
         $this->storeform->setVisible(false);
         $this->storetable->setVisible(true);
     }
 
-    public function showitemOnClick($sender)
-    {
+    public function showitemOnClick($sender) {
+        $this->itemtable->filter->sname->setText('');
         $store = $sender->owner->getDataItem();
         $this->storetable->storelist->setSelectedRow($sender->getOwner());
         $this->storetable->storelist->Reload();
@@ -118,10 +114,14 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
         $this->itemtable->itemlist->Reload();
     }
 
-    public function itemlistOnRow($row)
-    {
+    public function OnSubmit($sender) {
+        $this->itemtable->itemlist->Reload();
+    }
+
+    public function itemlistOnRow($row) {
         $item = $row->getDataItem();
 
+        $row->add(new Label('itemcode', $item->item_code));
         $row->add(new Label('itemname', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('price', $item->price > 0 ? H::fm($item->price) : ''));
@@ -139,8 +139,7 @@ class StoreList extends \ZippyERP\ERP\Pages\Base
     }
 
     // отключаем  неитспользуемую  партию
-    public function partionOnClick($sender)
-    {
+    public function partionOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $item->closed = 1;
         $item->Save();
@@ -154,23 +153,28 @@ class StockDataSource implements \Zippy\Interfaces\DataSource
 
     private $page;
 
-    public function __construct($page)
-    {
+    public function __construct($page) {
         $this->page = $page;
     }
 
-    public function getItemCount()
-    {
-        return Stock::findCnt("closed  <> 1 and store_id=" . $this->page->_store->store_id);
+    private function getWhere() {
+        $where = "closed <> 1 and store_id=" . $this->page->_store->store_id;
+        $name = trim($this->page->itemtable->filter->sname->getText());
+        if (strlen($name) > 0) {
+            $where = $where . " and (itemname like " . Stock::qstr("%{$name}%") . " or item_code like " . Stock::qstr("%{$name}%") . " ) ";
+        }
+        return $where;
     }
 
-    public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
-        return Stock::find("closed  <> 1 and store_id=" . $this->page->_store->store_id, "itemname asc", $count, $start);
+    public function getItemCount() {
+        return Stock::findCnt($this->getWhere());
     }
 
-    public function getItem($id)
-    {
+    public function getItems($start, $count, $sortfield = null, $asc = null) {
+        return Stock::find($this->getWhere(), $sortfield, $count, $start);
+    }
+
+    public function getItem($id) {
         return Stock::load($id);
     }
 

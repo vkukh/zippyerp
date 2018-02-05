@@ -18,8 +18,7 @@ class SubConto extends \ZCL\DB\Entity
      * @param mixed $account_id Синтетический  счет
      * @param mixed $amount Сумма. Отрицательная если  счет  идет по  кредиту
      */
-    public function __construct($document, $account_id, $amount)
-    {
+    public function __construct($document, $account_id, $amount) {
         parent::__construct();
 
         if ($document instanceof \ZippyERP\ERP\Entity\Doc\Document) {
@@ -40,39 +39,32 @@ class SubConto extends \ZCL\DB\Entity
         }
     }
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
         $this->document_date = strtotime($this->document_date);
     }
 
-    public function setStock($stock_id)
-    {
+    public function setStock($stock_id) {
         $this->stock_id = $stock_id;
     }
 
-    public function setEmployee($employee_id)
-    {
+    public function setEmployee($employee_id) {
         $this->employee_id = $employee_id;
     }
 
-    public function setCustomer($customer_id)
-    {
+    public function setCustomer($customer_id) {
         $this->customer_id = $customer_id;
     }
 
-    public function setMoneyfund($moneyfund_id)
-    {
+    public function setMoneyfund($moneyfund_id) {
         $this->moneyfund_id = $moneyfund_id;
     }
 
-    public function setAsset($item_id)
-    {
+    public function setAsset($item_id) {
         $this->asset_id = $item_id;
     }
 
     //типы  налогов, начислений  удержаний, прочая вспомагтельная  аналитика
-    public function setExtCode($code)
-    {
+    public function setExtCode($code) {
         if ($code > 0)
             $this->extcode = $code;
         else
@@ -80,8 +72,7 @@ class SubConto extends \ZCL\DB\Entity
     }
 
     //отрицательное  если  счет по  кредиту
-    public function setQuantity($quantity)
-    {
+    public function setQuantity($quantity) {
         $this->quantity = $quantity;
     }
 
@@ -98,8 +89,7 @@ class SubConto extends \ZCL\DB\Entity
      * @param mixed $asset необоротный актив
      * @param mixed $code универсальное поле
      */
-    public static function getQuantity($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
-    {
+    public static function getQuantity($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0) {
         $conn = \ZDB\DB::getConnect();
         $where = "   1=1";
         if ($date > 0) {
@@ -142,8 +132,7 @@ class SubConto extends \ZCL\DB\Entity
      * @param mixed $asset необоротный актив
      * @param mixed $code универсальное поле
      */
-    public static function getAmount($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0)
-    {
+    public static function getAmount($date = 0, $acc = 0, $stock = 0, $customer = 0, $emp = 0, $mf = 0, $assets = 0, $code = 0) {
         $conn = \ZDB\DB::getConnect();
         $where = "   1=1";
         if ($date > 0) {

@@ -15,8 +15,7 @@ use ZippyERP\ERP\Helper as H;
 class ServiceIncome extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -50,8 +49,7 @@ class ServiceIncome extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
 
         $total = $this->headerdata['total'];
@@ -91,8 +89,7 @@ class ServiceIncome extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['TaxInvoiceIncome'] = 'Вхідна ПН';
 

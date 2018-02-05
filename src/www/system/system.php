@@ -16,8 +16,7 @@ class System
      * @return  User
      */
 
-    public static function getUser()
-    {
+    public static function getUser() {
         $user = Session::getSession()->user;
         if ($user == null) {
             $user = new User();
@@ -31,8 +30,7 @@ class System
      *
      * @param User $user
      */
-    public static function setUser(User $user)
-    {
+    public static function setUser(User $user) {
         Session::getSession()->user = $user;
     }
 
@@ -40,8 +38,7 @@ class System
      * Возвращает  сессию
      * @return  Session
      */
-    public static function getSession()
-    {
+    public static function getSession() {
 
         return Session::getSession();
     }
@@ -51,8 +48,7 @@ class System
      *
      * @param mixed $group
      */
-    public static function getOptions($group)
-    {
+    public static function getOptions($group) {
 
         if (isset(self::$_options[$group])) {
             return self::$_options[$group];
@@ -73,8 +69,7 @@ class System
      * @param mixed $group
      * @param mixed $options
      */
-    public static function setOptions($group, $options)
-    {
+    public static function setOptions($group, $options) {
         $options = serialize($options);
         $conn = \ZDB\DB::getConnect();
 
@@ -82,8 +77,9 @@ class System
         $conn->Execute(" insert into system_options (optname,optvalue) values ('{$group}'," . $conn->qstr($options) . " ) ");
         self::$_options[$group] = $options;
     }
-     public static function RedirectError($message)
-    {
+
+    public static function RedirectError($message) {
         self::$app->getResponse()->Redirect("\\ZippyERP\\Pages\\Error", $message);
     }
+
 }

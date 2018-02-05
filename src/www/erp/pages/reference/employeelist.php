@@ -4,7 +4,6 @@ namespace ZippyERP\ERP\Pages\Reference;
 
 use ZCL\DB\EntityDataSource as EDS;
 use Zippy\Html\DataList\DataView;
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -25,15 +24,14 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
 
     private $_employee;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Panel('employeetable'))->setVisible(true);
         $this->employeetable->add(new DataView('employeelist', new EDS('\ZippyERP\ERP\Entity\employee'), $this, 'employeelistOnRow'))->Reload();
         $this->employeetable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('employeedetail'))->setVisible(false);
-        $this->employeedetail->add(new DropDownChoice('editcontact')) ;
+        $this->employeedetail->add(new DropDownChoice('editcontact'));
         $this->employeedetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
         $this->employeedetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
         $this->employeedetail->add(new DropDownChoice('editdepartment', Department::findArray('department_name', '', 'department_name')));
@@ -56,8 +54,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\ContactView('contactview'))->setVisible(false);
     }
 
-    public function employeelistOnRow($row)
-    {
+    public function employeelistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('name', $item->fullname));
@@ -68,14 +65,12 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         Employee::delete($sender->owner->getDataItem()->employee_id);
         $this->employeetable->employeelist->Reload();
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $this->_employee = $sender->owner->getDataItem();
         $this->employeetable->setVisible(false);
         $this->employeedetail->setVisible(true);
@@ -101,8 +96,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->addcontact->setVisible(false);
     }
 
-    public function addOnClick($sender)
-    {
+    public function addOnClick($sender) {
         $this->employeetable->setVisible(false);
         $this->employeedetail->setVisible(true);
         // Очищаем  форму
@@ -116,8 +110,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->addcontact->setVisible(true);
     }
 
-    public function saveOnClick($sender)
-    {
+    public function saveOnClick($sender) {
         $this->_employee->contact_id = $this->employeedetail->editcontact->getValue();
         if ($this->_employee->contact_id == 0) {
             $this->setError("Виберіть контакт");
@@ -163,19 +156,15 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->contactview->setVisible(false);
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->employeetable->setVisible(true);
         $this->employeedetail->setVisible(false);
         $this->contactdetail->setVisible(false);
         $this->contactview->setVisible(false);
     }
 
- 
-
     //редактирование  контакта
-    public function OpenOnClick($sender)
-    {
+    public function OpenOnClick($sender) {
         $contact = Contact::load($this->_employee->contact_id);
         $this->contactdetail->open($contact);
         $this->employeedetail->setVisible(false);
@@ -183,25 +172,22 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
     }
 
     //просмотр  контакта
-    public function ShowOnClick($sender)
-    {
+    public function ShowOnClick($sender) {
         $contact = Contact::load($this->_employee->contact_id);
         $this->contactview->open($contact);
         $this->contactdetail->setVisible(false);
     }
 
     // новый  контакт  для  нового  сотрудника
-    public function AddContactOnClick($sender)
-    {
+    public function AddContactOnClick($sender) {
         $this->contactdetail->open();
         $this->employeedetail->setVisible(false);
     }
 
     // вызывается  формой  контакта  после  редактирования
-    public function OnDetail($saved = false, $id = 0)
-    {
+    public function OnDetail($saved = false, $id = 0) {
         $contact = Contact::load($this->contactdetail->getItem()->contact_id);
-        
+
         $this->employeedetail->editcontact->setValue($contact->contact_id);
         $this->contactdetail->setVisible(false);
         $this->employeedetail->setVisible(true);

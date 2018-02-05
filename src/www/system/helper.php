@@ -15,8 +15,7 @@ class Helper
      * @param mixed $password
      * @return  boolean
      */
-    public static function login($login, $password = null)
-    {
+    public static function login($login, $password = null) {
 
         $user = User::findOne("  userlogin=  " . User::qstr($login));
 
@@ -36,8 +35,7 @@ class Helper
      *
      * @param mixed $login
      */
-    public static function existsLogin($login)
-    {
+    public static function existsLogin($login) {
         $list = \ZippyERP\System\User::find("  userlogin= " . User::qstr($login));
 
         return count($list) > 0;
@@ -61,8 +59,7 @@ class Helper
      * Сохраняет  спписок  ролей для юзера
      *
      */
-    public static function saveRoles($user_id, $roles)
-    {
+    public static function saveRoles($user_id, $roles) {
         $conn = \ZDB\DB::getConnect();
         $conn->Execute('delete from system_user_role  where  user_id = ' . $user_id);
         foreach ($roles as $role_id) {

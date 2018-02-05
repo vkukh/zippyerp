@@ -7,14 +7,13 @@ use \ZippyERP\ERP\Entity\SubConto;
 use \ZippyERP\ERP\Helper as H;
 
 /**
- * Класс-сущность  документ розничная  накладая
+ * Класс-сущность  документ кассовый чек
  *
  */
 class RegisterReceipt extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -49,8 +48,7 @@ class RegisterReceipt extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $return = $this->headerdata['return'];
         $paycard = $this->headerdata['paycard'];
 
@@ -75,13 +73,13 @@ class RegisterReceipt extends Document
             $this->headerdata['totalnds'] = 0 - $this->headerdata['totalnds'];
         }
         if ($paycard == 1 && $return != 1) {  //оплата кредиткой
-            $bank = \ZippyERP\ERP\Entity\MoneyFund::getBankAccount() ;
-            
+            $bank = \ZippyERP\ERP\Entity\MoneyFund::getBankAccount();
+
             //списываем с  магазина
-            $ret = Entry::AddEntry(31, 372, $this->headerdata['amount'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this, 372, 0 - $this->headerdata['amount']);
-            $sc->setEmployee($this->headerdata['store']);
-            $sc->save();           
+            $ret = Entry::AddEntry(31, 702, $this->headerdata['amount'], $this->document_id, $this->document_date);
+            //$sc = new SubConto($this, 372, 0 - $this->headerdata['amount']);
+            //$sc->setEmployee($this->headerdata['store']);
+            //$sc->save();           
             $sc = new SubConto($this, 31, $this->headerdata["total"]);
             $sc->setMoneyfund($bank->id);
             $sc->save();
@@ -103,8 +101,7 @@ class RegisterReceipt extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['Warranty'] = 'Гарантійний талон';
 

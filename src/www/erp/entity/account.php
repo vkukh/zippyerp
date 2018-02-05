@@ -19,8 +19,7 @@ class Account extends \ZCL\DB\Entity
      * @param mixed $from
      * @param mixed $to
      */
-    public function getSaldoAndOb($from, $to)
-    {
+    public function getSaldoAndOb($from, $to) {
 
         $ret = array('startdt' => 0, 'startct' => 0, 'obdt' => 0, 'obct' => 0, 'enddt' => 0, 'endct' => 0);
         $ret['parent'] = false;
@@ -85,8 +84,7 @@ class Account extends \ZCL\DB\Entity
      * Положительное  значение  сальдо  по  дебету,  отрицательное - по  кредиту.
      * @param mixed $date На дату
      */
-    public function getSaldo($date = null)
-    {
+    public function getSaldo($date = null) {
         $saldo = 0;
         $children = Account::find("acc_pid=" . $this->acc_code);
         if (count($children) > 0) { // если   есть  субсчета
@@ -121,8 +119,7 @@ class Account extends \ZCL\DB\Entity
      *
      * @param mixed $date
      */
-    public function getSaldoD($date = null)
-    {
+    public function getSaldoD($date = null) {
         $a = $this->getSaldo($date);
         return $a > 0 ? $a : 0;
     }
@@ -132,8 +129,7 @@ class Account extends \ZCL\DB\Entity
      *
      * @param mixed $date
      */
-    public function getSaldoC($date = null)
-    {
+    public function getSaldoC($date = null) {
         $a = $this->getSaldo($date);
         return $a < 0 ? 0 - $a : 0;
     }
@@ -146,8 +142,7 @@ class Account extends \ZCL\DB\Entity
      * @param mixed $from
      * @param mixed $to
      */
-    public static function getObBetweenAccount($acc_d, $acc_c, $from, $to)
-    {
+    public static function getObBetweenAccount($acc_d, $acc_c, $from, $to) {
 
 
         $conn = DB::getConnect();
@@ -156,8 +151,7 @@ class Account extends \ZCL\DB\Entity
     }
 
     //возвращает  список с  кодом  и  названием
-    public static function findArrayEx($where = '', $orderbyfield = null, $orderbydir = null)
-    {
+    public static function findArrayEx($where = '', $orderbyfield = null, $orderbydir = null) {
         $entitylist = self::find($where, $orderbyfield . " " . $orderbydir);
 
         $list = array();

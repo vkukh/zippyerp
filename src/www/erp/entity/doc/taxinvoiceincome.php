@@ -13,8 +13,7 @@ use ZippyERP\ERP\Helper as H;
 class TaxInvoiceIncome extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -49,8 +48,7 @@ class TaxInvoiceIncome extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         Entry::AddEntry("641", "644", $this->headerdata["totalnds"], $this->document_id, $this->document_date);
 
         $sc = new SubConto($this, 641, $this->headerdata["totalnds"]);
@@ -68,8 +66,7 @@ class TaxInvoiceIncome extends Document
      * @param mixed $data
      * @return {mixed|TaxInvoiceIncome}    Документ  или  строку  с ошибкой
      */
-    public static function importGNAU($data)
-    {
+    public static function importGNAU($data) {
         if (strpos($data, "<DECLARHEAD>") == false) {
             return "Неверный формат";
         }

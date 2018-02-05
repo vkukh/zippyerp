@@ -51,7 +51,14 @@
         <td width="50" style="border-top: 1px solid black;" align="right">{{total}} </td>
     </tr>
 
-
+    {{#empname}}
+    <tr>
+      
+        <td>Відповідальний:</td>
+        <td colspan="5">{{empname}}</td>
+         <td> </td><td> </td>
+    </tr>
+    {{/empname}}  
 </table>
 </body>
 </html>

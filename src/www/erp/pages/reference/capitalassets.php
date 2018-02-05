@@ -21,10 +21,9 @@ class CapitalAssets extends \ZippyERP\ERP\Pages\Base
 {
 
     private $_item;
-    private $_expenses = array(23 => "Производство", 91 => "Общепроизводственные затраты", 92 => "Административные затраты");
+    private $_expenses = array(23 => "Виробництво", 91 => "Загальновиробничі витрати", 92 => "Адміністративні витрати");
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Panel('itemtable'))->setVisible(true);
@@ -49,8 +48,7 @@ class CapitalAssets extends \ZippyERP\ERP\Pages\Base
         $this->itemdetail->add(new DropDownChoice('editexpenses', $this->_expenses));
     }
 
-    public function itemlistOnRow($row)
-    {
+    public function itemlistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('itemname', $item->itemname));
@@ -60,14 +58,12 @@ class CapitalAssets extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         CapitalAsset::delete($sender->owner->getDataItem()->item_id);
         $this->itemtable->itemlist->Reload();
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $this->_item = $sender->owner->getDataItem();
         if (strpos($sender->id, "copy") === 0) {
             $this->_item->inventory = "";
@@ -89,8 +85,7 @@ class CapitalAssets extends \ZippyERP\ERP\Pages\Base
         $this->itemdetail->editgroup->setValue($this->_item->group);
     }
 
-    public function addOnClick($sender)
-    {
+    public function addOnClick($sender) {
         $this->itemtable->setVisible(false);
         $this->itemdetail->setVisible(true);
         // Очищаем  форму
@@ -99,8 +94,7 @@ class CapitalAssets extends \ZippyERP\ERP\Pages\Base
         $this->_item = new CapitalAsset();
     }
 
-    public function saveOnClick($sender)
-    {
+    public function saveOnClick($sender) {
 
 
         $this->_item->itemname = $this->itemdetail->edititemname->getText();
@@ -124,14 +118,12 @@ class CapitalAssets extends \ZippyERP\ERP\Pages\Base
         $this->itemtable->itemlist->Reload();
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->itemtable->setVisible(true);
         $this->itemdetail->setVisible(false);
     }
 
-    public function OnAutoItem($sender)
-    {
+    public function OnAutoItem($sender) {
         $text = $sender->getValue();
         return Item::findArray('itemname', "itemname like '%{$text}%' and   item_type=" . ITEM::ITEM_TYPE_STUFF);
     }

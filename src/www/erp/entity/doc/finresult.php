@@ -12,8 +12,7 @@ use ZippyERP\ERP\Entity\Entry;
 class FinResult extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -27,8 +26,7 @@ class FinResult extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
         $acc701 = Account::load("701");
         $s701 = $acc701->getSaldo($this->document_date);

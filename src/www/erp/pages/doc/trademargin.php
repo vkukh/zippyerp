@@ -19,8 +19,7 @@ use Zippy\WebApplication as App;
 class TradeMargin extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
@@ -44,8 +43,7 @@ class TradeMargin extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         $store = Store::load($this->docform->store->getValue());
         if ($store == false) {
             $this->setError("Не  вибраний  магазин");
@@ -78,8 +76,7 @@ class TradeMargin extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 

@@ -1,52 +1,52 @@
 <html>
-<head>
+    <head>
 
-</head>
-<body>
-<div class="row">
-    <div class="col-xs-8">
-        <h3>Взаєморозрахунки з підзвітними особами</h3>
-        <div zippy="alistpanel">
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Взаєморозрахунки з підзвітними особами</h3>
+                <div zippy="alistpanel">
 
-            <table class="table table-bordered   table-condensed" style="width:400px">
-                <tr>
-                    <th>Им'я</th>
-                    <th>В підзвіті</th>
-                    <th style="width:30px"></th>
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th>Им'я</th>
+                            <th>В підзвіті</th>
+                            <th style="width:30px"></th>
 
-                </tr>
-                <tr zippy="alist">
-                    <td zippy="empname"></td>
-                    <td zippy="saldo" style="text-align: right;"></td>
+                        </tr>
+                        <tr zippy="alist">
+                            <td zippy="empname"></td>
+                            <td zippy="saldo" style="text-align: right;"></td>
 
 
-                    <td><a zippy="edit" title="Документи"><i class="fa fa-search"></i></a></td>
+                            <td><a zippy="edit" title="Документи"><i class="fa fa-search"></i></a></td>
 
-                </tr>
-            </table>
+                        </tr>
+                    </table>
 
+                </div>
+
+                <div zippy="doclist">
+                    <a zippy="backtolist">До списку</a>
+                    <h4 zippy="empname1"></h4>
+                    <table class="table table-bordered   table-condensed"  >
+                        <tr>
+                            <th>Сума</th>
+                            <th>Дата</th>
+                            <th>Документ</th>
+                        </tr>
+                        <tr zippy="dlist">
+                            <td zippy="amount" align="right"></td>
+                            <td zippy="ddate"></td>
+                            <td><a zippy="ddoc" title="Документ"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div zippy="docview"></div>
+
+            </div>
         </div>
-
-        <div zippy="doclist">
-            <a zippy="backtolist">До списку</a>
-            <h4 zippy="empname1"></h4>
-            <table class="table table-bordered   table-condensed"  >
-                <tr>
-                    <th>Сума</th>
-                    <th>Дата</th>
-                    <th>Документ</th>
-                </tr>
-                <tr zippy="dlist">
-                    <td zippy="amount" align="right"></td>
-                    <td zippy="ddate"></td>
-                    <td><a zippy="ddoc" title="Документ"></a></td>
-                </tr>
-            </table>
-        </div>
-
-        <div zippy="docview"></div>
-
-    </div>
-</div>
-</body>
+    </body>
 </html>

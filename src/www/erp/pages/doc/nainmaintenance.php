@@ -3,7 +3,7 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\DropDownChoice; 
+use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\Form;
@@ -28,8 +28,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_rowid = 0;
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -45,16 +44,16 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         //   $this->editdetail->add(new DropDownChoice('editinventory')) ;
         $this->editdetail->add(new TextInput('editprice'));
-      
-        $list_ = CapitalAsset::find("item_type= " . Item::ITEM_TYPE_OS , "itemname");
+
+        $list_ = CapitalAsset::find("item_type= " . Item::ITEM_TYPE_OS, "itemname");
         $list = array();
         foreach ($list_ as $id => $os) {
             if ($os->typeos == 11)
                 continue; //идет как  малоценка
             $list[$id] = strlen($os->inventory) > 0 ? $os->inventory . ', ' . $os->itemname : $os->itemname;
         }
-        $this->editdetail->add(new DropDownChoice('edittovar',$list));//->onChange($this, 'OnChangeItem');
-        
+        $this->editdetail->add(new DropDownChoice('edittovar', $list)); //->onChange($this, 'OnChangeItem');
+
 
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
@@ -79,8 +78,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('tovar', $item->itemname));
@@ -90,8 +88,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $tovar = $sender->owner->getDataItem();
         // unset($this->_tovarlist[$tovar->tovar_id]);
 
@@ -99,15 +96,13 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $os = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -117,14 +112,13 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
 
 
         $this->editdetail->edittovar->setValue($os->item_id);
-        
+
 
 
         $this->_rowid = $os->item_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний ОЗ");
@@ -148,20 +142,18 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edittovar->setValue(0);
-        
+
         //   $this->editdetail->editinventory->setOptionList(array());
 
         $this->editdetail->editprice->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -205,8 +197,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         
     }
 
@@ -214,8 +205,7 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не ввелено жодної позиції");
@@ -224,22 +214,17 @@ class NAInMaintenance extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
 
         $this->calcTotal();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
- 
-
-    public function OnChangeItem($sender)
-    {
+    public function OnChangeItem($sender) {
         $text = $sender->getText();
 
         //выбираем  инвентарные номера

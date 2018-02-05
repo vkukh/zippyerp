@@ -12,8 +12,7 @@ namespace ZippyERP\ERP\Entity;
 class CapitalAsset extends \ZCL\DB\Entity
 {
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
 
 
         $xml = @simplexml_load_string($this->detail);
@@ -33,8 +32,7 @@ class CapitalAsset extends \ZCL\DB\Entity
     }
 
     // типы  необоротных активов
-    public static function getNAList()
-    {
+    public static function getNAList() {
         $list = array();
 
         $list[10] = 'ОС';
@@ -45,8 +43,7 @@ class CapitalAsset extends \ZCL\DB\Entity
         return $list;
     }
 
-    protected function beforeSave()
-    {
+    protected function beforeSave() {
         parent::beforeSave();
         //упаковываем  данные в detail
 
@@ -70,14 +67,12 @@ class CapitalAsset extends \ZCL\DB\Entity
      *
      * @param mixed $inventory
      */
-    public static function loadByInventory($inventory)
-    {
+    public static function loadByInventory($inventory) {
         return CapitalAsset::getFirst("detail like '%<inventory>{$inventory}</inventory>%'");
     }
 
     //начисленая амортизация
-    public function getDeprecationValue()
-    {
+    public function getDeprecationValue() {
         return SubConto::getAmount(0, 13, 0, 0, 0, 0, $this->item_id);
     }
 

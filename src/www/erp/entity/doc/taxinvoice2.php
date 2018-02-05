@@ -12,8 +12,7 @@ use ZippyERP\System\System;
 class TaxInvoice2 extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -68,16 +67,14 @@ class TaxInvoice2 extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         
     }
 
     /**
      * Експорт  в  ГНАУ  формат XML
      */
-    public function exportGNAU()
-    {
+    public function exportGNAU() {
 
 
         $common = System::getOptions("common");
@@ -163,8 +160,7 @@ class TaxInvoice2 extends Document
     /**
      * @see Document
      */
-    public function supportedExport()
-    {
+    public function supportedExport() {
         return array(self::EX_EXCEL, self::EX_XML_GNAU);
     }
 

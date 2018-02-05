@@ -19,15 +19,14 @@ class Base extends \Zippy\Html\WebPage
     public $_warnmsg;
     public $_infomsg;
 
-    public function __construct($params = null)
-    {
+    public function __construct($params = null) {
 
         \Zippy\Html\WebPage::__construct();
 
-  
-       
-       
-       
+
+
+
+
         $user = System::getUser();
         if ($user->user_id == 0) {
             App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
@@ -35,33 +34,33 @@ class Base extends \Zippy\Html\WebPage
 
         $this->add(new ClickLink('logout', $this, 'LogoutClick'));
         $this->add(new Label('username', $user->userlogin));
-        
-        $cntn= \ZippyERP\System\Notify::isNotify($user->user_id);
-        $this->add(new Label('newnotcnt', "".$cntn))->setVisible($cntn>0); 
 
-    
+        $cntn = \ZippyERP\System\Notify::isNotify($user->user_id);
+        $this->add(new Label('newnotcnt', "" . $cntn))->setVisible($cntn > 0);
+
+
         $this->add(new ClickLink("pageinfo"));
 
         $pi = $this->getPageInfo();
-        $this->add(new Label("picontent", $pi,true));
+        $this->add(new Label("picontent", $pi, true));
         if (strlen($pi) == 0) {
             $this->pageinfo->setVisible(false);
         }
 
- 
+
         $this->add(new Label("docmenu", Helper::generateMenu(1), true));
         $this->add(new Label("repmenu", Helper::generateMenu(2), true));
         $this->add(new Label("regmenu", Helper::generateMenu(3), true));
         $this->add(new Label("refmenu", Helper::generateMenu(4), true));
         $this->add(new Label("pagemenu", Helper::generateMenu(5), true));
+        $this->add(new Label("smartmenu", Helper::generateSmartMenu(), true));
 
-        
+
         $this->_tvars["islogined"] = $user->user_id > 0;
         $this->_tvars["isadmin"] = $user->userlogin == 'admin';
     }
 
-    public function LogoutClick($sender)
-    {
+    public function LogoutClick($sender) {
         setcookie("remember", '', 0);
         System::setUser(new \ZippyERP\System\User());
         $_SESSION['user_id'] = 0;
@@ -75,15 +74,14 @@ class Base extends \Zippy\Html\WebPage
         //    App::$app->getresponse()->toBack();
     }
 
-    public function getPageInfo()
-    {
+    public function getPageInfo() {
         $class = explode("\\", get_class($this));
         $classname = $class[count($class) - 1];
         return \ZippyERP\ERP\Helper::getMetaNotes($classname);
     }
 
     //вывод ошибки,  используется   в дочерних страницах
-   public function setError($msg) {
+    public function setError($msg) {
 
 
         $this->_errormsg = $msg;
@@ -101,18 +99,15 @@ class Base extends \Zippy\Html\WebPage
         $this->_infomsg = $msg;
     }
 
-    final protected function isError()
-    {
+    final protected function isError() {
         return strlen($this->_errormsg) > 0;
     }
 
-    protected function beforeRender()
-    {
-         
+    protected function beforeRender() {
+        
     }
 
-    protected function afterRender()
-    {
+    protected function afterRender() {
         if (strlen($this->_errormsg) > 0)
             App::$app->getResponse()->addJavaScript("toastr.error('{$this->_errormsg}')        ", true);
         if (strlen($this->_warnmsg) > 0)

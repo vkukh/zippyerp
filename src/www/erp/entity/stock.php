@@ -19,8 +19,7 @@ class Stock extends \ZCL\DB\Entity
      * @return []
      * @static
      */
-    public static function findArrayEx($criteria = "", $orderbyfield = null, $orderbydir = null, $count = -1, $offset = -1)
-    {
+    public static function findArrayEx($criteria = "", $orderbyfield = null, $orderbydir = null, $count = -1, $offset = -1) {
         if ($orderbyfield == null) {
             $orderbyfield = "itemname";
             $orderbydir = "asc";
@@ -30,7 +29,9 @@ class Stock extends \ZCL\DB\Entity
 
         $list = array();
         foreach ($entitylist as $key => $value) {
-           $list[$key] = $value->itemname . ', ' . \ZippyERP\ERP\Helper::fm($value->price);
+            $list[$key] = $value->itemname . ', ' . \ZippyERP\ERP\Helper::fm($value->price);
+            if (strlen($value->item_code) > 0)
+                $list[$key] = $value->item_code . ', ' . $list[$key];
         }
 
         return $list;
@@ -44,8 +45,7 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $price Цена
      * @param mixed $create Создать  если  не   существует
      */
-    public static function getStock($store_id, $item_id, $price, $create = false)
-    {
+    public static function getStock($store_id, $item_id, $price, $create = false) {
 
         $stock = self::findOne("store_id = {$store_id} and item_id = {$item_id} and price = {$price} ");
         if ($stock == null && $create == true) {
@@ -73,8 +73,7 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $acc Синтетический счет
      *
      */
-    public static function getQuantity($stock_id, $date = null, $acc = 0)
-    {
+    public static function getQuantity($stock_id, $date = null, $acc = 0) {
         if ($date == null) {
             $date = strtotime('+10 year', time());
         }
@@ -95,8 +94,7 @@ class Stock extends \ZCL\DB\Entity
      * @param mixed $acc Синтетический счет
      * @return mixed Массив с  двумя  значениями 'r'  и 'w'
      */
-    public static function getQuantityFuture($stock_id, $date, $acc = 0)
-    {
+    public static function getQuantityFuture($stock_id, $date, $acc = 0) {
         $conn = \ZDB\DB::getConnect();
         $where = "    stock_id = {$stock_id} and date(document_date) > " . $conn->DBDate($date);
         if ($acc > 0) {
@@ -105,6 +103,5 @@ class Stock extends \ZCL\DB\Entity
         $sql = " select coalesce(sum(case  when  quantity > 0 then quantity else 0 end ),0) as  w,  coalesce(sum(case  when  quantity < 0 then 0-quantity else 0 end ),0) as  r  from erp_account_subconto  where  " . $where;
         return $conn->GetRow($sql);
     }
-    
-    
+
 }

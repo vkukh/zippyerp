@@ -10,18 +10,15 @@ use ZippyERP\System\System;
 class Declonetax extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
         
     }
 
-    public function generateReport($header)
-    {
+    public function generateReport($header) {
 
         $header = array();
         //$detail = array();

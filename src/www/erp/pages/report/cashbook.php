@@ -21,8 +21,7 @@ use ZippyERP\System\System;
 class CashBook extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
@@ -36,8 +35,7 @@ class CashBook extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
         $html = $this->generateReport();
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "cashbook";
@@ -58,8 +56,7 @@ class CashBook extends \ZippyERP\ERP\Pages\Base
         $this->detail->setVisible(true);
     }
 
-    private function generateReport()
-    {
+    private function generateReport() {
         $report = new \ZippyERP\ERP\Report('cashbook.tpl');
 
         $header = array();

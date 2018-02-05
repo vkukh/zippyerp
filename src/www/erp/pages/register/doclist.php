@@ -29,8 +29,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
      * @param mixed $docid Документ  должен  быть  показан  в  просмотре
      * @return DocList
      */
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
         $filter = Filter::getFilter("doclist");
         if ($filter->to == null) {
@@ -64,8 +63,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function filterOnSubmit($sender)
-    {
+    public function filterOnSubmit($sender) {
 
         $this->docview->setVisible(false);
         //запоминаем  форму   фильтра
@@ -80,8 +78,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $this->doclist->Reload();
     }
 
-    public function doclistOnRow($row)
-    {
+    public function doclistOnRow($row) {
         $item = $row->getDataItem();
         $item = $item->cast();
         $row->add(new Label('name', $item->meta_desc));
@@ -129,8 +126,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
     }
 
     //просмотр
-    public function showOnClick($sender)
-    {
+    public function showOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->docview->setVisible(true);
         $this->docview->setDoc($item);
@@ -139,8 +135,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
     }
 
     //редактирование
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $type = H::getMetaType($item->type_id);
         $class = "\\ZippyERP\\ERP\\Pages\\Doc\\" . $type['meta_name'];
@@ -152,8 +147,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         App::Redirect($class, $item->document_id);
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $this->docview->setVisible(false);
 
         $doc = $sender->owner->getDataItem();
@@ -165,8 +159,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $this->doclist->Reload();
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->docview->setVisible(false);
 
         $item = $sender->owner->getDataItem();
@@ -182,8 +175,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
 class DocDataSource implements \Zippy\Interfaces\DataSource
 {
 
-    private function getWhere()
-    {
+    private function getWhere() {
 
         $conn = \ZDB\DB::getConnect();
         $filter = Filter::getFilter("doclist");
@@ -201,13 +193,11 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
         return $where;
     }
 
-    public function getItemCount()
-    {
+    public function getItemCount() {
         return Document::findCnt($this->getWhere());
     }
 
-    public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
+    public function getItems($start, $count, $sortfield = null, $asc = null) {
         $docs = Document::find($this->getWhere(), "document_date desc,document_id desc", $count, $start);
 
         //$l = Traversable::from($docs);
@@ -216,8 +206,7 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
         return $docs;
     }
 
-     public function getItem($id)
-    {
+    public function getItem($id) {
         
     }
 

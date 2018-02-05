@@ -18,8 +18,7 @@ use ZippyERP\ERP\Helper as H;
 class EntryList extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $filter = Filter::getFilter("entrylist");
         $this->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
@@ -39,8 +38,7 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $this->entrylist->Reload();
     }
 
-    public function filterOnSubmit($sender)
-    {
+    public function filterOnSubmit($sender) {
         $this->docview->setVisible(false);
         $filter = Filter::getFilter("entrylist");
         $filter->from = $this->filter->from->getDate();
@@ -50,8 +48,7 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $this->entrylist->Reload();
     }
 
-    public function entrylistOnRow($row)
-    {
+    public function entrylistOnRow($row) {
         $item = $row->getDataItem();
         $row->add(new Label('acc_d', $item->acc_d));
         $row->add(new Label('acc_c', $item->acc_c));
@@ -61,8 +58,7 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('show', $this, 'showOnClick'))->setValue($item->meta_desc . ' ' . $item->document_number);
     }
 
-    public function showOnClick($sender)
-    {
+    public function showOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->docview->setVisible(true);
         $this->docview->setDoc(\ZippyERP\ERP\Entity\Doc\Document::load($item->document_id));
@@ -75,8 +71,7 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
 class EntryDataSource implements \Zippy\Interfaces\DataSource
 {
 
-    private function getWhere()
-    {
+    private function getWhere() {
 
         $conn = \ZDB\DB::getConnect();
 
@@ -94,18 +89,15 @@ class EntryDataSource implements \Zippy\Interfaces\DataSource
         return $where;
     }
 
-    public function getItemCount()
-    {
+    public function getItemCount() {
         return Entry::findCnt($this->getWhere());
     }
 
-    public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
+    public function getItems($start, $count, $sortfield = null, $asc = null) {
         return Entry::find($this->getWhere(), "document_date  " . $asc, $count, $start);
     }
 
-    public function getItem($id)
-    {
+    public function getItem($id) {
         
     }
 

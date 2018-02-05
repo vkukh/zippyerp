@@ -23,8 +23,7 @@ class Contact extends \Zippy\Html\PageFragment
      * @param mixed $caller ссылка на  класс  вызвавшей  страницы
      * @param mixed $callback имя функции  к  вызвавшей странице  для возврата
      */
-    public function __construct($id, $caller, $callback)
-    {
+    public function __construct($id, $caller, $callback) {
         parent::__construct($id);
 
         $this->caller = $caller;
@@ -41,8 +40,7 @@ class Contact extends \Zippy\Html\PageFragment
         $this->contactdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
-    public function saveOnClick($sender)
-    {
+    public function saveOnClick($sender) {
         $this->setVisible(false);
         $this->item->lastname = trim($this->contactdetail->editlastname->getText());
         $this->item->firstname = trim($this->contactdetail->editfirstname->getText());
@@ -56,8 +54,7 @@ class Contact extends \Zippy\Html\PageFragment
         $this->caller->{$this->callback}(true, $isnew ? $this->item->contact_id : 0);
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->setVisible(false);
         $this->caller->{$this->callback}(false);
     }
@@ -67,8 +64,7 @@ class Contact extends \Zippy\Html\PageFragment
      *
      * @param mixed $item
      */
-    public function open(\ZippyERP\ERP\Entity\Contact $item = null)
-    {
+    public function open(\ZippyERP\ERP\Entity\Contact $item = null) {
         if ($item == null)
             $item = new \ZippyERP\ERP\Entity\Contact();
         $this->item = $item;
@@ -85,8 +81,7 @@ class Contact extends \Zippy\Html\PageFragment
     /**
      * Возвращает  отредактированный  обьект
      */
-    public function getItem()
-    {
+    public function getItem() {
         return $this->item;
     }
 

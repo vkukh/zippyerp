@@ -12,14 +12,12 @@ namespace ZippyERP\ERP\Entity;
 class Project extends \ZCL\DB\Entity
 {
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
         $this->start_date = strtotime($this->start_date);
         $this->end_date = strtotime($this->end_date);
     }
 
-    protected function beforeDelete()
-    {
+    protected function beforeDelete() {
         //$conn = \ZDB\DB::getConnect();
         // $conn->Execute("delete from erp_document_update_log  where document_id =" . $this->document_id);
 

@@ -19,8 +19,7 @@ class FinResult extends \ZippyERP\ERP\Pages\Base
 
     private $_doc;
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
@@ -40,8 +39,7 @@ class FinResult extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
 
 
         $this->_doc->document_number = $this->docform->document_number->getText();
@@ -69,8 +67,7 @@ class FinResult extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 

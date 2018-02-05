@@ -1,187 +1,193 @@
 <html>
-<head>
-</head>
+    <head>
+    </head>
 
-<body>
-<div class="row">
-    <div class="col-xs-12">
-        <div zippy="customertable">
-            <h3>Довідник контрагентів </h3>
-                        <form zippy="filter" class="navbar-form ">
-                <div class="form-group">
-                    <label for="searchkey">Пошук</label>
-                    <input class="form-control" type="text" zippy="searchkey">
+    <body>
+        <div class="row">
+            <div class="col-xs-12">
+                <div zippy="customertable">
+                    <h3>Довідник контрагентів </h3>
+                    <form zippy="filter" class="navbar-form ">
+                        <div class="form-group">
+                            <label for="searchkey">Пошук</label>
+                            <input class="form-control" type="text" zippy="searchkey">
+                        </div>
+
+                        <div class="form-group">
+                            <input class="btn btn-default   " type="submit" value="ОК">
+                        </div>
+                    </form>
+                    <a zippy="addnew" title="Додати підприємство або організацію юридичну особу" >Додати  юр. особу</a> &nbsp;
+                    &nbsp;&nbsp;&nbsp;<a zippy="addf"  title="Додати приватного підприємця" >Додати ФОП </a>
+                    &nbsp;&nbsp;&nbsp;<a zippy="addc"  title="Додати клієнта не  підприємця" >Додати клієнта</a>
+
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th>Ім'я</th>
+                            <th></th>
+                        </tr>
+                        <tr zippy="customerlist">
+                            <td zippy="customername"></td>
+
+                            <td style="width:90px">
+                                <a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a>
+                                <a zippy="editcontactlist" title="Контакти"><i class="fa fa-users"></i></a>
+                                <a zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    </table>
+                    <div zippy="pag"></div>
                 </div>
- 
-                <div class="form-group">
-                    <input class="btn btn-default   " type="submit" value="ОК">
+
+
+            </div>
+        </div>
+        <div class="row">
+
+
+            <form zippy="customerdetail" method="post">
+                <H4>Редагувати контрагента</h4>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="cust_type">Тип</label>
+                        <select class="form-control" zippy="cust_type">
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editcustomername">Контрагент</label>
+                        <input class="form-control" zippy="editcustomername"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-label="editemail" for="editemail">E-Mail</label>
+                        <input class="form-control" zippy="editemail"/>
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editphone" for="editphone">Телефон</label>
+                        <input class="form-control" zippy="editphone"/>
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editladdress" for="editladdress">Юр. адреса</label>
+                        <textarea class="form-control" zippy="editladdress"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editfaddress" for="editfaddress">Фіз. адреса</label>
+                        <textarea class="form-control" zippy="editfaddress"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editcomment">Примітка</label>
+                        <textarea class="form-control" zippy="editcomment"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input zippy="save" type="submit" value="Зберегти" class="btn btn-default ">&nbsp;&nbsp;
+                        <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default"  ></td>
+                    </div>
                 </div>
+                <div class="col-xs-3">
+
+
+                    <div class="form-group">
+                        <label data-label="editcode" for="editcode">ЕДРПОУ</label>
+                        <input class="form-control" type="number" zippy="editcode">
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editinn" for="editinn">ІНН</label>
+                        <input class="form-control" type="number" zippy="editinn">
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editlic" for="editlic">Номер посвідченя</label>
+                        <input class="form-control" type="number" zippy="editlic">
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editbank" for="editbank">Банк</label>
+                        <select class="form-control" zippy="editbank">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editbankaccount" for="editbankaccount">Номер рахунку</label>
+                        <input class="form-control" type="number" zippy="editbankaccount">
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editbank2" for="editbank2">Банк</label>
+                        <select class="form-control" zippy="editbank2">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-label="editbankaccount2" for="editbankaccount2">Номер рахунку</label>
+                        <input class="form-control" type="number" zippy="editbankaccount2">
+                    </div>
+                    <div class="form-group">
+                        <label for="discount">Постійна знижка,%</label>
+                        <input value="0" class="form-control"  pattern="[0-9\.]+"  zippy="discount">
+                    </div>
+                </div>
+
             </form>
-             <a zippy="addnew" class="btn btn-default  btn-sm">Додати юр. особу</a> &nbsp;
-            <a zippy="addf" class="btn btn-default btn-sm">Додати фіз. особу</a>
- 
-            <table class="table table-bordered   table-condensed" style="width:400px">
-                <tr>
-                    <th>Им'я</th>
-                    <th></th>
-                </tr>
-                <tr zippy="customerlist">
-                    <td zippy="customername"></td>
-
-                    <td style="width:90px">
-                        <a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a>
-                        <a zippy="editcontactlist" title="Контакти"><i class="fa fa-users"></i></a>
-                        <a zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>
-            </table>
-            <div zippy="pag"></div>
-         </div>
 
 
-    </div>
-</div>
-<div class="row">
-
-
-    <form zippy="customerdetail" method="post">
-        <H4>Редагувати контрагента</h4>
-        <div class="col-xs-4">
-            <div class="form-group">
-                <label for="editcustomername">Назва</label>
-                <input class="form-control" zippy="editcustomername"/>
-            </div>
-            <div class="form-group">
-                <label for="cust_type">Тип</label>
-                <select class="form-control" zippy="cust_type">
-                    <option value="1">Покупець</option>
-                    <option value="2">Продавець</option>
-                    <option value="3">Покупець/Продавець</option>
-                    <option value="4">Держ. заклвд</option>
-                    <option value="0">Організація</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="editemail">E-Mail</label>
-                <input class="form-control" zippy="editemail"/>
-            </div>
-            <div class="form-group">
-                <label for="editphone">Телефон</label>
-                <input class="form-control" zippy="editphone"/>
-            </div>
-            <div class="form-group">
-                <label for="editladdress">Юр. Адреса</label>
-                <textarea class="form-control" zippy="editladdress"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="editfaddress">Фіз. Адреса</label>
-                <textarea class="form-control" zippy="editfaddress"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="editcomment">Примітка</label>
-                <textarea class="form-control" zippy="editcomment"></textarea>
-            </div>
-            <div class="form-group">
-                <input zippy="save" type="submit" value="Зберегти" class="btn btn-default btn-sm">&nbsp;&nbsp;
-                <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default btn-sm"></td>
-            </div>
         </div>
-        <div class="col-xs-3">
+        <div class="row">
+            <div class="col-xs-10" zippy="editcontacts">
 
+                Контакти контрагента <strong zippy="cname"></strong> <br>
+                <a zippy="toclist">До списку</a>
+                <table class="table table-striped  table-condensed">
+                    <tr>
+                        <th>Прізвище</th>
+                        <th>Им'я</th>
+                        <th>Телефон</th>
+                        <th>Email</th>
 
-            <div class="form-group">
-                <label for="editcode">ЕДРПОУ</label>
-                <input class="form-control" type="number" zippy="editcode">
+                        <th></th>
+                    </tr>
+                    <tr zippy="contactlist">
+                        <td zippy="clastname"></td>
+                        <td zippy="cfirstname"></td>
+
+                        <td zippy="cphone"></td>
+                        <td zippy="cemail"></td>
+
+                        <td style="width:75px"><a zippy="cedit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a> <a
+                                zippy="cshow" title="Работа  с контентом"><i class="fa fa-search"></i></a> <a zippy="cdelete"
+                                                                                                          title="Видалити"><i
+                                    class="fa fa-trash"></i></a></td>
+
+                    </tr>
+                </table>
+                <form zippy="newcontactform" class="navbar-form ">
+
+                    <div class="form-group">
+                        <label>Вибрати контакт </label>
+                        <select class="form-control select2"   zippy="choicecontact">
+                            <option>Вибрати контакт</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group   ">
+                        <input type="submit" class="btn btn-default  "     value="Додати"> 
+
+                    </div>            
+                    <div class="form-group">  &nbsp; &nbsp; &nbsp;  &nbsp;
+                        <a zippy="addnewcontact"   class="btn btn-default  "><i class="fa fa-plus-circle"></i> Новий контакт</a>
+
+                    </div> 
+
+                </form>
+
             </div>
-            <div class="form-group">
-                <label for="editinn">ІНН</label>
-                <input class="form-control" type="number" zippy="editinn">
-            </div>
-            <div class="form-group">
-                <label for="editlic">Номер посвідченя</label>
-                <input class="form-control" type="number" zippy="editlic">
-            </div>
-            <div class="form-group">
-                <label for="editbank">Банк</label>
-                <select class="form-control" zippy="editbank">
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="editbankaccount">Номер рахунку</label>
-                <input class="form-control" type="number" zippy="editbankaccount">
-            </div>
-            <div class="form-group">
-                <label for="editbank2">Банк</label>
-                <select class="form-control" zippy="editbank2">
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="editbankaccount2">Номер Продавець</label>
-                <input class="form-control" type="number" zippy="editbankaccount2">
-            </div>
-        </div>
 
-    </form>
+            <div class="col-xs-8">
+                <div zippy="contactdetail">
 
-
-</div>
-<div class="row">
-    <div class="col-xs-8" zippy="editcontacts">
-
-        Контакти контрагенту <strong zippy="cname"></strong> <br>
-        <a zippy="toclist">До списку</a>
-        <table class="table table-striped  table-condensed">
-            <tr>
-                <th>Прізвище</th>
-                <th>Им'я</th>
-                <th>Email</th>
-
-                <th></th>
-            </tr>
-            <tr zippy="contactlist">
-                <td zippy="clastname"></td>
-                <td zippy="cfirstname"></td>
-
-                <td zippy="cemail"></td>
-
-                <td style="width:75px"><a zippy="cedit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a> <a
-                        zippy="cshow" title="Работа  с контентом"><i class="fa fa-search"></i></a> <a zippy="cdelete"
-                                                                                                      title="Видалити"><i
-                        class="fa fa-trash"></i></a></td>
-
-            </tr>
-        </table>
-        <form zippy="newcontactform" class="navbar-form ">
-             
-            <div class="form-group">
-                 
-                    <select class="form-control select2"   zippy="choicecontact">
-                       <option>Вибрати контакт</option>
-                    </select>
                 </div>
- 
-               <div class="form-group   ">
-        <input type="submit" class="btn btn-default  "     value="Додати"> 
-     
-                </div>            
-                <div class="form-group">
-                <a zippy="addnewcontact" title="Создать  контакт" class="btn btn-default  "><i class="fa fa-plus-circle"></i> Новий контакт</a>
-   
-                </div> 
-                
-        </form>
+            </div>
+            <div class="col-xs-10">        
+                <div zippy="contactview">
 
-    </div>
-
-    <div class="col-xs-8">
-        <div zippy="contactdetail">
-
+                </div>
+            </div>
         </div>
-        <div zippy="contactview">
-
-        </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>

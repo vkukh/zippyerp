@@ -12,8 +12,7 @@ use ZippyERP\ERP\Helper as H;
 class ExpenseReport extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
         $employee = \ZippyERP\ERP\Entity\Employee::load($this->headerdata["employee"]);
 
@@ -30,11 +29,13 @@ class ExpenseReport extends Document
                 "amount" => H::fm($value['amount'])
             );
         }
-        $elist = self::expenceList();
+
         $header = array('date' => date('d.m.Y', $this->document_date),
             "employee" => $employee->shortname,
+            "comment" => $this->headerdata["comment"],
             "expenseamount" => $this->headerdata["expenseamount"] > 0 ? H::fm($this->headerdata["expenseamount"]) : 0,
-            "expensetype" => $elist[$this->headerdata["expensetype"]],
+            "expensetype" => $this->headerdata["expensetype"],
+            "storetype" => $this->headerdata["storetype"],
             "document_number" => $this->document_number,
             "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"])
@@ -48,15 +49,14 @@ class ExpenseReport extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
         $employee_id = $this->headerdata["employee"];
 
         $expensetype = $this->headerdata['expensetype'];
-        if ($expensetype == 201 || $expensetype == 22 || $expensetype == 281) {
+        if (count($this->detaildata) > 0) {
             foreach ($this->detaildata as $value) {
                 //поиск  записи  о  товаре   на складе
 
@@ -72,9 +72,10 @@ class ExpenseReport extends Document
 
             //налоговый кредит
             if ($this->headerdata['totalnds'] > 0) {
-                Entry::AddEntry("644", "372", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+                Entry::AddEntry("644", "641", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
             }
-        } else {
+        }
+        if ($this->headerdata["expenseamount"] > 0) {
             Entry::AddEntry($expensetype, "372", $this->headerdata["expenseamount"], $this->document_id, $this->document_date);
 
             $sc = new SubConto($this, 372, 0 - $this->headerdata["expenseamount"]);
@@ -89,25 +90,7 @@ class ExpenseReport extends Document
         return true;
     }
 
-    public static function expenceList()
-    {
-
-
-        $list = array();
-        $list[0] = "Выбрати";
-        $list[22] = "МШП";
-        $list[281] = "Товари  на  складі";
-        $list[201] = "Сировина  та  матеріали";
-        $list[23] = "Прямі віробничі витрати";
-        $list[91] = "Загальновиробничі витрати";
-        $list[92] = "Адміністративні витрати";
-        $list[93] = "Витрати на збут";
-
-        return $list;
-    }
-
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         //  $list['TaxInvoiceIncome'] = 'Вхідна ПН';
 

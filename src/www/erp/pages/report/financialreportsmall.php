@@ -18,8 +18,7 @@ use ZippyERP\System\System;
 class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
@@ -34,8 +33,7 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
         $header = $this->getHeaderData();
 
         $html = $this->generateReport($header);
@@ -59,8 +57,7 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
         $this->detail->setVisible(true);
     }
 
-    private function getHeaderData()
-    {
+    private function getHeaderData() {
 
 
         //$detail = array();
@@ -367,8 +364,7 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
         return $header;
     }
 
-    public function generateReport($header)
-    {
+    public function generateReport($header) {
 
 
         $report = new \ZippyERP\ERP\Report('financialreportsmall.tpl');
@@ -379,8 +375,7 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
         return $html;
     }
 
-    public function exportGNAU($header)
-    {
+    public function exportGNAU($header) {
         $year = $this->filter->yr->getValue();
         $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
         $common = System::getOptions("common");

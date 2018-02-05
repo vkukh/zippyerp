@@ -14,14 +14,12 @@ class Employee extends \ZCL\DB\Entity
 
     const TAX_ACCOUNTABLE = 1; // подотчет
 
-    protected function init()
-    {
+    protected function init() {
         $this->employee_id = 0;
         $this->hiredate = time();
     }
 
-    protected function beforeSave()
-    {
+    protected function beforeSave() {
         parent::beforeSave();
         //упаковываем  данные в detail
         $this->detail = "<detail><login>{$this->login}</login>";
@@ -37,8 +35,7 @@ class Employee extends \ZCL\DB\Entity
         return true;
     }
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
         $this->hiredate = strtotime($this->hiredate);
         if (strlen($this->firedate) > 0)
             $this->firedate = strtotime($this->firedate);
@@ -59,14 +56,12 @@ class Employee extends \ZCL\DB\Entity
     }
 
     //Возвращает  фамилию  и  имя
-    public function getShortName()
-    {
+    public function getShortName() {
         return $this->lastname . " " . $this->firstname;
     }
 
     //Возвращает  фамилию  и  инициалы
-    public function getInitName()
-    {
+    public function getInitName() {
         $name = $this->lastname . " " . mb_substr($this->firstname, 0, 1, "UTF-8") . '.';
         if (strlen($this->middlename) > 0) {
             $name = $name . " " . mb_substr($this->middlename, 0, 1, "UTF-8") . '.';
@@ -79,8 +74,7 @@ class Employee extends \ZCL\DB\Entity
      *
      * @param mixed $date
      */
-    public function getForPayed($date)
-    {
+    public function getForPayed($date) {
         return SubConto::getAmount($date, 0, 0, 0, $this->employee_id, 0, 0, 0);
     }
 
@@ -88,8 +82,7 @@ class Employee extends \ZCL\DB\Entity
      * возвращает контакт, связанный с  сотрудником
      *
      */
-    public function getContact()
-    {
+    public function getContact() {
         return Contact::load($this->contact);
     }
 

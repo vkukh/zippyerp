@@ -15,13 +15,11 @@ use ZippyERP\ERP\Helper as H;
 class ManualEntry extends Document
 {
 
-    protected function init()
-    {
+    protected function init() {
         parent::init();
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $accarr = unserialize(base64_decode($this->headerdata['entry']));
         foreach ($accarr as $entry) {
 
@@ -97,8 +95,7 @@ class ManualEntry extends Document
         }
     }
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
         $header = array(
             'date' => date('d.m.Y', $this->document_date),

@@ -28,8 +28,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
 
     private $_doc;
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -69,8 +68,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function optypeOnChange($sender)
-    {
+    public function optypeOnChange($sender) {
         $optype = $this->docform->optype->getValue();
         if ($optype == Consts::TYPEOP_CUSTOMER_IN) {
             $this->docform->lblopdetail->setText('Покупатель');
@@ -96,8 +94,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function opdetailOnAutocomplete($sender)
-    {
+    public function opdetailOnAutocomplete($sender) {
         $text = $sender->getValue();
         $optype = $this->docform->optype->getValue();
         if ($optype == Consts::TYPEOP_CUSTOMER_IN) {
@@ -118,8 +115,7 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
         return array();
     }
 
-    public function basedocOnAutocomplete($sender)
-    {
+    public function basedocOnAutocomplete($sender) {
         $text = $sender->getValue();
         $answer = array();
         $conn = \ZDB\DB::getConnect();
@@ -131,13 +127,11 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
         return $answer;
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
 
 
         $basedocid = $this->docform->basedoc->getKey();

@@ -26,8 +26,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_basedocid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -35,7 +34,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date', time()));
         $this->docform->add(new DropDownChoice('bankaccount', \ZippyERP\ERP\Entity\MoneyFund::findArray('title', "ftype=1")));
         $this->docform->add(new CheckBox('tax'));
-        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', "",'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', "", 'customer_name')));
         ;
         $this->docform->add(new TextInput('amount'));
         $this->docform->add(new TextInput('nds'));
@@ -64,7 +63,6 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
 
 
             $this->docform->customer->setValue($this->_doc->headerdata['customer']);
-            
         } else {
             $this->_doc = Document::create('TransferOrder');
             $this->docform->document_number->setText($this->_doc->nextNumber());
@@ -77,15 +75,11 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    
-
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->docform->customer->getValue() <= 0) {
             $this->setError('Не вибраний  контрагент');
             return;
@@ -132,8 +126,7 @@ class TransferOrder extends \ZippyERP\ERP\Pages\Base
     }
 
     // автолоад документов-оснований
-    public function OnAutocomplete($sender)
-    {
+    public function OnAutocomplete($sender) {
         $text = $sender->getValue();
         $answer = array();
         $conn = \ZDB\DB::getConnect();

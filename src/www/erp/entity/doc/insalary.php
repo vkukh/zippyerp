@@ -14,8 +14,7 @@ use ZippyERP\System\System;
 class InSalary extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
         $totamount = $totmil = $totecb = $totndfl = 0;
 
@@ -57,8 +56,7 @@ class InSalary extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $tax = System::getOptions("tax");
 
         $a66 = 0;
@@ -136,8 +134,7 @@ class InSalary extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['OutSalary'] = 'Виплата зарплати';
 

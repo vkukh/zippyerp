@@ -1,44 +1,44 @@
 <html>
-<head>
-</head>
+    <head>
+    </head>
 
-<body>
-<div class="row">
-    <div class="col-xs-12">
-        <div zippy="departmenttable">
-            <h3>Довідние підорозділів </h3>
-            <a zippy="addnew" class="btn btn-default  ">Додати</a>
-            <table class="table table-bordered   table-condensed" style="width:400px">
-                <tr>
-                    <th>Назва</th>
+    <body>
+        <div class="row">
+            <div class="col-xs-12">
+                <div zippy="departmenttable">
+                    <h3>Довідние підорозділів </h3>
+                    <a zippy="addnew" class="btn btn-default  ">Додати</a>
+                    <table class="table table-bordered   table-condensed" style="width:400px">
+                        <tr>
+                            <th>Назва</th>
 
-                    <th></th>
-                </tr>
-                <tr zippy="departmentlist">
-                    <td zippy="department_name"></td>
-
-
-                    <td style="width:52px"><a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a> <a
-                            zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a></td>
-                </tr>
-            </table>
+                            <th></th>
+                        </tr>
+                        <tr zippy="departmentlist">
+                            <td zippy="department_name"></td>
 
 
+                            <td style="width:52px"><a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a> <a
+                                    zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                    </table>
+
+
+                </div>
+
+                <form class="col-xs-4" zippy="departmentdetail" method="post">
+                    <div class="form-group">
+                        <label for="editdepartmentname">Назва</label>
+                        <input class="form-control" zippy="editdepartmentname"/>
+                    </div>
+
+
+                    <input zippy="save" type="submit" value="Зберегти" class="btn btn-default ">&nbsp;&nbsp;
+                    <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default  ">
+
+                </form>
+            </div>
         </div>
 
-        <form class="col-xs-4" zippy="departmentdetail" method="post">
-            <div class="form-group">
-                <label for="editdepartmentname">Назва</label>
-                <input class="form-control" zippy="editdepartmentname"/>
-            </div>
-
-
-            <input zippy="save" type="submit" value="Зберегти" class="btn btn-default ">&nbsp;&nbsp;
-            <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default  ">
-
-        </form>
-    </div>
-</div>
-
-</body>
+    </body>
 </html>

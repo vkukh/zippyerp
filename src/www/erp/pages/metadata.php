@@ -12,7 +12,6 @@ use \Zippy\Html\Form\TextInput;
 use \Zippy\Html\Label;
 use \Zippy\Html\Link\ClickLink;
 use \Zippy\Html\Panel;
- 
 use \ZippyERP\ERP\ACL;
 use \ZippyERP\System\System;
 use \Zippy\WebApplication as App;
@@ -23,8 +22,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
     private $metadatads;
     private $roleaccessds;
 
-    public function __construct()
-    {
+    public function __construct() {
 
         parent::__construct();
         if (System::getUser()->userlogin !== 'admin') {
@@ -51,7 +49,8 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->editpan->editform->add(new TextInput('edit_menugroup'));
         $this->editpan->editform->add(new TextArea('edit_notes'));
         $this->editpan->editform->add(new CheckBox('edit_disabled'));
-        $this->editpan->editform->add(new DropDownChoice('edit_meta_type',\ZippyERP\ERP\Entity\MetaData::getNames()));
+        $this->editpan->editform->add(new CheckBox('edit_smart'));
+        $this->editpan->editform->add(new DropDownChoice('edit_meta_type', \ZippyERP\ERP\Entity\MetaData::getNames()));
         $this->editpan->add(new ClickLink('cancel'))->onClick($this, 'cancelOnClick');
         $this->editpan->editform->add(new DataView('rolerow', $this->roleaccessds, $this, 'rolerowOnRow'));
         //  $this->editpan->editform->add(new Panel('eipan'));
@@ -59,8 +58,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         //   $this->editpan->editform->eipan->add(new \Zippy\Html\Form\File('importfile'));
     }
 
-    public function filterOnSubmit($sender)
-    {
+    public function filterOnSubmit($sender) {
 
         $where = "1<>1 ";
         if ($this->listpan->filter->fdoc->isChecked()) {
@@ -84,8 +82,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->listpan->metarow->Reload();
     }
 
-    public function addnewOnClick($sender)
-    {
+    public function addnewOnClick($sender) {
         $this->listpan->setVisible(false);
         $this->editpan->setVisible(true);
         //   $this->editpan->editform->eipan->setVisible(false);
@@ -95,14 +92,12 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->editpan->editform->rolerow->Reload();
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->listpan->setVisible(true);
         $this->editpan->setVisible(false);
     }
 
-    public function metarowOnRow($row)
-    {
+    public function metarowOnRow($row) {
         $item = $row->getDataItem();
         $row->setAttribute('style', $item->disabled == 1 ? 'color: #aaa' : null);
         switch ($item->meta_type) {
@@ -110,16 +105,16 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
                 $title = "Документ";
                 break;
             case 2:
-                $title = "Отчет";
+                $title = "Звіт";
                 break;
             case 3:
                 $title = "Журнал";
                 break;
             case 4:
-                $title = "Справочник";
+                $title = "Довідник";
                 break;
             case 5:
-                $title = "Страница";
+                $title = "Сторінка";
                 break;
         }
 
@@ -131,8 +126,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('rowdelete'))->onClick($this, 'rowdeleteOnClick');
     }
 
-    public function roweditOnClick($sender)
-    {
+    public function roweditOnClick($sender) {
 
         $item = $sender->getOwner()->getDataItem();
         $form = $this->editpan->editform;
@@ -143,6 +137,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $form->edit_menugroup->setText($item->menugroup);
         $form->edit_meta_type->setValue($item->meta_type);
         $form->edit_disabled->setChecked($item->disabled == 1);
+        $form->edit_smart->setChecked($item->smart == 1);
 
         $this->listpan->setVisible(false);
         $this->editpan->setVisible(true);
@@ -154,16 +149,14 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         //   $form->eipan->exportzip->params = array('metaie', $item->meta_id);
     }
 
-    public function rowdeleteOnClick($sender)
-    {
+    public function rowdeleteOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         \ZippyERP\ERP\Entity\MetaData::delete($item->meta_id);
 
         $this->listpan->metarow->Reload();
     }
 
-    public function editformOnSubmit($sender)
-    {
+    public function editformOnSubmit($sender) {
 
         $meta_id = $this->editpan->editform->meta_id->getText();
         if ($meta_id > 0) {
@@ -178,6 +171,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $item->meta_type = $this->editpan->editform->edit_meta_type->getValue();
         $item->notes = $this->editpan->editform->edit_notes->getText();
         $item->disabled = $this->editpan->editform->edit_disabled->isChecked() ? 1 : 0;
+        $item->smart = $this->editpan->editform->edit_smart->isChecked() ? 1 : 0;
 
         $item->save();
         ACL::updateRoleAccess($item->meta_id, $this->getComponent('rolerow')->getDataRows());
@@ -192,8 +186,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->editpan->editform->edit_notes->setText('');
     }
 
-    public function rolerowOnRow($row)
-    {
+    public function rolerowOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('rolename', $item->userlogin));
@@ -202,5 +195,4 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $row->add(new CheckBox('execacc', new Bind($item, 'execacc')));
     }
 
-     
 }

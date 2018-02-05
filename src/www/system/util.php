@@ -14,8 +14,7 @@ class Util
      * @param mixed $str
      * @param mixed $count
      */
-    public static function cutString($str, $count)
-    {
+    public static function cutString($str, $count) {
         if (mb_strlen($str, 'UTF-8') <= $count) {
             return $str;
         }
@@ -29,8 +28,7 @@ class Util
      *
      * @param mixed $dir
      */
-    public static function removeDirRec($dir)
-    {
+    public static function removeDirRec($dir) {
         if ($objs = glob($dir . "/*")) {
             foreach ($objs as $obj) {
                 is_dir($obj) ? self::removeDirRec($obj) : unlink($obj);
@@ -39,8 +37,7 @@ class Util
         @rmdir($dir);
     }
 
-    public static function createThumb($filepath, $size, $ext = 'jpg')
-    {
+    public static function createThumb($filepath, $size, $ext = 'jpg') {
         $imagedata = getimagesize($filepath);
 
         if (preg_match('/(gif|png|jpeg)$/', $imagedata['mime']) == 0) {

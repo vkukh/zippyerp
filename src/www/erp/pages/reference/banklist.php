@@ -17,8 +17,7 @@ class BankList extends \ZippyERP\ERP\Pages\Base
 
     private $_bank;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Panel('banktable'))->setVisible(true);
@@ -31,8 +30,7 @@ class BankList extends \ZippyERP\ERP\Pages\Base
         $this->bankdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
-    public function banklistOnRow($row)
-    {
+    public function banklistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('bankname', $item->bank_name));
@@ -40,8 +38,7 @@ class BankList extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $this->_bank = $sender->owner->getDataItem();
         $this->banktable->setVisible(false);
         $this->bankdetail->setVisible(true);
@@ -49,14 +46,12 @@ class BankList extends \ZippyERP\ERP\Pages\Base
         $this->bankdetail->editmfo->setText($this->_bank->mfo);
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         Bank::delete($sender->owner->getDataItem()->bank_id);
         $this->banktable->banklist->Reload();
     }
 
-    public function addOnClick($sender)
-    {
+    public function addOnClick($sender) {
         $this->banktable->setVisible(false);
         $this->bankdetail->setVisible(true);
         $this->bankdetail->editbankname->setText('');
@@ -64,8 +59,7 @@ class BankList extends \ZippyERP\ERP\Pages\Base
         $this->_bank = new Bank();
     }
 
-    public function saveOnClick($sender)
-    {
+    public function saveOnClick($sender) {
 
         $this->_bank->bank_name = $this->bankdetail->editbankname->getText();
         $this->_bank->mfo = $this->bankdetail->editmfo->getText();
@@ -80,8 +74,7 @@ class BankList extends \ZippyERP\ERP\Pages\Base
         $this->banktable->banklist->Reload();
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->banktable->setVisible(true);
         $this->bankdetail->setVisible(false);
     }

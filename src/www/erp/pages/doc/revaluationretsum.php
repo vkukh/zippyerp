@@ -22,8 +22,7 @@ use Zippy\WebApplication as App;
 class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
@@ -54,8 +53,7 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         $store = Store::load($this->docform->store->getValue());
 
         if ($store == false) {
@@ -101,14 +99,12 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
     // обновляем  сумму  на  магазине
-    public function updateActual()
-    {
+    public function updateActual() {
         $store_id = $this->docform->store->getValue();
         if ($store_id > 0) {
             $list = Stock::find("store_id = " . $store_id);  //ишем  сток  со  спецтоваром
@@ -121,8 +117,7 @@ class RevaluationRetSum extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function ajaxUpdateActual()
-    {
+    public function ajaxUpdateActual() {
         $this->updateActual();
         $this->updateAjax(array('actual'));
     }

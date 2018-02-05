@@ -21,12 +21,20 @@
         <td></td>
         <td colspan="5">{{firmcode}}</td>
     </tr>
+    {{#customername}}
     <tr>
         <td></td>
         <td>Отримувач</td>
         <td colspan="5">{{customername}}</td>
     </tr>
-
+    {{/customername}}
+    {{#empname}}
+    <tr>
+        <td></td>
+        <td>Відповідальний</td>
+        <td colspan="5">{{empname}}</td>
+    </tr>
+    {{/empname}}
     <tr>
         <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7" valign="middle">
             <br><br> Накладна № {{document_number}} від {{date}} <br><br><br>
@@ -34,7 +42,8 @@
     </tr>
 
     <tr style="font-weight: bolder;">
-        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="30">№</th>
+        
+        <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="60">Код</th>
         <th colspan="2" width="230" style="border-top:1px #000 solid;border-bottom:1px #000 solid;">Назва</th>
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Од.вим.</th>
         <th style="border-top:1px #000 solid;border-bottom:1px #000 solid;" width="50">Кіл.</th>
@@ -43,7 +52,8 @@
     </tr>
     {{#_detail}}
     <tr>
-        <td align="right">{{no}}</td>
+  
+        <td >{{code}}</td>
         <td colspan="2">{{tovar_name}}</td>
         <td>{{measure}}</td>
         <td align="right">{{quantity}}</td>
@@ -51,7 +61,8 @@
         <td align="right">{{amount}}</td>
     </tr>
     {{/_detail}}
-    <tr style="font-weight: bolder;">
+ 
+  <tr style="font-weight: bolder;">
         <td style="border-top:1px #000 solid;" colspan="6" align="right">Всього:</td>
         <td style="border-top:1px #000 solid;" align="right">{{total}}</td>
     </tr>
@@ -65,10 +76,10 @@
     <tr>
         <td></td>
         <td colspan="2">
-            Выписал
+            Виписав
         </td>
         <td colspan="4">
-            Получил
+            Отримав
         </td>
 
     </tr>

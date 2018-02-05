@@ -17,8 +17,7 @@ use ZippyERP\System\System;
 class IEBook extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $dt = new \Carbon\Carbon;
         $dt->subMonth();
@@ -35,8 +34,7 @@ class IEBook extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
         $html = $this->generateReport();
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "iebook";
@@ -57,8 +55,7 @@ class IEBook extends \ZippyERP\ERP\Pages\Base
         $this->detail->setVisible(true);
     }
 
-    private function generateReport()
-    {
+    private function generateReport() {
         $report = new \ZippyERP\ERP\Report('iebook.tpl');
 
         $header = array();

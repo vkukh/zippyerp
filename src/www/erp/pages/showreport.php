@@ -6,8 +6,7 @@ namespace ZippyERP\ERP\Pages;
 class ShowReport extends \Zippy\Html\WebPage
 {
 
-    public function __construct($type, $filename)
-    {
+    public function __construct($type, $filename) {
 
 
         $html = \ZippyERP\System\Session::getSession()->printform;

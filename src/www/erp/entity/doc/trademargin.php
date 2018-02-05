@@ -14,8 +14,7 @@ use ZippyERP\ERP\Helper as H;
 class TradeMargin extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $header = array('date' => date('d.m.Y', $this->document_date),
@@ -30,8 +29,7 @@ class TradeMargin extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
 
         $store_id = $this->headerdata['store_id'];

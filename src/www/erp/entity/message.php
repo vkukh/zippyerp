@@ -12,8 +12,7 @@ namespace ZippyERP\ERP\Entity;
 class Message extends \ZCL\DB\Entity
 {
 
-    protected function afterLoad()
-    {
+    protected function afterLoad() {
         $this->created = strtotime($this->created);
     }
 

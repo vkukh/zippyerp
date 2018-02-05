@@ -11,8 +11,7 @@ use ZippyERP\ERP\Helper as H;
 class Inventory extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -44,8 +43,7 @@ class Inventory extends Document
         return $html;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['InventoryLost'] = 'Списання ТМЦ (втрати)';
         $list['InventoryGain'] = 'Оприходування злишків';

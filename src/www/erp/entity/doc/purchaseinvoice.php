@@ -11,8 +11,7 @@ use ZippyERP\ERP\Helper as H;
 class PurchaseInvoice extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -50,14 +49,12 @@ class PurchaseInvoice extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['GoodsReceipt'] = 'Прибуткова накладна';
         $list['TaxInvoiceIncome'] = 'Вхідна ПН';

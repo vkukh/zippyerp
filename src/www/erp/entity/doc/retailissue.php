@@ -2,10 +2,11 @@
 
 namespace ZippyERP\ERP\Entity\Doc;
 
-use ZippyERP\ERP\Entity\Entry;
-use ZippyERP\ERP\Entity\SubConto;
-use ZippyERP\ERP\Helper as H;
-use ZippyERP\ERP\Util;
+use \ZippyERP\ERP\Entity\Entry;
+use \ZippyERP\ERP\Entity\SubConto;
+use \ZippyERP\ERP\Entity\Store;
+use \ZippyERP\ERP\Helper as H;
+use \ZippyERP\ERP\Util;
 
 /**
  * Класс-сущность  документ розничная  накладая
@@ -14,15 +15,12 @@ use ZippyERP\ERP\Util;
 class RetailIssue extends Document
 {
 
-    public function generateReport()
-    {
-
-
-        $i = 1;
+    public function generateReport() {
         $detail = array();
 
         foreach ($this->detaildata as $value) {
-            $detail[] = array("no" => $i++,
+            $detail[] = array(
+                "code" => $value['item_code'],
                 "tovar_name" => $value['itemname'],
                 "measure" => $value['measure_name'],
                 "quantity" => $value['quantity'] / 1000,
@@ -32,13 +30,15 @@ class RetailIssue extends Document
         }
 
         $firm = \ZippyERP\System\System::getOptions("firmdetail");
-        // $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
+
         $header = array('date' => date('d.m.Y', $this->document_date),
             "firmname" => $firm['name'],
             "firmcode" => $firm['code'],
+            "empname" => $this->headerdata["empname"],
             "customername" => $this->headerdata["customername"],
+            "customer" => $this->headerdata["customer"],
             "document_number" => $this->document_number,
-            "total" => H::fm($this->headerdata["total"]),
+             "total" => H::fm($this->headerdata["total"]),
             "totalnds" => H::fm($this->headerdata["totalnds"]),
             "summa" => Util::ucfirst(Util::money2str($this->headerdata["total"] + $this->headerdata["nds"] / 100))
         );
@@ -50,10 +50,10 @@ class RetailIssue extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $ret = 0;
         $cost = 0;
+
         foreach ($this->detaildata as $value) {
             $stock = \ZippyERP\ERP\Entity\Stock::load($value['stock_id']);
             $ret = $ret + $stock->price - $stock->partion;
@@ -66,26 +66,41 @@ class RetailIssue extends Document
 
             $sc->save();
         }
+
+        // себестоимость реализации
+        Entry::AddEntry("902", 282, $cost, $this->document_id, $this->document_date);
+
+
         // списываем  наценку
         Entry::AddEntry("285", "282", $ret, $this->document_id, $this->document_date);
         $sc = new SubConto($this, 285, $ret);
         $sc->setExtCode($this->headerdata["store"]);
         $sc->save();
-        // себестоимость реализации
-        Entry::AddEntry("902", "282", $cost, $this->document_id, $this->document_date);
+
+
+
+
+
+        if ($this->headerdata['emp'] > 0) {
+            // в  подотчет
+            Entry::AddEntry("372", "702", $this->amount, $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 272, $this->amount);
+            $sc->setEmployee($this->headerdata['emp']);
+            $sc->save();
+        }
+
 
         //налоговые  обязательства
         if ($this->headerdata['totalnds'] > 0) {
-            Entry::AddEntry("702", "641", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
-            $sc = new SubConto($this, 641, 0 - $this->headerdata["totalnds"]);
+            Entry::AddEntry("643", "702", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 643, $this->headerdata["totalnds"]);
             $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
             $sc->save();
         }
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['Warranty'] = 'Гарантійний талон';
         $list['ReturnRetailIssue'] = 'Накладна  на  повернення ';

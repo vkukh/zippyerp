@@ -3,7 +3,6 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -32,15 +31,14 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
     private $_basedocid = 0;
     private $_rowid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        
-        $this->docform->add(new DropDownChoice('store',Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET) ))->onChange($this, 'OnChangeStore');
+
+        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET . " or store_type = " . Store::STORE_TYPE_OPT, "store_type  ")))->onChange($this, 'OnChangeStore');
         $this->docform->store->selectFirst();
         $this->docform->add(new TextInput('kassa'));
 
@@ -64,7 +62,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
 
-        if ($docid > 0) {    //загружаем   содержимок  документа настраницу
+        if ($docid > 0) {    //загружаем   содержимое  документа на страницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
 
@@ -89,11 +87,9 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
         $this->OnChangeStore($this->docform->store);
-        
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('tovar', $item->itemname));
@@ -105,8 +101,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $tovar = $sender->owner->getDataItem();
         // unset($this->_tovarlist[$tovar->tovar_id]);
 
@@ -114,16 +109,14 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
         $this->_rowid = 0;
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $stock = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -133,15 +126,14 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 
 
         $this->editdetail->edittovar->setValue($stock->stock_id);
-        
+
 
         $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 
         $this->_rowid = $stock->stock_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний товар");
@@ -160,21 +152,19 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edittovar->setValue(0);
-        
+
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
         $this->editdetail->qtystock->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -228,8 +218,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
             $total = $total + $tovar->price * ($tovar->quantity / 1000);
@@ -244,8 +233,7 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введений ні один  товар");
@@ -253,30 +241,25 @@ class RegisterReceipt extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
 
         $this->calcTotal();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function OnChangeStore($sender)
-    {
+    public function OnChangeStore($sender) {
         //очистка  списка  товаров
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
         $store_id = $this->docform->store->getValue();
-        $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 ",'itemname'));
-        
+        $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 ", 'itemname'));
     }
- 
-    public function OnChangeItem($sender)
-    {
+
+    public function OnChangeItem($sender) {
         $id = $sender->getValue();
         $stock = Stock::load($id);
         //$item = Item::load($stock->item_id);

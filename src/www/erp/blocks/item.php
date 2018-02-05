@@ -25,8 +25,7 @@ class Item extends \Zippy\Html\PageFragment
      * @param mixed $caller ссылка на  класс  вызвавшей  страницы
      * @param mixed $callback имя функции  к  вызвавшей странице  для возврата
      */
-    public function __construct($id, $caller, $callback)
-    {
+    public function __construct($id, $caller, $callback) {
         parent::__construct($id);
 
         $this->caller = $caller;
@@ -47,29 +46,34 @@ class Item extends \Zippy\Html\PageFragment
         $this->itemdetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
-    public function saveOnClick($sender)
-    {
+    public function saveOnClick($sender) {
 
         $this->item->itemname = $this->itemdetail->editname->getText();
-        $this->item->priceret = 100 * $this->itemdetail->editpriceret->getText();
-        $this->item->priceopt = 100 * $this->itemdetail->editpriceopt->getText();
+        $this->item->priceret = $this->itemdetail->editpriceret->getText();
+        $this->item->priceopt = $this->itemdetail->editpriceopt->getText();
 
 
-        $this->item->code = $this->itemdetail->editcode->getText();
+        $this->item->item_code = $this->itemdetail->editcode->getText();
         $this->item->uktzed = $this->itemdetail->edituktzed->getText();
         $this->item->barcode = $this->itemdetail->editbarcode->getText();
         $this->item->description = $this->itemdetail->editdescription->getText();
         $this->item->measure_id = $this->itemdetail->editmeasure->getValue();
         $this->item->item_type = $this->itemdetail->edittype->getValue();
 
+        $_item = \ZippyERP\ERP\Entity\Item::findOne("item_code ='{$this->item->item_code}'");
+        if ($_item != null) {
+            if ($this->item->item_id != $_item->item_id) {
+                $this->caller->setError('Неунікальний артикул');
+                return;
+            }
+        }
         $this->item->Save();
 
         $this->setVisible(false);
         $this->caller->{$this->callback}();
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->setVisible(false);
         $this->caller->{$this->callback}(true);
     }
@@ -79,16 +83,15 @@ class Item extends \Zippy\Html\PageFragment
      *
      * @param mixed $item
      */
-    public function open(\ZippyERP\ERP\Entity\Item $item = null)
-    {
+    public function open(\ZippyERP\ERP\Entity\Item $item = null) {
         if ($item == null)
             $item = new \ZippyERP\ERP\Entity\Item();
         $this->item = $item;
         $this->itemdetail->editname->setText($this->item->itemname);
-        $this->itemdetail->editpriceret->setText(H::fm($this->item->priceret));
-        $this->itemdetail->editpriceopt->setText(H::fm($this->item->priceopt));
+        $this->itemdetail->editpriceret->setText($this->item->priceret);
+        $this->itemdetail->editpriceopt->setText($this->item->priceopt);
         $this->itemdetail->editdescription->setText($this->item->description);
-        $this->itemdetail->editcode->setText($this->item->code);
+        $this->itemdetail->editcode->setText($this->item->item_code);
         $this->itemdetail->edituktzed->setText($this->item->uktzed);
         $this->itemdetail->editbarcode->setText($this->item->barcode);
         $this->itemdetail->editmeasure->setValue($this->item->measure_id);
@@ -101,8 +104,7 @@ class Item extends \Zippy\Html\PageFragment
      * возвращает отредактированные  данные
      *
      */
-    public function getData()
-    {
+    public function getData() {
         return $this->item;
     }
 

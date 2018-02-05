@@ -10,14 +10,12 @@ use ZippyERP\ERP\Helper as H;
 class SupplierOrder extends Document
 {
 
-    protected function init()
-    {
+    protected function init() {
         parent::init();
         $this->datatag = 0; //поставщик
     }
 
-    public function generateReport()
-    {
+    public function generateReport() {
         $i = 1;
         $detail = array();
         $total = 0;
@@ -36,6 +34,7 @@ class SupplierOrder extends Document
         $header = array('date' => date('d.m.Y', $this->document_date),
             "customername" => $this->headerdata['suppliername'],
             "document_number" => $this->document_number,
+            "empname" => $this->headerdata["empname"],
             "timeline" => date('d.m.Y', $this->headerdata['timeline']),
             "total" => H::fm($total));
 
@@ -46,26 +45,23 @@ class SupplierOrder extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         return true;
     }
 
     //список состояний  для   выпадающих списков
-    public static function getStatesList()
-    {
+    public static function getStatesList() {
         $list = array();
-        $list[Document::STATE_NEW] = 'Новый';
-        $list[Document::STATE_WA] = 'Ждет утверждения';
-        $list[Document::STATE_APPROVED] = 'Утвержден';
-        $list[Document::STATE_WORK] = 'В работе';
-        $list[Document::STATE_CLOSED] = 'Закрыт';
+        $list[Document::STATE_NEW] = 'Новий';
+        $list[Document::STATE_WA] = 'Чекає затвердження';
+        $list[Document::STATE_APPROVED] = 'Затверджений';
+        $list[Document::STATE_WORK] = 'Виконується';
+        $list[Document::STATE_CLOSED] = 'Закритий';
 
         return $list;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['PurchaseInvoice'] = 'Вхідний рахунок';
         //  $list['GoodsReceipt'] = 'Прибуткова накладна';

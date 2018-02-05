@@ -2,7 +2,6 @@
 
 namespace ZippyERP\ERP\Pages\Report;
 
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
@@ -27,8 +26,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
     private $_rowid = 0;
     private $_mil = 0;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->add(new Form('filter'));
         $this->filter->add(new DropDownChoice('yr'))->setValue(2016);
@@ -43,7 +41,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
 
         $this->add(new Form('editemp'))->setVisible(false);
         ;
-        $this->editemp->add(new DropDownChoice('editemployee',Employee::findArray('fullname', "","fullname")));
+        $this->editemp->add(new DropDownChoice('editemployee', Employee::findArray('fullname', "", "fullname")));
         $this->editemp->add(new TextInput('editincome'));
         $this->editemp->add(new TextInput('editoutcome'));
         $this->editemp->add(new TextInput('edittax'));
@@ -64,8 +62,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $this->OnLoad(null);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $emp = $row->getDataItem();
 
         $row->add(new Label('emp', $emp->getInitName()));
@@ -78,15 +75,13 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->listp->setVisible(false);
         $this->editemp->setVisible(true);
         $this->_rowid = 0;
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $emp = $sender->getOwner()->getDataItem();
         $this->editemp->editemployee->setValue($emp->employee_id);
         $this->editemp->editincome->setText(H::fm($emp->income));
@@ -99,10 +94,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $this->editemp->setVisible(true);
     }
 
-    
-
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $emp = $sender->owner->getDataItem();
 
         $this->_emplist = array_diff_key($this->_emplist, array($emp->employee_id => $this->_emplist[$emp->employee_id]));
@@ -110,8 +102,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $this->listp->list->Reload();
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
 
         $id = $this->editemp->editemployee->getValue();
         if ($id == 0) {
@@ -133,14 +124,12 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $this->listp->list->Reload();
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->listp->setVisible(true);
         $this->editemp->setVisible(false);
     }
 
-    public function OnLoad($sender)
-    {
+    public function OnLoad($sender) {
         $this->detail->setVisible(false);
         $this->_emplist = array();
         $conn = \ZDB\DB::getConnect();
@@ -186,8 +175,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $this->listp->list->Reload();
     }
 
-    public function OnShow($sender)
-    {
+    public function OnShow($sender) {
         $header = $this->getHeaderData();
 
         $html = $this->generateReport($header);
@@ -211,8 +199,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         $this->detail->setVisible(true);
     }
 
-    public function generateReport($header)
-    {
+    public function generateReport($header) {
 
 
         $report = new \ZippyERP\ERP\Report('f1df.tpl');
@@ -223,8 +210,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         return $html;
     }
 
-    private function getHeaderData()
-    {
+    private function getHeaderData() {
         $header = array();
         $header['details'] = array();
 
@@ -302,8 +288,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         return $header;
     }
 
-    public function exportGNAU($header)
-    {
+    public function exportGNAU($header) {
         $year = $this->filter->yr->getValue();
         $pm = (string) sprintf('%02d', 3 * $this->filter->qw->getValue());
 

@@ -33,8 +33,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
     private $_basedocid = 0;
     private $_rowid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -44,7 +43,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
 
 
-        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', "( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', "( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", 'customer_name')));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
@@ -59,9 +58,9 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new TextInput('editpricends'));
-        $this->editdetail->add(new DropDownChoice('edittovar',Item::findArray('itemname', " item_type <> " . Item::ITEM_TYPE_RETSUM . " and item_type <> " . Item::ITEM_TYPE_SERVICE,'itemname')))->onChange($this, 'OnChangeItem',true);
+        $this->editdetail->add(new DropDownChoice('edittovar', Item::findArray('itemname', " item_type <> " . Item::ITEM_TYPE_RETSUM . " and item_type <> " . Item::ITEM_TYPE_SERVICE, 'itemname')))->onChange($this, 'OnChangeItem', true);
 
-        
+
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
@@ -99,7 +98,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
                         $nds = H::nds(true);  // если  в  заказе   цена  с  НДС  получаем  базовую  цену
 
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
-                        
+
                         $this->docform->contract->setKey($basedoc->document_id);
                         $this->docform->contract->setText($basedoc->document_number);
 
@@ -114,7 +113,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
 
 
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
-                        
+
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -132,8 +131,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('tovar', $item->itemname));
@@ -146,8 +144,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $tovar = $sender->owner->getDataItem();
         // unset($this->_tovarlist[$tovar->tovar_id]);
 
@@ -155,15 +152,13 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -173,13 +168,12 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
 
         $this->editdetail->edittovar->setValue($item->item_id);
-        
+
 
         $this->_rowid = $item->item_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний товар");
@@ -198,21 +192,19 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edittovar->setValue(0);
-        
+
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
         $this->editdetail->editpricends->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -273,8 +265,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         $total = 0;
         $totalnds = 0;
         foreach ($this->_tovarlist as $item) {
@@ -291,8 +282,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введений ні один  товар");
@@ -303,8 +293,7 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
         $this->docform->totalnds->setVisible($this->docform->isnds->isChecked());
 
@@ -316,13 +305,11 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
             App::$app->getResponse()->addJavaScript("var _nds = 0;var nds_ = 0;");
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function onIsnds($sender)
-    {
+    public function onIsnds($sender) {
         foreach ($this->_tovarlist as $item) {
             if ($sender->isChecked() == false) {
                 $item->price = $item->pricends;
@@ -333,18 +320,12 @@ class Invoice extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    
-
-    public function OnAutoContract($sender)
-    {
+    public function OnAutoContract($sender) {
         $text = $sender->getValue();
         return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
     }
 
-    
-
-    public function OnChangeItem($sender)
-    {
+    public function OnChangeItem($sender) {
         $id = $sender->getValue();
         $item = Item::load($id);
         $this->editdetail->editprice->setText(H::fm($item->priceopt));

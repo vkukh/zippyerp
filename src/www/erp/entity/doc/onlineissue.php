@@ -15,10 +15,7 @@ use ZippyERP\ERP\Util;
 class OnlineIssue extends Document
 {
 
-    
-    
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -57,15 +54,14 @@ class OnlineIssue extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
-         
+
         $types = array();
 
         //аналитика
-        $a281=0;
+        $a281 = 0;
         foreach ($this->detaildata as $item) {
             $stock = \ZippyERP\ERP\Entity\Stock::getStock($this->headerdata['store'], $item['item_id'], $item['partion'], true);
             $a281 += $item['partion'] * ($item['quantity'] / 1000);
@@ -75,52 +71,43 @@ class OnlineIssue extends Document
             $sc->setExtCode($item['price'] - $item['partion']); //Для АВС
 
             $sc->save();
-
-            
         }
 
- 
+
 
         $nds = H::nds($this->headerdata["total"]);
-        $nds = $nds*($this->headerdata["total"] - $a281);
-        
+        $nds = $nds * ($this->headerdata["total"] - $a281);
+
         //себестоимость
         Entry::AddEntry("902", "281", $a281, $this->document_id, $this->document_date);
-        
+
         //затраты на  доставку
         //Entry::AddEntry("93", "661", $value['damount'], $this->document_id, $this->document_date);
         //Entry::AddEntry("93", "30", $value['damount'], $this->document_id, $this->document_date);
-        
-    
         //НДС
-        
-        Entry::AddEntry("702", "641", $nds , $this->document_id, $this->document_date);
+
+        Entry::AddEntry("702", "641", $nds, $this->document_id, $this->document_date);
         $sc = new SubConto($this, 641, 0 - $nds);
         $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
         $sc->save();
- 
+
 
 
         if ($this->headerdata['paytype'] == 2) {  //наличные
-
             $cash = MoneyFund::getCash();
             \ZippyERP\ERP\Entity\Entry::AddEntry("30", "702", $this->headerdata["total"], $this->document_id, $this->document_date);
-       
         }
         if ($this->headerdata['paytype'] == 3) {   //кредитка
-
             $bank = MoneyFund::getBankAccount();
             \ZippyERP\ERP\Entity\Entry::AddEntry("31", "702", $this->headerdata["total"], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 31, $this->headerdata["total"]);
             $sc->setMoneyfund($bank->id);
-            $sc->save();         
+            $sc->save();
         }
 
 
         $conn->CompleteTrans();
         return true;
     }
-
-    
 
 }

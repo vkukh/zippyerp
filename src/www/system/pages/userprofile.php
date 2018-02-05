@@ -12,22 +12,21 @@ class UserProfile extends \ZippyERP\System\Pages\Base
 
     public $user;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->user = System::getUser();
-      
+
         if ($this->user->user_id == 0) {
             App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
         }
         //форма   профиля
-        $form = new \Zippy\Html\Form\Form('profileform') ;
+        $form = new \Zippy\Html\Form\Form('profileform');
         $form->add(new Label('userlogin', $this->user->userlogin));
         $form->add(new TextInput('email', $this->user->email));
-        $form->onSubmit($this, 'onsubmitprof') ;
+        $form->onSubmit($this, 'onsubmitprof');
         $this->add($form);
-        
+
         //форма   пароля
         $form = new \Zippy\Html\Form\Form('passwordform');
         $form->add(new TextInput('userpassword'));
@@ -35,14 +34,13 @@ class UserProfile extends \ZippyERP\System\Pages\Base
         $form->onSubmit($this, 'onsubmitpass');
         $this->add($form);
     }
-    
+
     //записать  пароль
-    public function onsubmitpass($sender)
-    {
+    public function onsubmitpass($sender) {
         $this->setError('');
         $pass = $sender->userpassword->getText();
         $confirm = $sender->confirmpassword->getText();
-        
+
         if ($pass == '') {
             $this->setError('Введіть пароль');
         } else
@@ -58,20 +56,19 @@ class UserProfile extends \ZippyERP\System\Pages\Base
             $this->user->userpass = (\password_hash($pass, PASSWORD_DEFAULT));
             $this->user->save();
         }
-        $this->setSuccess('Пароль записан') ;
+        $this->setSuccess('Пароль записан');
         $sender->userpassword->setText('');
         $sender->confirmpassword->setText('');
-         
     }
 
     //запись  профиля
-    public function onsubmitprof($sender)
-    {
+    public function onsubmitprof($sender) {
         $this->user->email = $sender->email->getText();
         if (!$this->isError()) {
             $this->user->save();
             System::setUser($user);
-            $this->setSuccess('Профиль записан') ;
+            $this->setSuccess('Профиль записан');
         }
     }
+
 }

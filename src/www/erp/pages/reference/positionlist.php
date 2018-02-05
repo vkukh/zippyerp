@@ -17,8 +17,7 @@ class PositionList extends \ZippyERP\ERP\Pages\Base
 
     private $_position;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Panel('positiontable'))->setVisible(true);
@@ -30,8 +29,7 @@ class PositionList extends \ZippyERP\ERP\Pages\Base
         $this->positiondetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
     }
 
-    public function positionlistOnRow($row)
-    {
+    public function positionlistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('position_name', $item->position_name));
@@ -39,22 +37,19 @@ class PositionList extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         Position::delete($sender->owner->getDataItem()->position_id);
         $this->positiontable->positionlist->Reload();
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $this->_position = $sender->owner->getDataItem();
         $this->positiontable->setVisible(false);
         $this->positiondetail->setVisible(true);
         $this->positiondetail->editpositionname->setText($this->_position->position_name);
     }
 
-    public function addOnClick($sender)
-    {
+    public function addOnClick($sender) {
         $this->positiontable->setVisible(false);
         $this->positiondetail->setVisible(true);
         // Очищаем  форму
@@ -63,8 +58,7 @@ class PositionList extends \ZippyERP\ERP\Pages\Base
         $this->_position = new Position();
     }
 
-    public function saveOnClick($sender)
-    {
+    public function saveOnClick($sender) {
         $this->_position->position_name = $this->positiondetail->editpositionname->getText();
         if ($this->_position->position_name == '') {
             $this->setError("Введіть найменування");
@@ -77,8 +71,7 @@ class PositionList extends \ZippyERP\ERP\Pages\Base
         $this->positiontable->positionlist->Reload();
     }
 
-    public function cancelOnClick($sender)
-    {
+    public function cancelOnClick($sender) {
         $this->positiontable->setVisible(true);
         $this->positiondetail->setVisible(false);
     }

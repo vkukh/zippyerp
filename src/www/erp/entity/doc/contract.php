@@ -10,14 +10,12 @@ use ZippyERP\ERP\Helper as H;
 class Contract extends Document
 {
 
-    protected function init()
-    {
+    protected function init() {
         parent::init();
         $this->datatag = 0; //контрагент
     }
 
-    public function generateReport()
-    {
+    public function generateReport() {
         $customer = \ZippyERP\ERP\Entity\Customer::load($this->headerdata["customer"]);
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
@@ -35,15 +33,13 @@ class Contract extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
         return true;
     }
 
     //список состояний  для   выпадающих списков
-    public static function getStatesList()
-    {
+    public static function getStatesList() {
         $list = array();
         $list[Document::STATE_NEW] = 'Новый';
         $list[Document::STATE_WA] = 'Ждет подтвержения';

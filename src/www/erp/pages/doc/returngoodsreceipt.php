@@ -33,14 +33,13 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
     private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ');
     private $_basedocid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", 'customer_name')));
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type=" . Store::STORE_TYPE_OPT)));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 
@@ -54,7 +53,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('edititem',Item::findArray('itemname', " item_type =" . Item::ITEM_TYPE_STUFF,'itemname')));
+        $this->editdetail->add(new DropDownChoice('edititem', Item::findArray('itemname', " item_type =" . Item::ITEM_TYPE_STUFF, 'itemname')));
 
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
@@ -74,7 +73,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
             $this->docform->cash->setChecked($this->_doc->headerdata['cash']);
             $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->customer->setValue($this->_doc->headerdata['customer']);
-            
+
             $this->docform->store->setValue($this->_doc->headerdata['store']);
 
             foreach ($this->_doc->detaildata as $item) {
@@ -92,7 +91,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
                     if ($basedoc->meta_name == 'GoodsReceipt') {
                         $this->docform->isnds->setChecked($basedoc->headerdata['isnds']);
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
-                        
+
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
@@ -110,8 +109,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnItem'))->setVisible(false);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('itemtype', $this->_itemtype[$item->type]));
@@ -126,8 +124,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -137,14 +134,13 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
 
         $this->editdetail->edititem->setValue($item->item_id);
-        
+
         $this->editdetail->edittype->setValue($item->type);
 
         $this->_rowid = $item->item_id;
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $item = $sender->owner->getDataItem();
         // unset($this->_itemlist[$item->item_id]);
 
@@ -152,15 +148,13 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
 
 
         $id = $this->editdetail->edititem->getValue();
@@ -183,21 +177,19 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edititem->setValue(0);
-        
+
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
         $this->editdetail->editpricends->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -259,8 +251,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
 
         $total = 0;
         $totalnds = 0;
@@ -278,8 +269,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введений ні один  товар");
@@ -290,8 +280,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
         $this->docform->totalnds->setVisible($this->docform->isnds->isChecked());
         $this->calcTotal();
@@ -302,8 +291,7 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
             App::$app->getResponse()->addJavaScript("var _nds = 0;var nds_ = 0;");
     }
 
-    public function onIsnds($sender)
-    {
+    public function onIsnds($sender) {
         foreach ($this->_itemlist as $item) {
             if ($sender->isChecked() == false) {
                 $item->price = $item->pricends;
@@ -314,39 +302,30 @@ class ReturnGoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function addItemOnClick($sender)
-    {
+    public function addItemOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->itemdetail->open();
     }
 
     // событие  после  создания  нового жлемента справочника номенклатуры
-    public function OnItem($cancel = false)
-    {
+    public function OnItem($cancel = false) {
         $this->editdetail->setVisible(true);
         if ($cancel == true)
             return;
 
         $item = $this->itemdetail->getData();
 
-        $this->editdetail->editgroup->setValue($item->group_id);
+
         $this->editdetail->edititem->setValue($item->item_id);
     }
 
-
-
-    public function OnAutoContract($sender)
-    {
+    public function OnAutoContract($sender) {
         $text = $sender->getValue();
         return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
     }
-
-     
-
 
 }

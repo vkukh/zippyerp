@@ -15,8 +15,7 @@ class UserLogin extends \Zippy\Html\WebPage
     public $_errormsg;
     public $_login, $_password;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $form = new \Zippy\Html\Form\Form('loginform');
@@ -29,8 +28,7 @@ class UserLogin extends \Zippy\Html\WebPage
         $this->add(new \Zippy\Html\Label("errormessage", new Bind($this, '_errormsg')))->setVisible(false);
     }
 
-    public function onsubmit($sender)
-    {
+    public function onsubmit($sender) {
         $this->setError('');
         if ($this->_login == '') {
             $this->setError('Введіть логін');
@@ -53,7 +51,7 @@ class UserLogin extends \Zippy\Html\WebPage
                     setcookie("remember", $user->user_id . '_' . md5($user->user_id . $_config['common']['salt']), time() + 60 * 60 * 24 * 30);
                 }
 
-                 
+
                 App::RedirectHome();
             } else {
                 $this->setError('Невірний  логін');
@@ -63,13 +61,11 @@ class UserLogin extends \Zippy\Html\WebPage
         $this->_password = '';
     }
 
-    final protected function setError($msg)
-    {
+    final protected function setError($msg) {
         $this->_errormsg = $msg;
     }
 
-    public function beforeRequest()
-    {
+    public function beforeRequest() {
         parent::beforeRequest();
 
         $this->errormessage->setVisible(strlen($this->_errormsg) > 0);
@@ -79,8 +75,7 @@ class UserLogin extends \Zippy\Html\WebPage
         }
     }
 
-    protected function afterRender()
-    {
+    protected function afterRender() {
         $this->errormessage->setVisible(false);
     }
 

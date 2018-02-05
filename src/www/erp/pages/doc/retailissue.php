@@ -3,7 +3,6 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -11,13 +10,16 @@ use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
 use ZippyERP\ERP\Entity\Customer;
+use ZippyERP\ERP\Entity\Contact;
 use ZippyERP\ERP\Entity\Doc\Document;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
 use Zippy\WebApplication as App;
@@ -31,9 +33,10 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
     public $_tovarlist = array();
     private $_doc;
     private $_rowid = 0;
+    private $_discount = 0;
+ 
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -41,10 +44,12 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new CheckBox('plan'));
 
+        $this->docform->add(new DropDownChoice('emp', Employee::findArray("shortname", "", 'shortname')));
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
         $this->docform->store->selectFirst();
-        
-        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
+
+        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, 'OnAutoCustomer');
+        $this->docform->customer->onChange($this, 'OnChangeCustomer');
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
@@ -53,15 +58,26 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
+   
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-        $this->editdetail->add(new DropDownChoice('edittovar'))->onChange($this, 'OnChangeItem',true);
+
+        $this->editdetail->add(new AutocompleteTextInput('edittovar'))->onText($this, 'OnAutoItem');
+        $this->editdetail->edittovar->onChange($this, 'OnChangeItem', true);
 
         $this->editdetail->add(new Label('qtystock'));
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
+
+        $this->add(new Form('mform'));
+        $this->mform->add(new TextInput('mlastname'));
+        $this->mform->add(new TextInput('mfirstname'));
+
+        $this->mform->add(new TextInput('mphone'));
+
+        $this->mform->add(new SubmitButton('madd'))->onClick($this, 'mformOnClick');
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
@@ -72,6 +88,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
             $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
+            $this->docform->emp->setValue($this->_doc->headerdata['emp']);
             $this->docform->customer->setKey($this->_doc->headerdata['customer']);
             $this->docform->customer->setText($this->_doc->headerdata['customername']);
 
@@ -82,16 +99,53 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         } else {
             $this->_doc = Document::create('RetailIssue');
             $this->docform->document_number->setText($this->_doc->nextNumber());
+            if ($basedocid > 0) {  //создание на  основании
+                $basedoc = Document::load($basedocid);
+                if ($basedoc instanceof Document) {
+                    $this->_basedocid = $basedocid;
+                    //$this->docform->base->setText($basedoc->meta_desc . " №" . $basedoc->document_number);
+
+
+                    if ($basedoc->meta_name == 'CustomerOrder') {
+                        $nds = H::nds(true);  // если  в  заказе   цена  с  НДС  получаем  базовую  цену
+
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setText($basedoc->headerdata['customername']);
+                        $this->docform->emp->setValue($basedoc->headerdata['emp']);
+
+
+
+                        foreach ($basedoc->detaildata as $item) {
+                            $item = new Item($item);
+                            //находим  последнюю партию по  первому складу
+                            $options = $this->docform->store->getOptionList();
+                            $keys = array_keys($options);
+                            $stock = Stock::getFirst("closed <> 1 and  item_id={$item->item_id} and store_id=" . $keys[0], 'stock_id desc');
+                            if ($stock instanceof Stock) {
+                                $stock->quantity = $item->quantity;
+                                // $stock->pricends = $item->pricends;
+                                $stock->price = $item->price;
+
+
+                                $this->_tovarlist[$stock->stock_id] = $stock;
+                            } else {
+                                $this->setError('Не знайдений на складі  товар ' . $item->itemname);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
-        $this->OnChangeStore($this->docform->store);
+
+        $this->OnChangeCustomer(null);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
+        $row->add(new Label('code', $item->item_code));
         $row->add(new Label('tovar', $item->itemname));
         $row->add(new Label('measure', $item->measure_name));
         $row->add(new Label('quantity', $item->quantity / 1000));
@@ -101,24 +155,21 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $tovar = $sender->owner->getDataItem();
         // unset($this->_tovarlist[$tovar->tovar_id]);
 
-        $this->_tovarlist = array_diff_key($this->_tovarlist, array($tovar->item_id => $this->_tovarlist[$tovar->item_id]));
+        $this->_tovarlist = array_diff_key($this->_tovarlist, array($tovar->stock_id => $this->_tovarlist[$tovar->stock_id]));
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $stock = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -128,17 +179,17 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
 
         //$list = Stock::findArrayEx("closed  <> 1 and   store_id={$stock->store_id}");
-        $this->editdetail->edittovar->setValue($stock->stock_id);
-        
+        $this->editdetail->edittovar->setKey($stock->stock_id);
+        $this->editdetail->edittovar->setText($stock->itemname);
+
 
         $this->editdetail->qtystock->setText(Stock::getQuantity($stock->stock_id, $this->docform->document_date->getDate()) . ' ' . $stock->measure_name);
 
         $this->_rowid = $stock->stock_id;
     }
 
-    public function saverowOnClick($sender)
-    {
-        $id = $this->editdetail->edittovar->getValue();
+    public function saverowOnClick($sender) {
+        $id = $this->editdetail->edittovar->getKey();
         if ($id == 0) {
             $this->setError("Не вибраний товар");
             return;
@@ -155,32 +206,29 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edittovar->setValue(0);
-        
+        $this->editdetail->edittovar->setKey(0);
+        $this->editdetail->edittovar->setText('');
+
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
         $this->editdetail->qtystock->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
+        //очищаем  форму
+        $this->editdetail->edittovar->setKey(0);
+        $this->editdetail->edittovar->setText('');
+
+        $this->editdetail->editquantity->setText("1");
+
+        $this->editdetail->editprice->setText("");
+        $this->editdetail->qtystock->setText("");
     }
 
-    public function OnChangeTovar($sender)
-    {
-        $store_id = $sender->getValue();
-        $stock = Stock::load($store_id);
-        $qty = Stock::getQuantity($store_id, $this->docform->document_date->getDate());
-        //  $this->editdetail->editserial_number->setValue($stock->serial_number);
-        $this->editdetail->qtystock->setText($qty . ' ' . $stock->measure_name);
-        $this->editdetail->editprice->setText(H::fm($stock->price));
-    }
-
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -191,8 +239,11 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
             'customer' => $this->docform->customer->getKey(),
             'customername' => $this->docform->customer->getText(),
             'store' => $this->docform->store->getValue(),
+            'emp' => $this->docform->emp->getValue(),
+            'empname' => $this->docform->emp->getValueName(),
             'plan' => $this->docform->plan->isChecked(),
             'total' => $this->docform->total->getText() * 100,
+  
             'totalnds' => $this->docform->totalnds->getText() * 100
         );
         $this->_doc->detaildata = array();
@@ -231,71 +282,114 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
             $total = $total + $tovar->price * ($tovar->quantity / 1000);
         }
-
+    
         $nds = $total * H::nds(true);
         $this->docform->totalnds->setText(H::fm($nds));
         $this->docform->total->setText(H::fm($total));
+       
     }
 
     /**
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_tovarlist) == 0) {
-            $this->setError("Не введений ні один  товар");
+            $this->setError("Не введено жодного товару");
         }
         if ($this->docform->customer->getKey() == 0) {
-            $this->setError("Не введений   покупець");
+            // $this->setError("Не введений   покупець");
         }
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
 
         $this->calcTotal();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function OnChangeStore($sender)
-    {
+    public function OnChangeStore($sender) {
         //очистка  списка  товаров
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
         $store_id = $this->docform->store->getValue();
-        
-        $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 ",'itemname'));
+        $this->calcTotal();
     }
 
-    
+    public function OnAutoCustomer($sender) {
+        $text = $sender->getText();
+        return Customer::searchClient($text);
+    }
 
-    
+    public function OnChangeCustomer($sender) {
+        $this->_discount = 0;
+        $customer_id = $this->docform->customer->getKey();
+        if ($customer_id > 0) {
+            $customer = Customer::load($customer_id);
+            $this->_discount = $customer->discount;
+        }
+         
+    }
 
-    public function OnChangeItem($sender)
-    {
-        $id = $sender->getValue();
+    public function OnAutoItem($sender) {
+        $r = array();
+        $store_id = $this->docform->store->getValue();
+
+        $text = $sender->getText();
+        $list = Stock::findArrayEx("store_id={$store_id} and closed <> 1 and (itemname like " . Stock::qstr('%' . $text . '%') . " or item_code like " . Stock::qstr('%' . $text . '%') . "  )");
+        foreach ($list as $k => $v) {
+            $r[$k] = $v;
+        }
+        return $r;
+    }
+
+    public function OnChangeItem($sender) {
+        $id = $sender->getKey();
         $stock = Stock::load($id);
-        //$item = Item::load($stock->item_id);
+        $stock->price = $stock->price - $stock->price/100*$this->_discount;
         $this->editdetail->editprice->setText(H::fm($stock->price));
-
 
         $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 
         $this->updateAjax(array('editprice', 'qtystock'));
+    }
+
+    //создаем нового клиента и всталяем  форму
+    public function mformOnClick($sender) {
+        $lastname = $this->mform->mlastname->getText();
+        $firstname = $this->mform->mfirstname->getText();
+        $phone = $this->mform->mphone->getText();
+
+        $contact = new Contact();
+        $contact->lastname = $lastname;
+        $contact->firstname = $firstname;
+        $contact->phone = $phone;
+        $contact->save();
+
+        $client = new Customer();
+
+        $client->customer_name = $lastname . ' ' . $firstname;
+        $client->customer_type = Customer::TYPE_CLIENT;
+        $client->contact_id = $contact->contact_id;
+        $client->save();
+
+        $contact->customer_id = $client->customer_id;
+        $contact->save();
+
+        $this->mform->clean();
+        $this->docform->customer->setKey($client->customer_id);
+        $this->docform->customer->setText($client->customer_name);
     }
 
 }

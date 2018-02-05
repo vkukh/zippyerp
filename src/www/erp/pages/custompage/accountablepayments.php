@@ -15,8 +15,7 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
     public $_dlist = array();
     public $_empds;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->add(new Panel('alistpanel'));
@@ -32,16 +31,14 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
     }
 
-    public function alistOnRow($row)
-    {
+    public function alistOnRow($row) {
         $item = $row->getDataItem();
         $row->add(new Label('empname', $item->shortname));
         $row->add(new Label('saldo', H::fm($item->saldo)));
         $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $employee = $sender->getOwner()->getDataItem();
         $this->doclist->empname1->setText($employee->shortname);
         $conn = \ZDB\DB::getConnect();
@@ -66,16 +63,14 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
         $this->doclist->setVisible(true);
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         $this->alistpanel->setVisible(true);
         $this->doclist->setVisible(false);
 
         $this->docview->setVisible(false);
     }
 
-    public function dlistOnRow($row)
-    {
+    public function dlistOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('amount', H::fm($item->amount)));
@@ -83,8 +78,7 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('ddoc', $this, 'ddocOnClick'))->setValue($item->description . ' ' . $item->document_number);
     }
 
-    public function ddocOnClick($sender)
-    {
+    public function ddocOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $this->doclist->dlist->setSelectedRow($sender->getOwner());
         $this->doclist->dlist->Reload();
@@ -100,18 +94,15 @@ class APDataSource implements \Zippy\Interfaces\DataSource
     public $showall = false;
     public $sort = 0;
 
-    public function __construct()
-    {
+    public function __construct() {
         
     }
 
-    public function getItemCount()
-    {
+    public function getItemCount() {
         //no pagination
     }
 
-    public function getItems($start, $count, $sortfield = null, $asc = null)
-    {
+    public function getItems($start, $count, $sortfield = null, $asc = null) {
         $conn = \ZDB\DB::getConnect();
         $sql = "select coalesce(sum(sc.amount),0) as  saldo, sc.employee_id,shortname
                 from  erp_account_subconto sc join erp_staff_employee_view  e on sc.employee_id = e.employee_id
@@ -129,8 +120,7 @@ class APDataSource implements \Zippy\Interfaces\DataSource
         return $list;
     }
 
-    public function getItem($id)
-    {
+    public function getItem($id) {
         return Employee::load($id);
     }
 

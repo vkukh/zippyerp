@@ -14,6 +14,7 @@
         </td>
         <td> {{date}}</td>
     </tr>
+  
     <tr style="font-weight: bolder;">
         <td colspan="4" align="center">
             Замовлення покупця № {{document_number}}
@@ -48,5 +49,13 @@
 
 
 </table>
+    {{#empname}}
+    <tr>
+      
+        <td>Відповідальний:</td>
+        <td colspan="5">{{empname}}</td>
+         <td> </td><td> </td>
+    </tr>
+    {{/empname}}  
 </body>
 </html>

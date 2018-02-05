@@ -15,8 +15,7 @@ use ZippyERP\ERP\Util;
 class GoodsIssue extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -57,8 +56,7 @@ class GoodsIssue extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
@@ -134,17 +132,14 @@ class GoodsIssue extends Document
 
 
         if ($this->headerdata['paytype'] == 2) {  //наличные
-
             $cash = MoneyFund::getCash();
             \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
             $sc->setCustomer($this->headerdata["customer"]);
 
             $sc->save();
-       
         }
         if ($this->headerdata['paytype'] == 3) {   //кредитка
-
             $bank = MoneyFund::getBankAccount();
             \ZippyERP\ERP\Entity\Entry::AddEntry("31", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
@@ -152,7 +147,7 @@ class GoodsIssue extends Document
             $sc->save();
             $sc = new SubConto($this, 31, $this->headerdata["total"]);
             $sc->setMoneyfund($bank->id);
-            $sc->save();         
+            $sc->save();
         }
 
 
@@ -160,8 +155,7 @@ class GoodsIssue extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['TaxInvoice'] = 'Податкова накладна';
         $list['ReturnGoodsIssue'] = 'Накладна на  повернення';

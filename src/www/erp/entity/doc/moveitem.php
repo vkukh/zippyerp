@@ -18,8 +18,7 @@ use ZippyERP\ERP\Helper as H;
 class MoveItem extends Document
 {
 
-    public function Execute()
-    {
+    public function Execute() {
 
         $store = Store::load($this->headerdata['storeto']);
 
@@ -49,7 +48,7 @@ class MoveItem extends Document
                 $sc->setQuantity($value['quantity']);
                 $sc->save();
             }
-            if ($store->store_type == Store::STORE_TYPE_RET  ) {    //розница
+            if ($store->store_type == Store::STORE_TYPE_RET) {    //розница
                 $stockto = Stock::getFirst("store_id={$this->headerdata['storeto']} and item_id={$value['item_id']} and price={$value['price']} and partion={$value['partion']} and closed <> 1");
                 if ($stockto instanceof Stock) {
                     
@@ -101,8 +100,7 @@ class MoveItem extends Document
         return true;
     }
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $header = array(

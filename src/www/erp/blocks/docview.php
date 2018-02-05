@@ -31,8 +31,7 @@ class DocView extends \Zippy\Html\PageFragment
     public $_fileslist = array();
     public $_msglist = array();
 
-    public function __construct($id)
-    {
+    public function __construct($id) {
         parent::__construct($id);
 
         $this->add(new RedirectLink('print', ""));
@@ -66,8 +65,7 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     // Устанавливаем  документ  для  просмотра
-    public function setDoc(\ZippyERP\ERP\Entity\Doc\Document $doc)
-    {
+    public function setDoc(\ZippyERP\ERP\Entity\Doc\Document $doc) {
         $this->_doc = $doc;
         $doc = $this->_doc->cast();
 
@@ -111,15 +109,13 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     // обновление  списка  связанных  документов
-    private function updateDocs()
-    {
+    private function updateDocs() {
         $this->_reldocs = $this->_doc->ConnectedDocList();
         $this->reldocs->Reload();
     }
 
     //вывод строки  связанного  документа
-    public function relDoclistOnRow($row)
-    {
+    public function relDoclistOnRow($row) {
         $item = $row->getDataItem();
         $row->add(new ClickLink('docitem'))->onClick($this, 'detailDocOnClick');
         $row->add(new ClickLink('deldoc'))->onClick($this, 'deleteDocOnClick');
@@ -127,23 +123,20 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     //удаление связанного  документа
-    public function deleteDocOnClick($sender)
-    {
+    public function deleteDocOnClick($sender) {
         $doc = $sender->owner->getDataItem();
         $this->_doc->RemoveConnectedDoc($doc->document_id);
         $this->updateDocs();
     }
 
     //открыть связанный документ
-    public function detailDocOnClick($sender)
-    {
+    public function detailDocOnClick($sender) {
         $id = $sender->owner->getDataItem()->document_id;
         App::Redirect('\ZippyERP\ERP\Pages\Register\DocList', $id);
     }
 
     //вывод строки  бухгалтерской проводки
-    public function entryListOnRow($row)
-    {
+    public function entryListOnRow($row) {
         $item = $row->getDataItem();
         $row->add(new Label('dt', $item->acc_d > 0 ? $item->acc_d : ""));
         $row->add(new Label('ct', $item->acc_c > 0 ? $item->acc_c : ""));
@@ -151,8 +144,7 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     //вывод строки  лога состояний
-    public function stateListOnRow($row)
-    {
+    public function stateListOnRow($row) {
         $item = $row->getDataItem();
         $row->add(new Label('statehost', $item->hostname));
         $row->add(new Label('statedate', $item->updatedon));
@@ -165,8 +157,7 @@ class DocView extends \Zippy\Html\PageFragment
      *
      * @param mixed $sender
      */
-    public function OnReldocSubmit($sender)
-    {
+    public function OnReldocSubmit($sender) {
 
         $id = $this->addrelform->addrel->getKey();
 
@@ -180,8 +171,7 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     // автолоад списка  документов
-    public function OnAddDoc($sender)
-    {
+    public function OnAddDoc($sender) {
         $text = $sender->getValue();
         $answer = array();
         $conn = \ZDB\DB::getConnect();
@@ -198,8 +188,7 @@ class DocView extends \Zippy\Html\PageFragment
      *
      * @param mixed $sender
      */
-    public function OnFileSubmit($sender)
-    {
+    public function OnFileSubmit($sender) {
 
         $file = $this->addfileform->addfile->getFile();
         if ($file['size'] > 10000000) {
@@ -213,15 +202,13 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     // обновление  списка  прикрепленных файлов
-    private function updateFiles()
-    {
+    private function updateFiles() {
         $this->_fileslist = Helper::getFileList($this->_doc->document_id, \ZippyERP\ERP\Consts::FILE_ITEM_TYPE_DOC);
         $this->dw_files->Reload();
     }
 
     //вывод строки  прикрепленного файла
-    public function filelistOnRow($row)
-    {
+    public function filelistOnRow($row) {
         $item = $row->getDataItem();
 
         $file = $row->add(new \Zippy\Html\Link\BookmarkableLink("filename", _BASEURL . '?p=ZippyERP/ERP/Pages/LoadFile&arg=' . $item->file_id));
@@ -232,8 +219,7 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     //удаление прикрепленного файла
-    public function deleteFileOnClick($sender)
-    {
+    public function deleteFileOnClick($sender) {
         $file = $sender->owner->getDataItem();
         Helper::deleteFile($file->file_id);
         $this->updateFiles();
@@ -244,8 +230,7 @@ class DocView extends \Zippy\Html\PageFragment
      *
      * @param mixed $sender
      */
-    public function OnMsgSubmit($sender)
-    {
+    public function OnMsgSubmit($sender) {
         $msg = new \ZippyERP\ERP\Entity\Message();
         $msg->message = $this->addmsgform->addmsg->getText();
         $msg->created = time();
@@ -261,15 +246,13 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     //список   комментариев
-    private function updateMessages()
-    {
+    private function updateMessages() {
         $this->_msglist = \ZippyERP\ERP\Entity\Message::find('item_type =1 and item_id=' . $this->_doc->document_id);
         $this->dw_msglist->Reload();
     }
 
     //вывод строки  коментария
-    public function msgListOnRow($row)
-    {
+    public function msgListOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label("msgdata", $item->message));
@@ -280,8 +263,7 @@ class DocView extends \Zippy\Html\PageFragment
     }
 
     //удаление коментария
-    public function deleteMsgOnClick($sender)
-    {
+    public function deleteMsgOnClick($sender) {
         $msg = $sender->owner->getDataItem();
         \ZippyERP\ERP\Entity\Message::delete($msg->message_id);
         $this->updateMessages();

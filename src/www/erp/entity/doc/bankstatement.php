@@ -25,8 +25,7 @@ class BankStatement extends Document
     const OUT_COMMON = 8; //Общие накладные расходы
     const OUT_CARD = 9; //Оплата кредиткой
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $types = $this->getTypes();
@@ -57,8 +56,7 @@ class BankStatement extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
 
         foreach ($this->detaildata as $value) {
@@ -223,8 +221,7 @@ class BankStatement extends Document
     }
 
     // Список  типов операций
-    public static function getTypes()
-    {
+    public static function getTypes() {
         $list = array();
         $list[self::IN] = "Оплата від покупця";
         $list[self::OUT] = "Оплата постачальнику";

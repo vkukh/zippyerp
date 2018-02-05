@@ -3,7 +3,6 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\Date;
 use Zippy\Html\Form\DropDownChoice;
@@ -28,8 +27,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_rowid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -49,7 +47,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editpayed'));
         $this->editdetail->add(new TextInput('editamount'));
-        $this->editdetail->add(new DropDownChoice('editemployee',Employee::findArray("fullname", " hiredate is not null  ","fullname")))->onChange($this, 'OnChangeEmployee');
+        $this->editdetail->add(new DropDownChoice('editemployee', Employee::findArray("fullname", " hiredate is not null  ", "fullname")))->onChange($this, 'OnChangeEmployee');
 
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
@@ -96,8 +94,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_emplist')), $this, 'detailOnRow'))->Reload();
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('employee', $item->fullname));
@@ -108,8 +105,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function loadallOnClick($sender)
-    {
+    public function loadallOnClick($sender) {
         $list = Employee::find(" hiredate is not null ", "fullname");
         $this->_emplist = array();
         foreach ($list as $emp) {
@@ -124,29 +120,26 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $emp = $sender->owner->getDataItem();
 
         $this->_emplist = array_diff_key($this->_emplist, array($emp->employee_id => $this->_emplist[$emp->employee_id]));
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->_os = $sender->id == "addrowos";
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
         //очищаем  форму
         $this->editdetail->editemployee->setValue(0);
-        
+
         $this->editdetail->editamount->setText("0");
         $this->editdetail->editpayed->setText("0");
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
 
         $emp = $sender->getOwner()->getDataItem();
 
@@ -157,14 +150,13 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editpayed->setText(H::fm($emp->payed));
 
         $this->editdetail->editemployee->setValue($emp->employee_id);
-  
+
 
 
         $this->_rowid = $emp->employee_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->editemployee->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний співробітник");
@@ -186,14 +178,12 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -245,8 +235,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         
     }
 
@@ -254,8 +243,7 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_emplist) == 0) {
             $this->setError("Не введено жодного співробітника");
@@ -264,22 +252,17 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
 
         $this->calcTotal();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    
-
-    public function OnChangeEmployee($sender)
-    {
+    public function OnChangeEmployee($sender) {
         if ($this->_os)
             return;
         $id = $sender->getValue();

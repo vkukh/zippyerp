@@ -6,8 +6,7 @@ namespace ZippyERP\ERP\Pages;
 class LoadFile extends \Zippy\Html\WebPage
 {
 
-    public function __construct($file_id)
-    {
+    public function __construct($file_id) {
         if (!is_numeric($file_id))
             die;
 

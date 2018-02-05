@@ -35,6 +35,7 @@
         <td align="right">{{warranty}}</td>
     </tr>
     {{/_detail}} 
+
     <tr>
         <td colspan="8">&nbsp;</td>
     </tr>

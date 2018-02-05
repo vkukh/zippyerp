@@ -15,8 +15,7 @@ use ZippyERP\ERP\Util;
 class ReturnGoodsIssue extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -54,8 +53,7 @@ class ReturnGoodsIssue extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
@@ -124,8 +122,7 @@ class ReturnGoodsIssue extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['PurchaseInvoice'] = 'Вхідний рахунок';
 

@@ -1,58 +1,58 @@
 <html>
 
 
-<body>
-<div class="row">
-    <div class="col-xs-12">
-        <h3>Фінансовий звіт</h3>
+    <body>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Фінансовий звіт</h3>
 
-        <br>
-        <form zippy="filter" class="navbar-form ">
+                <br>
+                <form zippy="filter" class="navbar-form ">
 
-            <div class="form-group">
-                <label for="yr">Рік</label>
-                <select zippy="yr" class="form-control">
+                    <div class="form-group">
+                        <label for="yr">Рік</label>
+                        <select zippy="yr" class="form-control">
 
-                    <option value="2016">2016</option>
-                    <option value="2017">2017</option>
-                    <option value="2018">2018</option>
-                </select>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="qw">квартал</label>
+                        <select zippy="qw" class="form-control">
+
+                            <option value="1">I</option>
+                            <option value="2">II</option>
+                            <option value="3">III</option>
+                            <option value="4">IV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-default  " type="submit" value="ОК">
+                    </div>
+
+
+                </form>
+                <br>
+                <div zippy="detail">
+                    <div>
+                        <a zippy="print" target="_blank" title="Друк"><img class="icon20"
+                                                                           src="/assets/images/print_32.png"></a>
+                        <a zippy="html" target="_blank" title="Експорт в HTML"><img class="icon20"
+                                                                                    src="/assets/images/html.png"></a>
+                        <a zippy="excel" target="_blank" title="Експорт в Excel"><img class="icon20"
+                                                                                      src="/assets/images/excel_32.png"></a>
+                        <a zippy="xml" target="_blank" title="XML (ДПАУ)"><img class="icon20" src="/assets/images/xml.png"></a>
+
+                    </div>
+
+                    <iframe style="border:0px;" zippy="preview" src="/templates/wait.html" width="700px"
+                            height="800px"></iframe>
+
+                </div>
             </div>
-            <div class="form-group">
-                <label for="qw">квартал</label>
-                <select zippy="qw" class="form-control">
-
-                    <option value="1">I</option>
-                    <option value="2">II</option>
-                    <option value="3">III</option>
-                    <option value="4">IV</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-default  " type="submit" value="ОК">
-            </div>
-
-
-        </form>
-        <br>
-        <div zippy="detail">
-            <div>
-                <a zippy="print" target="_blank" title="Друк"><img class="icon20"
-                                                                     src="/assets/images/print_32.png"></a>
-                <a zippy="html" target="_blank" title="Експорт в HTML"><img class="icon20"
-                                                                            src="/assets/images/html.png"></a>
-                <a zippy="excel" target="_blank" title="Експорт в Excel"><img class="icon20"
-                                                                              src="/assets/images/excel_32.png"></a>
-                <a zippy="xml" target="_blank" title="XML (ДПАУ)"><img class="icon20" src="/assets/images/xml.png"></a>
-
-            </div>
-
-            <iframe style="border:0px;" zippy="preview" src="/templates/wait.html" width="700px"
-                    height="800px"></iframe>
-
         </div>
-    </div>
-</div>
-</body>
+    </body>
 
 </html>

@@ -3,7 +3,6 @@
 namespace ZippyERP\ERP\Pages\Doc;
 
 use Zippy\Html\DataList\DataView;
- 
 use Zippy\Html\Form\Button;
 use Zippy\Html\Form\CheckBox;
 use Zippy\Html\Form\Date;
@@ -31,8 +30,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_rowid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -40,9 +38,12 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new DropDownChoice('employee', Employee::findArray('shortname')));
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type=" . Store::STORE_TYPE_OPT)));
-        $this->docform->add(new DropDownChoice('expensetype', \ZippyERP\ERP\Entity\Doc\ExpenseReport::expenceList()))->onChange($this, 'OnExpenseList');
+        $this->docform->add(new DropDownChoice('expensetype', array(0 => 'Не вибрано', 23 => 'Прямі виробничі витрати', 91 => 'Загальновиробничі витрати', 92 => 'Адміністративні витрати', 93 => 'Витрати на збут')));
+        $this->docform->add(new DropDownChoice('storetype', array(0 => 'Не вибрано', 281 => 'Товари  на  складі', 201 => 'Сировина  та  матеріали', 22 => 'МШП')));
 
-        $this->docform->add(new TextInput('expenseamount'))->setVisible(false);
+
+        $this->docform->add(new TextInput('comment'));
+        $this->docform->add(new TextInput('expenseamount'));
         $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
@@ -54,7 +55,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
 
 
-        $this->editdetail->add(new DropDownChoice('edititem',Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_SERVICE . " and item_type <>" . Item::ITEM_TYPE_RETSUM,'itemname')));
+        $this->editdetail->add(new DropDownChoice('edititem', Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_SERVICE . " and item_type <>" . Item::ITEM_TYPE_RETSUM, 'itemname')));
 
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
@@ -62,18 +63,20 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('saverow'))->onClick($this, 'saverowOnClick');
-    
+
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
             $this->docform->document_number->setText($this->_doc->document_number);
 
             $this->docform->expenseamount->setText(H::fm($this->_doc->headerdata['expenseamount']));
+            $this->docform->comment->setText(H::fm($this->_doc->headerdata['comment']));
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
 
             $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->employee->setValue($this->_doc->headerdata['employee']);
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->expensetype->setValue($this->_doc->headerdata['expensetype']);
+            $this->docform->storetype->setValue($this->_doc->headerdata['storetype']);
 
             foreach ($this->_doc->detaildata as $item) {
                 $item = new Item($item);
@@ -116,8 +119,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnItem'))->setVisible(false);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('item', $item->itemname));
@@ -131,8 +133,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $item = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -144,8 +145,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->_rowid = $item->item_id;
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $item = $sender->owner->getDataItem();
         // unset($this->_itemlist[$item->item_id]);
 
@@ -153,15 +153,13 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
 
 
         $id = $this->editdetail->edititem->getValue();
@@ -183,20 +181,18 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edititem->setValue(0);
-        
+
 
         $this->editdetail->editprice->setText("");
         $this->editdetail->editpricends->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -207,8 +203,10 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
             'employee' => $this->docform->employee->getValue(),
             'store' => $this->docform->store->getValue(),
             'isnds' => $this->docform->isnds->isChecked(),
-            'expenseamount' => $expenseamount,
+            'expenseamount' => $this->docform->expenseamount->getText(),
+            'comment' => $comment,
             'expensetype' => $this->docform->expensetype->getValue(),
+            'storetype' => $this->docform->storetype->getValue(),
             'totalnds' => $this->docform->totalnds->getText() * 100,
             'total' => $this->docform->total->getText() * 100
         );
@@ -249,8 +247,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
 
         $total = 0;
         $totalnds = 0;
@@ -268,30 +265,23 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
-        $tz = $this->docform->expensetype->getValue();
-        if ($tz == 0) {
-            $this->setError("Не вибраний  тип видатків");
-        }
+
         if ($this->docform->employee->getValue() == 0) {
             $this->setError("Не вибраний  співробітник");
         }
-        if ($tz == 22 || $tz == 201 || $tz == 281) {
-            if (count($this->_itemlist) == 0) {
-                $this->setError("Не введено ТМЦ");
-            }
-        } else {
-            if (100 * $this->docform->expenseamount->getText() == 0) {
-                $this->setError("Не введена сума");
-            }
+
+        if (100 * $this->docform->expenseamount->getText() > 0 && $this->docform->expensetype->getValue() == 0) {
+            $this->setError("Не введений тип витрат");
+        }
+        if (count($this->_itemlist) > 0 && $this->docform->storetype->getValue() == 0) {
+            $this->setError("Не введений тип оприходування");
         }
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
         $this->docform->totalnds->setVisible($this->docform->isnds->isChecked());
         $this->calcTotal();
@@ -302,8 +292,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
             App::$app->getResponse()->addJavaScript("var _nds = 0;var nds_ = 0;");
     }
 
-    public function onIsnds($sender)
-    {
+    public function onIsnds($sender) {
         foreach ($this->_itemlist as $item) {
             if ($sender->isChecked() == false) {
                 $item->price = $item->pricends;
@@ -314,22 +303,17 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-
-
-    public function addItemOnClick($sender)
-    {
+    public function addItemOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->itemdetail->open();
     }
 
     // событие  после  создания  нового элемента справочника номенклатуры
-    public function OnItem($cancel = false)
-    {
+    public function OnItem($cancel = false) {
         $this->editdetail->setVisible(true);
         if ($cancel == true)
             return;
@@ -337,23 +321,6 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $item = $this->itemdetail->getData();
 
         $this->editdetail->edititem->setValue($item->item_id);
-     
-    }
-
-    public function OnExpenseList($sender)
-    {
-        $this->_itemlist = array();
-        $this->docform->detail->Reload();
-        $val = $sender->getValue();
-        if ($val == 201 || $val == 22 || $val == 281) {
-            $this->docform->expenseamount->setVisible(false);
-            $this->docform->store->setVisible(true);
-            $this->docform->addrow->setVisible(true);
-        } else {
-            $this->docform->expenseamount->setVisible(true);
-            $this->docform->store->setVisible(false);
-            $this->docform->addrow->setVisible(false);
-        }
     }
 
 }

@@ -42,8 +42,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_edited = false;
 
-    public function __construct($docid = 0)
-    {
+    public function __construct($docid = 0) {
         parent::__construct();
         $this->_accalllist = Account::findArrayEx('acc_code not in(select acc_pid from erp_account_plan)', 'cast(acc_code as char)');
         $this->add(new Form('docform'));
@@ -59,7 +58,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         //ТМЦ
         $this->docform->add(new DataView('itemtable', new ArrayDataSource($this, '_itemarr'), $this, 'itemtableOnRow'));
         $this->docform->add(new DropDownChoice('e_storelist', Store::findArray('storename', 'store_type=' . Store::STORE_TYPE_OPT, 'storename')));
-        $this->docform->add(new DropDownChoice('e_itemlist',Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_SERVICE,'itemname'))) ;
+        $this->docform->add(new DropDownChoice('e_itemlist', Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_SERVICE, 'itemname')));
         $this->docform->add(new TextInput('e_quantity'));
         $this->docform->add(new TextInput('e_price'));
         $this->docform->add(new DropDownChoice('e_itemop', new Bind($this, '_acclist')));
@@ -67,13 +66,13 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         //Сотрудники
         $this->docform->add(new DataView('emptable', new ArrayDataSource($this, '_emparr'), $this, 'emptableOnRow'));
         $this->docform->add(new DropDownChoice('e_empop', new Bind($this, '_acclist')));
-        $this->docform->add(new DropDownChoice('e_emplist',Employee::findArray('fullname', "",'fullname')));
+        $this->docform->add(new DropDownChoice('e_emplist', Employee::findArray('fullname', "", 'fullname')));
         $this->docform->add(new TextInput('e_empamount'));
         $this->docform->add(new SubmitButton('addempbtn'))->onClick($this, 'addempbtnOnClick');
 
         //контрагенты
         $this->docform->add(new DataView('ctable', new ArrayDataSource($this, '_carr'), $this, 'ctableOnRow'));
-        $this->docform->add(new DropDownChoice('e_сlist',Customer::findArray('customer_name',"","customer_name"))) ;
+        $this->docform->add(new DropDownChoice('e_сlist', Customer::findArray('customer_name', "", "customer_name")));
         $this->docform->add(new TextInput('e_сamount'));
         $this->docform->add(new SubmitButton('addсbtn'))->onClick($this, 'addсbtnOnClick');
         $this->docform->add(new DropDownChoice('e_cop', new Bind($this, '_acclist')));
@@ -87,7 +86,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         //ОС и НМА
         $this->docform->add(new DataView('catable', new ArrayDataSource($this, '_caarr'), $this, 'catableOnRow'));
-        $this->docform->add(new DropDownChoice('e_calist',Item::findArray('itemname', "    item_type =" . Item::ITEM_TYPE_OS,'itemname'))) ;
+        $this->docform->add(new DropDownChoice('e_calist', Item::findArray('itemname', "    item_type =" . Item::ITEM_TYPE_OS, 'itemname')));
         $this->docform->add(new TextInput('e_caquantity'));
         $this->docform->add(new TextInput('e_caprice'));
         $this->docform->add(new DropDownChoice('e_caop', new Bind($this, '_acclist')));
@@ -124,8 +123,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function acctableOnRow($row)
-    {
+    public function acctableOnRow($row) {
         $entry = $row->getDataItem();
 
         $row->add(new Label('acccodec', $entry->acc_c == -1 ? "" : $this->_accalllist[$entry->acc_c]));
@@ -134,8 +132,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delacc'))->onClick($this, 'delaccOnClick');
     }
 
-    public function delaccOnClick($sender)
-    {
+    public function delaccOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->_entryarr = array_diff_key($this->_entryarr, array($item->entry_id => $this->_entryarr[$item->entry_id]));
         $this->docform->acctable->Reload();
@@ -143,8 +140,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->goAnkor("a1");
     }
 
-    public function addaccbtnOnClick($sender)
-    {
+    public function addaccbtnOnClick($sender) {
         $dt = $this->docform->e_acclistd->getValue();
         $ct = $this->docform->e_acclistc->getValue();
 
@@ -164,8 +160,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->goAnkor("a1");
     }
 
-    public function updateAccList()
-    {
+    public function updateAccList() {
         $this->_acclist = array();
         foreach ($this->_entryarr as $entry) {
             if ($entry->acc_d > 0) {
@@ -178,10 +173,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         }
     }
 
- 
-
-    public function itemtableOnRow($row)
-    {
+    public function itemtableOnRow($row) {
         $item = $row->getDataItem();
         $_oplist = $this->docform->e_itemop->getOptionList();
 
@@ -194,16 +186,14 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delitem'))->onClick($this, 'delitemOnClick');
     }
 
-    public function delitemOnClick($sender)
-    {
+    public function delitemOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->_itemarr = array_diff_key($this->_itemarr, array($item->item_id => $this->_itemarr[$item->item_id]));
         $this->docform->itemtable->Reload();
-        $this->goAnkor("a2");  
+        $this->goAnkor("a2");
     }
 
-    public function additembtnOnClick($sender)
-    {
+    public function additembtnOnClick($sender) {
         $id = $this->docform->e_itemlist->getValue();
         if (isset($this->_itemarr[$id])) {
             $this->setError('Дублювання строки');
@@ -248,11 +238,10 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->itemtable->Reload();
         $this->docform->e_quantity->setText('1');
         $this->docform->e_price->setText('0');
-        $this->goAnkor("a2");   
+        $this->goAnkor("a2");
     }
 
-    public function emptableOnRow($row)
-    {
+    public function emptableOnRow($row) {
         $_oplist = $this->docform->e_empop->getOptionList();
         $item = $row->getDataItem();
         $row->add(new Label('empop', $_oplist[$item->op]));
@@ -262,16 +251,14 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delemp'))->onClick($this, 'delempOnClick');
     }
 
-    public function delempOnClick($sender)
-    {
+    public function delempOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->_emparr = array_diff_key($this->_emparr, array($item->employee_id => $this->_emparr[$item->employee_id]));
         $this->docform->emptable->Reload();
-        $this->goAnkor("a3");  
+        $this->goAnkor("a3");
     }
 
-    public function addempbtnOnClick($sender)
-    {
+    public function addempbtnOnClick($sender) {
         $id = $this->docform->e_emplist->getValue();
 
         $emp = Employee::load($id);
@@ -290,13 +277,10 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_emparr[$id] = $emp;
         $this->docform->emptable->Reload();
         $this->docform->e_empamount->setText('');
-        $this->goAnkor("a3");  
+        $this->goAnkor("a3");
     }
 
-   
-
-    public function ctableOnRow($row)
-    {
+    public function ctableOnRow($row) {
         $c = $row->getDataItem();
         $_oplist = $this->docform->e_cop->getOptionList();
 
@@ -306,16 +290,14 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delс'))->onClick($this, 'delсOnClick');
     }
 
-    public function delсOnClick($sender)
-    {
+    public function delсOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->_carr = array_diff_key($this->_carr, array($item->customer_id => $this->_carr[$item->customer_id]));
         $this->docform->ctable->Reload();
-        $this->goAnkor("a4");  
+        $this->goAnkor("a4");
     }
 
-    public function addсbtnOnClick($sender)
-    {
+    public function addсbtnOnClick($sender) {
         $id = $this->docform->e_сlist->getValue();
         if (isset($this->_carr[$id])) {
             $this->setError('Дублювання строки');
@@ -328,13 +310,10 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->ctable->Reload();
         $this->docform->e_сamount->setText('0');
         $this->docform->e_сlist->setValue(0);
-        $this->goAnkor("a4");  
+        $this->goAnkor("a4");
     }
 
-
-
-    public function ftableOnRow($row)
-    {
+    public function ftableOnRow($row) {
         $f = $row->getDataItem();
         $_oplist = $this->docform->e_cop->getOptionList();
 
@@ -344,16 +323,14 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delf'))->onClick($this, 'delfOnClick');
     }
 
-    public function delfOnClick($sender)
-    {
+    public function delfOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->_farr = array_diff_key($this->_farr, array($item->id => $this->_farr[$item->id]));
         $this->docform->ftable->Reload();
-        $this->goAnkor("a5");  
+        $this->goAnkor("a5");
     }
 
-    public function addfbtnOnClick($sender)
-    {
+    public function addfbtnOnClick($sender) {
         $id = $this->docform->e_flist->getValue();
         if (isset($this->_farr[$id])) {
             $this->setError('Дублювання строки');
@@ -365,13 +342,10 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_farr[$id] = $f;
         $this->docform->ftable->Reload();
         $this->docform->e_famount->setText('');
-        $this->goAnkor("a5");  
+        $this->goAnkor("a5");
     }
 
-
-
-    public function catableOnRow($row)
-    {
+    public function catableOnRow($row) {
         $item = $row->getDataItem();
         $_oplist = $this->docform->e_caop->getOptionList();
 
@@ -382,16 +356,14 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delca'))->onClick($this, 'delcaOnClick');
     }
 
-    public function delcaOnClick($sender)
-    {
+    public function delcaOnClick($sender) {
         $item = $sender->owner->getDataItem();
         $this->_caarr = array_diff_key($this->_caarr, array($item->item_id => $this->_caarr[$item->item_id]));
         $this->docform->catable->Reload();
-        $this->goAnkor("a6");  
+        $this->goAnkor("a6");
     }
 
-    public function addcabtnOnClick($sender)
-    {
+    public function addcabtnOnClick($sender) {
         $id = $this->docform->e_calist->getValue();
         if (isset($this->_caarr[$id])) {
             $this->setError('Дублирование строки');
@@ -419,17 +391,15 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->catable->Reload();
         $this->docform->e_caquantity->setText('1');
         $this->docform->e_caprice->setText('0');
-        $this->goAnkor("a6");  
+        $this->goAnkor("a6");
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
 
         App::RedirectBack();
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         $this->_doc->document_date = strtotime($this->docform->document_date->getText());
         $this->_doc->document_number = $this->docform->document_number->getText();
 
@@ -463,8 +433,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         }
     }
 
-    public function afterRequest()
-    {
+    public function afterRequest() {
         $this->updateAccList();
     }
 

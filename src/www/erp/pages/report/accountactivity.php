@@ -11,11 +11,13 @@ use Zippy\Html\Panel;
 use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Helper as H;
 
+/**
+ * Движения по  счету
+ */
 class AccountActivity extends \ZippyERP\ERP\Pages\Base
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
@@ -30,8 +32,7 @@ class AccountActivity extends \ZippyERP\ERP\Pages\Base
         $this->detail->add(new Label('preview'));
     }
 
-    public function OnSubmit($sender)
-    {
+    public function OnSubmit($sender) {
         if ($this->filter->acc->getValue() == 0) {
             $this->setError('Не  вибраний рахунок');
             return;
@@ -59,8 +60,7 @@ class AccountActivity extends \ZippyERP\ERP\Pages\Base
         $this->detail->setVisible(true);
     }
 
-    private function generateReport()
-    {
+    private function generateReport() {
         $acc = Account::load($this->filter->acc->getValue());
 
         $from = $this->filter->from->getDate();

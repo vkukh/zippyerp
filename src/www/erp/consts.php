@@ -62,8 +62,7 @@ class Consts
      *
      */
 
-    public static function getTaxesList()
-    {
+    public static function getTaxesList() {
         $list = array();
         $list[self::TAX_NDS] = "ПДВ";
         $list[self::TAX_INCOME] = "Податок  на прибуток";
@@ -79,15 +78,14 @@ class Consts
      * Список  типов  затрат
      *
      */
-    public static function getExpensesList()
-    {
+    public static function getExpensesList() {
 
 
         $list = array();
-        $list[23] = "Прямые производственные затраты";
-        $list[91] = "Общепроизводственные затраты";
-        $list[92] = "Административные затраты";
-        $list[93] = "Затраты  на сбыт";
+        $list[23] = "Прямі виробничі витрати";
+        $list[91] = "Загальновиробничі витрати";
+        $list[92] = "Адміністративні витрати";
+        $list[93] = "Витрати на  збут";
 
         return $list;
     }
@@ -96,21 +94,20 @@ class Consts
      * Список  всех  кодов
      *
      */
-    public static function getCodesList()
-    {
+    public static function getCodesList() {
         $list = array();
-        $list[self::TAX_NDS] = "НДС";
-        $list[self::TAX_INCOME] = "Налог на прибыль";
-        $list[self::TAX_ONE] = "Единый налог";
-        $list[self::TAX_NDFL] = "НДФЛ";
-        $list[self::TAX_MIL] = "Военный сбор";
-        $list[self::TYPEOP_CUSTOMER_IN] = "Оплата покупателя";
-        $list[self::TYPEOP_BANK_IN] = "Снятие  со  счета";
-        $list[self::TYPEOP_CASH_IN] = "Приход  с  подотчета";
-        $list[self::TYPEOP_RET_IN] = "Приход с розницы";
-        $list[self::TYPEOP_CUSTOMER_OUT] = "Оплата поставщику";
-        $list[self::TYPEOP_BANK_OUT] = "Пополнение  счета";
-        $list[self::TYPEOP_CASH_OUT] = "Расход на подотчета";
+        $list[self::TAX_NDS] = "ПДВ";
+        $list[self::TAX_INCOME] = "Податок на прибуток";
+        $list[self::TAX_ONE] = "Єдиний податок";
+        $list[self::TAX_NDFL] = "ПДФО";
+        $list[self::TAX_MIL] = "Війсковий збір";
+        $list[self::TYPEOP_CUSTOMER_IN] = "Оплата покупця";
+        $list[self::TYPEOP_BANK_IN] = "Зняття з рахунку";
+        $list[self::TYPEOP_CASH_IN] = "Прибуток з підзвіту";
+        $list[self::TYPEOP_RET_IN] = "Прибуток з роздрібу";
+        $list[self::TYPEOP_CUSTOMER_OUT] = "Оплата постачальнику";
+        $list[self::TYPEOP_BANK_OUT] = "Поповнення рахунку";
+        $list[self::TYPEOP_CASH_OUT] = "Видатки на підзвіт";
 
         return $list;
     }

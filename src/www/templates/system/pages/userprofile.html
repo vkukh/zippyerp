@@ -1,48 +1,48 @@
 <html>
 
-<body>
+    <body>
 
- <div class="row ">
-<div class="col-xs-3">
+        <div class="row ">
+            <div class="col-xs-3">
 
-      <h4>Профіль</h4>
-    <form role="form" zippy="profileform">
-        <div class="form-group">
-            <label for="userlogin">Логін</label>
-            <span zippy="userlogin"></span>
+                <h4>Профіль</h4>
+                <form role="form" zippy="profileform">
+                    <div class="form-group">
+                        <label for="userlogin">Логін</label>
+                        <span zippy="userlogin"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" zippy="email"  >
+                    </div>
+
+
+                    <button type="submit" zippy="submitpass" class="btn btn-default">Зберегти</button>
+                </form>
+            </div>
+            <div class="col-xs-2">
+
+                <h4>Змінити пароль</h4>
+                <form role="form" zippy="passwordform">
+
+                    <div class="form-group">
+                        <label for="userpassword">Пароль</label>
+                        <input type="password" class="form-control" zippy="userpassword" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userpassword">Підтвердження</label>
+                        <input type="password" class="form-control " zippy="confirmpassword" required="required">
+                    </div>
+
+                    <button type="submit" zippy="submitpass" class="btn btn-default">Зберегти</button>
+                </form>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" zippy="email"  >
-        </div>
- 
 
-        <button type="submit" zippy="submitpass" class="btn btn-default">Зберегти</button>
-    </form>
-</div>
-<div class="col-xs-2">
-
-     <h4>Змінити пароль</h4>
-    <form role="form" zippy="passwordform">
-  
-        <div class="form-group">
-            <label for="userpassword">Пароль</label>
-            <input type="password" class="form-control" zippy="userpassword" required="required">
-        </div>
- 
-        <div class="form-group">
-            <label for="userpassword">Підтвердження</label>
-            <input type="password" class="form-control " zippy="confirmpassword" required="required">
-        </div>
-
-        <button type="submit" zippy="submitpass" class="btn btn-default">Зберегти</button>
-    </form>
-</div>
-</div>
-
-
-</body>
+    </body>
 
 </html>
 

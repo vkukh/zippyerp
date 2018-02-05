@@ -12,8 +12,7 @@ use ZippyERP\ERP\Util;
 class Invoice extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
 
         $i = 1;
@@ -58,14 +57,12 @@ class Invoice extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
 
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['GoodsIssue'] = 'Видаткова накладна ';
         $list['ServiceAct'] = 'Акт виконаних робіт';
@@ -76,8 +73,7 @@ class Invoice extends Document
     /**
      * @see Document
      */
-    public function export($type)
-    {
+    public function export($type) {
         if ($type == self::EX_XML_GNAU)
             return array("filename" => "invoice.xml", "content" => "<test/>");
     }
@@ -85,8 +81,7 @@ class Invoice extends Document
     /**
      * @see Document
      */
-    public function supportedExport()
-    {
+    public function supportedExport() {
         return array(self::EX_EXCEL, self::EX_WORD, self::EX_XML_GNAU);
     }
 

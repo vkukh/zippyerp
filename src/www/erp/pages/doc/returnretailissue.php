@@ -32,8 +32,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
     private $_basedocid = 0;
     private $_rowid = 0;
 
-    public function __construct($docid = 0, $basedocid = 0)
-    {
+    public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
         $this->add(new Form('docform'));
@@ -42,7 +41,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
         $this->docform->store->selectFirst();
-        $this->docform->add(new DropDownChoice('customer',Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )",'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", 'customer_name')));
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
@@ -71,7 +70,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->customer->setValue($this->_doc->headerdata['customer']);
-            
+
 
             foreach ($this->_doc->detaildata as $item) {
                 $item = new Item($item);
@@ -89,7 +88,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
                     if ($basedoc->meta_name == 'RetailIssue') {
 
                         $this->docform->customer->setValue($basedoc->headerdata['customer']);
-                    
+
                         foreach ($basedoc->detaildata as $_item) {
                             $item = new Item($_item);
                             $this->_tovarlist[$item->item_id] = $item;
@@ -103,8 +102,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->OnChangeStore($this->docform->store);
     }
 
-    public function detailOnRow($row)
-    {
+    public function detailOnRow($row) {
         $item = $row->getDataItem();
 
         $row->add(new Label('tovar', $item->itemname));
@@ -116,8 +114,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function deleteOnClick($sender)
-    {
+    public function deleteOnClick($sender) {
         $tovar = $sender->owner->getDataItem();
         // unset($this->_tovarlist[$tovar->tovar_id]);
 
@@ -125,15 +122,13 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
-    public function addrowOnClick($sender)
-    {
+    public function addrowOnClick($sender) {
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
     }
 
-    public function editOnClick($sender)
-    {
+    public function editOnClick($sender) {
         $stock = $sender->getOwner()->getDataItem();
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
@@ -142,14 +137,13 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
-        //$list = Stock::findArrayEx("closed  <> 1 and group_id={$stock->group_id} and store_id={$stock->store_id}");
+
         $this->editdetail->edittovar->setValue($stock->stock_id);
 
         $this->_rowid = $stock->stock_id;
     }
 
-    public function saverowOnClick($sender)
-    {
+    public function saverowOnClick($sender) {
         $id = $this->editdetail->edittovar->getValue();
         if ($id == 0) {
             $this->setError("Не вибраний товар");
@@ -168,28 +162,25 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
 
         //очищаем  форму
         $this->editdetail->edittovar->setValue(0);
-       
+
         $this->editdetail->editquantity->setText("1");
 
         $this->editdetail->editprice->setText("");
     }
 
-    public function cancelrowOnClick($sender)
-    {
+    public function cancelrowOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
     }
 
-    public function OnChangeTovar($sender)
-    {
+    public function OnChangeTovar($sender) {
         $store_id = $sender->getValue();
         $stock = Stock::load($store_id);
 
         $this->editdetail->editprice->setText(H::fm($stock->price));
     }
 
-    public function savedocOnClick($sender)
-    {
+    public function savedocOnClick($sender) {
         if ($this->checkForm() == false) {
             return;
         }
@@ -241,8 +232,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
      * Расчет  итого
      *
      */
-    private function calcTotal()
-    {
+    private function calcTotal() {
         $total = 0;
         foreach ($this->_tovarlist as $tovar) {
             $total = $total + $tovar->price * ($tovar->quantity / 1000);
@@ -257,8 +247,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
      * Валидация   формы
      *
      */
-    private function checkForm()
-    {
+    private function checkForm() {
 
         if (count($this->_tovarlist) == 0) {
             $this->setError("Не введений ні один  товар");
@@ -269,31 +258,26 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
         return !$this->isError();
     }
 
-    public function beforeRender()
-    {
+    public function beforeRender() {
         parent::beforeRender();
 
         $this->calcTotal();
     }
 
-    public function backtolistOnClick($sender)
-    {
+    public function backtolistOnClick($sender) {
         App::RedirectBack();
     }
 
-    public function OnChangeStore($sender)
-    {
+    public function OnChangeStore($sender) {
         //очистка  списка  товаров
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
-        
+
         $store_id = $this->docform->store->getValue();
         $this->editdetail->edittovar->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 "));
-        
     }
- 
-    public function OnChangeItem($sender)
-    {
+
+    public function OnChangeItem($sender) {
         $id = $sender->getValue();
         $stock = Stock::load($id);
         //$item = Item::load($stock->item_id);

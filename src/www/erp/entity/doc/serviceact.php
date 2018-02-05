@@ -15,8 +15,7 @@ use ZippyERP\ERP\Helper as H;
 class ServiceAct extends Document
 {
 
-    public function generateReport()
-    {
+    public function generateReport() {
 
         $i = 1;
         $total = 0;
@@ -47,8 +46,7 @@ class ServiceAct extends Document
         return $html;
     }
 
-    public function Execute()
-    {
+    public function Execute() {
         $conn = \ZDB\DB::getConnect();
         $conn->StartTrans();
 
@@ -99,8 +97,7 @@ class ServiceAct extends Document
         return true;
     }
 
-    public function getRelationBased()
-    {
+    public function getRelationBased() {
         $list = array();
         $list['TaxInvoice'] = 'Податкова накладна';
 

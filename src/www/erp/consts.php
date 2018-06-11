@@ -23,7 +23,7 @@ class Consts
     const FILE_ITEM_TYPE_DOC = 1; //  документ
     const FILE_ITEM_TYPE_PRJ = 2; //  проект
     const FILE_ITEM_TYPE_TASK = 3; //  задание
-    const FILE_ITEM_TYPE_CONTACT = 4; //  контакт
+    const FILE_ITEM_TYPE_CONTACT = 4; //  контрагент
     //Типы  налогов  и сборов   641
     const TAX_NDS = 101;
     const TAX_INCOME = 102;   // подоходный

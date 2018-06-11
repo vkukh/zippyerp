@@ -30,6 +30,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
 
     public $_itemlist = array();
     private $_doc;
+    private $_itemtype = array(281 => 'Товар', 201 => 'Матеріал', 22 => 'МШП', 15 => 'Необоротні активи');
 
     public function __construct($docid = 0) {
         parent::__construct();
@@ -39,6 +40,7 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new Date('timeline'))->setDate(time() + 3 * 24 * 3600);
         $this->docform->add(new AutocompleteTextInput('supplier'))->onText($this, 'OnAutoCustomer');
+        $this->docform->add(new DropDownChoice('itemtype', $this->_itemtype));
 
 
         $this->docform->add(new DropDownChoice('orderstate', \ZippyERP\ERP\Entity\Doc\SupplierOrder::getStatesList()));
@@ -125,10 +127,11 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
         );
         $this->_doc->detaildata = array();
         foreach ($this->_itemlist as $item) {
+            $item->type = $this->docform->itemtype->getValue();
             $this->_doc->detaildata[] = $item->getData();
         }
 
-        $this->_doc->total = 100 * $this->docform->total->getText();
+        $this->_doc->amount = 100 * $this->docform->total->getText();
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->document_date->getDate();
 
@@ -216,8 +219,8 @@ class SupplierOrder extends \ZippyERP\ERP\Pages\Base
     }
 
     public function OnAutoCustomer($sender) {
-        $text = $sender->getText();
-        return Customer::searchClient($text);
+        $text = Customer::qstr('%' . $sender->getText() . '%');
+        return Customer::findArray("customer_name", "Customer_name like " . $text);
     }
 
     public function OnAutoItem($sender) {

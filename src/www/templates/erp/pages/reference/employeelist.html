@@ -6,10 +6,10 @@
         <div class="row">
 
 
-            <div zippy="employeetable" class="col-xs-10">
-                <h3>Довідник посад </h3>
-                <a zippy="addnew" class="btn btn-default btn-sm">Додати</a>
-                <table class="table table-bordered   table-condensed" class="col-xs-10">
+            <div zippy="employeetable" class="col-12 col-md-10 col-lg-8">
+                <h3>Довідник співробітників </h3>
+                <a zippy="addnew" class="btn btn-light btn-sm">Додати</a>
+                <table class="table table-bordered   table-sm" class="col-10">
                     <tr>
                         <th>Им'я</th>
                         <th>Відділ</th>
@@ -25,7 +25,7 @@
                         <td zippy="login"></td>
 
 
-                        <td style="width:52px"><a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a> <a
+                        <td style="width:52px"><a zippy="edit" title="Редагувати"><i class="fa fa-edit"></i></a> <a
                                 zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a></td>
                     </tr>
                 </table>
@@ -34,109 +34,121 @@
             </div>
         </div>
 
-        <div class="row">
-            <form zippy="employeedetail" method="post">
-                <div class="col-xs-4">
 
-                    <div class="form-group">
-                        <label for="editcontact">Им'я контакту</label>
-                        <a zippy="opencontact" title="Редагувати контакт"><i class="fa fa-pencil-square-o"></i></a>
-                        <a zippy="showcontact" title="Перегляд  контакту"><i class="fa fa-search"></i></a>
-                        <a zippy="addcontact" title="Створити  контакт"><i class="fa fa-plus"></i></a>
-                        <select class="form-control  " zippy="editcontact">
-                            <option value="0">Не вибрано</option>
-                        </select>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="editdepartment">Відділ</label>
-                        <select zippy="editdepartment" class="form-control">
-                            <option>Не вибрано</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editposition">Посада</label>
-                        <select zippy="editposition" class="form-control">
-                            <option>Не вибрано</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edithiredate">Прийнятий</label>
-                        <input style="width:110px;" zippy="edithiredate" class="form-control">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="editfiredate">Звільнений</label>
-                        <input style="width:110px;" zippy="editfiredate" class="form-control">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="editlogin">Логін</label>
-                        <input style="width:110px;" pattern="[a-zA-Z0-9]+" zippy="editlogin" class="form-control">
-
-                    </div>
-
-                    <input zippy="save" type="submit" value="Зберегти" class="btn btn-default  ">&nbsp;&nbsp;
-                    <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default  ">
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <label for="editinn">ІНН</label>
-                        <input zippy="editinn" class="form-control" pattern="[0-9]+">
-
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="editsalarytype">Оплата</label>
-                        <select zippy="editsalarytype" class="form-control">
-                            <option value="1">Ставка</option>
-                            <option value="2">Погодинна</option>
-                            <option value="3">Відрядна</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editsalary">Зарплата</label>
-                        <input zippy="editsalary" class="form-control" pattern="[0-9\.]+">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="editavans">Аванс</label>
-                        <input zippy="editavans" class="form-control" pattern="[0-9\.]+">
-
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editexptype">Тип витрат</label>
-                        <select zippy="editexptype" class="form-control">
-                            <option value="91">Загальновиробничі витрати"</option>
-                            <option value="92">Адміністративні витрати"</option>
-                            <option value="23">Прямі віробничі витрати</option>
-                        </select>
-                    </div>
-
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="editcombined"> Сумісник
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="editinvalid"> Інвалід
-                        </label>
-                    </div>
+        <form class="row" zippy="employeedetail" method="post">
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label for="editlastname">Прізвище</label>
+                    <input   pattern="[a-zA-Z0-9]+" zippy="editlastname" class="form-control">
 
                 </div>
-            </form>
-            <hr>
-        </div>
-        <div class="row">
-            <div zippy="contactdetail">
+                <div class="form-group">
+                    <label for="editfirstname">Ім'я</label>
+                    <input   pattern="[a-zA-Z0-9]+" zippy="editfirstname" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label for="editmiddlename">По батькові</label>
+                    <input   pattern="[a-zA-Z0-9]+" zippy="editmiddlename" class="form-control">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="editdepartment">Відділ</label>
+                    <select zippy="editdepartment" class="form-control">
+                        <option>Не вибрано</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editposition">Посада</label>
+                    <select zippy="editposition" class="form-control">
+                        <option>Не вибрано</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edithiredate">Прийнятий</label>
+                    <input required="required"   style="width:110px;" zippy="edithiredate" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label for="editfiredate">Звільнений</label>
+                    <input style="width:110px;" zippy="editfiredate" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label for="editlogin">Логін</label>
+                    <input style="width:110px;" pattern="[a-zA-Z0-9]+" zippy="editlogin" class="form-control">
+
+                </div>
+                `            <div class="form-group">
+                    <label for="editemail">E-mail</label>
+                    <input  type="email" class="form-control" zippy="editemail"/>
+                </div>
+                <div class="form-group">
+                    <label for="editphone">Телефон</label>
+                    <input   class="form-control" zippy="editphone"/>
+                </div>   `
+
 
             </div>
-            <div zippy="contactview">
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label for="editinn">ІНН</label>
+                    <input zippy="editinn" class="form-control" pattern="[0-9]+">
+
+                </div>
+
+
+                <div class="form-group">
+                    <label for="editsalarytype">Оплата</label>
+                    <select zippy="editsalarytype" class="form-control">
+                        <option value="1">Ставка</option>
+                        <option value="2">Погодинна</option>
+                        <option value="3">Відрядна</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editsalary">Зарплата</label>
+                    <input zippy="editsalary" class="form-control" pattern="[0-9\.]+">
+
+                </div>
+                <div class="form-group">
+                    <label for="editavans">Аванс</label>
+                    <input zippy="editavans" class="form-control" pattern="[0-9\.]+">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="editexptype">Тип витрат</label>
+                    <select zippy="editexptype" class="form-control">
+                        <option value="91">Загальновиробничі витрати"</option>
+                        <option value="92">Адміністративні витрати"</option>
+                        <option value="23">Прямі віробничі витрати</option>
+                    </select>
+                </div>
+
+
+
+                <div class="form-check   ">
+
+                    <input class="form-check-input"  type="checkbox" zippy="editcombined">
+                    <label class="form-check-label mr-sm-2" for="editcombined">Сумісник</label>
+                </div>                              <div class="form-check   ">
+
+                    <input class="form-check-input"  type="checkbox" zippy="editinvalid">
+                    <label class="form-check-label mr-sm-2" for="editinvalid">Інвалід</label>
+                </div>
             </div>
-        </div>
+            <div class="col-12  ">
+                <div class="form-group"> 
+                    <input zippy="save" type="submit" value="Зберегти" class="btn btn-primary  ">&nbsp;&nbsp;
+                    <input zippy="cancel" type="button" value="Відмінити" class="btn btn-light  ">
+                </div>
+            </div>
+        </form>
+
+
+
 
 
     </body>

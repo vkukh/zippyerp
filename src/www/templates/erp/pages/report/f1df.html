@@ -3,37 +3,34 @@
 
     <body>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <h3>Форма 1ДФ</h3>
 
                 <br>
-                <form zippy="filter" class="navbar-form ">
+                <form zippy="filter" class="form-inline">
 
-                    <div class="form-group">
-                        <label for="yr">Рік</label>
-                        <select zippy="yr" class="form-control">
 
-                            <option value="2016">2016</option>
-                            <option value="2017">2017</option>
-                            <option value="2018">2018</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="qw">квартал</label>
-                        <select zippy="qw" class="form-control">
+                    <label for="yr">Рік</label>
+                    <select zippy="yr" class="form-control mr-sm-2">
 
-                            <option value="1">I</option>
-                            <option value="2">II</option>
-                            <option value="3">III</option>
-                            <option value="4">IV</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <a zippy="load">Заповнити</a>
-                    </div>
-                    <div class="form-group">
-                        <a zippy="show">Показати</a>
-                    </div>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                    </select>
+
+                    <label for="qw">квартал</label>
+                    <select zippy="qw" class="form-control mr-sm-2">
+
+                        <option value="1">I</option>
+                        <option value="2">II</option>
+                        <option value="3">III</option>
+                        <option value="4">IV</option>
+                    </select>
+
+                    <a zippy="load" class="btn btn-light  " type>Заповнити</a>
+
+                    <a zippy="show" class="btn btn-light  " type>Показати</a>
+
 
 
                 </form>
@@ -41,9 +38,9 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-8" zippy="listp">
+            <div class="col-8" zippy="listp">
                 <a zippy="addrow">Додати</a>
-                <table class="table table-condenced">
+                <table class="table table-sm">
                     <tr>
                         <th>Им'я</th>
                         <th>Нараховано</th>
@@ -58,7 +55,7 @@
                         <td align="right" zippy="outcome"></td>
                         <td align="right" zippy="tax"></td>
                         <td zippy="code"></td>
-                        <td><a zippy="edit"><i class="fa fa-pencil-square-o"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a></td>
+                        <td><a zippy="edit"><i class="fa fa-edit"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a></td>
                     </tr>
 
                 </table>
@@ -66,7 +63,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-4">
+            <div class="col-4">
                 <form zippy="editemp">
                     <h4>Редагування співробітника</h4>
                     <div class="form-group">
@@ -101,15 +98,15 @@
 
                     </div>
                     <div class="form-group">
-                        <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-default ">
-                        &nbsp; <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-default ">
+                        <input type="submit" zippy="submitrow" value="Зберегти" class="btn btn-light ">
+                        &nbsp; <input type="button" zippy="cancelrow" value="Відмінити" class="btn btn-light ">
                     </div>
 
                 </form>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-11" zippy="detail">
+            <div class="col-11" zippy="detail">
                 <div>
                     <a zippy="print" target="_blank" title="Друк"><img class="icon20" src="/assets/images/print_32.png"></a>
                     <a zippy="html" target="_blank" title="Експорт в HTML"><img class="icon20"

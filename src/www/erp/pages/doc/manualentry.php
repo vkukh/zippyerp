@@ -21,6 +21,7 @@ use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\MoneyFund;
 use ZippyERP\ERP\Entity\Store;
+use Zippy\Html\Form\AutocompleteTextInput;
 use ZippyERP\ERP\Helper as H;
 use Zippy\WebApplication as App;
 
@@ -58,7 +59,8 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         //ТМЦ
         $this->docform->add(new DataView('itemtable', new ArrayDataSource($this, '_itemarr'), $this, 'itemtableOnRow'));
         $this->docform->add(new DropDownChoice('e_storelist', Store::findArray('storename', 'store_type=' . Store::STORE_TYPE_OPT, 'storename')));
-        $this->docform->add(new DropDownChoice('e_itemlist', Item::findArray('itemname', "item_type <>" . Item::ITEM_TYPE_SERVICE, 'itemname')));
+        $this->docform->add(new AutocompleteTextInput('e_itemlist'))->onText($this, 'OnAutoItem');
+
         $this->docform->add(new TextInput('e_quantity'));
         $this->docform->add(new TextInput('e_price'));
         $this->docform->add(new DropDownChoice('e_itemop', new Bind($this, '_acclist')));
@@ -72,7 +74,8 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         //контрагенты
         $this->docform->add(new DataView('ctable', new ArrayDataSource($this, '_carr'), $this, 'ctableOnRow'));
-        $this->docform->add(new DropDownChoice('e_сlist', Customer::findArray('customer_name', "", "customer_name")));
+        $this->docform->add(new AutocompleteTextInput('e_сlist'))->onText($this, 'OnAutoCustomer');
+
         $this->docform->add(new TextInput('e_сamount'));
         $this->docform->add(new SubmitButton('addсbtn'))->onClick($this, 'addсbtnOnClick');
         $this->docform->add(new DropDownChoice('e_cop', new Bind($this, '_acclist')));
@@ -194,7 +197,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     }
 
     public function additembtnOnClick($sender) {
-        $id = $this->docform->e_itemlist->getValue();
+        $id = $this->docform->e_itemlist->getKey();
         if (isset($this->_itemarr[$id])) {
             $this->setError('Дублювання строки');
             return;
@@ -217,7 +220,6 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
         $store = Store::load($item->store_id);
 
-
         $item->store_name = $store->storename;
         $item->qty = 1000 * $this->docform->e_quantity->getText();
         // $item->partion = 100 * $this->docform->e_price->getText();
@@ -238,6 +240,8 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->docform->itemtable->Reload();
         $this->docform->e_quantity->setText('1');
         $this->docform->e_price->setText('0');
+        $this->docform->e_itemlist->setKey(0);
+        $this->docform->e_itemlist->setText('');
         $this->goAnkor("a2");
     }
 
@@ -298,7 +302,7 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
     }
 
     public function addсbtnOnClick($sender) {
-        $id = $this->docform->e_сlist->getValue();
+        $id = $this->docform->e_сlist->getKey();
         if (isset($this->_carr[$id])) {
             $this->setError('Дублювання строки');
             return;
@@ -309,7 +313,8 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
         $this->_carr[$id] = $c;
         $this->docform->ctable->Reload();
         $this->docform->e_сamount->setText('0');
-        $this->docform->e_сlist->setValue(0);
+        $this->docform->e_сlist->setKey(0);
+        $this->docform->e_сlist->setText('');
         $this->goAnkor("a4");
     }
 
@@ -435,6 +440,16 @@ class ManualEntry extends \ZippyERP\ERP\Pages\Base
 
     public function afterRequest() {
         $this->updateAccList();
+    }
+
+    public function OnAutoCustomer($sender) {
+        $text = Customer::qstr('%' . $sender->getText() . '%');
+        return Customer::findArray("customer_name", "Customer_name like " . $text);
+    }
+
+    public function OnAutoItem($sender) {
+        $text = Item::qstr('%' . $sender->getText() . '%');
+        return Item::findArray("itemname", "(itemname like {$text} or item_code like {$text}) and item_type <>" . Item::ITEM_TYPE_RETSUM . " and item_type <> " . Item::ITEM_TYPE_SERVICE);
     }
 
 }

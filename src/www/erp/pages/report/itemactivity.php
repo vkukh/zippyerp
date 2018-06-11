@@ -43,7 +43,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
 
 
         $text = Item::qstr('%' . $sender->getText() . '%');
-        $list = Item::findArray('itemname', " itemname like {$text} and item_type in (" . Item::ITEM_TYPE_RETSUM . "," . Item::ITEM_TYPE_STUFF . ")");
+        $list = Item::findArray('itemname', " (itemname like {$text} or item_code like {$text} ) and item_type in (" . Item::ITEM_TYPE_RETSUM . "," . Item::ITEM_TYPE_STUFF . ")");
         foreach ($list as $k => $v) {
             $r[$k] = $v;
         }
@@ -52,10 +52,10 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
 
     public function OnSubmit($sender) {
         $itemid = $this->filter->item->getKey();
-        $item = Item::load($itemid);
+        // $item = Item::load($itemid);
         if ($item == null) {
-            $this->setError('Не вибраний ТМЦ');
-            return;
+            //  $this->setError('Не вибраний ТМЦ');
+            // return;
         }
         $html = $this->generateReport();
         $this->detail->preview->setText($html, true);
@@ -83,15 +83,14 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
 
         $storeid = $this->filter->store->getValue();
         $itemid = $this->filter->item->getKey();
-        $item = Item::load($itemid);
+
+        $it = $itemid > 0 ? "st.item_id=" . $itemid : "1=1";
         $from = $this->filter->from->getDate();
         $to = $this->filter->to->getDate();
 
         $header = array('datefrom' => date('d.m.Y', $from),
             'dateto' => date('d.m.Y', $to),
-            "store" => Store::load($storeid)->storename,
-            "item" => $item->itemname,
-            "measure" => $item->measure_name
+            "store" => Store::load($storeid)->storename
         );
 
 
@@ -109,7 +108,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
                 AND u.`stock_id` = t.`stock_id`) AS begin_quantity
             FROM (
             SELECT
-                st.stock_id,
+                st.stock_id, st.itemname,st.item_code,
                 price,
                 DATE(sc.document_date) AS dt,
                 SUM(
@@ -118,23 +117,25 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
                 CASE WHEN quantity < 0 THEN 0 - quantity ELSE 0 END) AS obout,
                 GROUP_CONCAT(dc.document_number) AS docs
               FROM
-               erp_account_subconto  sc join erp_store_stock  st on  sc.stock_id = st.stock_id
+               erp_account_subconto  sc join erp_stock_view  st on  sc.stock_id = st.stock_id
                join erp_document  dc  on sc.document_id = dc.document_id
 
-              WHERE st.item_id = {$itemid}
+              WHERE {$it}  
               AND st.store_id = {$storeid}
               AND DATE(sc.document_date) >= " . $conn->DBDate($from) . "
               AND DATE(sc.document_date) <= " . $conn->DBDate($to) . "
               GROUP BY st.stock_id,
                        st.price,
                        DATE(sc.document_date)) t
-            ORDER BY dt
+            ORDER BY dt desc
         ";
 
         $rs = $conn->Execute($sql);
 
         foreach ($rs as $row) {
-            $detail[] = array("no" => $i++,
+            $detail[] = array(
+                "code" => $row['item_code'],
+                "name" => $row['itemname'],
                 "date" => date("d.m.Y", strtotime($row['dt'])),
                 "documents" => str_replace(',', '<br>', $row['docs']),
                 "price" => H::fm($row['price']),

@@ -41,7 +41,7 @@ class TaxInvoiceIncome extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
 
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", 'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', "  cust_type=" . Customer::TYPE_FIRM, 'customer_name')));
         $this->docform->add(new CheckBox('ernn'));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 

@@ -30,7 +30,7 @@ class InventoryExpence extends Document
         }
 
         $firm = \ZippyERP\System\System::getOptions("firmdetail");
-        
+
         $header = array('date' => date('d.m.Y', $this->document_date),
             "document_number" => $this->document_number,
             "storename" => $this->headerdata["storename"],

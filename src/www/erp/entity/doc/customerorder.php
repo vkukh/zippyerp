@@ -66,6 +66,7 @@ class CustomerOrder extends Document
     public function getRelationBased() {
         $list = array();
         $list['Invoice'] = 'Рахунок-фактура';
+        $list['GoodsIssue'] = 'Видаткова накладна';
         $list['RetailIssue'] = 'Роздрібна накладна';
         return $list;
     }

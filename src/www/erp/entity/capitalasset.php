@@ -35,9 +35,9 @@ class CapitalAsset extends \ZCL\DB\Entity
     public static function getNAList() {
         $list = array();
 
-        $list[10] = 'ОС';
-        $list[11] = 'Прочие необоротные средства';
-        $list[12] = 'Нематериальные активы';
+        $list[10] = 'ОЗ';
+        $list[11] = 'Інші необоротні засоби';
+        $list[12] = 'Нематеріальні активи';
 
 
         return $list;

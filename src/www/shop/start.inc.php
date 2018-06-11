@@ -49,6 +49,7 @@ function Route($uri) {
         "simage" => "\\ZippyERP\\Shop\\Pages\\LoadImage",
         "scat" => "\\ZippyERP\\Shop\\Pages\\Main",
         "sp" => "\\ZippyERP\\Shop\\Pages\\ProductView",
+        "aboutus" => "\\ZippyERP\\Shop\\Pages\\AboutUs",
         "pcat" => "\\ZippyERP\\Shop\\Pages\\Catalog"
     );
 

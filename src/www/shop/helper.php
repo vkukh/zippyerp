@@ -13,15 +13,15 @@ class Helper
 
     public static function getBreadScrumbs($id) {
 
-        $bs = "<li><a href='/'>Каталог</a></li>";
+        $bs = "<li class=\"breadcrumb-item\"><a href='/'>Каталог</a></li>";
         if ($id > 0) {
             $g = ProductGroup::load($id);
             $gl = $g->getParents();
 
             foreach ($gl as $gi) {
-                $bs .= "<li  ><a href='/scat/{$gi->group_id}'>{$gi->groupname}</a></li>";
+                $bs .= "<li class=\"breadcrumb-item\" ><a href='/scat/{$gi->group_id}'>{$gi->groupname}</a></li>";
             }
-            $bs .= "<li class=\"active\">{$g->groupname}</li>";
+            $bs .= "<li class=\"breadcrumb-item active\">{$g->groupname}</li>";
         }
         return $bs;
     }

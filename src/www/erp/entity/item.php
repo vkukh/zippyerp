@@ -143,10 +143,15 @@ class Item extends \ZCL\DB\Entity
 
     protected function beforeDelete() {
 
+        return $this->checkDelete();
+    }
+
+    public function checkDelete() {
+
         $conn = \ZDB\DB::getConnect();
         $sql = "  select count(*)  from  erp_store_stock where   item_id = {$this->item_id}";
         $cnt = $conn->GetOne($sql);
-        return $cnt == 0;
+        return ($cnt > 0) ? false : true;
     }
 
     //Возвращает розничную цену

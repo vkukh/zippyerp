@@ -2,14 +2,14 @@
 
     <body>
         <div class="row">
-            <div class="col-xs-12  col-sm-10 col-md-8">
+            <div class="col-12  col-sm-10 col-md-8">
                 <h3>Список  замовлень </h3>
-                <table class="table   table-condenced"   >
+                <table class="table   table-sm"   >
                     <tr  >
                         <th  >№</th>
                         <th  >Створено</th>
                         <th  >Статус</th>
-                        <th  >Сума</th>
+                        <th style="text-align: right;" >Сума</th>
                         <th  >Примітка</th>
                         <th  > </th>
                     </tr>
@@ -18,12 +18,12 @@
                         <td zippy="order_id"></td>
                         <td zippy="created"></td>
                         <td  >
-                            <span zippy="statusnew" class="label label-primary">Новий</span>
-                            <span zippy="statusinprocess"  class="label label-warning">В обробці</span>
-                            <span zippy="statusclosed"  class="label label-success ">Виконаний</span>
-                            <span zippy="statuscancel"  class="label label-default  ">Відмінений</span>
+                            <span zippy="statusnew" class="badge badge-primary">Новий</span>
+                            <span zippy="statusinprocess"  class="badge badge-warning">В обробці</span>
+                            <span zippy="statusclosed"  class="badge badge-success ">Виконаний</span>
+                            <span zippy="statuscancel"  class="badge badge-light  ">Відмінений</span>
                         </td>
-                        <td zippy="amount" align="right"></td>
+                        <td zippy="amount" style="text-align: right;"></td>
                         <td zippy="comment"></td>
 
 
@@ -35,21 +35,21 @@
         </div>  
 
         <div class="row" zippy="details">
-            <div class="col-xs-10    col-md-6 col-lg-3" > 
+            <div class="col-10    col-md-6 col-lg-3" > 
 
                 <h4>Замовлені товари:</h4>
                 <table class="table table-stripped  " >
                     <tr>
                         <th>Код</th>
                         <th>Товар</th>
-                        <th>Кіл.</th>
-                        <th>Ціна</th>
+                        <th style="text-align: right;">Кіл.</th>
+                        <th style="text-align: right;">Ціна</th>
                     </tr>
                     <tr zippy="orderdetaillist">
                         <td zippy="code"></td> 
                         <td ><a zippy="name"></a></td>
-                        <td zippy="qty"></td> 
-                        <td zippy="price"></td> 
+                        <td zippy="qty" style="text-align: right;"></td> 
+                        <td zippy="price" style="text-align: right;"></td> 
 
                     </tr>
                 </table>
@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <input zippy="inprocess" type="submit"  value="В обробку" class="btn   btn-warning">&nbsp;&nbsp;
                         <input type="submit"  zippy="close" value="Виконаний" class="btn   btn-success">&nbsp;&nbsp;
-                        <input type="submit"  zippy="cancel" value="Відмінити" class="btn   btn-default">
+                        <input type="submit"  zippy="cancel" value="Відмінити" class="btn   btn-light">
                     </div>
                 </form>
             </div>

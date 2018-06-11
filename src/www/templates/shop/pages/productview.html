@@ -3,57 +3,61 @@
     <body >
         <div  class="row">
 
-
-            <div class="col-xs-12 col-md-10"  >
-                <div class="row"  >
-                    <div class="col-xs-12 col-sm-5"  >  
-
-                        <a zippy="product_image" data-toggle="lightbox" data-gallery="product"   >
-                            <img  style="width:256px; " /></a>
-                    </div>	
+            <div class="col-12 col-sm-4 col-lg-3 "  >  
+                <div class="card ">  
+                    <a zippy="product_image" data-toggle="lightbox" data-gallery="product" class="  card-link" zippy  >
+                        <img  class="card-img-top"  /></a>
+                </div>    
+            </div>	
 
 
-                    <div class="col-xs-8 col-sm-5"  >
+            <div class="col-12 col-sm-8 col-lg-6 " 
+                 <div class="row">
+                    <div class="col-12">
+                        <span  zippy="novelty"  class="badge badge-success">Новинка</span>
+                        <span  zippy="topsaled" class="badge badge-warning">Топ продаж</span>
+
                         <h4 zippy="productname"  ></h4> 
-                        <h5><b><span zippy="manufacturername"></span></b></h5>
+                        <h5><span zippy="manufacturername"></span></h5>
                         <p   zippy="description" ></p>
-                        <a zippy="addtocompare" >Додати  до  порівняння</a><a zippy="compare" >Порівняти</a>
-                        &nbsp;&nbsp;&nbsp;<a onclick="openComments()" href="return false;" zippy="comments"></a> <input readonly="readonly"   type="hidden" class="rating"  zippy="rated"   value="0"  data-filled="fa fa-star" data-empty="fa fa-star-o"/>
 
-                    </div>
-                    <div class="col-xs-4 col-sm-2"  >
-                        <span  zippy="novelty"  class="label label-success">Новинка</span>
-                        <span  zippy="topsaled" class="label label-warning">Топ продаж</span>
-
-                        <h3 ><strike style="color:red;"  zippy="oldprice"></strike></h3>
-                        <h3 ><b zippy="price"></b> грн</h3>
+                    </div> 
+                    <div class="col-12">
+                        <h3 ><del style="color:red;"  zippy="oldprice"></del>
+                            &nbsp;<b zippy="price"></b> грн</h3>
                         <br><b zippy="onstore"></b>
                         <br><a class="btn btn-success " zippy="buy" ></a>
 
-                    </div>
-                </div>
+                    </div> 
+                    <div class="col-12">
+                        <a zippy="addtocompare" >Додати  до  порівняння</a><a zippy="compare" >Порівняти</a>
+                        &nbsp;&nbsp;&nbsp;<a onclick="openComments()" href="return false;" zippy="comments"></a> <input readonly="readonly"   type="hidden" class="rating"  zippy="rated"   value="0"  data-filled="fa fa-star" data-empty="fa fa-star-o"/>
+                    </div> 
+                </div> 
 
 
             </div>
+
+
         </div>     <br>
         <div  class="row">  
-            <div  class="col-xs-12 col-md-10">  
+            <div  class="col-12 col-md-10">  
 
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#descriptiontab" data-toggle="tab">Опис</a></li>
-                    <li><a href="#detailstab" data-toggle="tab">Характеристики</a></li>
-                    <li><a id="mt" href="#messagestab" data-toggle="tab">Коментарі</a></li>
+                    <li class="nav-item"><a class="nav-link  active" href="#descriptiontab" data-toggle="tab">Опис</a></li>
+                    <li class="nav-item"><a class="nav-link   " href="#detailstab" data-toggle="tab">Характеристики</a></li>
+                    <li class="nav-item"><a class="nav-link   " id="mt" href="#messagestab" data-toggle="tab">Коментарі</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="row tab-pane active" id="descriptiontab">
-                        <div class="col-xs-12 col-md-8"  >  
+                        <div class="col-12 col-md-8"  >  
                             <div zippy="fulldescription"  ></div>
                         </div>
                     </div>
                     <div class="row tab-pane" id="detailstab">
-                        <div class="col-xs-12 col-md-8"  >  
-                            <table    class="table table-condensed   table-stripped  ">
+                        <div class="col-12 col-md-8"  >  
+                            <table    class="table table-sm   table-stripped  ">
                                 <tr  zippy="attributelist">
                                     <td><span zippy="attrname" ></span></td>
                                     <td><span zippy="attrvalue" ></span></td>
@@ -63,7 +67,7 @@
                     </div>
                     <div class=" tab-pane" id="messagestab">
                         <div class="row  " id="messagestab">
-                            <div class="col-xs-12 col-sm-6  col-sm-4 "  >  
+                            <div class="col-12 col-sm-6  col-sm-4 "  >  
                                 <form method="post" zippy="formcomment">
                                     <a name="commentbegin" ></a>  
                                     <div class="form-group">
@@ -91,7 +95,7 @@
                             </div>
                         </div>
                         <div class="row "  >
-                            <div class="col-xs-12 col-sm-8  col-sm-6 "  >  
+                            <div class="col-12 col-sm-8  col-sm-6 "  >  
 
                                 <table class="table"  >
                                     <tr zippy="commentlist">

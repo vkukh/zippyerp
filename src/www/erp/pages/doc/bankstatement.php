@@ -266,19 +266,19 @@ class BankStatement extends \ZippyERP\ERP\Pages\Base
         $where = "";
         if ($type == BS::IN) {
             //если  приход то  продавца
-            $where = "    ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "    ( cust_type=" . Customer::TYPE_FIRM;
         }
         if ($type == BS::IN_BACK) {
             //если  возврат от  покупателя
-            $where = "    ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "    ( cust_type=" . Customer::TYPE_FIRM;
         }
         if ($type == BS::OUT_BACK) {
             //если  возврат продавцу
-            $where = "    ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "    ( cust_type=" . Customer::TYPE_FIRM;
         }
         if ($type == BS::OUT) {
             //если  расход  то  покупатели
-            $where = "    ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )";
+            $where = "     cust_type=" . Customer::TYPE_FIRM;
         }
         if ($type == BS::TAX) {
             // оплата  налогов  и  сборов

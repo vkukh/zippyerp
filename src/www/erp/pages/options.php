@@ -50,7 +50,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $this->common->add(new DropDownChoice('basestore', \ZippyERP\ERP\Entity\Store::findArray('storename', '')));
         $this->common->add(new DropDownChoice('manager', \ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ", "fullname")));
         $this->common->add(new DropDownChoice('accounter', \ZippyERP\ERP\Entity\Employee::findArray("fullname", " hiredate is not null ", "fullname")));
-        $this->common->add(new DropDownChoice('ownerfiz', \ZippyERP\ERP\Entity\Contact::findArray("fullname", "", "fullname")));
+        $this->common->add(new DropDownChoice('ownerfiz', \ZippyERP\ERP\Entity\Employee::findArray("fullname", "", "fullname")));
         $this->common->ownerfiz->setVisible(true);
 
         $this->common->manager->setVisible(false);
@@ -165,7 +165,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
         }
 
         System::setOptions("firmdetail", $detail);
-        $this->setSuccess('Настройки сохранены');
+        $this->setSuccess('Збережено');
     }
 
     public function saveCommonOnClick($sender) {
@@ -183,7 +183,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $common['ownername'] = $this->common->ownerfiz->getValueName();
 
         System::setOptions("common", $common);
-        $this->setSuccess('Настройки сохранены');
+        $this->setSuccess('Збережено');
     }
 
     public function saveTaxOnClick($sender) {
@@ -200,7 +200,7 @@ class Options extends \ZippyERP\ERP\Pages\Base
         $tax['military'] = $this->tax->military->getText();
 
         System::setOptions("tax", $tax);
-        $this->setSuccess('Настройки сохранены');
+        $this->setSuccess('Збережено');
     }
 
     public function OnJFChange($sender) {

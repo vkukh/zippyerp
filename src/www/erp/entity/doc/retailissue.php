@@ -5,6 +5,7 @@ namespace ZippyERP\ERP\Entity\Doc;
 use \ZippyERP\ERP\Entity\Entry;
 use \ZippyERP\ERP\Entity\SubConto;
 use \ZippyERP\ERP\Entity\Store;
+use \ZippyERP\ERP\Entity\MoneyFund;
 use \ZippyERP\ERP\Helper as H;
 use \ZippyERP\ERP\Util;
 
@@ -38,7 +39,7 @@ class RetailIssue extends Document
             "customername" => $this->headerdata["customername"],
             "customer" => $this->headerdata["customer"],
             "document_number" => $this->document_number,
-             "total" => H::fm($this->headerdata["total"]),
+            "total" => H::fm($this->headerdata["total"]),
             "totalnds" => H::fm($this->headerdata["totalnds"]),
             "summa" => Util::ucfirst(Util::money2str($this->headerdata["total"] + $this->headerdata["nds"] / 100))
         );
@@ -53,13 +54,13 @@ class RetailIssue extends Document
     public function Execute() {
         $ret = 0;
         $cost = 0;
-
+        $sklad = Store::load($this->headerdata["store"])->store_type == Store::STORE_TYPE_OPT ? 281 : 282;
         foreach ($this->detaildata as $value) {
             $stock = \ZippyERP\ERP\Entity\Stock::load($value['stock_id']);
             $ret = $ret + $stock->price - $stock->partion;
             $cost = $cost + $stock->partion;
 
-            $sc = new SubConto($this, 282, 0 - ($value['quantity'] / 1000) * $stock->price);
+            $sc = new SubConto($this, $sklad, 0 - ($value['quantity'] / 1000) * $stock->price);
             $sc->setStock($stock->stock_id);
             $sc->setQuantity(0 - $value['quantity']);
             $sc->setExtCode($value['price'] - $value['partion']);   //Для АВС
@@ -68,17 +69,35 @@ class RetailIssue extends Document
         }
 
         // себестоимость реализации
-        Entry::AddEntry("902", 282, $cost, $this->document_id, $this->document_date);
-
-
-        // списываем  наценку
-        Entry::AddEntry("285", "282", $ret, $this->document_id, $this->document_date);
-        $sc = new SubConto($this, 285, $ret);
-        $sc->setExtCode($this->headerdata["store"]);
-        $sc->save();
+        Entry::AddEntry("902", $sklad, $cost, $this->document_id, $this->document_date);
 
 
 
+
+        if ($sklad == 282) {
+            // списываем  наценку
+            Entry::AddEntry("285", "282", $ret, $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 285, $ret);
+            $sc->setExtCode($this->headerdata["store"]);
+            $sc->save();
+        }
+        if ($sklad == 281 && $this->headerdata["ccard"] == 0) {
+            // наличные
+            $cash = MoneyFund::getCash();
+            Entry::AddEntry("30", "702", $value['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 36, 0 - $this->headerdata["total"]);
+            $sc->setCustomer($this->headerdata["customer"]);
+
+            $sc->save();
+        }
+
+        if ($this->headerdata["ccard"] == 1) {
+            $bank = MoneyFund::getBankAccount();
+            Entry::AddEntry("31", "702", $value['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 31, $this->headerdata["total"]);
+            $sc->setMoneyfund($bank->id);
+            $sc->save();
+        }
 
 
         if ($this->headerdata['emp'] > 0) {

@@ -30,8 +30,8 @@ class Stock extends \ZCL\DB\Entity
         $list = array();
         foreach ($entitylist as $key => $value) {
             $list[$key] = $value->itemname . ', ' . \ZippyERP\ERP\Helper::fm($value->price);
-            if (strlen($value->item_code) > 0)
-                $list[$key] = $value->item_code . ', ' . $list[$key];
+            //  if (strlen($value->item_code) > 0)
+            //     $list[$key] = $value->item_code . ', ' . $list[$key];
         }
 
         return $list;

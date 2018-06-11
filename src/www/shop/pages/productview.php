@@ -40,7 +40,7 @@ class ProductView extends Base
         $this->_title = $product->productname;
         $this->_description = $product->description;
         //  $this->_keywords = $product->description;
-        $this->add(new \Zippy\Html\Link\BookmarkableLink('product_image', "/simage/{$product->image_id}"))->setValue("/simage/{$product->image_id}/t");
+        $this->add(new \Zippy\Html\Link\BookmarkableLink('product_image', "/loadimage.php?id={$product->image_id}"))->setValue("/loadimage.php?id={$product->image_id}&t=t");
 
 
         $this->add(new Label('productname', $product->productname));
@@ -55,7 +55,7 @@ class ProductView extends Base
         $this->add(new Label('description', $product->description));
         $this->add(new Label('fulldescription', $product->fulldescription));
         $this->add(new TextInput('rated'))->setText($product->rated);
-        $this->add(new BookmarkableLink('comments'))->setValue("Отзывов({$product->comments})");
+        $this->add(new BookmarkableLink('comments'))->setValue("Відгуків({$product->comments})");
 
         $list = Helper::getAttributeValuesByProduct($product);
         $this->add(new \Zippy\Html\DataList\DataView('attributelist', new \Zippy\Html\DataList\ArrayDataSource($list), $this, 'OnAddAttributeRow'))->Reload();
@@ -128,6 +128,7 @@ class ProductView extends Base
         $product->quantity = 1;
         \ZippyERP\Shop\Basket::getBasket()->addProduct($product);
         $this->setSuccess("Товар  добавлен  в   корзину");
+        $this->resetURL();
     }
 
     //добавить к форме сравнения

@@ -34,7 +34,7 @@ class GoodsReceipt extends Document
         }
 
         $header = array('date' => date('d.m.Y', $this->document_date),
-            "customer" => $this->headerdata["customername"],
+            "customer" => $this->headerdata["customer_name"],
             "document_number" => $this->document_number,
             "totalnds" => H::fm($this->headerdata["totalnds"]),
             "total" => H::fm($this->headerdata["total"])

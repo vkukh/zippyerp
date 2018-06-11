@@ -13,7 +13,7 @@ CREATE TABLE erp_account_entry (
   INDEX document_id (document_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 234
+
 AVG_ROW_LENGTH = 24
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -51,7 +51,7 @@ CREATE TABLE erp_account_subconto (
   INDEX stock_id (stock_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 324
+
 AVG_ROW_LENGTH = 48
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -64,50 +64,24 @@ CREATE TABLE erp_bank (
   PRIMARY KEY (bank_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 6
+
 AVG_ROW_LENGTH = 70
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
-DROP TABLE IF EXISTS erp_contact;
-CREATE TABLE erp_contact (
-  contact_id int(11) NOT NULL AUTO_INCREMENT,
-  firstname varchar(64) NOT NULL,
-  middlename varchar(64) DEFAULT NULL,
-  lastname varchar(64) NOT NULL,
-  email varchar(64) DEFAULT NULL,
-  detail text NOT NULL,
-  description text DEFAULT NULL,
-  customer_id int(11) DEFAULT NULL,
-  phone varchar(32) DEFAULT NULL,
-  PRIMARY KEY (contact_id),
-  INDEX customer_id (customer_id)
-)
-ENGINE = MYISAM
-AUTO_INCREMENT = 43
-AVG_ROW_LENGTH = 115
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
+
 
 DROP TABLE IF EXISTS erp_customer;
-CREATE TABLE erp_customer (
-  customer_id int(11) NOT NULL AUTO_INCREMENT,
-  customer_name varchar(255) DEFAULT NULL,
-  detail text NOT NULL,
-  contact_id int(11) DEFAULT 0 COMMENT '>0 - физлицо ( ссылка  на  контакт)',
-  cust_type int(1) NOT NULL DEFAULT 1 COMMENT '1 - покупатель
-2 - продавец
-3 - покупатель/продавец
-4 - госорганизация
-0 - просто стороняя  организация',
-  PRIMARY KEY (customer_id),
-  INDEX contact_id (contact_id)
-)
-ENGINE = MYISAM
-AUTO_INCREMENT = 35
-AVG_ROW_LENGTH = 327
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
+CREATE TABLE `erp_customer` (
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(255) DEFAULT NULL,
+  `detail` text NOT NULL,
+
+  `cust_type` int(1) NOT NULL DEFAULT '1' COMMENT '1 - ??????????\r\n2 - ????????\r\n3 - ??????????/????????\r\n4 - ??????????????\r\n0 - ?????? ????????  ???????????',
+  `email` varchar(64) NOT NULL,
+  `phone` varchar(64) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
 
 DROP TABLE IF EXISTS erp_docrel;
 CREATE TABLE erp_docrel (
@@ -129,7 +103,7 @@ CREATE TABLE erp_document (
   created datetime NOT NULL,
   updated datetime NOT NULL,
   user_id int(11) NOT NULL,
-  content text DEFAULT NULL,
+  content longtext DEFAULT NULL,
   amount int(11) DEFAULT NULL,
   type_id int(11) NOT NULL,
   state tinyint(4) NOT NULL,
@@ -138,7 +112,7 @@ CREATE TABLE erp_document (
   INDEX document_date (document_date)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 54
+
 AVG_ROW_LENGTH = 767
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -156,29 +130,24 @@ CREATE TABLE erp_document_update_log (
   INDEX user_id (user_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 209
+
 AVG_ROW_LENGTH = 38
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 DROP TABLE IF EXISTS erp_event;
-CREATE TABLE erp_event (
-  user_id int(11) NOT NULL,
-  eventdate datetime NOT NULL,
-  title varchar(255) NOT NULL,
-  description text NOT NULL,
-  notify_id int(11) NOT NULL,
-  event_id int(11) NOT NULL AUTO_INCREMENT,
-  contact_id int(11) NOT NULL,
-  PRIMARY KEY (event_id),
-  INDEX contact_id (contact_id),
-  INDEX user_id (user_id)
-)
-ENGINE = MYISAM
-AUTO_INCREMENT = 10
-AVG_ROW_LENGTH = 46
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
+CREATE TABLE `erp_event` (
+  `user_id` int(11) NOT NULL,
+  `eventdate` datetime NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `notify_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) NOT NULL,
+  PRIMARY KEY (`event_id`),
+  KEY `user_id` (`user_id`),
+  KEY `customer_id` (`customer_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS erp_files;
 CREATE TABLE erp_files (
@@ -190,7 +159,7 @@ CREATE TABLE erp_files (
   PRIMARY KEY (file_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 14
+
 AVG_ROW_LENGTH = 44
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -216,11 +185,12 @@ CREATE TABLE erp_item (
   detail text NOT NULL COMMENT 'цена  для   прайса',
   item_code varchar(64) DEFAULT NULL,
   item_type smallint(6) DEFAULT NULL,
+ `deleted` int(1) DEFAULT '0',
   PRIMARY KEY (item_id),
   UNIQUE INDEX item_code (item_code)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 4126
+
 AVG_ROW_LENGTH = 221
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -232,7 +202,7 @@ CREATE TABLE erp_item_group (
   PRIMARY KEY (group_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 12
+
 AVG_ROW_LENGTH = 28
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -245,7 +215,7 @@ CREATE TABLE erp_item_measures (
   PRIMARY KEY (measure_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 3
+
 AVG_ROW_LENGTH = 20
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -261,7 +231,7 @@ CREATE TABLE erp_message (
   PRIMARY KEY (message_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 6
+
 AVG_ROW_LENGTH = 48
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -275,30 +245,16 @@ CREATE TABLE erp_metadata (
   menugroup varchar(255) DEFAULT NULL,
   notes text NOT NULL,
   disabled tinyint(4) NOT NULL,
-  smart smallint(4) DEFAULT NULL,
+ 
   PRIMARY KEY (meta_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 91
+
 AVG_ROW_LENGTH = 105
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
-DROP TABLE IF EXISTS erp_metadata_access;
-CREATE TABLE erp_metadata_access (
-  metadata_access_id int(11) NOT NULL AUTO_INCREMENT,
-  metadata_id int(11) NOT NULL,
-  user_id int(11) NOT NULL,
-  viewacc tinyint(1) NOT NULL DEFAULT 0,
-  editacc tinyint(1) NOT NULL DEFAULT 0,
-  execacc tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (metadata_access_id)
-)
-ENGINE = MYISAM
-AUTO_INCREMENT = 6
-AVG_ROW_LENGTH = 16
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
+ 
 
 DROP TABLE IF EXISTS erp_moneyfunds;
 CREATE TABLE erp_moneyfunds (
@@ -310,7 +266,7 @@ CREATE TABLE erp_moneyfunds (
   PRIMARY KEY (id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 6
+
 AVG_ROW_LENGTH = 56
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -322,26 +278,27 @@ CREATE TABLE erp_staff_department (
   PRIMARY KEY (department_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 7
+
 AVG_ROW_LENGTH = 34
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 DROP TABLE IF EXISTS erp_staff_employee;
 CREATE TABLE erp_staff_employee (
-  employee_id int(11) NOT NULL AUTO_INCREMENT,
-  position_id int(11) NOT NULL,
-  department_id int(11) NOT NULL,
-  login varchar(64) DEFAULT NULL,
-  contact_id int(11) NOT NULL COMMENT 'физ. лицо',
-  detail text DEFAULT NULL,
-  hiredate date NOT NULL,
-  firedate date DEFAULT NULL,
-  PRIMARY KEY (employee_id),
-  INDEX contact_id (contact_id)
+  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
+  `position_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  `login` varchar(64) DEFAULT NULL,
+  `detail` text,
+  `hiredate` date NOT NULL,
+  `firedate` date DEFAULT NULL,
+  `firstname` varchar(64) NOT NULL,
+  `lastname` varchar(64)   NULL,
+  `middlename` varchar(64)   NULL,
+  PRIMARY KEY (`employee_id`)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 23
+
 AVG_ROW_LENGTH = 100
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -353,7 +310,7 @@ CREATE TABLE erp_staff_position (
   PRIMARY KEY (position_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 11
+
 AVG_ROW_LENGTH = 34
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -367,7 +324,7 @@ CREATE TABLE erp_store (
   PRIMARY KEY (store_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 19
+
 AVG_ROW_LENGTH = 33
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -380,10 +337,11 @@ CREATE TABLE erp_store_stock (
   store_id int(11) NOT NULL,
   price int(11) DEFAULT NULL,
   closed tinyint(4) DEFAULT 0 COMMENT ' 1 - неиспользуемая  партия',
-  PRIMARY KEY (stock_id)
+  PRIMARY KEY (`stock_id`),
+  KEY `item_id` (`item_id`)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 4093
+
 AVG_ROW_LENGTH = 22
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -400,18 +358,19 @@ CREATE TABLE erp_task_project (
   PRIMARY KEY (project_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 7
+
 AVG_ROW_LENGTH = 48
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 DROP TABLE IF EXISTS erp_task_sh;
-CREATE TABLE erp_task_sh (
-  task_sh int(11) NOT NULL,
-  task_id int(11) NOT NULL,
-  status int(11) NOT NULL,
-  username varchar(64) NOT NULL,
-  sdate datetime NOT NULL
+CREATE TABLE `erp_task_sh` (
+  `task_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `sdate` datetime NOT NULL,
+  `task_sh` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`task_sh`)
 )
 ENGINE = MYISAM
 AVG_ROW_LENGTH = 26
@@ -437,7 +396,7 @@ CREATE TABLE erp_task_task (
   PRIMARY KEY (task_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 13
+
 AVG_ROW_LENGTH = 76
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -450,7 +409,7 @@ CREATE TABLE erp_task_task_emp (
   PRIMARY KEY (task_emp_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 5
+
 AVG_ROW_LENGTH = 13
 CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -467,7 +426,7 @@ CREATE TABLE shop_attributes (
   PRIMARY KEY (attribute_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 7
+
 AVG_ROW_LENGTH = 24
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -481,7 +440,7 @@ CREATE TABLE shop_attributes_order (
   PRIMARY KEY (order_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 8
+
 AVG_ROW_LENGTH = 17
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -496,7 +455,7 @@ CREATE TABLE shop_attributevalues (
   INDEX attribute_id (attribute_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 27
+
 AVG_ROW_LENGTH = 20
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -510,7 +469,7 @@ CREATE TABLE shop_images (
   PRIMARY KEY (image_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 20
+
 AVG_ROW_LENGTH = 31415
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -523,7 +482,7 @@ CREATE TABLE shop_manufacturers (
   PRIMARY KEY (manufacturer_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 17
+
 AVG_ROW_LENGTH = 21
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -538,7 +497,7 @@ CREATE TABLE shop_orderdetails (
   PRIMARY KEY (orderdetail_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 8
+
 AVG_ROW_LENGTH = 21
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -556,7 +515,7 @@ CREATE TABLE shop_orders (
   PRIMARY KEY (order_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 7
+
 AVG_ROW_LENGTH = 128
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -574,7 +533,7 @@ CREATE TABLE shop_prod_comments (
   INDEX product_id (product_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 10
+
 AVG_ROW_LENGTH = 33
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -589,7 +548,7 @@ CREATE TABLE shop_productgroups (
   PRIMARY KEY (group_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 27
+
 AVG_ROW_LENGTH = 48
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -618,7 +577,7 @@ CREATE TABLE shop_products (
   INDEX group_id (group_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 7
+
 AVG_ROW_LENGTH = 154
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -634,7 +593,7 @@ CREATE TABLE system_notifies (
   INDEX user_id (user_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 7
+
 AVG_ROW_LENGTH = 83
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -659,7 +618,7 @@ CREATE TABLE system_roles (
   PRIMARY KEY (role_id)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 2
+
 AVG_ROW_LENGTH = 40
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -704,7 +663,7 @@ CREATE TABLE system_users (
   UNIQUE INDEX userlogin (userlogin)
 )
 ENGINE = MYISAM
-AUTO_INCREMENT = 7
+
 AVG_ROW_LENGTH = 84
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
@@ -712,19 +671,23 @@ COLLATE utf8_general_ci;
 
 
 
-DROP VIEW IF EXISTS erp_contact_view CASCADE;
-CREATE 
-	
-VIEW erp_contact_view
-AS
-	select `erp_contact`.`contact_id` AS `contact_id`,`erp_contact`.`firstname` AS `firstname`,`erp_contact`.`middlename` AS `middlename`,`erp_contact`.`lastname` AS `lastname`,concat_ws(' ',`erp_contact`.`lastname`,`erp_contact`.`firstname`,`erp_contact`.`middlename`) AS `fullname`,`erp_contact`.`email` AS `email`,`erp_contact`.`phone` AS `phone`,`erp_contact`.`detail` AS `detail`,coalesce(`e`.`employee_id`,0) AS `employee`,coalesce(`cc`.`customer_id`,0) AS `customer`,`erp_contact`.`description` AS `description`,`cc`.`customer_name` AS `customer_name`,`cc`.`cust_type` AS `cust_type` from ((`erp_contact` left join `erp_staff_employee` `e` on((`erp_contact`.`contact_id` = `e`.`contact_id`))) left join `erp_customer` `cc` on((`erp_contact`.`customer_id` = `cc`.`customer_id`)));
+
 
 DROP VIEW IF EXISTS erp_customer_view CASCADE;
 CREATE 
-	
+
 VIEW erp_customer_view
 AS
-	select `c`.`customer_id` AS `customer_id`,`c`.`customer_name` AS `customer_name`,`c`.`detail` AS `detail`,0 AS `amount`,`c`.`cust_type` AS `cust_type`,`c`.`contact_id` AS `contact_id` from `erp_customer` `c`;
+  select 
+    `c`.`customer_id` AS `customer_id`,
+    `c`.`customer_name` AS `customer_name`,
+    `c`.`detail` AS `detail`,
+
+    `c`.`cust_type` AS `cust_type`,
+    `c`.`email` AS `email`,
+    `c`.`phone` AS `phone` 
+  from 
+    `erp_customer` `c`;
 
 DROP VIEW IF EXISTS erp_document_view CASCADE;
 CREATE 
@@ -734,18 +697,36 @@ AS
 	select `d`.`document_id` AS `document_id`,`d`.`document_number` AS `document_number`,`d`.`document_date` AS `document_date`,`d`.`created` AS `created`,`d`.`updated` AS `updated`,`d`.`user_id` AS `user_id`,`d`.`content` AS `content`,`d`.`amount` AS `amount`,`d`.`type_id` AS `type_id`,`u`.`userlogin` AS `userlogin`,`d`.`state` AS `state`,`d`.`datatag` AS `datatag`,`erp_metadata`.`meta_name` AS `meta_name`,`erp_metadata`.`description` AS `meta_desc` from ((`erp_document` `d` join `system_users` `u` on((`d`.`user_id` = `u`.`user_id`))) join `erp_metadata` on((`erp_metadata`.`meta_id` = `d`.`type_id`)));
 
 DROP VIEW IF EXISTS erp_event_view CASCADE;
-CREATE 
-	
-VIEW erp_event_view
-AS
-	select `e`.`user_id` AS `user_id`,`e`.`eventdate` AS `eventdate`,`e`.`title` AS `title`,`e`.`description` AS `description`,`e`.`notify_id` AS `notify_id`,`e`.`event_id` AS `event_id`,`e`.`contact_id` AS `contact_id`,`c`.`firstname` AS `firstname`,`c`.`lastname` AS `lastname` from (`erp_event` `e` left join `erp_contact` `c` on((`e`.`contact_id` = `c`.`contact_id`)));
-
+CREATE    VIEW `erp_event_view` AS
+  select
+    `e`.`user_id` AS `user_id`,
+    `e`.`eventdate` AS `eventdate`,
+    `e`.`title` AS `title`,
+    `e`.`description` AS `description`,
+    `e`.`notify_id` AS `notify_id`,
+    `e`.`event_id` AS `event_id`,
+    `e`.`customer_id` AS `customer_id`,
+    `c`.`customer_name` AS `customer_name`
+  from
+    (`erp_event` `e` left join `erp_customer` `c` on((`e`.`customer_id` = `c`.`customer_id`)));
+    
 DROP VIEW IF EXISTS erp_item_view CASCADE;
 CREATE 
 	
 VIEW erp_item_view
 AS
-	select `t`.`item_id` AS `item_id`,`t`.`detail` AS `detail`,`t`.`itemname` AS `itemname`,`t`.`description` AS `description`,`t`.`measure_id` AS `measure_id`,`m`.`measure_name` AS `measure_name`,`t`.`item_code` AS `item_code`,`t`.`item_type` AS `item_type` from (`erp_item` `t` join `erp_item_measures` `m` on((`t`.`measure_id` = `m`.`measure_id`)));
+  select
+    `t`.`item_id` AS `item_id`,
+    `t`.`detail` AS `detail`,
+    `t`.`itemname` AS `itemname`,
+    `t`.`description` AS `description`,
+    `t`.`measure_id` AS `measure_id`,
+    `m`.`measure_name` AS `measure_name`,
+    `t`.`item_code` AS `item_code`,
+    `t`.`item_type` AS `item_type`,
+    `t`.`deleted` AS `deleted`
+  from
+    (`erp_item` `t` join `erp_item_measures` `m` on((`t`.`measure_id` = `m`.`measure_id`)));	
 
 DROP VIEW IF EXISTS erp_message_view CASCADE;
 CREATE 
@@ -754,19 +735,34 @@ VIEW erp_message_view
 AS
 	select `erp_message`.`message_id` AS `message_id`,`erp_message`.`user_id` AS `user_id`,`erp_message`.`created` AS `created`,`erp_message`.`message` AS `message`,`erp_message`.`item_id` AS `item_id`,`erp_message`.`item_type` AS `item_type`,`system_users`.`userlogin` AS `userlogin` from (`erp_message` join `system_users` on((`erp_message`.`user_id` = `system_users`.`user_id`)));
 
-DROP VIEW IF EXISTS erp_metadata_access_view CASCADE;
-CREATE 
-	
-VIEW erp_metadata_access_view
-AS
-	select `a`.`metadata_access_id` AS `metadata_access_id`,`a`.`metadata_id` AS `metadata_id`,`a`.`user_id` AS `user_id`,`a`.`viewacc` AS `viewacc`,`a`.`editacc` AS `editacc`,`a`.`execacc` AS `execacc`,`m`.`meta_type` AS `meta_type`,`m`.`meta_name` AS `meta_name`,`u`.`userlogin` AS `userlogin` from ((`erp_metadata_access` `a` join `system_users` `u` on((`a`.`user_id` = `u`.`user_id`))) join `erp_metadata` `m` on((`a`.`metadata_id` = `m`.`meta_id`)));
-
+ 
 DROP VIEW IF EXISTS erp_staff_employee_view CASCADE;
-CREATE 
-	
-VIEW erp_staff_employee_view
+
+CREATE VIEW erp_staff_employee_view
 AS
-	select `e`.`employee_id` AS `employee_id`,`e`.`position_id` AS `position_id`,`e`.`department_id` AS `department_id`,`e`.`login` AS `login`,`e`.`detail` AS `detail`,`c`.`firstname` AS `firstname`,`c`.`lastname` AS `lastname`,`c`.`middlename` AS `middlename`,`d`.`department_name` AS `department_name`,`p`.`position_name` AS `position_name`,`e`.`contact_id` AS `contact_id`,concat_ws(' ',`c`.`lastname`,`c`.`firstname`,`c`.`middlename`) AS `fullname`,concat_ws(' ',`c`.`lastname`,`c`.`firstname`) AS `shortname`,`e`.`firedate` AS `firedate`,`e`.`hiredate` AS `hiredate` from (((`erp_staff_employee` `e` join `erp_contact` `c` on((`e`.`contact_id` = `c`.`contact_id`))) left join `erp_staff_position` `p` on((`e`.`position_id` = `p`.`position_id`))) left join `erp_staff_department` `d` on((`e`.`department_id` = `d`.`department_id`)));
+  select 
+    `e`.`employee_id` AS `employee_id`,
+    `e`.`position_id` AS `position_id`,
+    `e`.`department_id` AS `department_id`,
+    `e`.`login` AS `login`,
+    `e`.`detail` AS `detail`,
+    `e`.`firstname` AS `firstname`,
+    `e`.`lastname` AS `lastname`,
+    `e`.`middlename` AS `middlename`,
+    `d`.`department_name` AS `department_name`,
+    `p`.`position_name` AS `position_name`,
+    concat_ws(' ',
+    `e`.`lastname`,
+    `e`.`firstname`,
+    `e`.`middlename`) AS `fullname`,
+    concat_ws(' ',
+    `e`.`lastname`,
+    `e`.`firstname`) AS `shortname`,
+    `e`.`firedate` AS `firedate`,
+    `e`.`hiredate` AS `hiredate` 
+  from 
+    ((`erp_staff_employee` `e` left join `erp_staff_position` `p` on((`e`.`position_id` = `p`.`position_id`))) left join `erp_staff_department` `d` on((`e`.`department_id` = `d`.`department_id`)));
+    	
 
 DROP VIEW IF EXISTS erp_task_project_view CASCADE;
 CREATE 
@@ -825,11 +821,25 @@ AS
 	select `e`.`entry_id` AS `entry_id`,`e`.`acc_d` AS `acc_d`,`e`.`acc_c` AS `acc_c`,`e`.`amount` AS `amount`,`e`.`document_id` AS `document_id`,`doc`.`document_number` AS `document_number`,`doc`.`meta_desc` AS `meta_desc`,`doc`.`meta_name` AS `meta_name`,`doc`.`document_date` AS `document_date` from (`erp_account_entry` `e` join `erp_document_view` `doc` on((`e`.`document_id` = `doc`.`document_id`)));
 
 DROP VIEW IF EXISTS erp_stock_view CASCADE;
-CREATE 
-	
-VIEW erp_stock_view
+CREATE VIEW erp_stock_view
 AS
-	select `erp_store_stock`.`stock_id` AS `stock_id`,`erp_store_stock`.`item_id` AS `item_id`,`erp_item_view`.`itemname` AS `itemname`,`erp_item_view`.`item_code` AS `item_code`,`erp_store`.`storename` AS `storename`,`erp_store`.`store_id` AS `store_id`,`erp_item_view`.`measure_name` AS `measure_name`,`erp_store_stock`.`price` AS `price`,`erp_store_stock`.`partion` AS `partion`,coalesce(`erp_store_stock`.`closed`,0) AS `closed`,`erp_item_view`.`item_type` AS `item_type` from ((`erp_store_stock` join `erp_item_view` on((`erp_store_stock`.`item_id` = `erp_item_view`.`item_id`))) join `erp_store` on((`erp_store_stock`.`store_id` = `erp_store`.`store_id`))) where coalesce((`erp_item_view`.`item_type` <> 3));
+  select
+    `erp_store_stock`.`stock_id` AS `stock_id`,
+    `erp_store_stock`.`item_id` AS `item_id`,
+    `erp_item_view`.`itemname` AS `itemname`,
+    `erp_item_view`.`item_code` AS `item_code`,
+    `erp_store`.`storename` AS `storename`,
+    `erp_store`.`store_id` AS `store_id`,
+    `erp_item_view`.`measure_name` AS `measure_name`,
+    `erp_store_stock`.`price` AS `price`,
+    `erp_store_stock`.`partion` AS `partion`,
+    coalesce(`erp_store_stock`.`closed`,
+    0) AS `closed`,
+    `erp_item_view`.`item_type` AS `item_type`
+  from
+    ((`erp_store_stock` join `erp_item_view` on((`erp_store_stock`.`item_id` = `erp_item_view`.`item_id`))) join `erp_store` on((`erp_store_stock`.`store_id` = `erp_store`.`store_id`)))
+  where
+    ((`erp_item_view`.`item_type` <> 3) and (`erp_item_view`.`deleted` <> 1));
 
 DROP VIEW IF EXISTS erp_account_subconto_view CASCADE;
 CREATE 

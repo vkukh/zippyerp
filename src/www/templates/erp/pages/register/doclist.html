@@ -1,52 +1,50 @@
 <html>
     <body>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
 
                 <h3>Журнал документів </h3>
 
                 <div class="box-body">
 
+                    <form zippy="filter" class="form-inline ">
+
+                        <label   for="from">З  </label>
+                        <input type="text" class="form-control mr-sm-2  " zippy="from" style="width:110px">
 
 
+                        <label for="to">  по  </label>
+                        <input type="text" class="form-control mr-sm-2 " style="width:110px" zippy="to">
 
-                    <form zippy="filter" class="navbar-form ">
-                        <div class="form-group">
-                            <label for="from">З</label>
-                            <input type="text" class="form-control" zippy="from" style="width:100px">
-                        </div>
-                        <div class="form-group">
-                            <label for="to">по</label>
-                            <input type="text" class="form-control" style="width:100px" zippy="to">
-                        </div>
-                        <div class="form-group">
-                            <label for="docgroup">Група</label>
-                            <select class="form-control" zippy="docgroup">
-                                <option value="0">Всі</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="searchnumber">Номер</label>
-                            <input class="form-control" type="text" zippy="searchnumber" style="width:100px">
-                        </div>
-                        <div class="form-group">
-                            <label for="onlymy">Тільки мої</label>
-                            <input   type="checkbox" zippy="onlymy">
+
+                        <label for="docgroup"> Група  </label>
+                        <select class="form-control mr-sm-2  " zippy="docgroup">
+                            <option value="0">Всі</option>
+                        </select>
+
+                        <label for="searchnumber"> Номер </label>
+
+                        <input class="form-control mr-sm-2" type="text" zippy="searchnumber" style="width:100px">
+
+                        <div class="form-check   ">
+
+                            <input class="form-check-input"  type="checkbox" zippy="onlymy">
+                            <label class="form-check-label mr-sm-2" for="onlymy">Тільки мої</label>
                         </div>
 
-                        <div class="form-group">
-                            <input type="submit" class="  btn btn-default  " value="Вибрати">
 
-                        </div>
+                        <input type="submit" class="  btn btn-outline-success  " value="Вибрати">
+
+
 
 
                     </form>
-                    <table class="table table-striped  table-condensed ">
+                    <table class="table   table-sm table-responsive">
                         <tr>
-                            <th>Найменування</th>
+                            <th>Документ</th>
                             <th>Номер</th>
                             <th>Дата</th>
-                            <th>Сума</th>
+                            <th style="text-align: right;">Сума</th>
                             <th>Статус</th>
                             <th></th>
                             <th></th>
@@ -57,27 +55,27 @@
                                 <td zippy="name"></td>
                                 <td zippy="number"></td>
                                 <td style="white-space:   nowrap" zippy="date"></td>
-                                <td zippy="amount" align="right"></td>
+                                <td zippy="amount" style="text-align: right;"></td>
                                 <td zippy="state"></td>
 
                                 <td style="white-space:   nowrap">
-                                    <a zippy="show" title="Перегляд"><i class="icon-preview"></i></a>
-                                    <a zippy="edit" title="Редагувати"><i class="icon-edit"></a>
-                                    <a zippy="cancel" title="Відмінити проведення"><i class="icon-undo"></i> </a>
+                                    <a zippy="show" title="Перегляд"><i class="fa fa-search-plus"></i></a>
+                                    <a zippy="edit" title="Редагувати"><i class="fa fa-edit"></a>
+                                    <a zippy="cancel" title="Відмінити проведення"><i class="fa fa-undo"></i> </a>
 
                                 </td>
                                 <td>
-                                    <a zippy="delete" title="Видалення"><i class="icon-trash"></i></a>
+                                    <a zippy="delete" title="Видалення"><i class="fa fa-trash"></i></a>
                                 </td>
                                 <td>
                                     <div class="btn-group" zippy="basedon">
                                         <button title="Створити на  підставі" type="button"
-                                                class="btn btn-default btn-xs  dropdown-toggle" data-toggle="dropdown">
+                                                class="btn btn-light btn-xs  dropdown-toggle" data-toggle="dropdown">
                                             Створити <span class="caret"></span>
                                         </button>
-                                        <ul class="dropdown-menu" role="menu" zippy="basedlist">
+                                        <div  class="dropdown-menu" role="menu" zippy="basedlist">
 
-                                        </ul>
+                                        </div >
                                     </div>
                                 </td>
                             </tr>   </tbody>
@@ -92,7 +90,7 @@
 
         </div>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <div zippy="docview"></div>
                 <div>
                     <div>

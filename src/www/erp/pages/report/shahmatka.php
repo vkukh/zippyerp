@@ -37,6 +37,12 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
 
     public function OnSubmit($sender) {
 
+        if (\ZippyERP\ERP\ACL::checkShowReport('Shahmatka') == false) {
+            $this->setWarn('Недостатньо прав для перегляду');
+            return;
+        }
+
+
         //$html = $this->generateReport();
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "shaxmatkareport";

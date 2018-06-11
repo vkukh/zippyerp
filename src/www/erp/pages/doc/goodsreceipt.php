@@ -28,7 +28,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();
-    private $_itemtype = array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ', 15 => 'Необоротные активы');
+    private $_itemtype = array(281 => 'Товар', 201 => 'Матеріал', 22 => 'МШП', 15 => 'Необоротні активи');
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
@@ -39,11 +39,13 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', "( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", "customer_name")));
+        $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, 'OnAutoCustomer');
+
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type=" . Store::STORE_TYPE_OPT)));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 
         $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
+        $this->docform->isnds->setChecked(H::usends());
         $this->docform->add(new CheckBox('cash'));
         $this->docform->add(new CheckBox('prepayment'))->setChecked(true);
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
@@ -55,7 +57,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new DropDownChoice('edititem', Item::findArray('itemname', "  item_type = " . Item::ITEM_TYPE_STUFF, 'itemname')));
+        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, 'OnAutoItem');
 
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
@@ -64,7 +66,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('saverow'))->onClick($this, 'saverowOnClick');
-        //$this->editdetail->add(new SubmitLink('additem'))->onClick($this, 'addItemOnClick');
+
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
@@ -76,7 +78,8 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
             $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
             $this->docform->prepayment->setChecked($this->_doc->headerdata['prepayment']);
             $this->docform->document_date->setDate($this->_doc->document_date);
-            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+            $this->docform->customer->setKey($this->_doc->headerdata['customer']);
+            $this->docform->customer->setText($this->_doc->headerdata['customer_name']);
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
 
@@ -91,17 +94,35 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;
 
+                    if ($basedoc->meta_name == 'SupplierOrder') {
+                        $nds = H::nds(true);  // если  в  заказе   цена  с  НДС  получаем  базовую  цену
 
+
+                        $this->docform->customer->setKey($basedoc->headerdata['supplier']);
+                        $this->docform->customer->setText($basedoc->headerdata['suppliername']);
+
+                        $this->docform->contract->setKey($basedoc->document_id);
+                        $this->docform->contract->setText($basedoc->document_number);
+
+
+                        foreach ($basedoc->detaildata as $_item) {
+                            $item = new Item($_item);
+                            $item->pricends = $item->price;
+                            $item->price = $item->price - $item->price * $nds;
+                            $this->_itemlist[$item->item_id] = $item;
+                        }
+                    }
                     if ($basedoc->meta_name == 'PurchaseInvoice') {
                         $this->docform->isnds->setChecked($basedoc->headerdata['isnds']);
-                        $this->docform->customer->setValue($basedoc->headerdata['customer']);
+                        $this->docform->customer->setKey($basedoc->headerdata['customer']);
+                        $this->docform->customer->setText($basedoc->headerdata['customername']);
 
                         $this->docform->contract->setKey($basedoc->headerdata['contract']);
                         $this->docform->contract->setText($basedoc->headerdata['contractnumber']);
 
                         foreach ($basedoc->detaildata as $_item) {
                             $item = new Item($_item);
-                            $item['type'] = 281;
+                            $item->type = 281;
                             $this->_itemlist[$item->item_id] = $item;
                         }
                     }
@@ -110,8 +131,6 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
-
-        $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnItem'))->setVisible(false);
     }
 
     public function detailOnRow($row) {
@@ -138,7 +157,8 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->editprice->setText(H::fm($item->price));
         $this->editdetail->editpricends->setText(H::fm($item->pricends));
 
-        $this->editdetail->edititem->setValue($item->item_id);
+        $this->editdetail->edititem->setKey($item->item_id);
+        $this->editdetail->edititem->setText($item->itemname);
 
         $this->editdetail->edittype->setValue($item->type);
 
@@ -162,7 +182,7 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
     public function saverowOnClick($sender) {
 
 
-        $id = $this->editdetail->edititem->getValue();
+        $id = $this->editdetail->edititem->getKey();
         if ($id == 0) {
             $this->setError("Не вибраний товар");
             return;
@@ -181,7 +201,8 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
 
         //очищаем  форму
-        $this->editdetail->edititem->setValue(0);
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
 
         $this->editdetail->editquantity->setText("1");
 
@@ -195,6 +216,9 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
     }
 
     public function savedocOnClick($sender) {
+        $this->_doc->document_number = $this->docform->document_number->getText();
+        $this->_doc->document_date = $this->docform->document_date->getDate();
+
         if ($this->checkForm() == false) {
             return;
         }
@@ -202,8 +226,8 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-            'customer' => $this->docform->customer->getValue(),
-            'customername' => $this->docform->customer->getValueName(),
+            'customer' => $this->docform->customer->getKey(),
+            'customer_name' => $this->docform->customer->getText(),
             'store' => $this->docform->store->getValue(),
             'contract' => $this->docform->contract->getKey(),
             'contractnumber' => $this->docform->contract->getText(),
@@ -220,10 +244,8 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->_doc->amount = 100 * $this->docform->total->getText();
-        $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = $this->docform->document_date->getDate();
         $isEdited = $this->_doc->document_id > 0;
-        $this->_doc->datatag = $this->docform->customer->getValue();
+        $this->_doc->datatag = $this->docform->customer->getKey();
 
         $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
@@ -275,11 +297,16 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
      *
      */
     private function checkForm() {
-
+        if (strlen($this->_doc->document_number) == 0) {
+            $this->setError('Введіть номер документу');
+        }
         if (count($this->_itemlist) == 0) {
             $this->setError("Не введений ні один  товар");
         }
-        if ($this->docform->customer->getValue() <= 0) {
+        if ($this->docform->store->getValue() == 0) {
+            $this->setError("Не вибраний  склад");
+        }
+        if ($this->docform->customer->getKey() == 0) {
             $this->setError("Не вибраний  постачальник");
         }
         if ($this->docform->cash->isChecked() && $this->docform->prepayment->isChecked()) {
@@ -314,26 +341,20 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-    public function addItemOnClick($sender) {
-        $this->editdetail->setVisible(false);
-        $this->itemdetail->open();
-    }
-
-    // событие  после  создания  нового жлемента справочника номенклатуры
-    public function OnItem($cancel = false) {
-        $this->editdetail->setVisible(true);
-        if ($cancel == true)
-            return;
-
-        $item = $this->itemdetail->getData();
-
-
-        $this->editdetail->edititem->setValue($item->item_id);
-    }
-
     public function OnAutoContract($sender) {
         $text = $sender->getValue();
         return Document::findArray('document_number', "document_number like '%{$text}%' and ( meta_name='Contract' or meta_name='SupplierOrder' )");
+    }
+
+    public function OnAutoItem($sender) {
+
+        $text = Item::qstr('%' . $sender->getText() . '%');
+        return Item::findArrayEx("(itemname like {$text} or item_code like {$text}) and item_type <>" . Item::ITEM_TYPE_RETSUM);
+    }
+
+    public function OnAutoCustomer($sender) {
+        $text = Customer::qstr('%' . $sender->getText() . '%');
+        return Customer::findArray("customer_name", "Customer_name like " . $text);
     }
 
 }

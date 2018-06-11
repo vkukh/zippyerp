@@ -408,6 +408,10 @@ class Document extends \ZCL\DB\Entity
     public function checkDeleted() {
         $conn = \ZDB\DB::getConnect();
 
+        $cnt = $conn->GetOne("select  count(*) from erp_account_entry where  document_id = {$this->document_id}  ");
+        if ($cnt > 0)
+            return false;
+
         $cnt = $conn->GetOne("select  count(*) from erp_docrel where  doc1 = {$this->document_id}  or  doc2 = {$this->document_id}");
         if ($cnt > 0)
             return false;

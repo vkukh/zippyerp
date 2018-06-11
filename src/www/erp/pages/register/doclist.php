@@ -112,7 +112,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         } else {
             $list = "";
             foreach ($basedonlist as $doctype => $docname) {
-                $list .= "<li><a href=\"/?p=ZippyERP/ERP/Pages/Doc/" . $doctype . "&arg=/0/{$item->document_id}\">{$docname}</a></li>";
+                $list .= "<a  class=\"dropdown-item\" href=\"/?p=ZippyERP/ERP/Pages/Doc/" . $doctype . "&arg=/0/{$item->document_id}\">{$docname}</a>";
             };
             $basedon = $row->add(new Label('basedlist'))->setText($list, true);
         }
@@ -165,6 +165,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $item = $sender->owner->getDataItem();
         $item->updateStatus(Document::STATE_CANCELED);
         $this->doclist->Reload();
+        $this->resetURL();
     }
 
 }

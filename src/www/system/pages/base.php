@@ -13,11 +13,7 @@ use ZippyERP\System\User;
 
 class Base extends \Zippy\Html\WebPage
 {
-
-    private $_errormsg;
-    private $_successmsg;
-    private $_warnmsg;
-    private $_infomsg;
+ 
     protected $_module;
 
     public function __construct($params = null) {
@@ -59,41 +55,43 @@ class Base extends \Zippy\Html\WebPage
     }
 
     //вывод ошибки,  используется   в дочерних страницах
+ 
     public function setError($msg) {
-
-
-        $this->_errormsg = $msg;
+        System::setErrorMsg($msg) ;
     }
 
     public function setSuccess($msg) {
-        $this->_successmsg = $msg;
+        System::setSuccesMsg($msg) ;
     }
 
     public function setWarn($msg) {
-        $this->_warnmsg = $msg;
+        System::setWarnMsg($msg) ;
     }
 
     public function setInfo($msg) {
-        $this->_infomsg = $msg;
+         System::setInfoMsg($msg) ;
     }
 
     final protected function isError() {
-        return strlen($this->_errormsg) > 0;
+        return strlen(System::getErrorMsg()) > 0;
     }
+
+    
 
     protected function beforeRender() {
         
     }
 
     protected function afterRender() {
-        if (strlen($this->_errormsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.error('{$this->_errormsg}')        ", true);
-        if (strlen($this->_warnmsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.warning('{$this->_warnmsg}')        ", true);
-        if (strlen($this->_successmsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.success('{$this->_successmsg}')        ", true);
-        if (strlen($this->_infomsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.info('{$this->_infomsg}')        ", true);
+        if (strlen(System::getErrorMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.error('".System::getErrorMsg()."')        ", true);
+        if (strlen(System::getWarnMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.warning('".System::getWarnMsg()."')        ", true);
+        if (strlen(System::getSuccesMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.success('".System::getSuccesMsg()."')        ", true);        
+        if (strlen(System::getInfoMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.info('".System::getInfoMsg()."')        ", true);
+
 
 
         $this->setError('');

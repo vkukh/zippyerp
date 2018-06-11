@@ -19,6 +19,8 @@ use \Zippy\Html\Link\BookmarkableLink;
 use \ZCL\BT\Tree;
 use \ZippyERP\Shop\Entity\ProductGroup;
 use \ZippyERP\Shop\Entity\Product;
+use \ZippyERP\ERP\Entity\Item;
+use \ZippyERP\ERP\Entity\Stock;
 use \ZippyERP\Shop\Entity\ProductAttribute;
 use \ZippyERP\Shop\Entity\ProductAttributeValue;
 use \ZippyERP\Shop\Helper;
@@ -27,6 +29,7 @@ use \Zippy\Html\DataList\ArrayDataSource;
 use \ZCL\DB\EntityDataSource;
 use \Zippy\Binding\PropertyBinding as PB;
 use \ZippyERP\System\System;
+use \Zippy\Html\Form\AutocompleteTextInput;
 
 class ProductList extends Base
 {
@@ -48,7 +51,6 @@ class ProductList extends Base
 
         $this->ReloadTree();
 
-
         $this->add(new Panel('listpanel'));
         $this->listpanel->add(new Form('searchform'))->onSubmit($this, 'searchformOnSubmit');
         $this->listpanel->searchform->add(new TextInput('skeyword'));
@@ -62,12 +64,12 @@ class ProductList extends Base
         $this->listpanel->add(new \Zippy\Html\DataList\Paginator('pag', $this->listpanel->plist));
         $this->listpanel->plist->setPageSize(25);
 
-
         $this->add(new Panel('editpanel'))->setVisible(false);
-        ;
 
         $editform = $this->editpanel->add(new Form('editform2'));
-        $editform->add(new DropDownChoice('eitem', \ZippyERP\ERP\Entity\Item::findArrayEx("item_id in (select item_id from erp_store_stock where closed <> 1 and store_id={$this->shop})", 'itemname')));
+        
+        $editform->add(new AutocompleteTextInput('eitem'))->onText($this, 'OnAutoItem');
+ 
         $editform->add(new ClickLink('bcancel2'))->onClick($this, 'bcancelOnClick');
         $editform->onSubmit($this, 'onSubmitForm2');
 
@@ -161,7 +163,8 @@ class ProductList extends Base
     public function addnewOnClick($sender) {
         $this->editpanel->setVisible(true);
         $this->editpanel->editform2->setVisible(true);
-        $this->editpanel->editform2->eitem->setValue(0);
+        $this->editpanel->editform2->eitem->setKey(0);
+        $this->editpanel->editform2->eitem->setText('');
         $this->editpanel->editform->setVisible(false);
         $this->listpanel->setVisible(false);
         $this->editpanel->editform2->clean();
@@ -172,18 +175,19 @@ class ProductList extends Base
 //выбран товар со склада
     public function onSubmitForm2($sender) {
         $this->product = new Product();
-        $this->product->erp_item_id = $sender->eitem->getValue();
+        $this->product->erp_item_id = $sender->eitem->getKey();
+        
         $this->product->group_id = $this->group->group_id;
         $this->product->createdon = time();
-        $item = \ZippyERP\ERP\Entity\Item::load($this->product->erp_item_id);
+        $item =  Item::load($this->product->erp_item_id);
         $this->product->productname = $item->itemname;
-        $this->product->item_code = $item->code;
+        $this->product->item_code = $item->item_code;
 
         if ($this->product->erp_item_id == 0) {
             $this->setError('Не вибраний  товар');
             return;
         }
-        $this->editpanel->editform->edisabled->setVisible(false);
+         
         $this->editpanel->editform->bdelete->setVisible(false);
         $this->editpanel->editform->bback->setVisible(true);
 
@@ -202,6 +206,14 @@ class ProductList extends Base
         $this->editpanel->editform->egroup->setValue($this->group->group_id);
     }
 
+    public function OnAutoItem($sender) {
+         
+        $text =  Item::qstr('%'.trim($sender->getText()).'%');
+        $list =  Item::findArrayEx("  itemname like{$text} and deleted <> 1 and item_id in (select item_id from erp_store_stock where closed <> 1 )") ;
+        
+        return $list;
+    }    
+    
 //строка товара
     public function plistOnRow($row) {
         $item = $row->getDataItem();
@@ -234,6 +246,7 @@ class ProductList extends Base
 
 
         $this->editpanel->editform->estock->setOptionList(array());
+        $this->editpanel->editform->edisabled->setChecked($this->product->deleted>0);
         $stocks = \ZippyERP\ERP\Entity\Stock::find("store_id=" . $this->shop . " and item_id=" . $this->product->erp_item_id, "price");
         foreach ($stocks as $key => $value) {
             $this->editpanel->editform->estock->addOption($key, \ZippyERP\ERP\Helper::fm($value->price));
@@ -271,7 +284,8 @@ class ProductList extends Base
         $this->product->fulldescription = $sender->edescdet->getText();
         $this->product->erp_stock_id = $sender->estock->getValue();
         $this->product->price = $sender->estock->getValueName() * 100;
-        $this->product->partion = \ZippyERP\ERP\Entity\Stock::load($this->product->erp_stock_id)->partion;
+        $this->product->deleted = $sender->edisabled->isChecked() ;
+        $this->product->partion =  Stock::load($this->product->erp_stock_id)->partion;
 
         $file = $sender->photo->getFile();
         if (strlen($file["tmp_name"]) > 0) {

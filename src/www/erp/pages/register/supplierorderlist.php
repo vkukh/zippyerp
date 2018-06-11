@@ -31,13 +31,17 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
         $filter = Filter::getFilter("SupplierOrderList");
         $this->add(new Form('filter'))->onSubmit($this, 'filterOnSubmit');
         $this->filter->add(new DropDownChoice('statelist', SupplierOrder::getStatesList()));
-        $this->filter->add(new DropDownChoice('supplierlist', Customer::findArray('customer_name', "cust_type in(2,3)")));
+        $this->filter->add(new \Zippy\Html\Form\AutocompleteTextInput('supplierlist'))->onText($this, 'OnAutoCustomer');
+
 
 
         if (strlen($filter->state) > 0)
             $this->filter->statelist->setValue($filter->state);
-        if (strlen($filter->supplier) > 0)
-            $this->filter->supplierlist->setValue($filter->supplier);
+        if (strlen($filter->supplier) > 0) {
+            $this->filter->supplierlist->setKey($filter->supplier);
+            $this->filter->supplierlist->setText($filter->suppliername);
+        }
+
 
         $doclist = $this->add(new DataView('doclist', new DocSODataSource(), $this, 'doclistOnRow'));
         $doclist->setSelectedClass('success');
@@ -54,7 +58,7 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
 
     public function doclistOnRow($row) {
         $item = $row->getDataItem();
-        $supplier = Customer::load($item->intattr1);
+        $supplier = Customer::load($item->datatag);
         $item = $item->cast();
         $row->add(new Label('number', $item->document_number));
         $row->add(new Label('date', date('d-m-Y', $item->document_date)));
@@ -76,7 +80,8 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
         //запоминаем  форму   фильтра
         $filter = Filter::getFilter("SupplierOrderList");
         $filter->state = $this->filter->statelist->getValue();
-        $filter->supplier = $this->filter->supplierlist->getValue();
+        $filter->supplier = $this->filter->supplierlist->getKey();
+        $filter->suppliername = $this->filter->supplierlist->getText();
 
         $this->doclist->Reload();
     }
@@ -97,6 +102,11 @@ class SupplierOrderList extends \ZippyERP\ERP\Pages\Base
         $this->doclist->Reload();
     }
 
+    public function OnAutoCustomer($sender) {
+        $text = Customer::qstr('%' . $sender->getText() . '%');
+        return Customer::findArray("customer_name", "Customer_name like " . $text);
+    }
+
 }
 
 /**
@@ -115,7 +125,7 @@ class DocSODataSource implements \Zippy\Interfaces\DataSource
             $where .= " and state =  " . $filter->state;
         }
         if ($filter->supplier > 0) {
-            $where .= " and intattr1 =  " . $filter->supplier;
+            $where .= " and datatag =  " . $filter->supplier;
         }
 
         return $where;

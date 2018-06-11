@@ -59,23 +59,26 @@ class ServiceIncome extends Document
         if ($this->headerdata['cash'] == true) {
 
             $cash = MoneyFund::getCash();
-            Entry::AddEntry("63", "30", $total, $this->document_id, $this->document_date);
-            $sc = new SubConto($this, 63, $total);
+            Entry::AddEntry("91", "30", $total, $this->document_id, $this->document_date);
+
+            $sc->save();
+            $sc = new SubConto($this, 30, 0 - $total);
+            $sc->setMoneyfund($cash->id);
             $sc->setCustomer($this->headerdata["customer"]);
 
             $sc->save();
-            $sc = new SubConto($this, 30, $total);
-            $sc->setMoneyfund($cash->id);
+        }
+        if ($this->headerdata["ccard"] == 1) {
+            $bank = MoneyFund::getBankAccount();
+            Entry::AddEntry("91", "31", $value['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 31, 0 - $total);
+            $sc->setMoneyfund($bank->id);
+            $sc->setCustomer($this->headerdata["customer"]);
 
-            // $sc->save();
+            $sc->save();
         }
 
 
-        Entry::AddEntry("91", "63", $total, $this->document_id, $this->document_date);
-        $sc = new SubConto($this, 63, 0 - $total);
-        $sc->setCustomer($customer_id);
-
-        $sc->save();
         if ($this->headerdata['prepayment'] == 1) {  //предоплата
             Entry::AddEntry("63", "371", $this->headerdata["total"], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 63, $this->headerdata["total"]);
@@ -85,7 +88,13 @@ class ServiceIncome extends Document
             $sc->setCustomer($this->headerdata["customer"]);
             $sc->save();
         }
-
+        //налоговый кредит  
+        if ($this->headerdata['totalnds'] > 0) {
+            Entry::AddEntry("644", "703", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 644, $this->headerdata["totalnds"]);
+            $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
+            //  $sc->save();
+        }
         return true;
     }
 

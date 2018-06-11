@@ -2,8 +2,8 @@
 
 namespace ZippyERP\ERP;
 
-use ZDB\DB;
-use ZippyERP\System\System;
+use \ZDB\DB;
+use \ZippyERP\System\System;
 
 /**
  * Класс   со  вспомагательными   функциями
@@ -26,7 +26,13 @@ class Helper
         $menu = array();
         $groups = array();
         $smartmenu = "";
-        foreach ($rows as $meta_id => $meta_object) {
+        $aclview = explode(',', System::getUser()->aclview);
+        foreach ($rows as $meta_object) {
+            $meta_id = $meta_object['meta_id'];
+
+            if (!in_array($meta_id, $aclview) && System::getUser()->erpacl == 2)
+                continue;
+
             if (strlen($meta_object['menugroup']) == 0) {
                 $menu[$meta_id] = $meta_object;
             } else {
@@ -59,17 +65,16 @@ class Helper
         $textmenu = "";
 
         foreach ($menu as $item) {
-            $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+            $textmenu .= "<li><a class=\"dropdown-item\" href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
         }
         foreach ($groups as $gname => $group) {
-            $textmenu .= "<li  ><a   href=\"#\">$gname 
-            <span class=\"pull-right-container\">
-                  <i class=\"fa fa-angle-left pull-right\"></i>
-                </span>
-            </a><ul class=\"treeview-menu\">";
+            $textmenu .= "<li  ><a class=\"dropdown-item  dropdown-toggle\"     href=\"#\">$gname 
+             
+            </a>
+            <ul class=\"dropdown-menu\">";
 
             foreach ($group as $item) {
-                $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+                $textmenu .= "<li ><a class=\"dropdown-item\"   href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
             }
             $textmenu .= "</ul></li>";
         }
@@ -79,7 +84,10 @@ class Helper
 
     public static function generateSmartMenu() {
         $conn = \ZDB\DB::getConnect();
-        $rows = $conn->Execute("select *  from erp_metadata where smart=1 and  disabled <> 1 order  by  description ");
+        $menu = System::getUser()->menu;
+        if (strlen($menu) == 0)
+            $menu = "0";
+        $rows = $conn->Execute("select *  from erp_metadata where meta_id in({$menu}) and  disabled <> 1 order  by  description ");
         $textmenu = "";
 
         foreach ($rows as $item) {
@@ -308,6 +316,16 @@ class Helper
             $nds = 1 - 100 / (100 + $tax['nds']);
         }
         return $nds;
+    }
+
+    /**
+     * проверяем настройки используется ли  НДС
+     * 
+     */
+    public static function usends() {
+        $common = System::getOptions("common");
+
+        return $common['hasnds'] > 0;
     }
 
     /**

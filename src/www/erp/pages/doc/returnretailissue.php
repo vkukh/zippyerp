@@ -41,7 +41,7 @@ class ReturnRetailIssue extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
         $this->docform->store->selectFirst();
-        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", 'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', "   cust_type=" . Customer::TYPE_FIRM, 'customer_name')));
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');

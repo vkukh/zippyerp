@@ -9,6 +9,7 @@ use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
@@ -48,10 +49,10 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-        $this->editdetail->add(new DropDownChoice('edititem'));
+        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, 'OnAutoItem');
         $this->editdetail->edititem->onChange($this, 'OnChangeItem', true);
-        $this->editdetail->add(new DropDownChoice('edittype', array(201 => 'Материал', 25 => 'Полуфабрикат'), 201))->onChange($this, "OnItemType");
 
+        $this->editdetail->add(new DropDownChoice('edittype', array(201 => 'Матеріал', 25 => 'Напівфабрикат', 281 => 'Товар'), 281))->onChange($this, "OnItemType");
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
@@ -89,6 +90,7 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
                             $item->type = $basedoc->headerdata['itemtype'];
 
                             if ($_item['quantity'] < $_item['realquantity']) {
+                                $item->quantity = $_item['realquantity'] - $_item['quantity'];
                                 $this->_itemlist[$item->item_id] = $item;
                             }
                         }
@@ -127,7 +129,8 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
         $this->docform->setVisible(false);
         $this->_rowid = 0;
         //очищаем  форму
-        $this->editdetail->edititem->setValue(0);
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
 
         $this->editdetail->editquantity->setText("1");
 
@@ -146,7 +149,8 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
 
 
         //  $list = Stock::findArrayEx("closed  <> 1   and store_id={$stock->store_id}");
-        $this->editdetail->edititem->setValue($stock->stock_id);
+        $this->editdetail->edititem->setKey($stock->stock_id);
+        $this->editdetail->edititem->setText($stock->item);
 
         $this->editdetail->edittype->setValue($stock->type);
 
@@ -155,7 +159,7 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
     }
 
     public function saverowOnClick($sender) {
-        $id = $this->editdetail->edititem->getValue();
+        $id = $this->editdetail->edititem->getKey();
         if ($id == 0) {
             $this->setError("Не вибраний ТМЦ");
             return;
@@ -236,15 +240,11 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
     }
 
     public function OnItemType($sender) {
-        $this->editdetail->edititem->setValue(0);
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
 
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editprice->setText(" ");
-
-        $store_id = $this->docform->store->getValue();
-        $account_id = $this->editdetail->edittype->getValue();
-
-        $this->editdetail->edititem->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1 and  itemname  like '%{$text}%' and stock_id in(select stock_id  from  erp_account_subconto  where  account_id={$account_id}) "));
     }
 
     /**
@@ -278,13 +278,25 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
 
     public function OnChangeItem($sender) {
 
-        $id = $sender->getValue();
+        $id = $sender->getKey();
         $stock = Stock::load($id);
         //   $item = Item::load($stock->item_id);
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
         $this->updateAjax(array('editprice'));
+    }
+
+    public function OnAutoItem($sender) {
+        $r = array();
+        $store_id = $this->docform->store->getValue();
+
+        $text = $sender->getText();
+        $list = Stock::findArrayEx("store_id={$store_id} and closed <> 1 and (itemname like " . Stock::qstr('%' . $text . '%') . " or item_code like " . Stock::qstr('%' . $text . '%') . "  )");
+        foreach ($list as $k => $v) {
+            $r[$k] = $v;
+        }
+        return $r;
     }
 
 }

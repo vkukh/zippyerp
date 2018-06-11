@@ -13,6 +13,7 @@ use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
 use ZippyERP\ERP\Entity\Doc\Document;
+use Zippy\Html\Form\AutocompleteTextInput;
 use ZippyERP\ERP\Entity\Item;
 use ZippyERP\ERP\Entity\Stock;
 use ZippyERP\ERP\Entity\Store;
@@ -34,20 +35,21 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new DropDownChoice('itemtype', array(201 => 'Материал', 25 => 'Полуфабрикат', 281 => 'Товар'), 201))->onChange($this, "OnItemType");
+        $this->docform->add(new DropDownChoice('itemtype', array(201 => 'Матеріал', 25 => 'Напівфабрикат', 281 => 'Товар'), 281))->onChange($this, "OnItemType");
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->onChange($this, 'OnChangeStore');
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         //  $this->docform->add(new SubmitLink('load'))->onClick($this, 'loadOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
-        $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('gain'))->onClick($this, 'savedocOnClick');
+        $this->docform->add(new SubmitButton('lost'))->onClick($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editrealquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
-        $this->editdetail->add(new DropDownChoice('edititem'));
+        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, 'OnAutoItem');
         $this->editdetail->edititem->onChange($this, 'OnChangeItem', true);
 
 
@@ -107,7 +109,8 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
         $this->docform->setVisible(false);
 
         //очищаем  форму
-        $this->editdetail->edititem->setValue(0);
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
 
         $this->editdetail->editquantity->setText("1");
         $this->editdetail->editrealquantity->setText("1");
@@ -128,11 +131,12 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
 
 
         //  $list = Stock::findArrayEx("closed  <> 1   and store_id={$stock->store_id}");
-        $this->editdetail->edititem->setValue($stock->stock_id);
+        $this->editdetail->edititem->setKey($stock->stock_id);
+        $this->editdetail->edititem->setText($stock->itemname);
     }
 
     public function saverowOnClick($sender) {
-        $id = $this->editdetail->edititem->getValue();
+        $id = $this->editdetail->edititem->getKey();
         if ($id == 0) {
             $this->setError("Не вибраний ТМЦ");
             return;
@@ -193,20 +197,27 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
         $conn->BeginTrans();
         try {
             $this->_doc->save();
-            if ($sender->id == 'execdoc') {
-                $this->_doc->updateStatus(Document::STATE_EXECUTED);
-            } else {
-                $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
-            }
+            $this->_doc->updateStatus($isEdited ? Document::STATE_EDITED : Document::STATE_NEW);
+
 
             $conn->CommitTrans();
-            App::RedirectBack();
         } catch (\ZippyERP\System\Exception $ee) {
             $conn->RollbackTrans();
             $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
             $conn->RollbackTrans();
             throw new \Exception($ee->getMessage());
+        }
+
+        if ($this->isError() == false) {
+            if ($sender->id == 'gain') {
+                App::Redirect("\\ZippyERP\\ERP\\Pages\\Doc\\InventoryGain", 0, $this->_doc->document_id);
+            } else
+            if ($sender->id == 'lost') {
+                App::Redirect("\\ZippyERP\\ERP\\Pages\\Doc\\InventoryLost", 0, $this->_doc->document_id);
+            } else {
+                App::RedirectBack();
+            }
         }
     }
 
@@ -241,10 +252,6 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
     public function OnItemType($sender) {
         $this->_itemlist = array();
         $this->docform->detail->Reload();
-
-        //  $store_id = $this->docform->store->getValue();
-        //  $account_id = $this->docform->itemtype->getValue();
-        //  $this->editdetail->edititem->setOptionList(Stock::findArrayEx("store_id={$store_id} and closed <> 1  and stock_id in(select stock_id  from  erp_account_subconto  where  account_id= {$account_id}) "));
     }
 
     /**
@@ -276,11 +283,23 @@ class Inventory extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
     }
 
+    public function OnAutoItem($sender) {
+        $r = array();
+        $store_id = $this->docform->store->getValue();
+
+        $text = $sender->getText();
+        $list = Stock::findArrayEx("store_id={$store_id} and closed <> 1 and (itemname like " . Stock::qstr('%' . $text . '%') . " or item_code like " . Stock::qstr('%' . $text . '%') . "  )");
+        foreach ($list as $k => $v) {
+            $r[$k] = $v;
+        }
+        return $r;
+    }
+
     public function OnChangeItem($sender) {
 
-        $id = $sender->getValue();
+        $id = $sender->getKey();
         $stock = Stock::load($id);
-        //   $item = Item::load($stock->item_id);
+
         $this->editdetail->editprice->setText(H::fm($stock->price));
 
 

@@ -1,16 +1,14 @@
 <html>
-    <head>
-
-    </head>
+  
     <body>
         <h3>Дані аналітичного обліку</h3>
-        <div class="row">
+       
 
 
-            <form zippy="filter">
-                <div class="col-xs-3">
+            <form zippy="filter" class="row">
+                <div class="col-3">
                     <div class="form-group">
-                        <label for="viewtype" class="  control-label">Тип перегляду</label>
+                        <label for="viewtype"  >Тип перегляду</label>
                         <select class="form-control" zippy="viewtype">
                             <option value="1">Плоский список</option>
                             <option value="2">Обороти</option>
@@ -19,85 +17,74 @@
                     </div>
                     {{#list}}
                     <div class="form-group">
-                        <label for="from" class="  control-label">Початок періоду</label>
+                        <label for="from"  >Початок періоду</label>
                         <input class="form-control" type="text" zippy="from" style="width:100px">
                     </div>
                     <div class="form-group">
-                        <label for for="to" class="  control-label">Кінець періоду</label>
+                        <label for for="to"  >Кінець періоду</label>
                         <input class="form-control" type="text" zippy="to" style="width:100px">
                     </div>
                     <div class="form-group">
-                        <label for="searchkey" class="  control-label">Пошук (по всім полям)</label>
+                        <label for="searchkey"  >Пошук (по всім полям)</label>
                         <input class="form-control" type="text" zippy="searchkey">
                     </div>
                     {{/list}}
                     {{^list}}
                     <div class="form-group">
-                        <label for="sdate" class="  control-label">На дату</label>
+                        <label for="sdate"     >На дату</label>
                         <input class="form-control" type="text" zippy="sdate" style="width:100px">
                     </div>
                     {{/list}}
 
 
                     <div class="form-group">
-                        <input type="submit" zippy="submitrow" value="Зформувати" class="btn btn-default ">
+                        <input type="submit" zippy="submitrow" value="Зформувати" class="btn btn-outline-primary ">
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-3">
                     {{#list}}
                     <div class="form-group">
-                        <label data-label="chaccount" class="  control-label">Стовбці</label>
+                        <label data-label="chaccount"  >Колонки</label>
 
                     </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="chaccount">
-                            Синтетичні рахунки
-                        </label>
-                    </div>
-
-
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="chcustomer">
-                            Контрагенти
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="chitems">
-                            ТМЦ
-                        </label>
-                    </div>
-
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="chos">
-                            ОЗ та НМА
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="chstore">
-                            Склади
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="chemployee">
-                            Співробітники
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" zippy="chmoneyfund">
-                            Грошові рахунки
-                        </label>
-                    </div>
+           
+                        <div class="form-check   ">
+                            <input class="form-check-input"  type="checkbox" zippy="chaccount">
+                            <label class="form-check-label mr-sm-2" for="chaccount">Синтетичні рахунки</label>
+                        </div>                  
+           
+                        <div class="form-check   ">
+                            <input class="form-check-input"  type="checkbox" zippy="chcustomer">
+                            <label class="form-check-label mr-sm-2" for="chcustomer">Контрагенти</label>
+                        </div>                  
+                      <div class="form-check   ">
+                            <input class="form-check-input"  type="checkbox" zippy="chitems">
+                            <label class="form-check-label mr-sm-2" for="chitems">ТМЦ</label>
+                        </div>                  
+                      <div class="form-check   ">
+                            <input class="form-check-input"  type="checkbox" zippy="chos">
+                            <label class="form-check-label mr-sm-2" for="chos">ОЗ та НМА</label>
+                        </div>                  
+ 
+ 
+                        <div class="form-check   ">
+                            <input class="form-check-input"  type="checkbox" zippy="chstore">
+                            <label class="form-check-label mr-sm-2" for="chstore">Склади</label>
+                        </div>                      
+                       <div class="form-check   ">
+                            <input class="form-check-input"  type="checkbox" zippy="chemployee">
+                            <label class="form-check-label mr-sm-2" for="chemployee">Співробітники</label>
+                        </div>                      
+                         
+                        <div class="form-check   ">
+                            <input class="form-check-input"  type="checkbox" zippy="chmoneyfund">
+                            <label class="form-check-label mr-sm-2" for="chmoneyfund">Грошові рахунки</label>
+                        </div>                      
+                 
                     {{/list}}
                     {{^list}}
                     <div class="form-group">
-                        <label data-label="groupby" for="groupby" class="  control-label">Згрупувати по</label>
+                        <label data-label="groupby" for="groupby"  >Згрупувати по</label>
                         <select class="form-control" zippy="groupby">
                             <option value="1">Рахунок</option>
                             <option value="2">Контрагент</option>
@@ -115,16 +102,16 @@
             </form>
 
 
-        </div>
+      
         <div class="row">
-            <div class="col-xs-12">
-                <table zippy="tlist" class="table table-condenced table-striped ">
+            <div class="col-12">
+                <table zippy="tlist" class="table table-sm table-striped ">
 
                 </table>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <div zippy="docview"></div>
             </div>
         </div>

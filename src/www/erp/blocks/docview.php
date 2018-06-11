@@ -35,7 +35,7 @@ class DocView extends \Zippy\Html\PageFragment
         parent::__construct($id);
 
         $this->add(new RedirectLink('print', ""));
-        $this->add(new RedirectLink('html', ""));
+        $this->add(new RedirectLink('html', ""))->setVisible(false);
         $this->add(new RedirectLink('word', ""));
         $this->add(new RedirectLink('excel', ""));
         $this->add(new RedirectLink('xml', ""));

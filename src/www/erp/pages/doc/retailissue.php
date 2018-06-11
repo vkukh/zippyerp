@@ -2,27 +2,26 @@
 
 namespace ZippyERP\ERP\Pages\Doc;
 
-use Zippy\Html\DataList\DataView;
-use Zippy\Html\Form\Button;
-use Zippy\Html\Form\CheckBox;
-use Zippy\Html\Form\Date;
-use Zippy\Html\Form\DropDownChoice;
-use Zippy\Html\Form\Form;
-use Zippy\Html\Form\SubmitButton;
-use Zippy\Html\Form\TextInput;
-use Zippy\Html\Form\AutocompleteTextInput;
-use Zippy\Html\Label;
-use Zippy\Html\Link\ClickLink;
-use Zippy\Html\Link\SubmitLink;
-use ZippyERP\ERP\Entity\Customer;
-use ZippyERP\ERP\Entity\Contact;
-use ZippyERP\ERP\Entity\Doc\Document;
-use ZippyERP\ERP\Entity\Item;
-use ZippyERP\ERP\Entity\Stock;
-use ZippyERP\ERP\Entity\Employee;
-use ZippyERP\ERP\Entity\Store;
-use ZippyERP\ERP\Helper as H;
-use Zippy\WebApplication as App;
+use \Zippy\Html\DataList\DataView;
+use \Zippy\Html\Form\Button;
+use \Zippy\Html\Form\CheckBox;
+use \Zippy\Html\Form\Date;
+use \Zippy\Html\Form\DropDownChoice;
+use \Zippy\Html\Form\Form;
+use \Zippy\Html\Form\SubmitButton;
+use \Zippy\Html\Form\TextInput;
+use \Zippy\Html\Form\AutocompleteTextInput;
+use \Zippy\Html\Label;
+use \Zippy\Html\Link\ClickLink;
+use \Zippy\Html\Link\SubmitLink;
+use \ZippyERP\ERP\Entity\Customer;
+use \ZippyERP\ERP\Entity\Doc\Document;
+use \ZippyERP\ERP\Entity\Item;
+use \ZippyERP\ERP\Entity\Stock;
+use \ZippyERP\ERP\Entity\Employee;
+use \ZippyERP\ERP\Entity\Store;
+use \ZippyERP\ERP\Helper as H;
+use \Zippy\WebApplication as App;
 
 /**
  * Страница  ввода  розничной  накладной
@@ -34,7 +33,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_rowid = 0;
     private $_discount = 0;
- 
+    private $_opt = 0;
 
     public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
@@ -43,9 +42,10 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
         $this->docform->add(new CheckBox('plan'));
+        $this->docform->add(new CheckBox('ccard'));
 
         $this->docform->add(new DropDownChoice('emp', Employee::findArray("shortname", "", 'shortname')));
-        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
+        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET . " or store_type = " . Store::STORE_TYPE_OPT, "store_type  ")))->onChange($this, 'OnChangeStore');
         $this->docform->store->selectFirst();
 
         $this->docform->add(new AutocompleteTextInput('customer'))->onText($this, 'OnAutoCustomer');
@@ -58,7 +58,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
         $this->docform->add(new Label('totalnds'));
         $this->docform->add(new Label('total'));
-   
+
         $this->add(new Form('editdetail'))->setVisible(false);
         $this->editdetail->add(new TextInput('editquantity'))->setText("1");
         $this->editdetail->add(new TextInput('editprice'));
@@ -72,12 +72,13 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
 
         $this->add(new Form('mform'));
-        $this->mform->add(new TextInput('mlastname'));
-        $this->mform->add(new TextInput('mfirstname'));
+        $this->mform->add(new TextInput('mcustname'));
+
 
         $this->mform->add(new TextInput('mphone'));
 
         $this->mform->add(new SubmitButton('madd'))->onClick($this, 'mformOnClick');
+
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
@@ -86,6 +87,7 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
             $this->docform->totalnds->setText(H::fm($this->_doc->headerdata['totalnds']));
             $this->docform->document_date->setDate($this->_doc->document_date);
             $this->docform->plan->setChecked($this->_doc->headerdata['plan']);
+            $this->docform->ccard->setChecked($this->_doc->headerdata['ccard']);
 
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->emp->setValue($this->_doc->headerdata['emp']);
@@ -140,6 +142,8 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
 
         $this->OnChangeCustomer(null);
+
+        $this->_opt = Store::load($this->docform->store->getValue())->store_type == Store::STORE_TYPE_OPT;
     }
 
     public function detailOnRow($row) {
@@ -167,6 +171,8 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
+        $this->editdetail->editquantity->setText('1');
+        $this->editdetail->editprice->setText('0');
     }
 
     public function editOnClick($sender) {
@@ -198,6 +204,15 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
         $stock->partion = $stock->price;
         $stock->price = $this->editdetail->editprice->getText() * 100;
+        if (!($stock->price > 0)) {
+            $this->setError("Не введена  ціна");
+            return;
+        }
+        if (!($stock->quantity > 0)) {
+            $this->setError("Не введена  кількість");
+            return;
+        }
+
 
         unset($this->_tovarlist[$this->_rowid]);
         $this->_tovarlist[$stock->stock_id] = $stock;
@@ -229,6 +244,9 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
     }
 
     public function savedocOnClick($sender) {
+        $this->_doc->document_number = $this->docform->document_number->getText();
+        $this->_doc->document_date = $this->docform->document_date->getDate();
+
         if ($this->checkForm() == false) {
             return;
         }
@@ -242,8 +260,8 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
             'emp' => $this->docform->emp->getValue(),
             'empname' => $this->docform->emp->getValueName(),
             'plan' => $this->docform->plan->isChecked(),
+            'ccard' => $this->docform->ccard->isChecked(),
             'total' => $this->docform->total->getText() * 100,
-  
             'totalnds' => $this->docform->totalnds->getText() * 100
         );
         $this->_doc->detaildata = array();
@@ -252,8 +270,6 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->_doc->amount = 100 * $this->docform->total->getText();
-        $this->_doc->document_number = $this->docform->document_number->getText();
-        $this->_doc->document_date = $this->docform->document_date->getDate();
         $isEdited = $this->_doc->document_id > 0;
 
 
@@ -287,11 +303,10 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         foreach ($this->_tovarlist as $tovar) {
             $total = $total + $tovar->price * ($tovar->quantity / 1000);
         }
-    
+
         $nds = $total * H::nds(true);
         $this->docform->totalnds->setText(H::fm($nds));
         $this->docform->total->setText(H::fm($total));
-       
     }
 
     /**
@@ -325,21 +340,23 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
         $this->docform->detail->Reload();
         $store_id = $this->docform->store->getValue();
         $this->calcTotal();
+        $this->_opt = Store::load($store_id)->store_type == Store::STORE_TYPE_OPT;
     }
 
     public function OnAutoCustomer($sender) {
-        $text = $sender->getText();
-        return Customer::searchClient($text);
+        $text = Customer::qstr('%' . $sender->getText() . '%');
+        $list = Customer::findArray("customer_name", "cust_type in(1,3,5) and  (customer_name like {$text} or phone like {$text} )");
+        return $list;
     }
 
     public function OnChangeCustomer($sender) {
-        $this->_discount = 0;
+
         $customer_id = $this->docform->customer->getKey();
         if ($customer_id > 0) {
             $customer = Customer::load($customer_id);
             $this->_discount = $customer->discount;
         }
-         
+        $this->calcTotal();
     }
 
     public function OnAutoItem($sender) {
@@ -348,17 +365,25 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
         $text = $sender->getText();
         $list = Stock::findArrayEx("store_id={$store_id} and closed <> 1 and (itemname like " . Stock::qstr('%' . $text . '%') . " or item_code like " . Stock::qstr('%' . $text . '%') . "  )");
-        foreach ($list as $k => $v) {
-            $r[$k] = $v;
-        }
-        return $r;
+        return $list;
     }
 
     public function OnChangeItem($sender) {
         $id = $sender->getKey();
         $stock = Stock::load($id);
-        $stock->price = $stock->price - $stock->price/100*$this->_discount;
-        $this->editdetail->editprice->setText(H::fm($stock->price));
+        $price = 0;
+        if ($this->_opt) {
+            $item = Item::load($stock->item_id);
+            $price = $item->getOptPrice($stock->price);
+        } else {
+            $price = $stock->price;
+        }
+
+        $price = $price - $price / 100 * $this->_discount;
+
+
+        $this->editdetail->editprice->setText(H::fm($price));
+
 
         $this->editdetail->qtystock->setText(Stock::getQuantity($id, $this->docform->document_date->getDate()) / 1000 . ' ' . $stock->measure_name);
 
@@ -367,29 +392,23 @@ class RetailIssue extends \ZippyERP\ERP\Pages\Base
 
     //создаем нового клиента и всталяем  форму
     public function mformOnClick($sender) {
-        $lastname = $this->mform->mlastname->getText();
-        $firstname = $this->mform->mfirstname->getText();
+        $custname = $this->mform->mcustname->getText();
+
         $phone = $this->mform->mphone->getText();
 
-        $contact = new Contact();
-        $contact->lastname = $lastname;
-        $contact->firstname = $firstname;
-        $contact->phone = $phone;
-        $contact->save();
+        $customer = new Customer();
+        $customer->customer_name = $custname;
+        $customer->cust_type = Customer::TYPE_CLIENT;
+        $customer->phone = $phone;
+        $customer->save();
 
-        $client = new Customer();
 
-        $client->customer_name = $lastname . ' ' . $firstname;
-        $client->customer_type = Customer::TYPE_CLIENT;
-        $client->contact_id = $contact->contact_id;
-        $client->save();
+        $customer->save();
 
-        $contact->customer_id = $client->customer_id;
-        $contact->save();
 
         $this->mform->clean();
-        $this->docform->customer->setKey($client->customer_id);
-        $this->docform->customer->setText($client->customer_name);
+        $this->docform->customer->setKey($customer->customer_id);
+        $this->docform->customer->setText($customer->customer_name);
     }
 
 }

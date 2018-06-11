@@ -50,7 +50,8 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
         $this->editdetail->add(new TextInput('editprice'));
         $this->editdetail->add(new DropDownChoice('edititem'));
         $this->editdetail->edititem->onChange($this, 'OnChangeItem', true);
-        $this->editdetail->add(new DropDownChoice('edittype', array(201 => 'Материал', 25 => 'Полуфабрикат'), 201))->onChange($this, "OnItemType");
+        $this->editdetail->add(new DropDownChoice('edittype', array(201 => 'Матеріал', 25 => 'Напівфабрикат'), 201))->onChange($this, "OnItemType");
+
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
@@ -60,7 +61,8 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
             $this->docform->document_number->setText($this->_doc->document_number);
 
             $this->docform->document_date->setDate($this->_doc->document_date);
- 
+
+
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->expenses->setValue($this->_doc->headerdata['expenses']);
 
@@ -135,7 +137,9 @@ class InventoryExpence extends \ZippyERP\ERP\Pages\Base
             return;
         }
 
+
         $stock = Stock::load($id);
+
 
         $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
         // $stock->partion = $stock->price;

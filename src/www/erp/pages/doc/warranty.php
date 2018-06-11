@@ -32,7 +32,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
- 
+    private $_opt = 0;
 
     public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
@@ -43,7 +43,7 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('customer'));
 
 
-        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET)))->onChange($this, 'OnChangeStore');
+        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_RET . " or store_type = " . Store::STORE_TYPE_OPT, "store_type  ")))->onChange($this, 'OnChangeStore');
         $this->docform->store->selectFirst();
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
@@ -103,6 +103,9 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_tovarlist')), $this, 'detailOnRow'))->Reload();
+
+
+        $this->_opt = Store::load($this->docform->store->getValue())->store_type == Store::STORE_TYPE_OPT;
     }
 
     public function detailOnRow($row) {
@@ -261,6 +264,8 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $this->_tovarlist = array();
         $this->docform->detail->Reload();
         $store_id = $this->docform->store->getValue();
+
+        $this->_opt = Store::load($store_id)->store_type == Store::STORE_TYPE_OPT;
     }
 
     public function OnAutoItem($sender) {
@@ -279,9 +284,12 @@ class Warranty extends \ZippyERP\ERP\Pages\Base
         $id = $sender->getKey();
         $stock = Stock::load($id);
 
-
-        $this->editdetail->editprice->setText(H::fm($stock->price));
-
+        if ($this->_opt) {
+            $item = Item::load($stock->item_id);
+            $this->editdetail->editprice->setText(H::fm($item->getOptPrice($stock->price)));
+        } else {
+            $this->editdetail->editprice->setText(H::fm($stock->price));
+        }
 
 
         $this->updateAjax(array('editprice', 'editquantity'));

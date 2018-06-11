@@ -21,13 +21,13 @@
         <form zippy="docform">
             <h3>Коректировка до ПН</h3>
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
-                        <label for="document_number" class="  control-label">Номер документу</label>
+                        <label for="document_number" >Номер документу</label>
                         <input class="form-control" type="text" zippy="document_number" required="required">
                     </div>
                     <div class="form-group  ">
-                        <label for="customer" class="  control-label">Отримувач</label>
+                        <label for="customer" >Отримувач</label>
 
                         <select class="form-control select2"   zippy="customer" >
                             <option value="0">Не вибрано</option>
@@ -35,23 +35,23 @@
 
                     </div>
                     <div class="form-group  ">
-                        <label for="contract" class="  control-label">Угода, замовленя </label>
+                        <label for="contract" >Угода, замовленя </label>
 
                         <input class="form-control" type="text" zippy="contract">
 
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
-                        <label for="document_date" class="  control-label"> Дата</label>
+                        <label for="document_date" > Дата</label>
                         <input class="form-control" type="text" zippy="document_date" required="required">
                     </div>
                     <div class="form-group">
-                        <label for="author" class="  control-label"> Виписав</label>
+                        <label for="author" > Виписав</label>
                         <input class="form-control" type="text" zippy="author">
                     </div>
                     <div class="form-group">
-                        <label for="paytype" class="  control-label"> Тип оплати</label>
+                        <label for="paytype" > Тип оплати</label>
                         <input class="form-control" type="text" zippy="paytype" value="Оплата з поточного рахунку">
                     </div>
 
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-8">
+                <div class="col-8">
                     <a zippy="addrow">Додати товар</a>
                     <table class="ctable">
                         <tr>
@@ -86,7 +86,7 @@
                             <td zippy="price" align="right"></td>
                             <td zippy="pricends" align="right"></td>
                             <td zippy="amount" align="right"></td>
-                            <td><a zippy="edit"><i class="fa fa-pencil-square-o"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a>
+                            <td><a zippy="edit"><i class="fa fa-edit"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                         <tr style="font-weight: bolder;">
@@ -106,10 +106,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-8">
+                <div class="col-8">
 
-                    <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default ">
-                    &nbsp;<input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
+                    <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-light ">
+                    &nbsp;<input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-light  ">
 
 
                 </div>
@@ -119,7 +119,7 @@
         <form zippy="editdetail">
             <h4>Ввод позиції </h4>
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-4">
                     <div class="form-group">
                         <label for="edititem">Назва </label>
                         <select class="form-control select2"   zippy="edittovar" >
@@ -145,10 +145,10 @@
                                style="width: 100px;">
                     </div>
                     <div class="form-group">
-                        <input zippy="submitrow" type="submit" value="Зберегти" class="btn btn-default"> <input type="button"
-                                                                                                                zippy="cancelrow"
-                                                                                                                value="Відмінити"
-                                                                                                                class="btn btn-default ">
+                        <input zippy="submitrow" type="submit" value="Зберегти" class="btn btn-light"> <input type="button"
+                                                                                                              zippy="cancelrow"
+                                                                                                              value="Відмінити"
+                                                                                                              class="btn btn-light ">
                     </div>
                 </div>
             </div>

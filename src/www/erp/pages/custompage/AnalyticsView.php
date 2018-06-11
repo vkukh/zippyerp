@@ -86,32 +86,32 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
             $this->datalist->addColumn(new Column('document_number', 'Док. номер', true, true, true));
             $this->datalist->addColumn(new Column('meta_desc', 'Док. тип', true, true, true));
             if ($this->filter->chaccount->isChecked())
-                $this->datalist->addColumn(new Column('account_id', 'Счет', true, true));
+                $this->datalist->addColumn(new Column('account_id', 'Рахунок', true, true));
             if ($this->filter->chcustomer->isChecked())
                 $this->datalist->addColumn(new Column('customer_name', 'Контрагент', true, true));
             if ($this->filter->chitems->isChecked()) {
                 $this->datalist->addColumn(new Column('itemname', 'ТМЦ', true, true));
-                $this->datalist->addColumn(new Column('partion', 'Партии', false, true, false, '', 'text-right'));
+                $this->datalist->addColumn(new Column('partion', 'Партія', false, true, false, '', 'text-right'));
             };
             if ($this->filter->chos->isChecked())
                 $this->datalist->addColumn(new Column('osname', 'ОС и НМА', true, true));
             if ($this->filter->chstore->isChecked())
                 $this->datalist->addColumn(new Column('storename', 'Склад', true, true));
             if ($this->filter->chemployee->isChecked())
-                $this->datalist->addColumn(new Column('employee_name', 'Сотрудник', true, true));;
+                $this->datalist->addColumn(new Column('employee_name', 'Співробітник', true, true));;
             if ($this->filter->chmoneyfund->isChecked())
-                $this->datalist->addColumn(new Column('moneyfundname', 'Ден. счет', true, true));;
+                $this->datalist->addColumn(new Column('moneyfundname', 'Гр. рах', true, true));;
             if ($this->filter->chaccount->isChecked())
-                $this->datalist->addColumn(new Column('extcode', 'Доп. код', false, true, false));
-            $this->datalist->addColumn(new Column('da', 'Сумма, Дт', false, true, false, '', 'text-right'));
-            $this->datalist->addColumn(new Column('ca', 'Сумма, Кт', false, true, false, '', 'text-right'));
-            $this->datalist->addColumn(new Column('dq', 'Кол. Дт', false, true, false, '', 'text-right'));
-            $this->datalist->addColumn(new Column('cq', 'Кол. Кт', false, true, false, '', 'text-right'));
+                $this->datalist->addColumn(new Column('extcode', 'Дод. код', false, true, false));
+            $this->datalist->addColumn(new Column('da', 'Сума, Дт', false, true, false, '', 'text-right'));
+            $this->datalist->addColumn(new Column('ca', 'Сума, Кт', false, true, false, '', 'text-right'));
+            $this->datalist->addColumn(new Column('dq', 'Кіл. Дт', false, true, false, '', 'text-right'));
+            $this->datalist->addColumn(new Column('cq', 'Кіл. Кт', false, true, false, '', 'text-right'));
         }
 
         if ($this->filter->viewtype->getValue() > 1) {
             if ($this->filter->groupby->getValue() == 1)
-                $this->datalist->addColumn(new Column('account_id', 'Счет', true, true));
+                $this->datalist->addColumn(new Column('account_id', 'Рахунок', true, true));
             if ($this->filter->groupby->getValue() == 2)
                 $this->datalist->addColumn(new Column('customer_name', 'Контрагент', true, true));
             if ($this->filter->groupby->getValue() == 3)
@@ -121,13 +121,13 @@ class AnalyticsView extends \ZippyERP\ERP\Pages\Base
             if ($this->filter->groupby->getValue() == 5)
                 $this->datalist->addColumn(new Column('storename', 'Склад', true, true));
             if ($this->filter->groupby->getValue() == 6)
-                $this->datalist->addColumn(new Column('employee_name', 'Сотрудник', true, true));;
+                $this->datalist->addColumn(new Column('employee_name', 'Співробітник', true, true));;
             if ($this->filter->groupby->getValue() == 7)
-                $this->datalist->addColumn(new Column('moneyfundname', 'Ден. счета', true, true));;
-            $this->datalist->addColumn(new Column('da', 'Сумма, Дт', false, true, false, '', 'text-right'));
-            $this->datalist->addColumn(new Column('ca', 'Сумма, Кт', false, true, false, '', 'text-right'));
-            $this->datalist->addColumn(new Column('dq', 'Кол. Дт', false, true, false, '', 'text-right'));
-            $this->datalist->addColumn(new Column('cq', 'Кол. Кт', false, true, false, '', 'text-right'));
+                $this->datalist->addColumn(new Column('moneyfundname', 'ГР.рах. ', true, true));;
+            $this->datalist->addColumn(new Column('da', 'Сума, Дт', false, true, false, '', 'text-right'));
+            $this->datalist->addColumn(new Column('ca', 'Сума, Кт', false, true, false, '', 'text-right'));
+            $this->datalist->addColumn(new Column('dq', 'Кіл. Дт', false, true, false, '', 'text-right'));
+            $this->datalist->addColumn(new Column('cq', 'Кіл. Кт', false, true, false, '', 'text-right'));
         }
 
 

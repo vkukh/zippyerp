@@ -4,28 +4,24 @@
     </head>
     <body>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <h3>Звіт про рух товарів</h3>
-                <form zippy="filter" class="navbar-form ">
-                    <div class="form-group">
-                        <label for="from">З</label>
-                        <input class="form-control" style="width: 100px" type="text" zippy="from">
-                    </div>
-                    <div class="form-group">
-                        <label for="to">по</label>
-                        <input class="form-control" style="width: 100px" type="text" zippy="to">
-                    </div>
-                    <div class="form-group">
-                        <label for="to">Склад</label>
-                        <select class="form-control" zippy="store"> </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="to">ТМЦ</label>
-                        <input placeholder="Почніть вводити" class="form-control" zippy="item" >
-                    </div>
-                    <div class="form-group">
-                        <input class="btn btn-default  " type="submit" value="ОК">
-                    </div>
+                <form zippy="filter" class="form-inline">
+
+                    <label for="from">З</label>
+                    <input class="form-control mr-sm-2" style="width: 100px" type="text" zippy="from">
+
+                    <label for="to">по</label>
+                    <input class="form-control mr-sm-2" style="width: 100px" type="text" zippy="to">
+
+                    <label for="to">Склад</label>
+                    <select class="form-control mr-sm-2" zippy="store"> </select>
+
+                    <label for="to">ТМЦ</label>
+                    <input placeholder="Почніть вводити" class="form-control mr-sm-2" zippy="item" >
+
+                    <input class="btn btn-light  " type="submit" value="ОК">
+
 
                 </form>
 
@@ -41,7 +37,7 @@
                         <a zippy="excel" target="_blank" title="Експорт в Excel"><img class="icon20"
                                                                                       src="/assets/images/excel_32.png"></a>
                     </div>
-                    <iframe style="border:0px;" zippy="preview" src="/templates/wait.html" width="700px"
+                    <iframe style="border:0px;" zippy="preview" src="/templates/wait.html" width="800px"
                             height="800px"></iframe>
 
                 </div>

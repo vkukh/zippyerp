@@ -6,9 +6,9 @@
 
         <div zippy="banktable">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-12 col-md-6">
                     <h3>Довідник банків </h3>
-                    <table class="table table-bordered   table-condensed">
+                    <table class="table table-bordered   table-sm">
                         <tr>
                             <th>Назва</th>
                             <th></th>
@@ -16,17 +16,19 @@
                         <tr zippy="banklist">
                             <td zippy="bankname"></td>
 
-                            <td style="width:52px"><a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a> <a
+                            <td style="width:52px"><a zippy="edit" title="Редагувати"><i class="fa fa-edit"></i></a> <a
                                     zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a></td>
                         </tr>
                     </table>
-                    <a zippy="addnew" class="btn btn-default ">Додати</a>
+                    <a zippy="addnew" class="btn btn-light ">Додати</a>
                 </div>
             </div>
         </div>
-        <form zippy="bankdetail" method="post">
-            <div class="row">
-                <div class="col-xs-4">
+        <div class="row">
+            <div class="col-10 col-md-4">
+
+                <form zippy="bankdetail" method="post">
+                    <h4>Редагування банку</h4>
                     <div class="form-group">
                         <label for="editbankname" class="  control-label"> Назва</label>
                         <input class="form-control" type="text" zippy="editbankname" required="required">
@@ -36,16 +38,16 @@
                         <input class="form-control" type="number" zippy="editmfo" required="required">
                     </div>
                     <div class="form-group">
-                        <input zippy="save" type="submit" value="Зберегти" class="btn btn-default ">
-                        &nbsp; <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default">
+                        <input zippy="save" type="submit" value="Зберегти" class="btn btn-light ">
+                        &nbsp; <input zippy="cancel" type="button" value="Відмінити" class="btn btn-light">
 
                     </div>
 
 
-                </div>
-            </div>
-        </form>
 
+
+                </form>
+            </div>   </div>
 
     </body>
 </html>

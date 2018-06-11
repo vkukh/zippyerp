@@ -57,15 +57,25 @@ class ServiceAct extends Document
         if ($this->headerdata['cash'] == true) {
 
             $cash = MoneyFund::getCash();
-            \ZippyERP\ERP\Entity\Entry::AddEntry("30", "36", $total, $this->document_id, $this->document_date);
+            \ZippyERP\ERP\Entity\Entry::AddEntry("30", "703", $total, $this->document_id, $this->document_date);
             $sc = new SubConto($this, 36, 0 - $total);
             $sc->setCustomer($this->headerdata["customer"]);
 
-            $sc->save();
+            //$sc->save();
             $sc = new SubConto($this, 30, $total);
             $sc->setMoneyfund($cash->id);
+            $sc->setCustomer($this->headerdata["customer"]);
 
-            // $sc->save();
+            $sc->save();
+        }
+        if ($this->headerdata["ccard"] == 1) {
+            $bank = MoneyFund::getBankAccount();
+            Entry::AddEntry("31", "703", $value['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 31, $this->headerdata["total"]);
+            $sc->setMoneyfund($bank->id);
+            $sc->setCustomer($this->headerdata["customer"]);
+
+            $sc->save();
         }
         if ($this->headerdata['prepayment'] == 1) {  //предоплата
             Entry::AddEntry("681", "36", $this->headerdata["total"], $this->document_id, $this->document_date);
@@ -84,13 +94,17 @@ class ServiceAct extends Document
         }
 
 
-        Entry::AddEntry("36", "703", $total, $this->document_id, $this->document_date);
-        $sc = new SubConto($this, 36, $total);
-        $sc->setCustomer($this->headerdata["customer"]);
-
-        $sc->save();
-
-
+        // Entry::AddEntry("36", "703", $total, $this->document_id, $this->document_date);
+        // $sc = new SubConto($this, 36, $total);
+        // $sc->setCustomer($this->headerdata["customer"]);
+        // $sc->save();
+        //налоговые  обязательства
+        if ($this->headerdata['totalnds'] > 0) {
+            Entry::AddEntry("643", "703", $this->headerdata['totalnds'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 643, $this->headerdata["totalnds"]);
+            $sc->setExtCode(\ZippyERP\ERP\Consts::TAX_NDS);
+            $sc->save();
+        }
         $conn->CompleteTrans();
 
 

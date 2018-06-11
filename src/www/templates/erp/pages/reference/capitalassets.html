@@ -6,10 +6,10 @@
 
         <div zippy="itemtable">
             <div class="row">
-                <div class="col-xs-8">
+                <div class="col-8 col-lg-6">
                     <h3>Довідник ОЗ та НМА </h3>
-                    <a zippy="addnew" class="btn btn-default  ">Додати</a>
-                    <table class="table table-bordered ">
+                    <a zippy="addnew" class="btn btn-light  ">Додати</a>
+                    <table class="table table-bordered table-sm ">
                         <tr>
                             <th>Назва</th>
                             <th>Інв. номер</th>
@@ -23,7 +23,7 @@
 
                             <td style="width:75px">
                                 <a zippy="copy" title="Копія"><i class="fa fa-files-o"></i></a>
-                                <a zippy="edit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a>
+                                <a zippy="edit" title="Редагувати"><i class="fa fa-edit"></i></a>
                                 <a zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
@@ -36,7 +36,7 @@
 
         <form zippy="itemdetail" method="post">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-12 col-md-4">
 
                     <div class="form-group">
                         <label for="edititemname">Назва</label>
@@ -68,11 +68,9 @@
                         <textarea class="form-control" zippy="editdescription"></textarea></td>
                     </div>
 
-                    <input zippy="save" type="submit" value="Зберегти" class="btn btn-default ">&nbsp;&nbsp;
-                    <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default  ">
                 </div>
 
-                <div class="col-xs-4">
+                <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="editvalue">Первісна вартість</label>
                         <input class="form-control" style="width:100px;" zippy="editvalue" pattern="[0-9\.]+"/>
@@ -107,6 +105,14 @@
                     </div>
 
                 </div>
+                <div class="col-12">
+                    <div class="form-group  ">
+                        <input zippy="save" type="submit" value="Зберегти" class="btn btn-primary ">&nbsp;&nbsp;
+                        <input zippy="cancel" type="button" value="Відмінити" class="btn btn-light  ">
+
+                    </div>
+                </div> 
+            </div> 
         </form>
 
 

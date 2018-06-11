@@ -6,36 +6,36 @@
 
         <form zippy="docform">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-4">
 
                     <div class="form-group">
-                        <label for="optype" class="  control-label"> Тип операції</label>
+                        <label for="optype" > Тип операції</label>
                         <select class="form-control" zippy="optype"> </select>
                     </div>
                     <div class="form-group">
-                        <label zippy="lblopdetail" for="opdetail" class="  control-label"> </label>
+                        <label zippy="lblopdetail" for="opdetail" > </label>
                         <input class="form-control" type="text" zippy="opdetail" placeholder="Почніть вводити">
                     </div>
                     <div class="form-group">
-                        <label for="basedoc" class="  control-label"> Документ - підстава</label>
+                        <label for="basedoc" > Документ - підстава</label>
                         <input class="form-control" type="text" zippy="basedoc">
                     </div>
                     <div class="form-group">
-                        <label for="notes" class="  control-label"> Примітка</label>
+                        <label for="notes" > Примітка</label>
                         <textarea class="form-control" zippy="notes"></textarea>
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
-                        <label for="document_number" class="  control-label">Номер документу</label>
+                        <label for="document_number" >Номер документу</label>
                         <input class="form-control" type="text" zippy="document_number" required="required">
                     </div>
                     <div class="form-group">
-                        <label for="document_date" class="  control-label"> Дата</label>
+                        <label for="document_date" > Дата</label>
                         <input class="form-control" type="text" zippy="document_date" required="required">
                     </div>
                     <div class="form-group">
-                        <label for="amount" class="  control-label"> Сума</label>
+                        <label for="amount" > Сума</label>
                         <input class="form-control" type="text" zippy="amount" required="required" pattern="[0-9\.]+">
                     </div>
 
@@ -44,10 +44,10 @@
 
 
             <div class="row">
-                <div class="col-xs-6">
-                    <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default  ">
-                    &nbsp;<input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
-                    &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default  ">
+                <div class="col-6">
+                    <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-light  ">
+                    &nbsp;<input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-light  ">
+                    &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-light  ">
 
                 </div>
             </div>

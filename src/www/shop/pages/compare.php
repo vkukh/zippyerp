@@ -28,7 +28,7 @@ class CompareGrid extends \Zippy\Html\CustomComponent implements \Zippy\Interfac
 {
 
     public function getContent($attributes) {
-        $result = "<table class=\"table table-stripped  table-condenced\" >";
+        $result = "<table class=\"table table-stripped table-responsive table-sm\" >";
         $comparelist = Comparelist::getCompareList();
         $attrlist = array();
         $attrnames = array();

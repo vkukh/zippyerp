@@ -8,14 +8,14 @@
     </head>
     <body>
         <div class="row">
-            <div class="col-xs-10" zippy="listtab">
+            <div class="col-10" zippy="listtab">
 
 
                 <h3>Журнал проектів </h3>
 
 
                 <a zippy="addnew">Створити проект </a>
-                <table class="table table-striped table-condensed ">
+                <table class="table table-striped table-sm">
                     <tr>
                         <th>Назва</th>
                         <th>Дата поч.</th>
@@ -30,7 +30,7 @@
                         <td zippy="enddate"></td>
                         <td zippy="ready" align="center"></td>
                         <td>
-                            <a zippy="edit" title="Релагування"><i class="fa fa-pencil-square-o"></i></a>
+                            <a zippy="edit" title="Релагування"><i class="fa fa-edit"></i></a>
                             <a zippy="show" title="Коментар,  файли"><i class="fa fa-search"></i></a>
                             <a zippy="tasks" title="Завдання"><i class="fa fa-tasks"></i></a>
                             <a zippy="delete" title="Видалити"><i class="fa fa-trash"></i></a>
@@ -43,39 +43,57 @@
 
             </div>
 
-            <div class="col-xs-4" zippy="edittab">
+            <div class="col-10"   zippy="edittab">
 
-                <form zippy="editform">
-                    <div class="form-group">
-                        <label for="editprojectname">Назва</label>
-                        <input zippy="editprojectname" class="form-control" required="required">
+                <form zippy="editform"  >
+
+                    <div class="form-group row">
+                        <label class="col-3 col-lg-2" for="editprojectname">Назва</label>
+                        <div class="col-4 col-lg-3"> 
+                            <input zippy="editprojectname" class="form-control  " required="required">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editstartdate">Початок</label>
-                        <input zippy="editstartdate" class="form-control" style="width: 100px">
+                    <div class="form-group row">
+                        <label class="col-3 col-lg-2"  for="editstartdate">Початок</label>
+                        <div class="col-4 col-lg-3"> 
+                            <input zippy="editstartdate" class="form-control" style="width: 100px">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editenddate">Закінченя</label>
-                        <input zippy="editenddate" class="form-control" style="width: 100px">
+                    <div class="form-group row">
+                        <label class="col-3 col-lg-2"  for="editenddate">Закінченя</label>
+                        <div class="col-4 col-lg-3"> 
+                            <input zippy="editenddate" class="form-control" style="width: 100px">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editcustomer">Замовник</label>
-                        <input zippy="editcustomer" class="form-control" placeholder="Почніть вводити документ">
+                    <div class="form-group row">
+                        <label class="col-3 col-lg-2"  for="editcustomer">Замовник</label>
+                        <div class="col-4 col-lg-3"> 
+                            <input zippy="editcustomer" class="form-control" placeholder="Почніть вводити документ">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editbase">Підстава</label>
-                        <input zippy="editbase" class="form-control" placeholder="Почніть вводити документ">
+                    <div class="form-group row">
+                        <label class="col-3 col-lg-2"  for="editbase">Підстава</label>
+                        <div class="col-4 col-lg-3"> 
+                            <input zippy="editbase" class="form-control" placeholder="Почніть вводити документ">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editdesc">Опис</label>
-                        <textarea zippy="editdesc" class="form-control" style="width:300px;height:100px;"></textarea>
+                    <div class="form-group row">
+                        <label class="col-3 col-lg-2"  for="editdesc">Опис</label>
+                        <div class="col-4 col-lg-3"> 
+                            <textarea zippy="editdesc" class="form-control" style="width:300px;height:100px;"></textarea>
+                        </div>
                     </div>
-                    <input zippy="save" type="submit" value="Зберегти" class="btn btn-default btn-sm">&nbsp;&nbsp;
-                    <input zippy="cancel" type="button" value="Відмінити" class="btn btn-default btn-sm">
+                    <div class="form-group row">
+                        <div class="col-4 col-lg-3"> 
+                            <input zippy="save" type="submit" value="Зберегти" class="btn btn-light   ">&nbsp;&nbsp;
+                            <input zippy="cancel" type="button" value="Відмінити" class="btn btn-light  ">
+                        </div>
+                    </div>
 
                 </form>
             </div>
-            <div class="col-xs-10" zippy="contenttab">
+
+            <div class="col-10 col-lg-8" zippy="contenttab">
                 <a zippy="tolist">До списку проектів</a>
                 <h3 zippy="showname"></h3>
                 <p zippy="showdesc"></p>
@@ -98,7 +116,7 @@
                                     <textarea required="required" class="form-control" zippy="addmsg"
                                               style="width:300px;height:120px;"></textarea>
                                 </div>
-                                <input class="btn btn-default btn-small" type="submit" value="Додати">
+                                <input class="btn btn-light  " type="submit" value="Додати">
                             </form>
                         </td>
                         <td valign="top">
@@ -123,7 +141,7 @@
                                 </div>
 
 
-                                <input class="btn btn-default btn-sm" type="submit" value="Додати">
+                                <input class="btn btn-light " type="submit" value="Додати">
 
                             </form>
                         </td>
@@ -132,14 +150,14 @@
 
 
             </div>
-            <div class="col-xs-10" zippy="taskstab">
+            <div class="col-10" zippy="taskstab">
                 <a zippy="tolist2">До списку проектов</a>
                 <h2 zippy="showname2"></h2>
 
                 <h4>Список завдань</h4>
 
                 <a zippy="taskaddnew">Створити завдання </a> 
-                <table class="table table-striped table-condensed ">
+                <table class="table table-striped table-sm">
                     <tr>
                         <th>Код</th>
                         <th>Назва</th>
@@ -164,7 +182,7 @@
                         <td>
                             <a zippy="taskitems" title="ТМЦ"><i class="fa fa-cogs"></i></a>
                             <a zippy="taskusers" title="Виконавці"><i class="fa fa-users"></i></a>
-                            <a zippy="taskedit" title="Редагувати"><i class="fa fa-pencil-square-o"></i></a>
+                            <a zippy="taskedit" title="Редагувати"><i class="fa fa-edit"></i></a>
                             <a zippy="taskdelete" title="Видалити"><i class="fa fa-trash"></i></a>
                         </td>
 
@@ -176,7 +194,7 @@
 
 
             </div>
-            <div class="col-xs-4" zippy="edittasktab">
+            <div class="col-4" zippy="edittasktab">
                 <form zippy="edittaskform">
                     <div class="form-group">
                         <label for="edittaskname">Назва</label>
@@ -212,34 +230,34 @@
 
                     <div class="form-group">
                         <label for="edittaskdesc">Опис</label>
-                        <textarea zippy="edittaskdesc" class="form-control" style="width:300px;height:100px;"></textarea>
+                        <textarea zippy="edittaskdesc" class="form-control"  ></textarea>
                     </div>
-                    <input zippy="tasksave" type="submit" value="Зберегти" class="btn btn-default btn-sm">&nbsp;&nbsp;
-                    <input zippy="taskcancel" type="button" value="Відмінити" class="btn btn-default btn-sm">
+                    <input zippy="tasksave" type="submit" value="Зберегти" class="btn btn-light  ">&nbsp;&nbsp;
+                    <input zippy="taskcancel" type="button" value="Відмінити" class="btn btn-light  ">
 
                 </form>
             </div>
-            <div class="col-xs-6" zippy="edituserstab">
+            <div class="col-6 col-lg-5" zippy="edituserstab">
                 <h4>Виконавці</h4>
-                <form zippy="usersform" class="navbar-form navbar-left" >
-                    <div class="form-group">
-                        <label for="editassignedto">Виконавець</label>
-                        <select zippy="editassignedto" class="form-control select2">
-                        </select>
+                <form zippy="usersform" class="form-inline" >
 
-                        &nbsp;          
-                        <input type="submit" value="Додати" class="btn btn-default navbar-btn">
-                    </div>            
+                    <label for="editassignedto">Виконавець</label>
+                    <select zippy="editassignedto" class="form-control mr-sm-2    ">
+                    </select>
+                    &nbsp;
+
+                    <input type="submit" value="Додати" class="btn btn-outline-success">
+
                 </form>
-                <table class="table table condenced">
+                <table class="table table-sm">
                     <tr zippy="userslist"><td zippy="usershortname"></td>
                         <td><a zippy="usersdelete" title="Видалити"><i class="fa fa-trash"></i></a></td>
                     </tr>
                 </table>
-                <a zippy="cancelusers" class="btn btn-default">Відмінити</a>&nbsp;<a zippy="saveusers" class="btn btn-default">Зберегти</a>
+                <a zippy="cancelusers" class="btn btn-light">Відмінити</a>&nbsp;<a zippy="saveusers" class="btn btn-light">Зберегти</a>
             </div>
 
-            <div class="col-xs-6" zippy="edititemstab">
+            <div class="col-6" zippy="edititemstab">
                 <h3>Необхідні ТМЦ для виконання</h3>  
                 <form zippy="itemsform"  >
                     <div class="form-group">
@@ -256,19 +274,19 @@
                         <input pattern="[0-9\.]+" style="width:100px" zippy="editprice" class="form-control" required="required">
                     </div> 
                     <div class="form-group">
-                        <input zippy="additem" type="submit" value="Додати" class="btn btn-default  ">
+                        <input zippy="additem" type="submit" value="Додати" class="btn btn-light  ">
                     </div>        
 
 
                 </form>
-                <table class="table table-condensed">
+                <table class="table table-sm">
                     <tr><th>Найменування</th><th>Кіл.</th><th>Ціна</th><th> </th></tr>
                     <tr zippy="itemslist"><td zippy="itemname"></td><td zippy="itemqty" align="right" ></td><td align="right" zippy="itemprice"></td><td><a zippy="itemdelete"><i class="fa fa-trash"></i></a> </td></tr>
                     <tr  ><td> </td><td align="right" >Всього</td><td align="right" zippy="itemstotal"></td><td> </td></tr>
 
 
                 </table>
-                <a zippy="cancelitems" class="btn btn-default">Відмінити</a>&nbsp;<a zippy="saveitems" class="btn btn-default">Зберегти</a>
+                <a zippy="cancelitems" class="btn btn-light">Відмінити</a>&nbsp;<a zippy="saveitems" class="btn btn-light">Зберегти</a>
 
             </div>
         </div>

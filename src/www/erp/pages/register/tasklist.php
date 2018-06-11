@@ -147,48 +147,45 @@ class TaskList extends \ZippyERP\ERP\Pages\Base
         $date = $this->contenttab->editform->editdatestatus->getDate();
         $this->_task->addStatus($date, $author);
         $this->updateHistory();
-        
-        
-      //создаем перемещение в производство
-        if(($this->_task->getItemsList()) > 0 &&$this->_task->prod==0 && ($this->_task->status == Task::TASK_STATUS_CLOSED || $this->_task->status == Task::TASK_STATUS_FINISHED)) {
-           $ri =   \ZippyERP\ERP\Entity\Doc\Document::create('InventoryExpence');
-           
-           $ri->document_number ="Завдання №".$this->_task->task_id;
-          
-           $ri->document_date =time() ;
-           $opt = \ZippyERP\System\System::getOptions('common');
-          
-           $store =    \ZippyERP\ERP\Entity\Store::load($opt['basestore']);
-           
-           $ri->headerdata['store'] = $opt['basestore'];
-           $ri->headerdata['storename'] = $store->storename;
-           $ri->headerdata['expenses'] = 23;
-           $ri->headerdata['expensesname'] = 'Прямі виробничі витрати';
-           
-           $total=0;
-           foreach ($this->_task->getItemsList() as $_stock) {
-                 
-                $_stock->quantity = $_stock->qty*1000;
-                $_stock->type=201 ;
+
+
+        //создаем перемещение в производство
+        if (($this->_task->getItemsList()) > 0 && $this->_task->prod == 0 && ($this->_task->status == Task::TASK_STATUS_CLOSED || $this->_task->status == Task::TASK_STATUS_FINISHED)) {
+            $ri = \ZippyERP\ERP\Entity\Doc\Document::create('InventoryExpence');
+
+            $ri->document_number = "Завдання №" . $this->_task->task_id;
+
+            $ri->document_date = time();
+            $opt = \ZippyERP\System\System::getOptions('common');
+
+            $store = \ZippyERP\ERP\Entity\Store::load($opt['basestore']);
+
+            $ri->headerdata['store'] = $opt['basestore'];
+            $ri->headerdata['storename'] = $store->storename;
+            $ri->headerdata['expenses'] = 23;
+            $ri->headerdata['expensesname'] = 'Прямі виробничі витрати';
+
+            $total = 0;
+            foreach ($this->_task->getItemsList() as $_stock) {
+
+                $_stock->quantity = $_stock->qty * 1000;
+                $_stock->type = 201;
                 $ri->detaildata[] = $_stock->getData();
-                $total +=  $_stock->qty*$_stock->price;
+                $total += $_stock->qty * $_stock->price;
             }
-            
-            $ri->amount=  $total ;
-      
-      
-                     
-           $ri->save();
-           $ri->updateStatus(\ZippyERP\ERP\Entity\Doc\Document::STATE_EXECUTED);
-           
-           $this->_task->prod = $ri->document_id;
-           $this->_task->save();
-           
-           $this->tolistOnClick(null);
+
+            $ri->amount = $total;
+
+
+
+            $ri->save();
+            $ri->updateStatus(\ZippyERP\ERP\Entity\Doc\Document::STATE_EXECUTED);
+
+            $this->_task->prod = $ri->document_id;
+            $this->_task->save();
+
+            $this->tolistOnClick(null);
         }
-         
-        
-        
     }
 
     public function editOnClick($sender) {

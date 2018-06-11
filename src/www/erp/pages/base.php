@@ -14,22 +14,15 @@ use ZippyERP\System\User;
 class Base extends \Zippy\Html\WebPage
 {
 
-    public $_errormsg;
-    public $_successmsg;
-    public $_warnmsg;
-    public $_infomsg;
-
     public function __construct($params = null) {
 
         \Zippy\Html\WebPage::__construct();
 
 
-
-
-
         $user = System::getUser();
         if ($user->user_id == 0) {
             App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
+            return;
         }
 
         $this->add(new ClickLink('logout', $this, 'LogoutClick'));
@@ -41,11 +34,6 @@ class Base extends \Zippy\Html\WebPage
 
         $this->add(new ClickLink("pageinfo"));
 
-        $pi = $this->getPageInfo();
-        $this->add(new Label("picontent", $pi, true));
-        if (strlen($pi) == 0) {
-            $this->pageinfo->setVisible(false);
-        }
 
 
         $this->add(new Label("docmenu", Helper::generateMenu(1), true));
@@ -53,11 +41,18 @@ class Base extends \Zippy\Html\WebPage
         $this->add(new Label("regmenu", Helper::generateMenu(3), true));
         $this->add(new Label("refmenu", Helper::generateMenu(4), true));
         $this->add(new Label("pagemenu", Helper::generateMenu(5), true));
-        $this->add(new Label("smartmenu", Helper::generateSmartMenu(), true));
+        // $this->add(new Label("smartmenu", Helper::generateSmartMenu(), true));
 
 
         $this->_tvars["islogined"] = $user->user_id > 0;
         $this->_tvars["isadmin"] = $user->userlogin == 'admin';
+        $pi = $this->getPageInfo();
+
+        if (strlen($pi) == 0) {
+            $this->pageinfo->setVisible(false);
+        }
+
+        $this->_tvars["picontent"] = $pi;
     }
 
     public function LogoutClick($sender) {
@@ -82,25 +77,23 @@ class Base extends \Zippy\Html\WebPage
 
     //вывод ошибки,  используется   в дочерних страницах
     public function setError($msg) {
-
-
-        $this->_errormsg = $msg;
+        System::setErrorMsg($msg);
     }
 
     public function setSuccess($msg) {
-        $this->_successmsg = $msg;
+        System::setSuccesMsg($msg);
     }
 
     public function setWarn($msg) {
-        $this->_warnmsg = $msg;
+        System::setWarnMsg($msg);
     }
 
     public function setInfo($msg) {
-        $this->_infomsg = $msg;
+        System::setInfoMsg($msg);
     }
 
     final protected function isError() {
-        return strlen($this->_errormsg) > 0;
+        return strlen(System::getErrorMsg()) > 0;
     }
 
     protected function beforeRender() {
@@ -108,14 +101,15 @@ class Base extends \Zippy\Html\WebPage
     }
 
     protected function afterRender() {
-        if (strlen($this->_errormsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.error('{$this->_errormsg}')        ", true);
-        if (strlen($this->_warnmsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.warning('{$this->_warnmsg}')        ", true);
-        if (strlen($this->_successmsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.success('{$this->_successmsg}')        ", true);
-        if (strlen($this->_infomsg) > 0)
-            App::$app->getResponse()->addJavaScript("toastr.info('{$this->_infomsg}')        ", true);
+        if (strlen(System::getErrorMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.error('" . System::getErrorMsg() . "')        ", true);
+        if (strlen(System::getWarnMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.warning('" . System::getWarnMsg() . "')        ", true);
+        if (strlen(System::getSuccesMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.success('" . System::getSuccesMsg() . "')        ", true);
+        if (strlen(System::getInfoMsg()) > 0)
+            App::$app->getResponse()->addJavaScript("toastr.info('" . System::getInfoMsg() . "')        ", true);
+
 
 
         $this->setError('');
@@ -123,6 +117,12 @@ class Base extends \Zippy\Html\WebPage
 
         $this->setInfo('');
         $this->setWarn('');
+    }
+
+    //Перезагрузить страницу  с  клиента
+    //например бля  сброса  адресной строки  после  команды удаления
+    public function resetURL() {
+        \Zippy\WebApplication::$app->setReloadPage();
     }
 
 }

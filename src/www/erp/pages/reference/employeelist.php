@@ -14,7 +14,6 @@ use Zippy\Html\Form\TextInput;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Panel;
-use ZippyERP\ERP\Entity\Contact;
 use ZippyERP\ERP\Entity\Department;
 use ZippyERP\ERP\Entity\Employee;
 use ZippyERP\ERP\Entity\Position;
@@ -31,7 +30,7 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeetable->add(new DataView('employeelist', new EDS('\ZippyERP\ERP\Entity\employee'), $this, 'employeelistOnRow'))->Reload();
         $this->employeetable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');
         $this->add(new Form('employeedetail'))->setVisible(false);
-        $this->employeedetail->add(new DropDownChoice('editcontact'));
+
         $this->employeedetail->add(new SubmitButton('save'))->onClick($this, 'saveOnClick');
         $this->employeedetail->add(new Button('cancel'))->onClick($this, 'cancelOnClick');
         $this->employeedetail->add(new DropDownChoice('editdepartment', Department::findArray('department_name', '', 'department_name')));
@@ -42,16 +41,15 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->add(new TextInput('editsalary'));
         $this->employeedetail->add(new TextInput('editavans'));
         $this->employeedetail->add(new TextInput('editinn'));
+        $this->employeedetail->add(new TextInput('editlastname'));
+        $this->employeedetail->add(new TextInput('editfirstname'));
+        $this->employeedetail->add(new TextInput('editmiddlename'));
+        $this->employeedetail->add(new TextInput('editemail'));
+        $this->employeedetail->add(new TextInput('editphone'));
         $this->employeedetail->add(new Date('editfiredate'));
         $this->employeedetail->add(new Date('edithiredate'));
         $this->employeedetail->add(new CheckBox('editcombined'));
         $this->employeedetail->add(new CheckBox('editinvalid'));
-        $this->employeedetail->add(new ClickLink('opencontact'))->onClick($this, 'OpenOnClick');
-        $this->employeedetail->add(new ClickLink('showcontact'))->onClick($this, 'ShowOnClick');
-        $this->employeedetail->add(new ClickLink('addcontact'))->onClick($this, 'AddContactOnClick');
-
-        $this->add(new \ZippyERP\ERP\Blocks\Contact('contactdetail', $this, 'OnDetail'))->setVisible(false);
-        $this->add(new \ZippyERP\ERP\Blocks\ContactView('contactview'))->setVisible(false);
     }
 
     public function employeelistOnRow($row) {
@@ -75,25 +73,23 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeetable->setVisible(false);
         $this->employeedetail->setVisible(true);
         $this->employeedetail->editlogin->setText($this->_employee->login);
-        $this->employeedetail->editcontact->setOptionList(Contact::findArray("fullname", " (employee = 0 and customer = 0 ) or contact_id={$this->_employee->contact_id}", "fullname"));
-        $this->employeedetail->editcontact->setValue($this->_employee->contact_id);
-        $this->employeedetail->editcontact->setAttribute('readonly', 'readonly');
         $this->employeedetail->editposition->setValue($this->_employee->position_id);
         $this->employeedetail->editdepartment->setValue($this->_employee->department_id);
         $this->employeedetail->editsalarytype->setValue($this->_employee->salarytype);
         $this->employeedetail->editexptype->setValue($this->_employee->exptype);
         $this->employeedetail->editsalary->setText($this->_employee->salary);
         $this->employeedetail->editinn->setText($this->_employee->inn);
+        $this->employeedetail->editfirstname->setText($this->_employee->firstname);
+        $this->employeedetail->editmiddlename->setText($this->_employee->middlename);
+        $this->employeedetail->editlastname->setText($this->_employee->lastname);
+        $this->employeedetail->editphone->setText($this->_employee->phone);
+        $this->employeedetail->editemail->setText($this->_employee->email);
         $this->employeedetail->editavans->setText($this->_employee->avans);
         $this->employeedetail->editcombined->setChecked($this->_employee->combined);
         $this->employeedetail->editinvalid->setChecked($this->_employee->invalid);
         $this->employeedetail->editfiredate->setDate($this->_employee->firedate);
         if ($this->_employee->hiredate > 0)
             $this->employeedetail->edithiredate->setDate($this->_employee->hiredate);
-
-        $this->employeedetail->opencontact->setVisible(true);
-        $this->employeedetail->showcontact->setVisible(true);
-        $this->employeedetail->addcontact->setVisible(false);
     }
 
     public function addOnClick($sender) {
@@ -101,21 +97,14 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->employeedetail->setVisible(true);
         // Очищаем  форму
         $this->employeedetail->clean();
-        $this->employeedetail->editcontact->setAttribute('readonly', null);
-        $this->employeedetail->editfiredate->setDate(time());
+
+        $this->employeedetail->edithiredate->setDate(time());
+
 
         $this->_employee = new Employee();
-        $this->employeedetail->opencontact->setVisible(false);
-        $this->employeedetail->showcontact->setVisible(false);
-        $this->employeedetail->addcontact->setVisible(true);
     }
 
     public function saveOnClick($sender) {
-        $this->_employee->contact_id = $this->employeedetail->editcontact->getValue();
-        if ($this->_employee->contact_id == 0) {
-            $this->setError("Виберіть контакт");
-            return;
-        }
 
         $this->_employee->position_id = $this->employeedetail->editposition->getValue();
         $this->_employee->department_id = $this->employeedetail->editdepartment->getValue();
@@ -141,62 +130,31 @@ class EmployeeList extends \ZippyERP\ERP\Pages\Base
         $this->_employee->exptype = $this->employeedetail->editexptype->getValue();
         $this->_employee->salary = $this->employeedetail->editsalary->getText();
         $this->_employee->inn = $this->employeedetail->editinn->getText();
+        $this->_employee->middlename = $this->employeedetail->editmiddlename->getText();
+        $this->_employee->firstname = $this->employeedetail->editfirstname->getText();
+        $this->_employee->lastname = $this->employeedetail->editlastname->getText();
+        $this->_employee->phone = $this->employeedetail->editphone->getText();
+        $this->_employee->email = $this->employeedetail->editemail->getText();
         $this->_employee->avans = $this->employeedetail->editavans->getText();
         $this->_employee->combined = $this->employeedetail->editcombined->isChecked();
         $this->_employee->invalid = $this->employeedetail->editinvalid->isChecked();
         $this->_employee->firedate = $this->employeedetail->editfiredate->getDate();
         $this->_employee->hiredate = $this->employeedetail->edithiredate->getDate();
+        if ($this->_employee->hiredate == 0) {
+            $this->setError('Введіть  дату коли прийнятий.');
+            return;
+        }
 
         $this->_employee->Save();
 
         $this->employeedetail->setVisible(false);
         $this->employeetable->setVisible(true);
         $this->employeetable->employeelist->Reload();
-        $this->contactdetail->setVisible(false);
-        $this->contactview->setVisible(false);
     }
 
     public function cancelOnClick($sender) {
         $this->employeetable->setVisible(true);
         $this->employeedetail->setVisible(false);
-        $this->contactdetail->setVisible(false);
-        $this->contactview->setVisible(false);
-    }
-
-    //редактирование  контакта
-    public function OpenOnClick($sender) {
-        $contact = Contact::load($this->_employee->contact_id);
-        $this->contactdetail->open($contact);
-        $this->employeedetail->setVisible(false);
-        $this->contactview->setVisible(false);
-    }
-
-    //просмотр  контакта
-    public function ShowOnClick($sender) {
-        $contact = Contact::load($this->_employee->contact_id);
-        $this->contactview->open($contact);
-        $this->contactdetail->setVisible(false);
-    }
-
-    // новый  контакт  для  нового  сотрудника
-    public function AddContactOnClick($sender) {
-        $this->contactdetail->open();
-        $this->employeedetail->setVisible(false);
-    }
-
-    // вызывается  формой  контакта  после  редактирования
-    public function OnDetail($saved = false, $id = 0) {
-        $contact = Contact::load($this->contactdetail->getItem()->contact_id);
-
-        $this->employeedetail->editcontact->setValue($contact->contact_id);
-        $this->contactdetail->setVisible(false);
-        $this->employeedetail->setVisible(true);
-        if ($saved) {  //обновляем  данные  сотрудника  из  контакта
-            $this->employeetable->employeelist->Reload();
-            $this->employeedetail->opencontact->setVisible(true);
-            $this->employeedetail->showcontact->setVisible(true);
-            $this->employeedetail->addcontact->setVisible(false);
-        }
     }
 
 }

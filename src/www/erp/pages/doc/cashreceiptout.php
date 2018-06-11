@@ -87,10 +87,10 @@ class CashReceiptOut extends \ZippyERP\ERP\Pages\Base
         $text = $sender->getValue();
         $optype = $this->docform->optype->getValue();
         if ($optype == Consts::TYPEOP_CUSTOMER_OUT) {
-            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_SELLER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
+            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and   cust_type=" . Customer::TYPE_FIRM);
         }
         if ($optype == Consts::TYPEOP_CUSTOMER_OUT_BACK) {
-            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )");
+            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and   cust_type=" . Customer::TYPE_FIRM);
         }
         if ($optype == Consts::TYPEOP_BANK_OUT) {
             return MoneyFund::findArray('title', "title like '%{$text}%' ");

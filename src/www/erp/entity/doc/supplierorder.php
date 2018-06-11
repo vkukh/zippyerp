@@ -64,7 +64,7 @@ class SupplierOrder extends Document
     public function getRelationBased() {
         $list = array();
         $list['PurchaseInvoice'] = 'Вхідний рахунок';
-        //  $list['GoodsReceipt'] = 'Прибуткова накладна';
+        $list['GoodsReceipt'] = 'Прибуткова накладна';
         return $list;
     }
 

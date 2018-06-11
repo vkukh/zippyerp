@@ -45,6 +45,8 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('comment'));
         $this->docform->add(new TextInput('expenseamount'));
         $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
+        $this->docform->isnds->setChecked(H::usends());
+
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
@@ -115,8 +117,6 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
-
-        $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnItem'))->setVisible(false);
     }
 
     public function detailOnRow($row) {
@@ -221,7 +221,7 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->document_date->getDate();
         $isEdited = $this->_doc->document_id > 0;
-        $this->_doc->intattr1 = $this->docform->employee->getValue();
+        $this->_doc->datatag = $this->docform->employee->getValue();
         $conn = \ZDB\DB::getConnect();
         $conn->BeginTrans();
         try {
@@ -305,11 +305,6 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
 
     public function backtolistOnClick($sender) {
         App::RedirectBack();
-    }
-
-    public function addItemOnClick($sender) {
-        $this->editdetail->setVisible(false);
-        $this->itemdetail->open();
     }
 
     // событие  после  создания  нового элемента справочника номенклатуры

@@ -54,6 +54,10 @@ class User extends Entity
         $this->erpacl = (int) ($xml->erpacl[0]);
         $this->shopcontent = (int) ($xml->shopcontent[0]);
         $this->shoporders = (int) ($xml->shoporders[0]);
+        $this->aclview = (string) ($xml->aclview[0]);
+        $this->acledit = (string) ($xml->acledit[0]);
+        $this->menu = (string) ($xml->menu[0]);
+        $this->widgets = (string) ($xml->widgets[0]);
 
         parent::afterLoad();
     }
@@ -68,6 +72,10 @@ class User extends Entity
         $this->acl = "<detail><erpacl>{$this->erpacl}</erpacl>";
         $this->acl .= "<shopcontent>{$this->shopcontent}</shopcontent>";
         $this->acl .= "<shoporders>{$this->shoporders}</shoporders>";
+        $this->acl .= "<aclview>{$this->aclview}</aclview>";
+        $this->acl .= "<acledit>{$this->acledit}</acledit>";
+        $this->acl .= "<menu>{$this->menu}</menu>";
+        $this->acl .= "<widgets>{$this->widgets}</widgets>";
         $this->acl .= "</detail>";
 
         return true;

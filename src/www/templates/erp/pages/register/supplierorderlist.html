@@ -1,38 +1,37 @@
 <html>
     <body>
         <div class="row">
-            <div class="col-xs-10">
+            <div class="col-10">
 
 
                 <h3>Журнал замовлень постачальнику </h3>
 
-                <form zippy="filter" class="navbar-form  navbar-left">
-                    <div class="form-group">
-                        <label for="statelist">Статус</label>
-                        <select class="form-control" zippy="statelist">
-                            <option value="0">Всі</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="supplierlist">Постачальник</label>
-                        <select class="form-control select2" zippy="supplierlist">
-                            <option value="0">Всі</option>
-                        </select>
-                    </div>
+                <form zippy="filter" class="form-inline ">
 
-                    <div class="form-group">
-                        <input type="submit" class="btn  btn-default" value="ОК">
-                    </div>
+                    <label for="statelist">Статус</label>
+                    <select class="form-control mr-sm-2" zippy="statelist">
+                        <option value="0">Всі</option>
+                    </select>
+
+
+                    <label for="supplierlist">Постачальник</label>
+                    <input placeholder="Почніть вводити..." class="form-control mr-sm-2 "   zippy="supplierlist" />
+
+
+
+
+                    <input type="submit" class="btn  btn-outline-success" value="ОК">
+
 
 
                 </form>
-                <table class="table table-striped  table-condensed ">
+                <table class="table table-striped  table-sm">
                     <tr>
 
                         <th>Номер</th>
                         <th>Постачальник</th>
                         <th>Дата</th>
-                        <th>Сума</th>
+                        <th style="text-align: right;">Сума</th>
                         <th>Статус</th>
 
 
@@ -48,7 +47,7 @@
                         <td zippy="state"></td>
                         <td><a zippy="show" title="Просмотр"><i class="fa fa-search"></i></a> <a zippy="edit"
                                                                                                      title="Редактировать"><i
-                                    class="fa fa-pencil-square-o"></i></a></td>
+                                    class="fa fa-edit"></i></a></td>
 
                     </tr>
                 </table>

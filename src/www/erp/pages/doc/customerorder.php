@@ -225,11 +225,6 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
         $this->docform->total->setText(H::fm($total));
     }
 
-    public function OnAutoCustomer($sender) {
-        $text = $sender->getText();
-        return Customer::searchClient($text);
-    }
-
     public function OnChangeCustomer($sender) {
         $this->_discount = 0;
         $customer_id = $this->docform->customer->getKey();
@@ -250,13 +245,18 @@ class CustomerOrder extends \ZippyERP\ERP\Pages\Base
 
         $item = Item::load($sender->getKey());
         $stock = Stock::getFirst("item_id={$item->item_id} and store_id in(select store_id from erp_store where  store_type=1)", "  store_id desc");
-        $price = $item->getOptPrice($stock->price > 0 ? $stock->price : 0 );
-        $price = $price - $price/100*$this->_discount;
+        $price = $item->getOptPrice($stock->price > 0 ? $stock->price : 0);
+        $price = $price - $price / 100 * $this->_discount;
         $this->editdetail->editprice->setText(H::fm($price));
 
 
         $this->editdetail->qtystore->setText("" . Item::getQuantity($item->item_id, $this->docform->timeline->getDate()) / 1000);
         $this->updateAjax(array('editprice', 'qtystore'));
+    }
+
+    public function OnAutoCustomer($sender) {
+        $text = Customer::qstr('%' . $sender->getText() . '%');
+        return Customer::findArray("customer_name", "Customer_name like " . $text);
     }
 
 }

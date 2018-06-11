@@ -21,33 +21,30 @@
         <form zippy="docform">
             <h3> Прибуткова накладна </h3>
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
-                        <label for="document_number" class="  control-label">Номер документу</label>
+                        <label for="document_number" >Номер документу</label>
                         <input class="form-control" type="text" zippy="document_number" required="required">
                     </div>
                     <div class="form-group  ">
-                        <label for="customer" class="  control-label">Постачальник</label>
-
-                        <select class="form-control select2" zippy="customer" >
-                            <option value="0">Не вибрано</option>
-                        </select>                
+                        <label for="customer" class="col-2 control-label">Постачальник</label>
+                        <input placeholder="Почніть вводити..." class="form-control "   zippy="customer" />
 
                     </div>
                     <div class="form-group  ">
-                        <label for="contract" class="  control-label">Угод, замовлення </label>
+                        <label for="contract" >Угода, замовлення </label>
 
                         <input class="form-control" type="text" zippy="contract">
 
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
-                        <label for="document_date" class="  control-label"> Дата</label>
+                        <label for="document_date" > Дата</label>
                         <input class="form-control" type="text" zippy="document_date" required="required">
                     </div>
                     <div class="form-group  ">
-                        <label for="store" class="  control-label">На склад</label>
+                        <label for="store" >На склад</label>
                         <select class="form-control" zippy="store">
                         </select>
                     </div>
@@ -78,17 +75,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-10">
+                <div class="col-10">
                     <a zippy="addrow">Додати позицію</a>
-                    <table class="table  table-condensed">
+                    <table class="table  table-sm">
                         <tr>
                             <th>Тип</th>
                             <th>Найменування</th>
                             <th width="50">Од.вим..</th>
-                            <th width="40">Кіл.</th>
-                            <th width="100" style="text-align: center;">Ціна-</th>
-                            <th width="100" style="text-align: center;">Ціна+</th>
-                            <th width="67" style="text-align: center;">Сума</th>
+                            <th width="40"style="text-align: right;">Кіл.</th>
+                            <th width="100" style="text-align: right;">Ціна-</th>
+                            <th width="100" style="text-align: right;">Ціна+</th>
+                            <th width="67" style="text-align: right;">Сума</th>
 
                             <th width="50"></th>
                         </tr>
@@ -101,7 +98,7 @@
                             <td zippy="pricends" align="right"></td>
                             <td zippy="amount" align="right"></td>
 
-                            <td><a zippy="edit"><i class="fa fa-pencil-square-o"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a>
+                            <td><a zippy="edit"><i class="fa fa-edit"></i></a> <a zippy="delete"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                         <tr style="font-weight: bolder;">
@@ -121,10 +118,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6">
-                    <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-default  ">
-                    <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-default  ">
-                    &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-default  ">
+                <div class="col-6">
+                    <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-light  ">
+                    <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-light  ">
+                    &nbsp;<input zippy="execdoc" type="submit" value="Провести" class="btn btn-light  ">
 
                 </div>
             </div>
@@ -136,18 +133,18 @@
         <form zippy="editdetail">
             <h4>Ввод товару </h4>
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-4">
                     <div class="form-group">
                         <label for="edittype">Оприходувати як</label>
                         <select class="form-control" zippy="edittype"></select>
                     </div>
 
                     <div class="form-group">
-                        <label for="edititem">Найменування </label>
-                        <select class="form-control select2"   zippy="edititem" >
-                            <option value="0">Не вибрано</option>
-                        </select>
-                        <!-- <a  title="Создать и  Додати  в справлчник" zippy="additem"><span class="fa fa-plus-square"></span> </a> -->
+
+                        <label for="edititem">Назва </label>
+                        <input placeholder="Почніть вводити..." class="form-control "   zippy="edititem" />
+                        <a href="/?p=ZippyERP/ERP/Pages/Reference/ItemList&arg=true" target="_blank"  >Додати новий в довідник</a>
+
 
                     </div>
 
@@ -167,10 +164,10 @@
                                style="width: 100px;">
                     </div>
                     <div class="form-group">
-                        <input zippy="saverow" type="submit" value="Зберегти" class="btn btn-default"> <input type="button"
-                                                                                                              zippy="cancelrow"
-                                                                                                              value="Відмінити"
-                                                                                                              class="btn btn-default ">
+                        <input zippy="saverow" type="submit" value="Зберегти" class="btn btn-light"> <input type="button"
+                                                                                                            zippy="cancelrow"
+                                                                                                            value="Відмінити"
+                                                                                                            class="btn btn-light ">
                     </div>
                 </div>
             </div>

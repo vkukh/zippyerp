@@ -6,109 +6,119 @@
     </head>
     <body>
         <div class="row"  >
-            <div class="col-xs-12">
+            <div class="col-12">
                 <h3>Список товарів</h3>
             </div>
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-12 col-md-4">
                 <div zippy="tree"></div>
             </div>
-            <div class="col-xs-12 col-sm-8">
+            <div class="col-12 col-md-8">
                 <div class="row">
-                    <div  zippy="listpanel" class="col-xs-12 col-sm-10" >
+                    <div  zippy="listpanel" class="col-12   col-lg-10" >
 
-                        <form zippy="searchform" class="navbar-form  ">
-                            <div class="form-group">
-                                <input  zippy="skeyword"  placeholder="Пошук" type="text" class="form-control"  >
-                            </div>
-                            <div class="checkbox"><label>
-                                    <input type="checkbox"  zippy="sstatus" > неактивний
-                                </label>
+                        <form zippy="searchform" class="form-inline  ">
 
-                            </div>
-                            <div class="form-group">
-                                <select  zippy="smanuf" class="form-control" >
-                                    <option value="0">Виробник, бренд</option>
+                            <input  zippy="skeyword"  placeholder="Пошук" type="text" class="form-control mr-sm-2"  >
 
-                                </select>
-                            </div>
+
+                            <div class="form-check   ">
+
+                                <input class="form-check-input"  type="checkbox" zippy="sstatus">
+                                <label class="form-check-label mr-sm-2" for="sstatus"> неактивний </label>
+                            </div>    
+                            <select  zippy="smanuf" class="form-control select2  mr-sm-2" >
+                                <option value="0">Виробник, бренд</option>
+
+                            </select>
+
                             <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>  
-                            &nbsp;<a title="Очистка формы" zippy="sclear" ><i class="fa fa-eraser"></i></a>  
+                            &nbsp;<a title="Очистка форми" zippy="sclear" ><i class="fa fa-eraser"></i></a>  
 
                         </form>
-                        <form  zippy="sortform" class="navbar-form  ">
-                            <div class="form-group">
-                                <label for="sorting">Сортування</label>
-                                <select zippy="sorting" class="form-control" >
-                                    <option value="0">По назві</option>
-                                    <option value="1">По зростанню ціни</option>
-                                    <option value="2">По зменшенню ціни</option>
-                                    <option value="3">По зменшенню наявності</option>
-                                    <option value="4">По зростанню наявності</option>
+                        <form  zippy="sortform" class="form-inline  ">
+
+                            <label for="sorting">Сортувати </label>
+                            <select zippy="sorting" class="form-control   mr-sm-2" >
+                                <option value="0">По назві</option>
+                                <option value="1">По зростанню ціни</option>
+                                <option value="2">По зменшенню ціни</option>
+                                <option value="3">По зменшенню наявності</option>
+                                <option value="4">По зростанню наявності</option>
 
 
-                                </select>
-                            </div>          
+                            </select>
+
                         </form>
 
                         <a zippy="addnew" class="btn btn-info">Додати новий</a>
 
-                        <table class="table">
-                            <tr><th style="width:75px;"> </th><th>Найменування</th> <th>Код </th><th>Ціна </th><th>Наявність</th><th> </th>  </tr>
+                        <table class="table table-sm">
+                            <tr><th style="width:75px;"> </th><th>Найменування</th> <th>Код </th><th style="text-align: right;">Ціна </th><th style="text-align: right;">Кiл.</th><th> </th>  </tr>
                             <tr zippy="plist">
                                 <td><img style="width:75px;" zippy="lphoto"> </td>
-                                <td><h5 ><a zippy="lname"></a></h5> 
-                                    <h6 zippy="lmanuf"></h6>
+                                <td><h6 ><a zippy="lname"></a></h6> 
+                                    <span zippy="lmanuf"></span>
 
 
                                 </td>
 
                                 <td><span zippy="lcode"></span> </td>
-                                <td align="right"><span zippy="lprice"></span> </td>
-                                <td align="right"><span zippy="lcnt"></span> </td>
-                                <td><p zippy="ldescshort"></p></td>
+                                <td style="text-align: right;"><span zippy="lprice"></span> </td>
+                                <td style="text-align: right;"><span zippy="lcnt"></span> </td>
+                                <td><p style="font-size: smaller;" zippy="ldescshort"></p></td>
 
                             </tr>
                         </table>
                         <div zippy="pag"></div>
                     </div>
-                    <div zippy="editpanel"  class="col-xs-12 col-sm-6   col-lg-3  ">         
+                    <div zippy="editpanel"  class="col-12 col-sm-10 col-lg-6        ">         
                         <form zippy="editform2"   >
                             <h4>Вибір товару  зі складу</h4>
-                            <div class="form-group">
-                                <label for="eitem">Складське найменування</label>
-                                <select zippy="eitem"   class="form-control select2"  >
-                                    <option value='0'>Выбрати товар</option>
-                                </select>
+                            <div class="form-group row">
+                                <label class="col-4" for="eitem">Складське найменування</label>
+                                <div class="col-8">
+                                    <input zippy="eitem"  type="text" class="form-control"  placeholder="Почніть вводити..."    >
+                                </div>
                             </div>         
                             <div class="form-group"  >
-                                <a zippy="bcancel2"  class="btn btn-default">Відмінити</a>&nbsp;
-                                <input type="submit"    class="btn btn-default" value="Далі" >
+                                <a zippy="bcancel2"  class="btn btn-light">Відмінити</a>&nbsp;
+                                <input type="submit"    class="btn btn-outline-success" value="Далі" >
 
                             </div>        
                         </form>             
                         <form zippy="editform"  enctype="multipart/form-data">
                             <h4>Редагування товару</h4>
-                            <div class="form-group">
-                                <label for="ename">Назва</label>
-                                <input zippy="ename"  type="text" class="form-control" required="required"  >
+                            <div class="form-group  row">
+                                <label class="col-4"  for="ename">Назва</label>
+                                <div class="col-8">
+                                    <input zippy="ename"  type="text" class="form-control" required="required"  >
+                                </div>       
                             </div>       
-                            <div class="form-group">
-                                <label for="ecode">Код</label>
-                                <input zippy="ecode"  type="text" class="form-control"  >
+                            <div class="form-group row">
+                                <label class="col-4" for="ecode">Код</label>
+                                <div class="col-8">
+                                    <input zippy="ecode"  type="text" class="form-control"  >
+                                </div>       
                             </div>       
-                            <div class="form-group">
-                                <label for="edescshort">Короткий опис</label>
-                                <textarea zippy="edescshort"   class="form-control"  ></textarea>
+                            <div class="form-group row">
+                                <label class="col-4"  for="edescshort">Короткий опис</label>
+                                <div class="col-8">
+                                    <textarea zippy="edescshort"   class="form-control"  ></textarea>
+                                </div>       
                             </div>       
-                            <div class="form-group">
-                                <label for="edescdet">Детальний опис</label>
-                                <textarea style="height:200px" zippy="edescdet"   class="form-control"   ></textarea>
+                            <div class="form-group row">
+                                <label class="col-4" for="edescdet">Детальний опис</label>
+                                <div class="col-8">
+                                    <textarea style="height:200px" zippy="edescdet"   class="form-control"   ></textarea>
+                                </div>       
                             </div>       
-                            <div class="form-group">
-                                <label for="emanuf">Виробник, бренд</label>
-                                <select zippy="emanuf"   class="form-control select2"  >
-                                    <option value='0'>Вибрати  </option>
-                                </select>
+                            <div class="form-group row">
+                                <label class="col-4" for="emanuf">Виробник, бренд</label>
+                                <div class="col-8">
+                                    <select    zippy="emanuf"   class="form-control select2"  >
+                                        <option value='0'>Вибрати  </option>
+                                    </select>
+                                </div> 
                             </div> 
                             <div class="form-group">
                                 <label for="photo">Фото</label><br>
@@ -116,12 +126,14 @@
                                 <input   zippy="photo"  type="file" class="form-control"  >
                             </div>   
 
-                            <div class="form-group">
-                                <label for="estock">Ціна</label>
-                                <select zippy="estock"   class="form-control"  >
-                                </select>
+                            <div class="form-group row">
+                                <label class="col-4" for="estock">Ціна</label>
+                                <div class="col-8">
+                                    <select zippy="estock"   class="form-control"  >
+                                    </select>
+                                </div>       
                             </div>       
-                            <table class="table table-condensed">
+                            <table class="table table-sm">
                                 <tr  zippy="attrlist">
                                     <td>
                                         <div zippy="attrdata"></div> 
@@ -133,23 +145,25 @@
                                     </td>
                                 </tr></table>    
 
-                            <div class="checkbox"  >
-                                <label>
-                                    <input zippy="edisabled" type="checkbox"> <span data-label="edisabled">Неактивний </span>
-                                </label>   
-                            </div> 
 
-                            <div class="form-group">
-                                <label for="egroup">Група&nbsp;<i zippy="tt" class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Вибір гшої групи для переміщення  товару"></i></label>
-                                <select zippy="egroup"   class="form-control select2"  >
-                                </select>
-                            </div> 
 
+                            <div class="form-group  row">
+                                <label class="col-4" for="egroup">Група&nbsp;<i zippy="tt" class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Вибір іншої групи для переміщення  товару"></i></label>
+                                <div class="col-8">
+                                    <select zippy="egroup"   class="form-control select2"  >
+                                    </select>
+                                </div> 
+                            </div> 
+                            <div class="form-check   ">
+
+                                <input class="form-check-input"  type="checkbox" zippy="edisabled">
+                                <label class="form-check-label mr-sm-2" for="edisabled" data-label="edisabled">  Знятий з продажу  </label>
+                            </div>
                             <div class="form-group"  >
-                                <a zippy="bback"  class="btn btn-default btn-sm">Назад</a>
-                                &nbsp;<a zippy="bcancel"  class="btn btn-default  btn-sm">Відмінити</a>
-                                &nbsp;<input type="submit"    class="btn btn-default  btn-sm" value="Зберегти" >
-                                &nbsp;<a zippy="bdelete"  class="btn btn-danger  btn-sm">Видалити</a>
+                                <a zippy="bback"  class="btn btn-light btn-sm">Назад</a>
+                                &nbsp;<a zippy="bcancel"  class="btn btn-light  btn-sm">Відмінити</a>
+                                &nbsp;<input type="submit"    class="btn btn-outline-success  btn-sm" value="Зберегти" >
+                                &nbsp;<a zippy="bdelete"  class="btn btn-outline-danger  btn-sm">Видалити</a>
 
                             </div>        
                         </form>

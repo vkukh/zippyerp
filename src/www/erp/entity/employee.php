@@ -30,6 +30,8 @@ class Employee extends \ZCL\DB\Entity
         $this->detail .= "<avans>{$this->avans}</avans>";
         $this->detail .= "<combined>{$this->combined}</combined>";
         $this->detail .= "<invalid>{$this->invalid}</invalid>";
+        $this->detail .= "<email>{$this->email}</email>";
+        $this->detail .= "<phone>{$this->phone}</phone>";
         $this->detail .= "</detail>";
 
         return true;
@@ -43,6 +45,8 @@ class Employee extends \ZCL\DB\Entity
         //распаковываем  данные из detail
         $xml = simplexml_load_string($this->detail);
         $this->login = (string) ($xml->login[0]);
+        $this->phone = (string) ($xml->phone[0]);
+        $this->email = (string) ($xml->email[0]);
         $this->salarytype = (int) ($xml->salarytype[0]);
         $this->exptype = (int) ($xml->exptype[0]);
         $this->salary = (int) ($xml->salary[0]);

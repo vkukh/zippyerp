@@ -42,7 +42,7 @@ class GoodsIssue extends Document
         $header = array('date' => date('d.m.Y', $this->document_date),
             "firmname" => $firm['name'],
             "firmcode" => $firm['code'],
-            "customername" => $this->headerdata["customername"],
+            "customername" => $this->headerdata["customer_name"],
             "document_number" => $this->document_number,
             "totalnds" => $this->headerdata["totalnds"] > 0 ? H::fm($this->headerdata["totalnds"]) : 0,
             "total" => H::fm($this->headerdata["total"]),
@@ -159,6 +159,7 @@ class GoodsIssue extends Document
         $list = array();
         $list['TaxInvoice'] = 'Податкова накладна';
         $list['ReturnGoodsIssue'] = 'Накладна на  повернення';
+        $list['Warranty'] = 'Гарантійний талон';
 
         return $list;
     }

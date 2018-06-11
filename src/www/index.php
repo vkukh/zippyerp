@@ -25,11 +25,11 @@ try {
         }
 
       $app = new \Zippy\WebApplication('\ZippyERP\ERP\Pages\Main');
-
+      //функции для  загрузки шаблонов страницы
       $app->setTemplate("\\ZippyERP\\System\\getTemplate");
       $app->setTemplate("\\ZippyERP\\ERP\\getTemplate");
       $app->setTemplate("\\ZippyERP\\Shop\\getTemplate");
-      
+      //функции дляроутинга 
       $app->setRoute("\\ZippyERP\\System\\Route");
       $app->setRoute("\\ZippyERP\\ERP\\Route");
       $app->setRoute("\\ZippyERP\\Shop\\Route");
@@ -51,13 +51,27 @@ try {
 
       \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
      */
-} catch (Exception $e) {
+} 
+catch (Throwable $e) {
     if($e  instanceof ADODB_Exception){
 
        \ZDB\DB::getConnect()->CompleteTrans(false); // откат транзакции
     }
     $msg =    $e->getMessage() ;
     $logger->error($e);
-   // \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
+    if($e  instanceof Error ){
+        echo $e->getMessage().'<br>';
+        echo $e->getLine().'<br>';
+        echo $e->getFile().'<br>';
+    }
+}
+catch (Excption $e) {    //для обратной совместимости
+    if($e  instanceof ADODB_Exception){
+
+       \ZDB\DB::getConnect()->CompleteTrans(false); // откат транзакции
+    }
+    $msg =    $e->getMessage() ;
+    $logger->error($e);
+   
 }
 

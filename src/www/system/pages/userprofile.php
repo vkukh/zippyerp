@@ -4,8 +4,11 @@ namespace ZippyERP\System\Pages;
 
 use Zippy\Binding\PropertyBinding as Bind;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\CheckBox;
+use Zippy\Html\Form\Form;
 use Zippy\Html\Label;
 use ZippyERP\System\System;
+use \Zippy\Html\DataList\DataView;
 
 class UserProfile extends \ZippyERP\System\Pages\Base
 {
@@ -21,18 +24,20 @@ class UserProfile extends \ZippyERP\System\Pages\Base
             App::Redirect("\\ZippyERP\\System\\Pages\\Userlogin");
         }
         //форма   профиля
-        $form = new \Zippy\Html\Form\Form('profileform');
+        $form = new  Form('profileform');
         $form->add(new Label('userlogin', $this->user->userlogin));
         $form->add(new TextInput('email', $this->user->email));
         $form->onSubmit($this, 'onsubmitprof');
         $this->add($form);
 
         //форма   пароля
-        $form = new \Zippy\Html\Form\Form('passwordform');
+        $form = new  Form('passwordform');
         $form->add(new TextInput('userpassword'));
         $form->add(new TextInput('confirmpassword'));
         $form->onSubmit($this, 'onsubmitpass');
         $this->add($form);
+        
+ 
     }
 
     //записать  пароль
@@ -56,19 +61,20 @@ class UserProfile extends \ZippyERP\System\Pages\Base
             $this->user->userpass = (\password_hash($pass, PASSWORD_DEFAULT));
             $this->user->save();
         }
-        $this->setSuccess('Пароль записан');
+        $this->setSuccess('Пароль збережений');
         $sender->userpassword->setText('');
         $sender->confirmpassword->setText('');
     }
-
+  
     //запись  профиля
+    
     public function onsubmitprof($sender) {
         $this->user->email = $sender->email->getText();
         if (!$this->isError()) {
             $this->user->save();
             System::setUser($user);
-            $this->setSuccess('Профиль записан');
+            $this->setSuccess('Профіль збережений');
         }
     }
 
-}
+ }

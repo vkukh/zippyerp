@@ -25,7 +25,7 @@ use Zippy\WebApplication as App;
 class MoveBackItem extends \ZippyERP\ERP\Pages\Base
 {
 
-    private $_itemtype = array(201 => 'Материал', 281 => 'Товар', 22 => 'МПБ', 26 => 'Готовая продукция');
+    private $_itemtype = array(201 => 'Матеріал', 281 => 'Товар', 22 => 'МПБ', 26 => 'Готова  продукція');
     public $_itemlist = array();
     private $_doc;
     private $_rowid = 0;

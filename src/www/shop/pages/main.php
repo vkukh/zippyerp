@@ -44,7 +44,7 @@ class Main extends Base
             $this->subcatlistp->subcatlist->Reload();
 
         $this->add(new Panel("newlistp"));
-        $this->newlistp->add(new DataView("newlist", new EntityDataSource("\\ZippyERP\\Shop\\Entity\\Product", "", "product_id desc", 12), $this, 'OnNewRow'))->Reload();
+         $this->newlistp->add(new DataView("newlist", new EntityDataSource("\\ZippyERP\\Shop\\Entity\\Product", "", "product_id desc", 12), $this, 'OnNewRow'))->Reload();
     }
 
     public function OnCatRow($datarow) {

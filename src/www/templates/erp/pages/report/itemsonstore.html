@@ -4,22 +4,18 @@
     </head>
     <body>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <h3>Звіт про наявніть товарів на складі</h3>
-                <form zippy="filter" class="navbar-form ">
-                    <div class="form-group">
-                        <label for="from">Дата</label>
-                        <input class="form-control" style="width: 100px" type="text" zippy="from">
-                    </div>
+                <form zippy="filter" class="form-inline">
 
-                    <div class="form-group">
-                        <label for="to">Склад</label>
-                        <select class="form-control" zippy="store"> </select>
-                    </div>
+                    <label for="from">Дата</label>
+                    <input class="form-control mr-sm-2" style="width: 100px" type="text" zippy="from">
 
-                    <div class="form-group">
-                        <input class="btn btn-default  " type="submit" value="ОК">
-                    </div>
+                    <label for="to">Склад</label>
+                    <select class="form-control mr-sm-2" zippy="store"> </select>
+
+                    <input class="btn btn-light  " type="submit" value="ОК">
+
 
                 </form>
 

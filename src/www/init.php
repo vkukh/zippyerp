@@ -24,7 +24,6 @@ $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
 //Параметры   соединения  с  БД
 \ZDB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
 
-; 
 
 //подключение  ядра и модулей системмы
 require_once _ROOT . 'system/start.inc.php';

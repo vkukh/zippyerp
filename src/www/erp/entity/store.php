@@ -20,7 +20,7 @@ class Store extends \ZCL\DB\Entity
         $conn = \ZDB\DB::getConnect();
         $sql = "  select count(*)  from  erp_store_stock where   store_id = {$this->store_id}";
         $cnt = $conn->GetOne($sql);
-        return $cnt == 0;
+        return ($cnt > 0) ? false : true;
     }
 
     /**
@@ -39,6 +39,15 @@ class Store extends \ZCL\DB\Entity
         }
 
         return $list;
+    }
+
+    /**
+     * Возвращает основной склад
+     * 
+     */
+    public static function getBased() {
+        $com = \ZippyERP\System\System::getOptions('common');
+        return $com['basestore'] > 0 ? $com['basestore'] : 0;
     }
 
 }

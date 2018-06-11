@@ -81,7 +81,7 @@ class ItemsOnStore extends \ZippyERP\ERP\Pages\Base
             select itemname,partion, sum(a.`quantity`/1000) as qty  from `erp_stock_view` s join `erp_account_subconto` a
             on s.`stock_id` = a.`stock_id`   and store_id = {$storeid}
             group by itemname,partion
-            having qty > 0  order  by  itemname,partion
+            having qty <> 0  order  by  itemname,partion
         ";
 
         $rs = $conn->Execute($sql);

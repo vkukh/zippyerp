@@ -151,6 +151,7 @@ class Catalog extends Base
         $this->cartlistpanel->setVisible(\ZippyERP\Shop\Basket::getBasket()->isEmpty() == false);
         $this->cartlistpanel->cartlist->setDataSource(\ZippyERP\Shop\Basket::getBasket());
         $this->cartlistpanel->cartlist->Reload();
+        $this->resetURL();
     }
 
     public function searchformOnSubmit($sender) {
@@ -392,9 +393,14 @@ class ManufacturerList extends \Zippy\Html\Form\CheckBoxList
 
     public function RenderItem($name, $checked, $caption = "", $attr = "", $delimiter = "") {
         return " 
-  <div class=\"checkbox\" ><label>
-        <input   type=\"checkbox\" name=\"{$name}\" {$attr} {$checked}  /> {$caption} 
-     </label></div>  
+   
+    <div class=\"form-check\"   >
+        
+        <input class=\"form-check-input\"   type=\"checkbox\" name=\"{$name}\" {$attr} {$checked}    >
+        <label class=\"form-check-label mr-sm-2\"   >{$caption}</label>
+    </div>     
+     
+     
      ";
     }
 

@@ -107,7 +107,7 @@ class GroupList extends \ZippyERP\Shop\Pages\Base
             $this->group = null;
             return;
         }
-        if ($nodeid == -2) {
+        if ($nodeid == PHP_INT_MAX) {
             $this->group = $this->rootgroup;
             return;
         }

@@ -28,7 +28,7 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
 {
 
     public $_itemlist = array();
-    private $_itemtype = array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ');
+    private $_itemtype = array(281 => 'Товар', 201 => 'Матеріал', 22 => 'МШБ');
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
@@ -39,11 +39,13 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('docform'));
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
-        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', " ( cust_type=" . Customer::TYPE_BUYER . " or cust_type= " . Customer::TYPE_BUYER_SELLER . " )", 'customer_name')));
+        $this->docform->add(new DropDownChoice('customer', Customer::findArray('customer_name', "   cust_type=" . Customer::TYPE_FIRM, 'customer_name')));
         $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type=" . Store::STORE_TYPE_OPT)));
         $this->docform->add(new AutocompleteTextInput('contract'))->onText($this, "OnAutoContract");
 
         $this->docform->add(new CheckBox('isnds'))->onChange($this, 'onIsnds');
+        $this->docform->isnds->setChecked(H::usends());
+
         $this->docform->add(new CheckBox('cash'));
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
@@ -62,7 +64,7 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('saverow'))->onClick($this, 'saverowOnClick');
-        //$this->editdetail->add(new SubmitLink('additem'))->onClick($this, 'addItemOnClick');
+
 
         if ($docid > 0) {    //загружаем   содержимок  документа настраницу
             $this->_doc = Document::load($docid);
@@ -105,8 +107,6 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
         }
 
         $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
-
-        $this->add(new \ZippyERP\ERP\Blocks\Item('itemdetail', $this, 'OnItem'))->setVisible(false);
     }
 
     public function detailOnRow($row) {
@@ -310,18 +310,6 @@ class ReturnGoodsIssue extends \ZippyERP\ERP\Pages\Base
     public function addItemOnClick($sender) {
         $this->editdetail->setVisible(false);
         $this->itemdetail->open();
-    }
-
-    // событие  после  создания  нового жлемента справочника номенклатуры
-    public function OnItem($cancel = false) {
-        $this->editdetail->setVisible(true);
-        if ($cancel == true)
-            return;
-
-        $item = $this->itemdetail->getData();
-
-
-        $this->editdetail->edititem->setValue($item->item_id);
     }
 
     public function OnAutoContract($sender) {

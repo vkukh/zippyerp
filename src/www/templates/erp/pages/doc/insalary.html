@@ -3,42 +3,42 @@
     <body>
 
 
-        <form zippy="docform" class="form-horizontal">
+        <form zippy="docform"  >
             <h3>Нарахування зарплати</h3>
             <div class="row">
-
-                <div class="form-group">
-                    <label for="document_number" class="col-2  control-label">Номер документу</label>
-                    <div class="col-3">
-                        <input class="form-control" type="text" zippy="document_number" required="required">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="document_date" class="col-2  control-label"> Дата</label>
-                    <div class="col-3">
-                        <input class="form-control" type="text" zippy="document_date" style="width:110px;" required="required">
-                    </div>
-                </div>
-
+           <div class="col-8 col-lg-4">
                 <div class="form-group  ">
-                    <label for="month" class="col-2  control-label">Період</label>
-                    <div class="col-3">
+                    <label for="document_number"  >Номер документу</label>
+                  
+                        <input class="form-control" type="text" zippy="document_number" required="required">
+                   
+                </div>
+                <div class="form-group  ">
+                    <label for="document_date"  > Дата</label>
+                
+                        <input class="form-control" type="text" zippy="document_date" style="width:110px;" required="required">
+                    
+                </div>
+
+                <div class="form-group    ">
+                    <label for="month"  >Період</label>
+                        <br>
                         <select class="form-control" style="width:110px;display:inline" zippy="month"></select>&nbsp;
                         <select class="form-control" style="width:85px;display:inline" zippy="year"></select>
 
-                    </div>
+                   
 
                 </div>
-                <div class="form-group">
-                    <label for="document_date" class="col-2  control-label"> </label>
-                    <div class="col-3 checkbox">
-                        <labeL>
-                            <input type="checkbox" zippy="isavans"> Аванс
-                        </label>
-                    </div>
+                <div class="form-group  ">
+                   
+                <div class="form-check   ">
 
+                            <input class="form-check-input"  type="checkbox" zippy="isavans">
+                            <label class="form-check-label mr-sm-2" for="isavans">Аванс</label>
+                        </div>  
                 </div>
 
+            </div>
             </div>
 
             <div class="row">
@@ -94,7 +94,7 @@
 
 
                 <div class="form-group">
-                    <label for="editemployee" class="col-3 control-label">ФИО </label>
+                    <label for="editemployee" class="col-3 col-form-label">ФИО </label>
                     <div class="col-4 ">
                         <select class="form-control select2" type="text" zippy="editemployee" >
                             <option value="0">Не вибрано</option>
@@ -103,44 +103,44 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="basesalary" class="col-3 control-label">Основна  зарплата </label>
+                    <label for="basesalary" class="col-3 col-form-label">Основна  зарплата </label>
                     <div class="col-2 ">
                         <input zippy="basesalary" class="form-control" type="text" value="0" pattern="[0-9\.]+">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="vacation" class="col-3 control-label"> Відпускні </label>
+                    <label for="vacation" class="col-3 col-form-label"> Відпускні </label>
                     <div class="col-2 ">
                         <input zippy="vacation" class="form-control" type="text" value="0" pattern="[0-9\.]+">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="sick" class="col-3 control-label"> Лікарняний </label>
+                    <label for="sick" class="col-3 col-form-label"> Лікарняний </label>
                     <div class="col-2 ">
                         <input zippy="sick" class="form-control" type="text" pattern="[0-9\.]+">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-3 control-label"> </label>
+                    <label class="col-3 col-form-label"> </label>
                     <div class="col-3 ">
                         <input type="submit" zippy="submitcalc" value="Розрахувати " class="btn btn-light ">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="taxfl" class="col-3 control-label">Подоходний</label>
+                    <label for="taxfl" class="col-3 col-form-label">Подоходний</label>
                     <div class="col-2 ">
                         <input zippy="taxfl" class="form-control" type="text" value="0" pattern="[0-9\.]+">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="taxecb" class="col-3 control-label">ЕСВ</label>
+                    <label for="taxecb" class="col-3 col-form-label">ЕСВ</label>
                     <div class="col-2 ">
                         <input zippy="taxecb" class="form-control" type="text" value="0" pattern="[0-9\.]+">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="taxmil" class="col-3 control-label">Війсковий збір</label>
+                    <label for="taxmil" class="col-3 col-form-label">Війсковий збір</label>
                     <div class="col-2 ">
                         <input zippy="taxmil" class="form-control" type="text" pattern="[0-9\.]+">
                     </div>

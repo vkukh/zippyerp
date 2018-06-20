@@ -3,33 +3,33 @@
 
     <body>
         <div class="row">
-            <div class="col-10">
+            <div class="col-10 col-lg-8">
                 <h3>Журнал проводок </h3>
 
                 <form zippy="filter"   >
                     <div class="form-group  row">
-                        <label for="from" class="col-2 control-label">З</label>
-                        <div class="col-3">
+                        <label for="from" class="col-4 col-form-label">З</label>
+                        <div class="col-6">
                             <input type="text" class="form-control" zippy="from">
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="to" class="col-2 control-label">по</label>
-                        <div class="col-3">
+                        <label for="to" class="col-4 col-form-label">по</label>
+                        <div class="col-6">
                             <input type="text" class="form-control" zippy="to">
                         </div>
                     </div>
                     <div class="form-group  row ">
-                        <label for="dt" class="col-2 control-label">Рахунок</label>
-                        <div class="col-5">
+                        <label for="dt" class="col-4 col-form-label">Рахунок</label>
+                        <div class="col-6">
                             <select class="form-control" zippy="dt">
                                 <option value="0">Вибрати</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="ct" class="col-2 control-label"> Корр. рахунок </label>
-                        <div class="col-5">
+                        <label for="ct" class="col-4 col-form-label"> Корр. рахунок </label>
+                        <div class="col-6">
                             <select class="form-control" zippy="ct">
                                 <option value="0">Вибрати</option>
                             </select>
@@ -37,13 +37,13 @@
                     </div>
 
                     <div class="form-group  row">
-                        <div class="col-2 offset-2">
+                        <div class="col-6  ">
                             <input class="btn btn-outline-success " type="submit" value="ОК">
                         </div>
                     </div>
 
                 </form>
-                <table class="table table-bordered  table-sm" style="width:600px;">
+                <table class="table table-bordered  table-sm"  >
                     <tr>
                         <th  >Дата</th>
                         <th  >Дт</th>
@@ -63,7 +63,7 @@
                     </tr>
                 </table>
                 <div zippy="paginator"></div>
-                <br>
+                
                 <div zippy="docview"></div>
 
             </div>

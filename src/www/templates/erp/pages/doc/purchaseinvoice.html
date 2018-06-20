@@ -17,60 +17,58 @@
     </head>
     <body>
 
-
+         <div class="row">
+        <div class="col-12 col-md-8 col-lg-6">
         <h3>Вхідний рахунок</h3>
-        <form zippy="docform" class="form-horizontal">
-            <div class="row">
+        <form zippy="docform"  >
+ 
 
-                <div class="form-group">
-                    <label for="document_number" class="col-2 control-label">Номер док.</label>
-                    <div class="col-3 ">
+                <div class="form-group row">
+                    <label for="document_number" class="col-6 col-form-label">Номер док.</label>
+                    <div class="col-6 ">
                         <input class="form-control" type="text" zippy="document_number" required="required">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="document_date" class="col-2 control-label">Дата</label>
-                    <div class="col-3">
+                <div class="form-group row">
+                    <label for="document_date" class="col-6 col-form-label">Дата</label>
+                    <div class="col-6">
                         <input class="form-control" type="text" zippy="document_date" required="required">
 
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="customer" class="col-2 control-label">Постачальник</label>
-                    <div class="col-3">
+                    <label for="customer" class="col-6 col-form-label">Постачальник</label>
+                    <div class="col-6">
 
                         <input placeholder="Почніть вводити..." class="form-control "   zippy="customer" />
 
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="paydate" class="col-2 control-label">До виплати</label>
-                    <div class="col-3">
+                <div class="form-group row">
+                    <label for="paydate" class="col-6 col-form-label">До виплати</label>
+                    <div class="col-6">
                         <input class="form-control" type="text" zippy="paydate">
 
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="contract" class="col-2 control-label">Угода, замовлення</label>
-                    <div class="col-3">
+                <div class="form-group row">
+                    <label for="contract" class="col-6 col-form-label">Угода, замовлення</label>
+                    <div class="col-6">
                         <input class="form-control" type="text" zippy="contract">
 
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="isnds" class="col-2 control-label">ПДВ</label>
-                    <div class="col-3">
-                        <label>
-                            <input type="checkbox" zippy="isnds">
-                        </label>
+                <div class="form-group  ">
+               <div class="form-check   ">
 
-                    </div>
+                            <input class="form-check-input"  type="checkbox" zippy="isnds">
+                            <label class="form-check-label mr-sm-2" for="isnds">ПДВ</label>
+                        </div>  
                 </div>
-            </div>
+             
 
-            <div class="row">
-                <div class="col-8">
+ 
                     <a zippy="addrow">Додати товар</a>
                     <table class="ctable">
                         <tr>

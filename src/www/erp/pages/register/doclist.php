@@ -48,7 +48,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
             $this->filter->docgroup->setValue($filter->docgroup);
 
         $doclist = $this->add(new DataView('doclist', new DocDataSource(), $this, 'doclistOnRow'));
-        $doclist->setSelectedClass('success');
+        $doclist->setSelectedClass('table-success');
 
         $this->add(new Paginator('pag', $doclist));
         $doclist->setPageSize(10);

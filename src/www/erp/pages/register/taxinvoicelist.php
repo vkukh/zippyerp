@@ -33,7 +33,7 @@ class TaxInvoiceList extends \ZippyERP\ERP\Pages\Base
         if (strlen($filter->docgroup) > 0)
             $this->filter->docgroup->setValue($filter->docgroup);
         $doclist = $this->add(new DataView('doclist', new TaxListDataSource(), $this, 'doclistOnRow'));
-        $doclist->setSelectedClass('success');
+        $doclist->setSelectedClass('table-success');
         $doclist->Reload();
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
     }

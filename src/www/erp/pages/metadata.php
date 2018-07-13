@@ -50,7 +50,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->editpan->editform->add(new CheckBox('edit_disabled'));
 
         $this->editpan->editform->add(new DropDownChoice('edit_meta_type', \ZippyERP\ERP\Entity\MetaData::getNames()));
-        $this->editpan->add(new ClickLink('cancel'))->onClick($this, 'cancelOnClick');
+        $this->editpan->add(new ClickLink('mcancel'))->onClick($this, 'mcancelOnClick');
     }
 
     public function filterOnSubmit($sender) {
@@ -84,7 +84,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->editpan->editform->meta_id->setText(0);
     }
 
-    public function cancelOnClick($sender) {
+    public function mcancelOnClick($sender) {
         $this->listpan->setVisible(true);
         $this->editpan->setVisible(false);
     }

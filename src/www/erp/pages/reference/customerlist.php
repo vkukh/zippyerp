@@ -40,7 +40,7 @@ class CustomerList extends \ZippyERP\ERP\Pages\Base
         $this->customertable->add(new DataView('customerlist', new \ZCL\DB\EntityDataSource('\ZippyERP\ERP\Entity\Customer'), $this, 'customerlistOnRow'));
         $this->customertable->customerlist->setPageSize(25);
         $this->customertable->add(new \Zippy\Html\DataList\Paginator('pag', $this->customertable->customerlist));
-        $this->customertable->customerlist->setSelectedClass('success');
+        $this->customertable->customerlist->setSelectedClass('table-success');
         $this->customertable->customerlist->Reload();
 
         $this->customertable->add(new ClickLink('addnew'))->onClick($this, 'addOnClick');

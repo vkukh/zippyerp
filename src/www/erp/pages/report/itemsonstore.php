@@ -86,7 +86,7 @@ class ItemsOnStore extends \ZippyERP\ERP\Pages\Base
 
         $rs = $conn->Execute($sql);
 
-        foreach ($rs as $row) {
+        foreach ($rs as $row) { 
             $detail[] = array(
                 "item" => $row['itemname'],
                 "price" => H::fm($row['partion']),

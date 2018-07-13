@@ -127,7 +127,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
               GROUP BY st.stock_id,
                        st.price,
                        DATE(sc.document_date)) t
-            ORDER BY dt desc
+            ORDER BY dt  
         ";
 
         $rs = $conn->Execute($sql);

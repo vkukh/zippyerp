@@ -3,11 +3,12 @@
 namespace ZippyERP\ERP\API;
 
 /**
- * Класс  для  экспорта-импорта  прайсов
+ * Класс  для  экспорта-импорта  прайсв
  */
 class Price extends \ZippyERP\System\RestFul
 {
 
+    //Демо
     public function get($id = 0) {
 
         $conn = \ZDB\DB::getConnect();

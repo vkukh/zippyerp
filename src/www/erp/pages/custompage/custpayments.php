@@ -33,7 +33,7 @@ class CustPayments extends \ZippyERP\ERP\Pages\Base
         $this->doclist->add(new ClickLink('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->doclist->add(new DataView('dlist', new \Zippy\Html\DataList\ArrayDataSource($this, "_dlist"), $this, 'dlistOnRow'));
-        // $this->doclist->dlist->setSelectedClass('success');
+        // $this->doclist->dlist->setSelectedClass('table-success');
         $this->doclist->add(new Label("custname1"));
         $this->add(new Panel('invoicelist'))->setVisible(false);
         $this->invoicelist->add(new ClickLink('backtolist2'))->onClick($this, 'backtolistOnClick');

@@ -7,7 +7,7 @@ namespace ZippyERP\ERP\API;
  */
 class Pos extends \ZippyERP\System\RestFul
 {
-
+     //Демо
     public function post($xml) {
         $error = "";
 

@@ -43,7 +43,7 @@ class CustomerOrderList extends \ZippyERP\ERP\Pages\Base
 
 
         $doclist = $this->add(new DataView('doclist', new DocCODataSource(), $this, 'doclistOnRow'));
-        $doclist->setSelectedClass('success');
+        $doclist->setSelectedClass('table-success');
         $doclist->Reload();
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
         if ($docid > 0) {

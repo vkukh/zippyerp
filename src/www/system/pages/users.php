@@ -76,9 +76,9 @@ class Users extends \ZippyERP\System\Pages\Base
         $this->editpan->editform->metaaccess->metarow->Reload();
         
         
-        if(strpos($this->user->widgets,'wplan')>0)   $this->editpan->editform->editwplan->setChecked(true) ;
-        if(strpos($this->user->widgets,'wnoliq')>0)   $this->editpan->editform->editwnoliq->setChecked(true) ;
-        if(strpos($this->user->widgets,'whlitems')>0)   $this->editpan->editform->editwhlitems->setChecked(true) ;
+        if(strpos($this->user->widgets,'wplan')!==false)   $this->editpan->editform->editwplan->setChecked(true) ;
+        if(strpos($this->user->widgets,'wnoliq')!==false)   $this->editpan->editform->editwnoliq->setChecked(true) ;
+        if(strpos($this->user->widgets,'whlitems')!==false)   $this->editpan->editform->editwhlitems->setChecked(true) ;
     
     }
 

@@ -60,8 +60,9 @@ class UserProfile extends \ZippyERP\System\Pages\Base
         if (!$this->isError()) {
             $this->user->userpass = (\password_hash($pass, PASSWORD_DEFAULT));
             $this->user->save();
+            $this->setSuccess('Пароль збережений');
         }
-        $this->setSuccess('Пароль збережений');
+        
         $sender->userpassword->setText('');
         $sender->confirmpassword->setText('');
     }

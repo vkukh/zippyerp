@@ -25,7 +25,7 @@ class AccountablePayments extends \ZippyERP\ERP\Pages\Base
         $this->doclist->add(new ClickLink('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->doclist->add(new DataView('dlist', new \Zippy\Html\DataList\ArrayDataSource($this, "_dlist"), $this, 'dlistOnRow'));
-        //$this->doclist->dlist->setSelectedClass('success');
+        //$this->doclist->dlist->setSelectedClass('table-success');
         $this->doclist->add(new Label("empname1"));
 
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);

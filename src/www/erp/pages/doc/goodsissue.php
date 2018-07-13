@@ -88,7 +88,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             $this->docform->store->setValue($this->_doc->headerdata['store']);
             $this->docform->paytype->setValue($this->_doc->headerdata['paytype']);
             $this->docform->isnds->setChecked($this->_doc->headerdata['isnds']);
-            $this->docform->customer->setValue($this->_doc->headerdata['customer']);
+            $this->docform->customer->setKey($this->_doc->headerdata['customer']);
             $this->docform->customer->setText($this->_doc->headerdata['customer_name']);
 
             $this->docform->contract->setKey($this->_doc->headerdata['contract']);

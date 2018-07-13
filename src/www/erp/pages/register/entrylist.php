@@ -34,7 +34,7 @@ class EntryList extends \ZippyERP\ERP\Pages\Base
         $this->add(new \ZippyERP\ERP\Blocks\DocView('docview'))->setVisible(false);
         $this->add(new \Zippy\Html\DataList\Paginator("paginator", $this->entrylist));
         $this->entrylist->setPageSize(10);
-        $this->entrylist->setSelectedClass('success');
+        $this->entrylist->setSelectedClass('table-success');
         $this->entrylist->Reload();
     }
 

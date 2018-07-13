@@ -206,8 +206,8 @@ class Document extends \ZCL\DB\Entity
      */
     public function cast() {
 
-        $type = Helper::getMetaType($this->type_id);
-        $class = "\\ZippyERP\\ERP\\Entity\\Doc\\" . $type['meta_name'];
+         
+        $class = "\\ZippyERP\\ERP\\Entity\\Doc\\" . $this->meta_name ;
         $doc = new $class($this->getData());
         $doc->unpackData();
         return $doc;

@@ -7,7 +7,7 @@ Zippy ERP
 
 [Скачать](https://zippy.com.ua/download/erp-full.zip) дистрибутив  в  сборе   
 
-Требования: PHP5.4+
+Требования: PHP7.1+    Mysql 5,0+ 
 
 ####Планируемый функционал
 

@@ -267,8 +267,11 @@ class GoodsReceipt extends \ZippyERP\ERP\Pages\Base
             }
             $conn->CommitTrans();
         } catch (\Exception $ee) {
+            global $logger;
             $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
+            $this->setError("Помилка запису документу. Деталізація в лог файлі  ");
+    
+            $logger->error($ee);
             return;
         }
         App::RedirectBack();

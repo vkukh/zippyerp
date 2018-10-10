@@ -15,8 +15,10 @@ class Base extends \Zippy\Html\WebPage
 {
 
     public function __construct($params = null) {
-
+        global $_config, $logger;
         \Zippy\Html\WebPage::__construct();
+        
+        $logger->debug('Page '.get_class($this)); ; 
 
 
         $user = System::getUser();
@@ -51,6 +53,7 @@ class Base extends \Zippy\Html\WebPage
         if (strlen($pi) == 0) {
             $this->pageinfo->setVisible(false);
         }
+        $this->_tvars["smart"] = Helper::generateSmartMenu();
 
         $this->_tvars["picontent"] = $pi;
     }

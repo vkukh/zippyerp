@@ -9,24 +9,27 @@ use Zippy\Html\Form\DropDownChoice;
 use Zippy\Html\Form\Form;
 use Zippy\Html\Form\SubmitButton;
 use Zippy\Html\Form\TextInput;
+use Zippy\Html\Form\AutocompleteTextInput;
 use Zippy\Html\Label;
 use Zippy\Html\Link\ClickLink;
 use Zippy\Html\Link\SubmitLink;
 use ZippyERP\ERP\Entity\Doc\Document;
-use ZippyERP\ERP\Entity\Employee;
+use ZippyERP\ERP\Entity\Item;
+use ZippyERP\ERP\Entity\Stock;
+use ZippyERP\ERP\Entity\Store;
 use ZippyERP\ERP\Helper as H;
 use Zippy\WebApplication as App;
 
 /**
- * Страница    выплаита зарплаты
+ * Страница  оприходование с  производства
  */
-class OutSalary extends \ZippyERP\ERP\Pages\Base
+class InventoryProd extends \ZippyERP\ERP\Pages\Base
 {
 
-    public $_emplist = array();
+    public $_itemlist = array();
     private $_doc;
     private $_rowid = 0;
-
+   
     public function __construct($docid = 0, $basedocid = 0) {
         parent::__construct();
 
@@ -34,21 +37,21 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->docform->add(new TextInput('document_number'));
         $this->docform->add(new Date('document_date'))->setDate(time());
 
-
-        $this->docform->add(new DropDownChoice('year', H::getYears(), date('Y')));
-        $this->docform->add(new DropDownChoice('month', H::getMonth(), date('m')));
+        $this->docform->add(new DropDownChoice('store', Store::findArray("storename", "store_type = " . Store::STORE_TYPE_OPT)))->onChange($this, 'OnChangeStore');
+       
 
         $this->docform->add(new SubmitLink('addrow'))->onClick($this, 'addrowOnClick');
-        $this->docform->add(new SubmitLink('loadall'))->onClick($this, 'loadallOnClick');
         $this->docform->add(new SubmitButton('savedoc'))->onClick($this, 'savedocOnClick');
         $this->docform->add(new SubmitButton('execdoc'))->onClick($this, 'savedocOnClick');
         $this->docform->add(new Button('backtolist'))->onClick($this, 'backtolistOnClick');
 
         $this->add(new Form('editdetail'))->setVisible(false);
-        $this->editdetail->add(new TextInput('editpayed'));
-        $this->editdetail->add(new TextInput('editamount'));
-        $this->editdetail->add(new DropDownChoice('editemployee', Employee::findArray("fullname", " hiredate is not null  ", "fullname")))->onChange($this, 'OnChangeEmployee');
+        $this->editdetail->add(new TextInput('editquantity'))->setText("1");
+        $this->editdetail->add(new TextInput('editprice'));
+        $this->editdetail->add(new AutocompleteTextInput('edititem'))->onText($this, 'OnAutoItem');
+        
 
+        $this->editdetail->add(new DropDownChoice('edittype', array( 26 => 'Готова продукцiя',25=>'Напiвфабрикати'), 281))->onChange($this, "OnItemType");
 
         $this->editdetail->add(new Button('cancelrow'))->onClick($this, 'cancelrowOnClick');
         $this->editdetail->add(new SubmitButton('submitrow'))->onClick($this, 'saverowOnClick');
@@ -59,120 +62,103 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
 
             $this->docform->document_date->setDate($this->_doc->document_date);
 
-            $this->docform->year->setValue($this->_doc->headerdata['year']);
-            $this->docform->month->setValue($this->_doc->headerdata['month']);
 
-            foreach ($this->_doc->detaildata as $_emp) {
-                $emp = new Employee($_emp);
-                $this->_emplist[$emp->employee_id] = $emp;
+            $this->docform->store->setValue($this->_doc->headerdata['store']);
+            
+            foreach ($this->_doc->detaildata as $item) {
+                $item = new Item($item);
+                $this->_itemlist[$item->item_id] = $item;
             }
         } else {
-            $this->_doc = Document::create('OutSalary');
+            $this->_doc = Document::create('InventoryProd');
             $this->docform->document_number->setText($this->_doc->nextNumber());
             if ($basedocid > 0) {  //создание на  основании
                 $basedoc = Document::load($basedocid);
                 if ($basedoc instanceof Document) {
                     $this->_basedocid = $basedocid;
 
-                    if ($basedoc->meta_name == 'InSalary') {
-
-
-                        $this->docform->year->setValue($basedoc->headerdata['year']);
-                        $this->docform->month->setValue($basedoc->headerdata['month']);
-
-
-                        foreach ($basedoc->detaildata as $_emp) {
-                            $emp = new Employee($_emp);
-                            $emp->payed = $emp->amount;
-                            $this->_emplist[$emp->employee_id] = $emp;
-                        }
-                    }
+                    
                 }
             }
         }
 
-        $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_emplist')), $this, 'detailOnRow'))->Reload();
+        $this->docform->add(new DataView('detail', new \Zippy\Html\DataList\ArrayDataSource(new \Zippy\Binding\PropertyBinding($this, '_itemlist')), $this, 'detailOnRow'))->Reload();
+        $this->OnItemType($this->editdetail->edititem);
     }
 
     public function detailOnRow($row) {
         $item = $row->getDataItem();
 
-        $row->add(new Label('employee', $item->fullname));
-
-        $row->add(new Label('payed', H::fm($item->payed)));
-        $row->add(new Label('amount', H::fm($item->amount)));
+        $row->add(new Label('item', $item->itemname));
+        $row->add(new Label('measure', $item->measure_name));
+        $row->add(new Label('quantity', $item->quantity / 1000));
+        $row->add(new Label('price', H::fm($item->price)));
+        $row->add(new Label('amount', H::fm(($item->quantity / 1000) * $item->price)));
         $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
         $row->add(new ClickLink('delete'))->onClick($this, 'deleteOnClick');
     }
 
-    public function loadallOnClick($sender) {
-        $list = Employee::find(" hiredate is not null ", "fullname");
-        $this->_emplist = array();
-        foreach ($list as $emp) {
-
-            $emp->amount = abs($emp->getForPayed($this->docform->document_date->getDate()));
-
-            $emp->payed = $emp->amount;
-            if ($emp->payed == 0)
-                continue;
-            $this->_emplist[$emp->employee_id] = $emp;
-        }
-        $this->docform->detail->Reload();
-    }
-
     public function deleteOnClick($sender) {
-        $emp = $sender->owner->getDataItem();
+        $item = $sender->owner->getDataItem();
+        // unset($this->_itemlist[$item->item_id]);
 
-        $this->_emplist = array_diff_key($this->_emplist, array($emp->employee_id => $this->_emplist[$emp->employee_id]));
+        $this->_itemlist = array_diff_key($this->_itemlist, array($item->item_id => $this->_itemlist[$item->item_id]));
         $this->docform->detail->Reload();
     }
 
     public function addrowOnClick($sender) {
-        $this->_os = $sender->id == "addrowos";
+
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
         $this->_rowid = 0;
         //очищаем  форму
-        $this->editdetail->editemployee->setValue(0);
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
 
-        $this->editdetail->editamount->setText("0");
-        $this->editdetail->editpayed->setText("0");
+        $this->editdetail->editquantity->setText("1");
+
+        $this->editdetail->editprice->setText("");
     }
 
     public function editOnClick($sender) {
 
-        $emp = $sender->getOwner()->getDataItem();
+        $stock = $sender->getOwner()->getDataItem();
 
         $this->editdetail->setVisible(true);
         $this->docform->setVisible(false);
 
-        $this->editdetail->editamount->setText(H::fm($emp->amount));
-        $this->editdetail->editpayed->setText(H::fm($emp->payed));
-
-        $this->editdetail->editemployee->setValue($emp->employee_id);
+        $this->editdetail->editquantity->setText($stock->quantity / 1000);
+        $this->editdetail->editprice->setText(H::fm($stock->price));
 
 
+        //  $list = Stock::findArrayEx("closed  <> 1   and store_id={$stock->store_id}");
+        $this->editdetail->edititem->setKey($stock->stock_id);
+        $this->editdetail->edititem->setText($stock->item);
 
-        $this->_rowid = $emp->employee_id;
+        $this->editdetail->edittype->setValue($stock->type);
+
+
+        $this->_rowid = $stock->stock_id;
     }
 
     public function saverowOnClick($sender) {
-        $id = $this->editdetail->editemployee->getValue();
+        $id = $this->editdetail->edititem->getKey();
         if ($id == 0) {
-            $this->setError("Не вибраний співробітник");
+            $this->setError("Не вибраний ТМЦ");
             return;
         }
 
 
-        $emp = Employee::load($id);
+        $item = Item::load($id);
 
 
-        $emp->amount = 100 * $this->editdetail->editamount->getText();
-        $emp->payed = 100 * $this->editdetail->editpayed->getText();
+        $item->quantity = 1000 * $this->editdetail->editquantity->getText();
+        // $stock->partion = $stock->price;
+        $item->price = $this->editdetail->editprice->getText() * 100;
+        $item->type = $this->editdetail->edittype->getValue();
 
-
-        unset($this->_emplist[$this->_rowid]);
-        $this->_emplist[$emp->employee_id] = $emp;
+        unset($this->_itemlist[$this->_rowid]);
+        $this->_itemlist[$stock->stock_id] = $item;
         $this->editdetail->setVisible(false);
         $this->docform->setVisible(true);
         $this->docform->detail->Reload();
@@ -191,22 +177,16 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         $this->calcTotal();
 
         $this->_doc->headerdata = array(
-            'year' => $this->docform->year->getValue(),
-            'month' => $this->docform->month->getValue()
-        );
-        $amount = 0;
+            'store' => $this->docform->store->getValue(),
+            'storename' => $this->docform->store->getValueName() );
         $this->_doc->detaildata = array();
-        foreach ($this->_emplist as $emp) {
-            if ($emp->payed > 0) {
-                $this->_doc->detaildata[] = $emp->getData();
-                $amount += $emp->payed;
-            }
+        foreach ($this->_itemlist as $item) {
+            $this->_doc->detaildata[] = $item->getData();
         }
 
 
         $this->_doc->document_number = $this->docform->document_number->getText();
         $this->_doc->document_date = $this->docform->document_date->getDate();
-        $this->_doc->amount = $amount;
         $isEdited = $this->_doc->document_id > 0;
 
 
@@ -240,14 +220,22 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         
     }
 
+    public function OnItemType($sender) {
+        $this->editdetail->edititem->setKey(0);
+        $this->editdetail->edititem->setText('');
+
+        $this->editdetail->editquantity->setText("1");
+        $this->editdetail->editprice->setText(" ");
+    }
+
     /**
      * Валидация   формы
      *
      */
     private function checkForm() {
 
-        if (count($this->_emplist) == 0) {
-            $this->setError("Не введено жодного співробітника");
+        if (count($this->_itemlist) == 0) {
+            $this->setError("Не введений ні один  ТМЦ");
         }
 
         return !$this->isError();
@@ -263,17 +251,23 @@ class OutSalary extends \ZippyERP\ERP\Pages\Base
         App::RedirectBack();
     }
 
-    public function OnChangeEmployee($sender) {
-        if ($this->_os)
-            return;
-        $id = $sender->getValue();
-        $emp = Employee::load($id);
-        $amount = abs($emp->getForPayed($this->docform->document_date->getDate()));
-        $this->editdetail->editamount->setText(H::fm($amount));
-        $this->editdetail->editpayed->setText(H::fm($amount));
+    public function OnChangeStore($sender) {
+        //очистка  списка  товаров
+        $this->_itemlist = array();
+        $this->docform->detail->Reload();
+    }
 
+  
 
-        $this->updateAjax(array('editamount', "editpayed"));
+    public function OnAutoItem($sender) {
+        $r = array();
+     
+        $text = $sender->getText();
+        $list = Item::findArray("itemname"," (itemname like " . Item::qstr('%' . $text . '%') . " or item_code like " . Item::qstr('%' . $text . '%') . "  ) and   item_type =" . Item::ITEM_TYPE_STUFF);
+        foreach ($list as $k => $v) {
+            $r[$k] = $v;
+        }
+        return $r;
     }
 
 }

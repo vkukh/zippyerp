@@ -234,12 +234,13 @@ class ExpenseReport extends \ZippyERP\ERP\Pages\Base
             }
             $conn->CommitTrans();
             App::RedirectBack();
-        } catch (\ZippyERP\System\Exception $ee) {
-            $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
+            global $logger;
             $conn->RollbackTrans();
-            throw new \Exception($ee->getMessage());
+            $this->setError("Помилка запису документу. Деталізація в лог файлі  ");
+    
+            $logger->error($ee);
+            return;
         }
     }
 

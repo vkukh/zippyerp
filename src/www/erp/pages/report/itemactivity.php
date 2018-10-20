@@ -65,7 +65,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "movereport";
 
-        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
+         $this->detail->preview->setText($html, true);
 
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', $reportname);

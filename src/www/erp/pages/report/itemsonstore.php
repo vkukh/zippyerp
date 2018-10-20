@@ -40,14 +40,14 @@ class ItemsOnStore extends \ZippyERP\ERP\Pages\Base
 
 
         $html = $this->generateReport();
-        $this->detail->preview->setText($html, true);
+       
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
 
         // \ZippyERP\System\Session::getSession()->storereport = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "itemonstore_" . date("Ymd");
 
-        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
+        $this->detail->preview->setText($html, true);
 
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', $reportname);

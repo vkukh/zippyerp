@@ -18,7 +18,7 @@ use Zippy\WebApplication as App;
 class Shahmatka extends \ZippyERP\ERP\Pages\Base
 {
 
-    private $_updatejs = false;
+     
 
     public function __construct() {
         parent::__construct();
@@ -26,13 +26,14 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new Date('from', time() - (7 * 24 * 3600)));
         $this->filter->add(new Date('to', time()));
+        $this->add(new ClickLink('autoclick'))->onClick($this, 'OnAutoLoad',true);
 
         $this->add(new Panel('detail'))->setVisible(false);
         $this->detail->add(new RedirectLink('print', ""));
         $this->detail->add(new RedirectLink('html', ""));
         $this->detail->add(new RedirectLink('excel', ""));
         $this->detail->add(new Label('preview'));
-        $this->detail->add(new ClickLink('loader'))->onClick($this, "onReport", true);
+        
     }
 
     public function OnSubmit($sender) {
@@ -62,8 +63,9 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         $this->detail->excel->params = array('xls', $reportname);
 
         $this->detail->setVisible(true);
-
-        $this->_updatejs = true;
+           $this->detail->preview->setText("Загрузка..." );
+ 
+        
     }
 
     private function generateReport() {
@@ -126,23 +128,18 @@ class Shahmatka extends \ZippyERP\ERP\Pages\Base
         return $html;
     }
 
-    public function onReport($sender) {
+     
+    public function OnAutoLoad($sender) {
         $html = $this->generateReport();
-
+        \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";       
         $this->detail->preview->setText($html, true);
-        \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
-
-
-        $this->updateAjax(array(), "$('#preview').attr('src','/?p=ZippyERP/ERP/Pages/ShowReport&arg=preview/shaxmatkareport')");
+        $this->updateAjax(array('preview'))  ;
     }
-
     protected function beforeRender() {
         parent::beforeRender();
 
-        if ($this->_updatejs) {
-            App::$app->getResponse()->addJavaScript("$(\"#loader\").click();", true);
-            $this->_updatejs = false;
-        }
+        App::addJavaScript("\$('#autoclick').click()",true) ;
+ 
     }
 
 }

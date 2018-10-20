@@ -1,5 +1,5 @@
-<html>
-    <body>
+
+    
 
         <h4> Ручна хоз. операція № {{document_number}} Дата: {{date}} </h4>
         Опис:<br>{{description}}
@@ -128,5 +128,5 @@
         {{/ca?}}
 
 
-    </body>
-</html>
+    
+

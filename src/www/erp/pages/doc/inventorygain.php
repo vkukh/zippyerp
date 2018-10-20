@@ -170,8 +170,9 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
 
 
         $stock->quantity = 1000 * $this->editdetail->editquantity->getText();
-        // $stock->partion = $stock->price;
+        
         $stock->price = $this->editdetail->editprice->getText() * 100;
+       
         $stock->type = $this->editdetail->edittype->getValue();
 
         unset($this->_itemlist[$this->_rowid]);
@@ -222,12 +223,13 @@ class InventoryGain extends \ZippyERP\ERP\Pages\Base
 
             $conn->CommitTrans();
             App::RedirectBack();
-        } catch (\ZippyERP\System\Exception $ee) {
-            $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
+            global $logger;
             $conn->RollbackTrans();
-            throw new \Exception($ee->getMessage());
+            $this->setError("Помилка запису документу. Деталізація в лог файлі  ");
+    
+            $logger->error($ee);
+            return;
         }
     }
 

@@ -37,7 +37,7 @@ class ObSaldo extends \ZippyERP\ERP\Pages\Base
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "obsaldoreport";
 
-        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
+        $this->detail->preview->setText($html, true);
 
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
         $this->detail->print->pagename = $reportpage;

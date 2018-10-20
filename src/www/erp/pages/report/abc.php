@@ -52,8 +52,8 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "abc";
 
-        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
-
+        $this->detail->preview->setText($html, true);
+        
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', $reportname);
         $this->detail->html->pagename = $reportpage;

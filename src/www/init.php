@@ -15,26 +15,6 @@ date_default_timezone_set('Europe/Kiev');
 require_once _ROOT . 'vendor/autoload.php';
 include_once _ROOT . "vendor/adodb/adodb-php/adodb-exceptions.inc.php";
 
-
-//чтение  конфигурации
-$_config = parse_ini_file(_ROOT . 'config/config.ini', true);
-
-//  phpQuery::$debug = true;
-
-//Параметры   соединения  с  БД
-\ZDB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
-
-
-//подключение  ядра и модулей системмы
-require_once _ROOT . 'system/start.inc.php';
-require_once _ROOT . 'erp/start.inc.php';
-require_once _ROOT . 'shop/start.inc.php';
-
- 
-
-session_start();
-
- 
 // логгер
 $logger = new \Monolog\Logger("main");
 $dateFormat = "Y n j, g:i a";
@@ -48,6 +28,36 @@ $h2->setFormatter($formatter);
 $logger->pushHandler($h1);
 $logger->pushHandler($h2);
 $logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor());
+
+
+//чтение  конфигурации
+$_config = parse_ini_file(_ROOT . 'config/config.ini', true);
+ 
+
+//Параметры   соединения  с  БД
+\ZDB\DB::config($_config['db']['host'], $_config['db']['name'], $_config['db']['user'], $_config['db']['pass']);
+
+//проверяем соединение
+try{
+   $conn =   \ZDB\DB::getConnect();
+}catch(Throwable $e){
+        echo $e->getMessage().'<br>';
+        echo $e->getLine().'<br>';
+        echo $e->getFile().'<br>'; 
+    
+    return;
+}
+
+//подключение  ядра и модулей системмы
+require_once _ROOT . 'system/start.inc.php';
+require_once _ROOT . 'erp/start.inc.php';
+require_once _ROOT . 'shop/start.inc.php';
+
+ 
+
+session_start();
+
+ 
 
 @mkdir(_ROOT . "logs");
 

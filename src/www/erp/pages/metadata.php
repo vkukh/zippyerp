@@ -48,9 +48,9 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $this->editpan->editform->add(new TextInput('edit_menugroup'));
         $this->editpan->editform->add(new TextArea('edit_notes'));
         $this->editpan->editform->add(new CheckBox('edit_disabled'));
-
+        $this->editpan->editform->add(new CheckBox('edit_smart'));
         $this->editpan->editform->add(new DropDownChoice('edit_meta_type', \ZippyERP\ERP\Entity\MetaData::getNames()));
-        $this->editpan->add(new ClickLink('mcancel'))->onClick($this, 'mcancelOnClick');
+        $this->editpan->add(new ClickLink('cancel'))->onClick($this, 'mcancelOnClick');
     }
 
     public function filterOnSubmit($sender) {
@@ -129,7 +129,7 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $form->edit_menugroup->setText($item->menugroup);
         $form->edit_meta_type->setValue($item->meta_type);
         $form->edit_disabled->setChecked($item->disabled == 1);
-
+        $form->edit_smart->setChecked($item->smartmenu == 1);
 
         $this->listpan->setVisible(false);
         $this->editpan->setVisible(true);
@@ -157,7 +157,8 @@ class MetaData extends \ZippyERP\ERP\Pages\Base
         $item->meta_type = $this->editpan->editform->edit_meta_type->getValue();
         $item->notes = $this->editpan->editform->edit_notes->getText();
         $item->disabled = $this->editpan->editform->edit_disabled->isChecked() ? 1 : 0;
-
+         $item->smartmenu = $this->editpan->editform->edit_smart->isChecked() ? 1 : 0;
+        if($item->disabled==1)$item->smartmenu=0;
 
         $item->save();
 

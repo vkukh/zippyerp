@@ -32,7 +32,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
     private $_doc;
     private $_basedocid = 0;
     private $_rowid = 0;
-    private $_itemtype = array(281 => 'Товар', 26 => 'Готовая продукция');
+    private $_itemtype = array(281 => 'Товар', 26 => 'Готова продукцiя');
     private $_discount;
 
     public function __construct($docid = 0, $basedocid = 0) {
@@ -276,12 +276,13 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
             }
             $conn->CommitTrans();
             App::RedirectBack();
-        } catch (\ZippyERP\System\Exception $ee) {
-            $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
+            global $logger;
             $conn->RollbackTrans();
-            throw new \Exception($ee->getMessage());
+            $this->setError("Помилка запису документу. Деталізація в лог файлі  ");
+    
+            $logger->error($ee);
+            return;
         }
     }
 
@@ -402,7 +403,7 @@ class GoodsIssue extends \ZippyERP\ERP\Pages\Base
     public function OnAutoItem($sender) {
         $store_id = $this->docform->store->getValue();
         $text = Item::qstr('%' . $sender->getText() . '%');
-        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and (itemname like {$text} or item_code like {$text}) and   item_type <>" . Item::ITEM_TYPE_RETSUM);
+        return Stock::findArrayEx("store_id={$store_id} and closed <> 1 and (itemname like {$text} or item_code like {$text}) and   item_type =" . Item::ITEM_TYPE_STUFF);
     }
 
 }

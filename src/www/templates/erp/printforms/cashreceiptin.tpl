@@ -1,5 +1,5 @@
-<html>
-    <body>
+
+    
         <table class="ctable" width="400" border="0" cellspacing="0" cellpadding="2">
 
             <tr>
@@ -26,5 +26,5 @@
         </table>
 
         <br>
-    </body>
-</html>
+    
+

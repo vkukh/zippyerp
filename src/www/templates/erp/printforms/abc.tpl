@@ -1,9 +1,6 @@
-<html>
+ 
 
-    <body>
-
-
-        <table class="ctable" cellspacing="0" cellpadding="1">
+        <table class="ctable" cellspacing="0" cellpadding="2">
             <tr colspan="4" style="font-weight: bolder;">
             <h3 style="font-size: 16px;">АВС аналіз '{{type}}' з {{from}} по {{to}}</h3>
 
@@ -30,5 +27,4 @@
     </table>
 
     <br>
-</body>
-</html>
+ 

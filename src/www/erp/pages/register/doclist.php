@@ -72,7 +72,7 @@ class DocList extends \ZippyERP\ERP\Pages\Base
         $filter->to = $this->filter->to->getDate(true);
         $filter->docgroup = $this->filter->docgroup->getValue();
         $filter->onlymy = $this->filter->onlymy->isChecked();
-        $filter->searchnumber = $this->filter->searchnumber->getText();
+        $filter->searchnumber = trim($this->filter->searchnumber->getText());
 
         $this->doclist->setCurrentPage(1);
         $this->doclist->Reload();
@@ -185,12 +185,16 @@ class DocDataSource implements \Zippy\Interfaces\DataSource
         if (strlen($filter->docgroup) > 1) {
             $where .= " and type_id in (select meta_id from  erp_metadata where  menugroup ='{$filter->docgroup}' )";
         }
-        if (strlen($filter->searchnumber) > 1) {
-            $where .= " and document_number like '%{$filter->searchnumber}%' ";
-        }
+
         if ($filter->onlymy == true) {
             $where .= " and user_id  = " . System::getUser()->user_id;
         }
+        
+        if (strlen($filter->searchnumber) > 1) {
+            //игнорируем  все  остальые поля
+            $where = " document_number like '%{$filter->searchnumber}%' ";
+        }        
+        
         return $where;
     }
 

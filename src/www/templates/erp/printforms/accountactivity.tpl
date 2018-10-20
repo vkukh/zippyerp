@@ -1,6 +1,6 @@
-<html>
 
-    <body>
+
+    
 
         <h3 style="font-size: 16px;">Рух по рахунку '{{acc}}' з {{from}} по {{to}}</h3>
         <br>
@@ -43,5 +43,5 @@
 
 
         <br>
-    </body>
-</html>
+    
+

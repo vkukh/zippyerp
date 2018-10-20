@@ -1,5 +1,5 @@
-<html>
-    <body>
+
+    
         <table class="ctable" style="font-family: Arial;" border="0" cellspacing="0" cellpadding="1">
             <tr>
                 <td colspan="5" style="border: #000000 1px solid;font-size: 6pt;">Підлягає реєстрації в ЄРПН постачальником
@@ -323,5 +323,5 @@
 
         </table>
         <br>
-    </body>
-</html>
+    
+

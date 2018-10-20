@@ -205,12 +205,13 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
             }
             $conn->CommitTrans();
             App::RedirectBack();
-        } catch (\ZippyERP\System\Exception $ee) {
-            $conn->RollbackTrans();
-            $this->setError($ee->getMessage());
         } catch (\Exception $ee) {
+            global $logger;
             $conn->RollbackTrans();
-            throw new \Exception($ee->getMessage());
+            $this->setError("Помилка запису документу. Деталізація в лог файлі  ");
+    
+            $logger->error($ee);
+            return;
         }
     }
 
@@ -267,11 +268,11 @@ class MoveItem extends \ZippyERP\ERP\Pages\Base
         $store = Store::load($this->docform->storeto->getValue());
         if ($store->store_type == Store::STORE_TYPE_OPT) {
             $this->editdetail->editprice->setVisible(false);
-            $this->editdetail->edittype->setOptionList(array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ', 25 => 'Полуфабрикат', 26 => 'Готовая продукция'));
+            $this->editdetail->edittype->setOptionList(array(281 => 'Товар', 201 => 'Материал', 22 => 'МПБ', 25 => 'Полуфабрикат', 26 => 'Готова продукцiя'));
             $this->editdetail->edittype->setValue(281);
         } else {
             $this->editdetail->editprice->setVisible(true);
-            $this->editdetail->edittype->setOptionList(array(281 => 'Товар', 26 => 'Готовая продукция'));
+            $this->editdetail->edittype->setOptionList(array(281 => 'Товар', 26 => 'Готова продукцiя'));
             $this->editdetail->edittype->setValue(281);
         }
     }

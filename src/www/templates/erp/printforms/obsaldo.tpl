@@ -1,6 +1,6 @@
-<html>
 
-    <body>
+
+    
 
         <h3 style="font-size: 16px;">Оборотно-сальдова відомість c {{from}} по {{to}}</h3>
         <br>
@@ -45,5 +45,5 @@
 
 
         <br>
-    </body>
-</html>
+    
+

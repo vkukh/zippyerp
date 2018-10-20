@@ -185,7 +185,7 @@ class F1df extends \ZippyERP\ERP\Pages\Base
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
         \ZippyERP\System\Session::getSession()->printxml = $this->exportGNAU($header);
 
-        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
+        $this->detail->preview->setText($html, true);
 
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', $reportname);

@@ -68,7 +68,11 @@ class DocView extends \Zippy\Html\PageFragment
     public function setDoc(\ZippyERP\ERP\Entity\Doc\Document $doc) {
         $this->_doc = $doc;
         $doc = $this->_doc->cast();
+ 
+        $html = $doc->generateReport();
+        $this->preview->setText($html, true);       
 
+        
         // проверяем  поддержку  экспорта
         $exportlist = $doc->supportedExport();
         $this->word->setVisible(in_array(Document::EX_WORD, $exportlist));
@@ -77,8 +81,7 @@ class DocView extends \Zippy\Html\PageFragment
 
         $reportpage = "ZippyERP/ERP/Pages/ShowDoc";
 
-        $this->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/" . $doc->document_id);
-
+ 
         $this->print->pagename = $reportpage;
         $this->print->params = array('print', $doc->document_id);
         $this->html->pagename = $reportpage;
@@ -97,7 +100,7 @@ class DocView extends \Zippy\Html\PageFragment
         $this->_statelist = $this->_doc->getLogList();
         $this->dw_statelist->Reload();
 
-        //список приатасеных  файлов
+        //список приатаченых  файлов
         $this->updateFiles();
         $this->updateMessages();
 

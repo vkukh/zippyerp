@@ -1,5 +1,5 @@
-<html>
-    <body>
+
+    
         <table class="ctable" border="0" cellspacing="0" cellpadding="2">
             <tr>
                 <th width="30">&nbsp;</th>
@@ -14,7 +14,7 @@
 
             <tr>
                 <td style="font-weight: bolder;font-size: larger;" align="center" colspan="7" valign="middle">
-                    <br><br>Оприходування злишків № {{document_number}} від{{date}} <br><br>
+                    <br><br>Оприходування злишків № {{document_number}} від {{date}} <br><br>
                 </td>
             </tr>
             <tr>
@@ -50,5 +50,5 @@
 
         </table>
         <br> <br>
-    </body>
-</html>
+    
+

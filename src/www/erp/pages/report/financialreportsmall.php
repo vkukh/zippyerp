@@ -8,6 +8,7 @@ use Zippy\Html\Form\Form;
 use Zippy\Html\Label;
 use Zippy\Html\Link\RedirectLink;
 use Zippy\Html\Panel;
+use Zippy\Html\Link\ClickLink;
 use ZippyERP\ERP\Entity\Account;
 use ZippyERP\ERP\Helper as H;
 use ZippyERP\System\System;
@@ -24,6 +25,7 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
         $this->add(new Form('filter'))->onSubmit($this, 'OnSubmit');
         $this->filter->add(new DropDownChoice('yr'));
         $this->filter->add(new DropDownChoice('qw'));
+        $this->add(new ClickLink('autoclick'))->onClick($this, 'OnAutoLoad',true);
 
         $this->add(new Panel('detail'))->setVisible(false);
         $this->detail->add(new RedirectLink('print', ""));
@@ -34,16 +36,18 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
     }
 
     public function OnSubmit($sender) {
-        $header = $this->getHeaderData();
+         
 
-        $html = $this->generateReport($header);
+     
+        $this->detail->preview->setText("Загрузка..." );
+           
         $reportpage = "ZippyERP/ERP/Pages/ShowReport";
         $reportname = "finreport25";
 
         \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";
         \ZippyERP\System\Session::getSession()->printxml = $this->exportGNAU($header);
 
-        $this->detail->preview->setAttribute('src', "/?p={$reportpage}&arg=preview/{$reportname}");
+           $this->detail->preview->setText($html, true);
 
         $this->detail->print->pagename = $reportpage;
         $this->detail->print->params = array('print', $reportname);
@@ -511,6 +515,18 @@ class FinancialReportSmall extends \ZippyERP\ERP\Pages\Base
   </DECLAR>";
 
         return $xml;
+    }
+    public function OnAutoLoad($sender) {
+        $html = $this->generateReport($this->getHeaderData());
+        \ZippyERP\System\Session::getSession()->printform = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>" . $html . "</body></html>";       
+        $this->detail->preview->setText($html, true);
+        $this->updateAjax(array('preview'))  ;
+    }
+   protected function beforeRender() {
+        parent::beforeRender();
+
+        \Zippy\WebApplication::addJavaScript("\$('#autoclick').click()",true) ;
+ 
     }
 
 }

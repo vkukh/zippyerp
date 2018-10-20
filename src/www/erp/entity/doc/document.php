@@ -69,7 +69,14 @@ class Document extends \ZCL\DB\Entity
     protected function beforeSave() {
         $this->document_number = trim($this->document_number);
         $this->packData();
-
+          $doc = Document::getFirst("        document_number like '%{$this->document_number}%' ");    
+         if($doc instanceof Document)  {
+             if($this->document_id != $doc->document_id) {
+                  
+                 throw new \ZippyERP\System\Exception('Не  унікальний номер документу');
+                 return false;
+             }
+         }
         //todo  отслеживание  изменений
     }
 
@@ -85,10 +92,12 @@ class Document extends \ZCL\DB\Entity
         foreach ($this->headerdata as $key => $value) {
             if ($key > 0)
                 continue;
-            if (strlen($value) > 10) {
-                $value = "<![CDATA[" . $value . "]]>";
-            }
-            $this->content .= "<{$key}>{$value}</{$key}>";
+             if (is_numeric($value) || strlen($value)==0 ) {
+                 $value = $value;
+             } else {
+               $value = "<![CDATA[" . $value . "]]>";  
+             }  
+             $this->content .= "<{$key}>{$value}</{$key}>";
         }
         $this->content .= "</header><detail>";
         foreach ($this->detaildata as $row) {
@@ -96,12 +105,13 @@ class Document extends \ZCL\DB\Entity
             foreach ($row as $key => $value) {
                 if ($key > 0)
                     continue;
-                if (strlen($value) > 10) {
-                    $value = "<![CDATA[" . $value . "]]>";
-                }
-                $value = $value === true ? 'true' : $value;
-                $value = $value === false ? 'false' : $value;
-                $this->content .= "<{$key}>{$value}</{$key}>";
+             if (is_numeric($value) || strlen($value)==0 ) {
+                 $value = $value;
+             } else {
+               $value = "<![CDATA[" . $value . "]]>";  
+             }                
+ 
+             $this->content .= "<{$key}>{$value}</{$key}>";
             }
 
             $this->content .= "</row>";
@@ -122,21 +132,14 @@ class Document extends \ZCL\DB\Entity
         $xml = new \SimpleXMLElement($this->content);
         foreach ($xml->header->children() as $child) {
             $this->headerdata[(string) $child->getName()] = (string) $child;
+            
         }
         $this->detaildata = array();
         foreach ($xml->detail->children() as $row) {
             $_row = array();
             foreach ($row->children() as $item) {
                 $_row[(string) $item->getName()] = (string) $item;
-                if (((string) $item) == 'true') {
-                    $_row[(string) $item->getName()] = true;
-                }
-                if (((string) $item) == 'false') {
-                    $_row[(string) $item->getName()] = false;
-                }
-                if (is_integer((string) $item)) {
-                    $_row[(string) $item->getName()] = (int) $item;
-                }
+ 
             }
             $this->detaildata[] = $_row;
         }

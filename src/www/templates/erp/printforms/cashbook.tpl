@@ -1,5 +1,5 @@
-<html>
-    <body>
+
+    
 
 
         <table class="ctable" border="0" cellspacing="0" cellpadding="2">
@@ -132,5 +132,5 @@
         <h4>Не знайдені документи за вказаний період</h4>
 
         {{/_detail}} <br>
-    </body>
-</html>
+    
+

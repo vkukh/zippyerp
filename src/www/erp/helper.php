@@ -82,15 +82,19 @@ class Helper
         return $textmenu;
     }
 
-    public static function generateSmartMenu() {
+      public static function generateSmartMenu() {
         $conn = \ZDB\DB::getConnect();
-        $menu = System::getUser()->menu;
-        if (strlen($menu) == 0)
-            $menu = "0";
-        $rows = $conn->Execute("select *  from erp_metadata where meta_id in({$menu}) and  disabled <> 1 order  by  description ");
+         
+        $rows = $conn->Execute("select *  from  erp_metadata where smartmenu =1 ");
         $textmenu = "";
-
+        $aclview = explode(',', System::getUser()->aclview);
+    
         foreach ($rows as $item) {
+            
+           if (!in_array($item['meta_id'], $aclview) && System::getUser()->acltype == 2)
+                continue;
+            
+            
             switch ((int) $item['meta_type']) {
                 case 1 :
                     $dir = "Pages/Doc";
@@ -109,12 +113,12 @@ class Helper
                     break;
             }
 
-            $textmenu .= "<li><a href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+            $textmenu .= " <a class=\"btn btn-sm btn-outline-primary mr-2\" href=\"/?p=ZippyERP/ERP/{$dir}/{$item['meta_name']}\">{$item['description']}</a> ";
         }
 
         return $textmenu;
     }
-
+ 
     /**
      * список  групп документов
      *

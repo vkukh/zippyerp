@@ -37,7 +37,11 @@ class InventoryProd extends Document
             "gainsname" => $this->headerdata["gainsname"]
         );
 
+<<<<<<< HEAD
         $report = new \ZippyERP\ERP\Report('inventoryprod.tpl');
+=======
+        $report = new \ZippyERP\ERP\Report('inventorygain.tpl');
+>>>>>>> 6f73609aab2239a396da247e9d9a7654ac565151
 
         $html = $report->generate($header, $detail);
 

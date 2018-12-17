@@ -855,8 +855,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = utf8 */;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_account_entry_view` AS select `e`.`entry_id` AS `entry_id`,`e`.`acc_d` AS `acc_d`,`e`.`acc_c` AS `acc_c`,`e`.`amount` AS `amount`,`e`.`document_id` AS `document_id`,`doc`.`document_number` AS `document_number`,`doc`.`meta_desc` AS `meta_desc`,`doc`.`meta_name` AS `meta_name`,`doc`.`document_date` AS `document_date` from (`erp_account_entry` `e` join `erp_document_view` `doc` on((`e`.`document_id` = `doc`.`document_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -868,8 +868,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = utf8 */;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_account_subconto_view` AS select `sc`.`subconto_id` AS `subconto_id`,`sc`.`account_id` AS `account_id`,`sc`.`document_id` AS `document_id`,`sc`.`document_date` AS `document_date`,cast((`sc`.`amount` / 100) as decimal(10,2)) AS `amount`,cast((`sc`.`quantity` / 1000) as decimal(10,2)) AS `quantity`,`sc`.`customer_id` AS `customer_id`,`sc`.`employee_id` AS `employee_id`,`sc`.`asset_id` AS `asset_id`,`sc`.`extcode` AS `extcode`,`sc`.`stock_id` AS `stock_id`,`sc`.`moneyfund_id` AS `moneyfund_id`,`dc`.`document_number` AS `document_number`,`dc`.`meta_desc` AS `meta_desc`,`dc`.`meta_name` AS `meta_name`,`cs`.`customer_name` AS `customer_name`,(case when (`sc`.`employee_id` > 0) then `em`.`shortname` else NULL end) AS `employee_name`,`mf`.`title` AS `moneyfundname`,`it`.`itemname` AS `osname`,`st`.`itemname` AS `itemname`,cast((`st`.`partion` / 100) as decimal(10,2)) AS `partion`,`st`.`storename` AS `storename`,`st`.`item_id` AS `item_id`,`st`.`store_id` AS `store_id`,(case when (`sc`.`amount` >= 0) then `sc`.`amount` else 0 end) AS `da`,(case when (`sc`.`amount` < 0) then (0 - `sc`.`amount`) else 0 end) AS `ca`,(case when (`sc`.`quantity` >= 0) then `sc`.`quantity` else 0 end) AS `dq`,(case when (`sc`.`quantity` < 0) then (0 - `sc`.`quantity`) else 0 end) AS `cq` from ((((((`erp_account_subconto` `sc` join `erp_document_view` `dc` on((`sc`.`document_id` = `dc`.`document_id`))) left join `erp_customer` `cs` on((`sc`.`customer_id` = `cs`.`customer_id`))) left join `erp_staff_employee_view` `em` on((`sc`.`employee_id` = `em`.`employee_id`))) left join `erp_moneyfunds` `mf` on((`sc`.`moneyfund_id` = `mf`.`id`))) left join `erp_item` `it` on((`sc`.`asset_id` = `it`.`item_id`))) left join `erp_stock_view` `st` on((`sc`.`stock_id` = `st`.`stock_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -881,8 +881,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_contact_view` AS select `erp_contact`.`contact_id` AS `contact_id`,`erp_contact`.`firstname` AS `firstname`,`erp_contact`.`middlename` AS `middlename`,`erp_contact`.`lastname` AS `lastname`,concat_ws(' ',`erp_contact`.`lastname`,`erp_contact`.`firstname`,`erp_contact`.`middlename`) AS `fullname`,`erp_contact`.`email` AS `email`,`erp_contact`.`phone` AS `phone`,`erp_contact`.`detail` AS `detail`,coalesce(`cc`.`customer_id`,0) AS `customer`,`erp_contact`.`description` AS `description`,`cc`.`customer_name` AS `customer_name`,`cc`.`cust_type` AS `cust_type` from (`erp_contact` left join `erp_customer` `cc` on((`erp_contact`.`customer_id` = `cc`.`customer_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -894,8 +894,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_customer_view` AS select `c`.`customer_id` AS `customer_id`,`c`.`customer_name` AS `customer_name`,`c`.`detail` AS `detail`,`c`.`cust_type` AS `cust_type`,`c`.`email` AS `email`,`c`.`phone` AS `phone` from `erp_customer` `c` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -907,8 +907,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = cp1251 */;
 /*!50001 SET character_set_results     = cp1251 */;
 /*!50001 SET collation_connection      = cp1251_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_document_view` AS select `d`.`document_id` AS `document_id`,`d`.`document_number` AS `document_number`,`d`.`document_date` AS `document_date`,`d`.`created` AS `created`,`d`.`updated` AS `updated`,`d`.`user_id` AS `user_id`,`d`.`content` AS `content`,`d`.`amount` AS `amount`,`d`.`type_id` AS `type_id`,`u`.`userlogin` AS `userlogin`,`d`.`state` AS `state`,`d`.`datatag` AS `datatag`,`erp_metadata`.`meta_name` AS `meta_name`,`erp_metadata`.`description` AS `meta_desc` from ((`erp_document` `d` join `system_users` `u` on((`d`.`user_id` = `u`.`user_id`))) join `erp_metadata` on((`erp_metadata`.`meta_id` = `d`.`type_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -920,8 +920,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_event_view` AS select `e`.`user_id` AS `user_id`,`e`.`eventdate` AS `eventdate`,`e`.`title` AS `title`,`e`.`description` AS `description`,`e`.`notify_id` AS `notify_id`,`e`.`event_id` AS `event_id`,`e`.`customer_id` AS `customer_id`,`c`.`customer_name` AS `customer_name` from (`erp_event` `e` left join `erp_customer` `c` on((`e`.`customer_id` = `c`.`customer_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -933,8 +933,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_item_view` AS select `t`.`item_id` AS `item_id`,`t`.`detail` AS `detail`,`t`.`itemname` AS `itemname`,`t`.`description` AS `description`,`t`.`measure_id` AS `measure_id`,`m`.`measure_name` AS `measure_name`,`t`.`item_code` AS `item_code`,`t`.`item_type` AS `item_type`,`t`.`deleted` AS `deleted` from (`erp_item` `t` join `erp_item_measures` `m` on((`t`.`measure_id` = `m`.`measure_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -946,8 +946,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = utf8 */;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_message_view` AS select `erp_message`.`message_id` AS `message_id`,`erp_message`.`user_id` AS `user_id`,`erp_message`.`created` AS `created`,`erp_message`.`message` AS `message`,`erp_message`.`item_id` AS `item_id`,`erp_message`.`item_type` AS `item_type`,`system_users`.`userlogin` AS `userlogin` from (`erp_message` join `system_users` on((`erp_message`.`user_id` = `system_users`.`user_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -959,8 +959,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_staff_employee_view` AS select `e`.`employee_id` AS `employee_id`,`e`.`position_id` AS `position_id`,`e`.`department_id` AS `department_id`,`e`.`login` AS `login`,`e`.`detail` AS `detail`,`e`.`firstname` AS `firstname`,`e`.`lastname` AS `lastname`,`e`.`middlename` AS `middlename`,`d`.`department_name` AS `department_name`,`p`.`position_name` AS `position_name`,concat_ws(' ',`e`.`lastname`,`e`.`firstname`,`e`.`middlename`) AS `fullname`,concat_ws(' ',`e`.`lastname`,`e`.`firstname`) AS `shortname`,`e`.`firedate` AS `firedate`,`e`.`hiredate` AS `hiredate` from ((`erp_staff_employee` `e` left join `erp_staff_position` `p` on((`e`.`position_id` = `p`.`position_id`))) left join `erp_staff_department` `d` on((`e`.`department_id` = `d`.`department_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -972,8 +972,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_stock_view` AS select `erp_store_stock`.`stock_id` AS `stock_id`,`erp_store_stock`.`item_id` AS `item_id`,`erp_item_view`.`itemname` AS `itemname`,`erp_item_view`.`item_code` AS `item_code`,`erp_store`.`storename` AS `storename`,`erp_store`.`store_id` AS `store_id`,`erp_item_view`.`measure_name` AS `measure_name`,`erp_store_stock`.`price` AS `price`,`erp_store_stock`.`partion` AS `partion`,coalesce(`erp_store_stock`.`closed`,0) AS `closed`,`erp_item_view`.`item_type` AS `item_type` from ((`erp_store_stock` join `erp_item_view` on((`erp_store_stock`.`item_id` = `erp_item_view`.`item_id`))) join `erp_store` on((`erp_store_stock`.`store_id` = `erp_store`.`store_id`))) where ((`erp_item_view`.`item_type` <> 3) and (`erp_item_view`.`deleted` <> 1)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -985,8 +985,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_task_project_view` AS select `erp_task_project`.`project_id` AS `project_id`,`erp_task_project`.`doc_id` AS `doc_id`,`erp_task_project`.`description` AS `description`,`erp_task_project`.`start_date` AS `start_date`,`erp_task_project`.`end_date` AS `end_date`,`erp_task_project`.`projectname` AS `projectname`,`erp_task_project`.`customer_id` AS `customer_id`,`erp_customer`.`customer_name` AS `customer_name`,(select count(0) AS `count(*)` from `erp_task_task` where (`erp_task_task`.`project_id` = `erp_task_project`.`project_id`)) AS `taskall`,(select count(0) AS `count(*)` from `erp_task_task` where ((`erp_task_task`.`project_id` = `erp_task_project`.`project_id`) and (`erp_task_task`.`status` = 3))) AS `taskclosed` from (`erp_task_project` left join `erp_customer` on((`erp_task_project`.`customer_id` = `erp_customer`.`customer_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -998,8 +998,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = utf8 */;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `erp_task_task_view` AS select `t`.`task_id` AS `task_id`,`t`.`project_id` AS `project_id`,`t`.`description` AS `description`,`t`.`start_date` AS `start_date`,`t`.`end_date` AS `end_date`,`t`.`hours` AS `hours`,`t`.`status` AS `status`,`t`.`taskname` AS `taskname`,`t`.`createdby` AS `createdby`,`t`.`details` AS `details`,`t`.`priority` AS `priority`,`t`.`cost` AS `cost`,`t`.`updated` AS `updated`,`u`.`userlogin` AS `createdbyname`,`p`.`projectname` AS `projectname`,(select count(0) AS `count(0)` from `erp_task_task_emp` where (`erp_task_task_emp`.`task_id` = `t`.`task_id`)) AS `empcnt` from ((`erp_task_task` `t` join `erp_task_project` `p` on((`t`.`project_id` = `p`.`project_id`))) join `system_users` `u` on((`t`.`createdby` = `u`.`user_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1011,8 +1011,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `shop_attributes_view` AS select `shop_attributes`.`attribute_id` AS `attribute_id`,`shop_attributes`.`attributename` AS `attributename`,`shop_attributes`.`group_id` AS `group_id`,`shop_attributes`.`attributetype` AS `attributetype`,`shop_attributes`.`valueslist` AS `valueslist`,`shop_attributes`.`showinlist` AS `showinlist`,`shop_attributes_order`.`ordern` AS `ordern` from (`shop_attributes` join `shop_attributes_order` on(((`shop_attributes`.`attribute_id` = `shop_attributes_order`.`attr_id`) and (`shop_attributes`.`group_id` = `shop_attributes_order`.`pg_id`)))) order by `shop_attributes_order`.`ordern` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1024,8 +1024,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = latin1 */;
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `shop_orderdetails_view` AS select `od`.`orderdetail_id` AS `orderdetail_id`,`od`.`order_id` AS `order_id`,`od`.`product_id` AS `product_id`,`od`.`quantity` AS `quantity`,`od`.`price` AS `price`,`p`.`productname` AS `productname`,`p`.`group_id` AS `group_id`,`p`.`partion` AS `partion`,`p`.`erp_stock_id` AS `erp_stock_id`,`p`.`erp_item_id` AS `erp_item_id`,`so`.`status` AS `orderstatus` from ((`shop_orderdetails` `od` join `shop_products` `p` on((`od`.`product_id` = `p`.`product_id`))) join `shop_orders` `so` on((`so`.`order_id` = `od`.`order_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1037,8 +1037,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `shop_orders_view` AS select `shop_orders`.`order_id` AS `order_id`,`shop_orders`.`amount` AS `amount`,`shop_orders`.`description` AS `description`,`shop_orders`.`status` AS `status`,`shop_orders`.`comment` AS `comment`,`shop_orders`.`details` AS `details`,`shop_orders`.`created` AS `created`,`shop_orders`.`closed` AS `closed` from `shop_orders` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1050,8 +1050,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `shop_productgroups_view` AS select `g`.`group_id` AS `group_id`,`g`.`parent_id` AS `parent_id`,`g`.`groupname` AS `groupname`,`g`.`mpath` AS `mpath`,`g`.`image_id` AS `image_id`,(select count(`sg`.`group_id`) AS `cnt` from `shop_productgroups` `sg` where (`g`.`group_id` = `sg`.`parent_id`)) AS `gcnt`,(select count(`p`.`product_id`) AS `cnt` from `shop_products` `p` where (`g`.`group_id` = `p`.`group_id`)) AS `pcnt` from `shop_productgroups` `g` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1063,8 +1063,8 @@ CREATE TABLE `system_users` (
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 CREATE  */
+/*!50013  */
 /*!50001 VIEW `shop_products_view` AS select `p`.`product_id` AS `product_id`,`p`.`group_id` AS `group_id`,`p`.`productname` AS `productname`,`p`.`manufacturer_id` AS `manufacturer_id`,`p`.`price` AS `price`,`p`.`image_id` AS `image_id`,`p`.`description` AS `description`,`p`.`fulldescription` AS `fulldescription`,`p`.`old_price` AS `old_price`,`p`.`topsaled` AS `topsaled`,`p`.`deleted` AS `deleted`,`p`.`sef` AS `sef`,`p`.`erp_item_id` AS `erp_item_id`,`p`.`erp_stock_id` AS `erp_stock_id`,`p`.`item_code` AS `item_code`,`p`.`created` AS `created`,`g`.`groupname` AS `groupname`,`m`.`manufacturername` AS `manufacturername`,coalesce((select avg(`pr`.`rating`) AS `avg(rating)` from `shop_prod_comments` `pr` where ((`pr`.`product_id` = `p`.`product_id`) and (`pr`.`rating` > 0))),0) AS `rated`,coalesce((select count(`pc`.`comment_id`) AS `count(``pc``.``comment_id``)` from `shop_prod_comments` `pc` where (`pc`.`product_id` = `p`.`product_id`)),0) AS `comments`,(select coalesce(sum(`erp_account_subconto`.`quantity`),0) AS `cnt` from `erp_account_subconto` where (`erp_account_subconto`.`stock_id` = `p`.`erp_stock_id`)) AS `cntonstore` from ((`shop_products` `p` join `shop_productgroups` `g` on((`p`.`group_id` = `g`.`group_id`))) left join `shop_manufacturers` `m` on((`p`.`manufacturer_id` = `m`.`manufacturer_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;

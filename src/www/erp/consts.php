@@ -56,6 +56,7 @@ class Consts
     const TYPEOP_CUSTOMER_IN_PREV = 311;   // предоплата от покупателя
     const TYPEOP_CUSTOMER_OUT_PREV = 312;   // предоплата поставщику
     const TYPEOP_COMMON_EXPENCES = 313;   // различные накладные  расходы
+    const TYPEOP_CUSTOMER_IN_ADVANCE = 314;   // различные накладные  расходы
 
     /**
      * Список  типов  налогов

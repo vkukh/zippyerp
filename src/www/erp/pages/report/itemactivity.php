@@ -124,7 +124,7 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
               AND st.store_id = {$storeid}
               AND DATE(sc.document_date) >= " . $conn->DBDate($from) . "
               AND DATE(sc.document_date) <= " . $conn->DBDate($to) . "
-              GROUP BY st.stock_id,
+              GROUP BY st.item_id,
                        st.price,
                        DATE(sc.document_date)) t
             ORDER BY dt  

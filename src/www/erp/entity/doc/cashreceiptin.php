@@ -86,6 +86,16 @@ class CashReceiptIn extends Document
             $sc->setExtCode(C::TYPEOP_CASH_IN);
             $sc->save();
         }
+        if ($optype == C::TYPEOP_CUSTOMER_IN_ADVANCE) {
+            $ret = Entry::AddEntry(30, 681 , $this->headerdata['amount'], $this->document_id, $this->document_date);
+            $sc = new SubConto($this, 681 , 0 - $this->headerdata['amount']);
+            $sc->setCustomer($this->headerdata['opdetail']);
+            $sc->save();
+            $sc = new SubConto($this, 30, $this->headerdata['amount']);
+            $sc->setMoneyfund($cash->id);
+            $sc->setExtCode(C::TYPEOP_CUSTOMER_IN_ADVANCE);
+            $sc->save();
+        }
         if ($optype == C::TYPEOP_BANK_IN) {
             $ret = Entry::AddEntry(30, 31, $this->headerdata['amount'], $this->document_id, $this->document_date);
             $sc = new SubConto($this, 31, 0 - $this->headerdata['amount']);
@@ -129,6 +139,7 @@ class CashReceiptIn extends Document
         $list[C::TYPEOP_BANK_IN] = "Зняття  з рахунку";
         $list[C::TYPEOP_CASH_IN] = "Прибуток  з  підзвіту";
         $list[C::TYPEOP_RET_IN] = "Прибуток з роздрібу";
+        $list[C::TYPEOP_CUSTOMER_IN_ADVANCE] = "Аванс від покупця";
         return $list;
     }
 

@@ -106,7 +106,7 @@ class ABC extends \ZippyERP\ERP\Pages\Base
         $list = array();
         $conn = \ZDB\DB::getConnect();
         $sql = "SELECT * FROM (
-                    SELECT itemname as name, SUM( ABS( extcode ) ) AS value
+                    SELECT itemname as name, SUM( ABS( extcode*quantity ) ) AS value
                     FROM  `erp_account_subconto_view`
                     WHERE account_id in(26,281,282)
                     AND extcode >0

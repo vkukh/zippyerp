@@ -73,6 +73,9 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
         if ($optype == Consts::TYPEOP_CUSTOMER_IN) {
             $this->docform->lblopdetail->setText('Покупатель');
         }
+        if ($optype == Consts::TYPEOP_CUSTOMER_IN_ADVANCE) {
+            $this->docform->lblopdetail->setText('Покупатель');
+        }
         if ($optype == Consts::TYPEOP_CUSTOMER_IN_BACK) {
             $this->docform->lblopdetail->setText('Постачальник');
         }
@@ -98,6 +101,9 @@ class CashReceiptIn extends \ZippyERP\ERP\Pages\Base
         $text = $sender->getValue();
         $optype = $this->docform->optype->getValue();
         if ($optype == Consts::TYPEOP_CUSTOMER_IN) {
+            return Customer::findArray('customer_name', "customer_name like '%{$text}%' and   cust_type=" . Customer::TYPE_FIRM);
+        }
+        if ($optype == Consts::TYPEOP_CUSTOMER_IN_ADVANCE) {
             return Customer::findArray('customer_name', "customer_name like '%{$text}%' and   cust_type=" . Customer::TYPE_FIRM);
         }
         if ($optype == Consts::TYPEOP_CUSTOMER_IN_BACK) {

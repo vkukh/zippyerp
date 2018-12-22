@@ -18,7 +18,7 @@ class Base extends \Zippy\Html\WebPage
         global $_config, $logger;
         \Zippy\Html\WebPage::__construct();
         
-        $logger->debug('Page '.get_class($this)); ; 
+        //$logger->debug('Page '.get_class($this)); ; 
 
 
         $user = System::getUser();

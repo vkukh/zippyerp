@@ -9,6 +9,8 @@
         <div class="row"  zippy="storetable">
             <div class="col-12 col-md-6">
                 <h2>Довідник складів</h2>
+              <a zippy="storeadd" class="btn btn-outline-primary  ">Додати</a>
+ 
                 <table class="table table-bordered  table-sm">
                     <tr>
                         <th>Назва</th>
@@ -24,7 +26,6 @@
                     </tr>
                 </table>
 
-                <a zippy="storeadd" class="btn btn-light  ">Додати</a>
             </div>
         </div>
         <div class="row"   >
@@ -73,11 +74,13 @@
                 </form>
                 <table class="table table-bordered  table-sm">
                     <tr>
-                        <th rowspan="2">Артикул</th>
+                        <th rowspan="2">Код</th>
                         <th rowspan="2">Назва</th>
                         <th rowspan="2" width="50">Од.</th>
                         <th rowspan="2" style="text-align: right;">Ціна</th>
+                        <th rowspan="2" style="text-align: right;">Ціна</th>
                         <th colspan="3" style="text-align:center;">Кількість </th>
+                        
                         <th rowspan="2"></th>
                     </tr>
                     <tr  >
@@ -92,10 +95,12 @@
                         <td zippy="itemcode"></td>
                         <td zippy="itemname"></td>
                         <td zippy="measure"></td>
+                        <td zippy="price1" align="right"></td>
                         <td zippy="price" align="right"></td>
                         <td zippy="quantity" align="right"></td>
                         <td zippy="quantityr" align="right"></td>
                         <td zippy="quantityw" align="right"></td>
+                         
                         <td><a title="Видалити ціну(партію) яка більше  не актуальна" zippy="pcancel"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>

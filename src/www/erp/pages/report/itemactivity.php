@@ -105,10 +105,10 @@ class ItemActivity extends \ZippyERP\ERP\Pages\Base
                   COALESCE(SUM(u.`quantity`), 0)
                 FROM erp_account_subconto u
                 WHERE u.`document_date` < t.dt
-                AND u.`stock_id` = t.`stock_id`) AS begin_quantity
+                AND u.`item_id` = t.`item_id`) AS begin_quantity
             FROM (
             SELECT
-                st.stock_id, st.itemname,st.item_code,
+                st.item_id, st.itemname,st.item_code,
                 price,
                 DATE(sc.document_date) AS dt,
                 SUM(

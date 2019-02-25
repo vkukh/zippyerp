@@ -1,0 +1,177 @@
+<html>
+    <head>
+    </head>
+
+    <body>
+        <div class="row">
+
+            <div class="col-12 col-md-10 col-xl-8" zippy="itemtable">
+                <h3>Справочник ОС и НМА </h3>
+                <form zippy="filter" class="form-inline">
+
+                    <label for="searchkey">Поиск</label>
+                    <input class="form-control mr-sm-2" type="text" zippy="searchkey">
+                    <label for="searchemp">мат. ответственный</label>
+
+                    <select   class="form-control mr-sm-2  " zippy="searchemp">
+                        <option value="0">Не выбран</option>
+                    </select>         
+
+
+                    <input class="btn btn-outline-success  " type="submit" value="ОК">
+
+                </form>
+                <a zippy="addnew" class="btn btn-primary  ">Добавить</a>
+                <table class="table table-bordered  table-sm  ">
+                    <tr>
+                        <th>Наименование</th>
+
+                        <th>Инв. номер</th>
+                        <th>Сер. номер</th>
+
+
+
+                        <th style="width:100px"></th>
+                    </tr>
+                    <tr zippy="eqlist">
+                        <td zippy="ca_name"></td>
+
+                        <td zippy="code"></td>
+                        <td zippy="serial"></td>
+
+
+
+                        <td aling="center"><a zippy="edit" title="Редактировать"><i class="fa fa-edit"></i></a> 
+
+
+                            <a zippy="delete" title="Удалить"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+                </table>
+                <div zippy="pag"></div>
+            </div>
+
+
+
+            <div class="col-12 col-md-10 col-xl-8"  >
+                <form   zippy="itemdetail"  >
+                    <h4>Редактирование   </h4>
+
+
+
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-xl-3 ">
+                            <div class="form-group  ">
+                                <label   for="editname">Наименование</label>
+
+                                <input required="required" class="form-control" zippy="editname"/>
+
+                            </div> 
+                            <div class="form-group  ">
+                                <label  for="editacc_code">Тип  </label>
+
+                                <select   class="form-control  " zippy="editacc_code">
+
+                                </select>
+
+                            </div>                    
+                            <div class="form-group  ">
+                                <label  for="editemp">Мат. ответственный</label>
+
+                                <select   class="form-control select2" zippy="editemp">
+                                    <option value="0">Не задан </option>
+                                </select>
+
+                            </div>
+
+
+
+
+                            <div class="form-group  ">
+                                <label   for="editcode">Инвентарный номер</label>
+
+                                <input class="form-control" zippy="editcode"/>
+
+                            </div>
+
+                            <div class="form-group  ">
+                                <label   for="editserial">Серийный номер</label>
+
+                                <input class="form-control" zippy="editserial"/>
+
+                            </div>
+                            <div class="form-group  ">
+                                <label for="editexpenses" >Тип затрат</label>
+                                <select class="form-control" zippy="editexpenses">
+                                </select>
+                            </div>                    
+                            <div class="form-group  ">
+                                <label   for="editdescription">Описание</label>
+
+                                <textarea class="form-control" zippy="editdescription"></textarea> 
+
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-md-4 col-xl-3 ">
+                            <div class="form-group">
+                                <label for="editdepreciation">Метод износа</label>
+                                <select class="form-control" zippy="editdepreciation">
+                                    <option value="1">Линейный</option>
+                                </select>
+                            </div>                   
+                            <div class="form-group">
+                                <label for="editvalue">Первичная стоимость</label>
+                                <input class="form-control" style="width:100px;" zippy="editvalue" pattern="[0-9\.]+"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editcancelvalue">Ликвидационная стоимость  </label>
+                                <input class="form-control" style="width:100px;" zippy="editcancelvalue" pattern="[0-9\.]+"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="editterm">Срок использования, мес.</label>
+                                <input class="form-control" style="width:100px;" zippy="editterm" pattern="[0-9]+"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="editnorma">Норма амортищации</label>
+                                <input class="form-control" style="width:100px;" zippy="editnorma" pattern="[0-9\.]+"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="editdatemaint">Дата ввода в эксплуатацию</label>
+                                <input class="form-control" style="width:100px;" zippy="editdatemaint"/>
+
+                            </div>
+                            <div class="form-group  ">
+                                <label for="editgroup" >Налоговый учет</label>
+                                <select class="form-control" zippy="editgroup">
+                                    <option value="0">Непризводственный</option>
+                                    <option value="1">Группа 1</option>
+                                    <option value="2">Группа 2</option>
+                                    <option value="3">Группа 3</option>
+                                    <option value="4">Группа 4</option>
+                                </select>
+                            </div>                    
+
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12   ">
+
+                            <div class="form-group">
+                                <input zippy="save" type="submit" value="Сохранить" class="btn btn-primary  ">&nbsp;&nbsp;
+                                <input zippy="cancel" type="button" value="Отменить" class="btn btn-light  "></td>
+                            </div>
+                        </div>   </div>
+                </form>
+
+            </div>
+
+
+
+        </div>
+
+
+    </body>
+</html>

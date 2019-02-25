@@ -1,44 +1,43 @@
 <?php
 
 
-
 require_once 'init.php';
 
+global $_config;
+ 
+if(strpos($_SERVER['REQUEST_URI'],'index.php') >1  ){
+   die('Сайт размещен не в  корневой папке');  
+};
 try {
 
-       if ($_COOKIE['remember'] && \ZippyERP\System\System::getUser()->user_id == 0) {
+       if ($_COOKIE['remember'] && \App\System::getUser()->user_id == 0) {
             $arr = explode('_', $_COOKIE['remember']);
             $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
             if ($arr[0] > 0 && $arr[1] === md5($arr[0] . $_config['common']['salt'])) {
-                $user = \ZippyERP\System\User::load($arr[0]);
+                $user = \App\Entity\User::load($arr[0]);
             }
 
-            if ($user instanceof \ZippyERP\System\User) {
+            if ($user instanceof \App\Entity\User) {
 
 
-                \ZippyERP\System\System::setUser($user);
+                \App\System::setUser($user);
 
                 $_SESSION['user_id'] = $user->user_id; //для  использования  вне  Application
                 $_SESSION['userlogin'] = $user->userlogin; //для  использования  вне  Application
             }   
 
         }
-
-      $app = new \Zippy\WebApplication('\ZippyERP\ERP\Pages\Main');
-      //функции для  загрузки шаблонов страницы
-      $app->setTemplate("\\ZippyERP\\System\\getTemplate");
-      $app->setTemplate("\\ZippyERP\\ERP\\getTemplate");
-      $app->setTemplate("\\ZippyERP\\Shop\\getTemplate");
-      //функции дляроутинга 
-      $app->setRoute("\\ZippyERP\\System\\Route");
-      $app->setRoute("\\ZippyERP\\ERP\\Route");
-      $app->setRoute("\\ZippyERP\\Shop\\Route");
-      
-    
+   
+     
+    if($_config['common']['shop'] == 1){
+       $app = new \App\Application('\App\Shop\Pages\Main');    
+    } else {
+       $app = new \App\Application('\App\Pages\Main');      
+    }
     
     
     $app->Run();
-
+    
 
 
     /* } catch (\ZippyERP\System\Exception $e) {
@@ -65,7 +64,7 @@ catch (Throwable $e) {
         echo $e->getFile().'<br>';
     }
 }
-catch (Excption $e) {    //для обратной совместимости
+catch (Exception $e) {    //для обратной совместимости
     if($e  instanceof ADODB_Exception){
 
        \ZDB\DB::getConnect()->CompleteTrans(false); // откат транзакции

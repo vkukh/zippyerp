@@ -1,0 +1,65 @@
+<html>
+
+    <body>
+
+        <h3>Платежное поручение</h3>
+        <form zippy="docform">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="document_number" >Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="customer" >Контрагент</label>
+                        <input class="form-control" type="text" zippy="customer" placeholder="Начните  вводить...">
+                    </div>
+                    <div class="form-group">
+                        <label for="basedoc" >Документ - основание</label>
+                        <input class="form-control" type="text" zippy="basedoc">
+                    </div>
+                    <div class="form-group">
+                        <label for="notes" >Назначение</label>
+                        <textarea class="form-control" zippy="notes"></textarea>
+                    </div>
+
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="document_date" > Дата</label>
+                        <input class="form-control" type="text" zippy="document_date" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="amount" >Сумма</label>
+                        <input class="form-control" type="text" zippy="amount" required="required" pattern="[0-9\.]+"
+                               style="width: 100px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="nds" >В т.ч. НДС</label>
+                        <input class="form-control" type="text" zippy="nds" pattern="[0-9\.]+" style="width: 100px;">
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" zippy="tax"> Оплата налогов
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <input type="button" value="Відмінити" zippy="backtolist" class="btn btn-light ">
+                    <input zippy="savedoc" type="submit" value="Зберегти" class="btn btn-outline-info ">
+                    &nbsp;<input zippy="execdoc" type="submit" value="Оплачено" class="btn btn-outline-info  ">
+
+                </div>
+            </div>
+        </form>
+
+
+    </body>
+</html>

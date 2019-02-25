@@ -1,0 +1,131 @@
+<html>
+    <head>
+    </head>
+
+    <body>
+        <div class="row">
+
+
+            <div zippy="employeetable" class="col-12 col-md-10 col-lg-8">
+                <h3>Справочник сотрудников </h3>
+                <a zippy="addnew" class="btn btn-outline-primary btn-sm">Добавить</a>
+                <a zippy="showall"  >Показать всех</a>
+                <table class="table table-bordered   table-sm" class="col-10">
+                    <tr>
+                        <th>ФИО</th>
+
+                        <th>Телефон</th>
+                        <th>Логин</th>
+
+                        <th></th>
+                    </tr>
+                    <tr zippy="employeelist">
+                        <td zippy="emp_name"></td>
+
+                        <td zippy="phone"></td>
+                        <td zippy="login"></td>
+
+
+                        <td style="width:52px"><a zippy="edit" title="Редактирование"><i class="fa fa-edit"></i></a> <a
+                                zippy="delete" title="Удалить"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+                </table>
+
+
+            </div>
+        </div>
+
+        <form   zippy="employeedetail"  >
+            <div class="row">
+                <div class="col-12 col-md-4">
+
+
+                    <div class="form-group">
+                        <label for="editemp_name">Фамилия, имя</label>
+                        <input     zippy="editemp_name" class="form-control">
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="editlogin">Логин</label>
+                        <input style="width:150px;" pattern="[_a-zA-Z0-9]+" zippy="editlogin" class="form-control">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editphone">Телефон</label>
+                        <input    class="form-control" zippy="editphone"/>
+                    </div>  
+                    <div class="form-group">
+                        <label for="editemail">E-mail</label>
+                        <input  type="email" class="form-control" zippy="editemail"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editinn">ИНН</label>
+                        <input     zippy="editinn" class="form-control">
+                    </div>                        
+                    <div class="form-check">
+                        <input zippy="editcombined" type="checkbox" class="form-check-input"  ><label class="form-check-label" for="editcombined">Совместитель</label>
+                    </div>                  
+                    <div class="form-check">
+                        <input zippy="editinvalid" type="checkbox" class="form-check-input"  ><label class="form-check-label" for="editinvalid">Инвалид</label>
+                    </div>                  
+                    <div class="form-check">
+                        <input zippy="editfired" type="checkbox" class="form-check-input"  ><label class="form-check-label" for="editfired">Уволен</label>
+                    </div>                  
+
+                    <div class="form-group">
+                        <label for="editcomment">Описание</label>
+                        <textarea    class="form-control" zippy="editcomment" ></textarea>
+                    </div>
+                    `
+
+
+
+
+
+                </div>
+                <div class="col-12 col-md-4">
+
+                    <div class="form-group">
+                        <label for="editsalary">Зарплата</label>
+                        <input     zippy="editsalary" class="form-control">
+                    </div>         
+                    <div class="form-group">
+                        <label for="editavans">Аванс</label>
+                        <input     zippy="editavans" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="edithiredate">Дата   принятия</label>
+                        <input     zippy="edithiredate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editfiredate">Дата увольнения</label>
+                        <input     zippy="editfiredate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editstype">Тип зарплаты</label>
+                        <select     zippy="editstype" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editexpense">Тип затрат</label>
+                        <select     zippy="editexpense" class="form-control"></select>
+                    </div>
+
+                </div>        
+
+
+            </div> 
+            <div class="row">
+                <div class="form-group"> 
+                    <input zippy="save" type="submit" value="Сохранить" class="btn btn-primary  ">&nbsp;&nbsp;
+                    <input zippy="cancel" type="button" value="Отменить" class="btn btn-light  ">
+                </div> 
+            </div> 
+        </form> 
+
+
+
+
+    </body>
+</html>

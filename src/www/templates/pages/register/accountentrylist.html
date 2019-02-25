@@ -1,0 +1,76 @@
+<html>
+
+
+    <body>
+        <div class="row">
+            <div class="col-10 col-lg-8">
+                <h3>Журнал проводок </h3>
+
+                <form zippy="filter"   >
+                    <div class="form-group  row">
+                        <label for="from" class="col-4 col-form-label">С</label>
+                        <div class="col-6">
+                            <input type="text" class="form-control" zippy="from">
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label for="to" class="col-4 col-form-label">по</label>
+                        <div class="col-6">
+                            <input type="text" class="form-control" zippy="to">
+                        </div>
+                    </div>
+                    <div class="form-group  row ">
+                        <label for="dt" class="col-4 col-form-label">Счет</label>
+                        <div class="col-6">
+                            <select class="form-control" zippy="dt">
+                                <option value="0">Выбрать</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label for="ct" class="col-4 col-form-label"> Корр. счет </label>
+                        <div class="col-6">
+                            <select class="form-control" zippy="ct">
+                                <option value="0">Выбрать</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group  row">
+                        <div class="col-6  ">
+                            <input class="btn btn-outline-success " type="submit" value="ОК">
+                        </div>
+                    </div>
+
+                </form>
+                <br><a zippy="csv"  >Скачать  CSV</a>  
+
+                <table class="table table-bordered  table-sm"  >
+                    <tr>
+                        <th  >Дата</th>
+                        <th  >Дт</th>
+                        <th  >Кт</th>
+                        <th   class="text-right">Сумма</th>
+                        <th  >Документ</th>
+
+                    </tr>
+                    <tr zippy="entrylist">
+                        <td style="white-space:   nowrap"   zippy="created"></td>
+                        <td zippy="acc_d"></td>
+                        <td zippy="acc_c"></td>
+                        <td zippy="amount"  style="text-align: right;"></td>
+                        <td><a zippy="show"></a></td>
+
+
+                    </tr>
+                </table>
+                <div zippy="paginator"></div>
+
+                <div zippy="docview"></div>
+
+            </div>
+        </div>
+    </body>
+
+</html>
+

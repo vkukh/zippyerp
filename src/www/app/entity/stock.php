@@ -30,9 +30,9 @@ class Stock extends \ZCL\DB\Entity
             $orderbydir = "asc";
         }
         if (strlen($criteria) > 0) {
-            $criteria = 'qty <> 0 and ' . $criteria;
+            $criteria = 'qty <> 0 and disabled <> 1 and ' . $criteria;
         } else {
-            $criteria = 'qty <> 0 ';
+            $criteria = 'qty <> 0 and disabled <> 1  ';
         }
         $entitylist = self::find($criteria, $orderbyfield, $count, $offset);
 

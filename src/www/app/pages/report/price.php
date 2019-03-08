@@ -70,7 +70,7 @@ class Price extends \App\Pages\Base
     private function generateReport() {
 
         $option = \App\System::getOptions('common');
-
+        
         $isp1 = $this->filter->price1->isChecked();
         $isp2 = $this->filter->price2->isChecked();
         $isp3 = $this->filter->price3->isChecked();
@@ -81,19 +81,20 @@ class Price extends \App\Pages\Base
 
         $items = Item::find("disabled <>1  and detail like '%<pricelist>1</pricelist>%'", "cat_name,itemname");
 
-
-
         foreach ($items as $item) {
+            
+  
+            
             $detail[] = array(
                 "code" => $item->item_code,
                 "name" => $item->itemname,
                 "cat" => $item->cat_name,
                 "msr" => $item->msr,
-                "price1" => $isp1 ? H::famt($item->price1) : "",
-                "price2" => $isp2 ? H::famt($item->price2) : "",
-                "price3" => $isp3 ? H::famt($item->price3) : "",
-                "price4" => $isp4 ? H::famt($item->price4) : "",
-                "price5" => $isp5 ? H::famt($item->price5) : ""
+                "price1" => $isp1 ? H::famt($this->checkPrice($item->item_id,$item->price1)) : "",
+                "price2" => $isp2 ? H::famt($this->checkPrice($item->item_id,$item->price2)) : "",
+                "price3" => $isp3 ? H::famt($this->checkPrice($item->item_id,$item->price3)) : "",
+                "price4" => $isp4 ? H::famt($this->checkPrice($item->item_id,$item->price4)) : "",
+                "price5" => $isp5 ? H::famt($this->checkPrice($item->item_id,$item->price5)) : ""
             );
         }
 
@@ -113,4 +114,24 @@ class Price extends \App\Pages\Base
         return $html;
     }
 
+    //проверка на наценку
+    private function checkPrice($item_id,$price){
+            if (strpos($price, '%') > 0) {
+                $price = doubleval(str_replace('%', '', $price));
+                $conn = \ZDB\DB::getConnect();
+
+                $sql = "  select partion  from  store_stock where   item_id = {$item_id} order by stock_id desc limit 1";
+                $partionprice = $conn->GetOne($sql);            
+                if($partionprice>0){
+                   return $partionprice + (int) $partionprice / 100 * $price;    
+                }  else {
+                    return 0;
+                }
+                
+                
+            }else {
+                return  $price;
+            }
+                  
+    }
 }

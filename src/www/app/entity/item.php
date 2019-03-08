@@ -121,7 +121,7 @@ class Item extends \ZCL\DB\Entity
 
 
 
-        return round($price);
+        return  $price;
     }
 
     public static function getPriceTypeList() {

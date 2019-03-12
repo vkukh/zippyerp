@@ -119,7 +119,7 @@ CREATE TABLE `documents` (
   `document_number` varchar(45) NOT NULL,
   `document_date` date NOT NULL,
   `user_id` int(11) NOT NULL,
-  `content` text,
+  `content` longtext,
   `amount` decimal(11,2) DEFAULT NULL,
   `meta_id` int(11) NOT NULL,
   `state` tinyint(4) NOT NULL,

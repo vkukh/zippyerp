@@ -62,6 +62,11 @@ class Helper
 
         if ($user == null)
             return false;
+            
+        if ($user->active != 1)
+            return false;
+            
+            
         if ($user->userpass == $password)
             return $user;
         if (strlen($password) > 0) {

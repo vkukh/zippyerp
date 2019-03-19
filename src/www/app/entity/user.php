@@ -21,6 +21,7 @@ class User extends Entity
     protected function init() {
         $this->userlogin = "Гость";
         $this->user_id = 0;
+        $this->active = 1;
         $this->createdon = time();
     }
 

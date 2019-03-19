@@ -43,8 +43,9 @@ class Users extends \App\Pages\Base
         $this->editpan->editform->add(new TextInput('editpass'));
         $this->editpan->editform->add(new TextInput('editemail'));
         $this->editpan->editform->add(new DropDownChoice('editacl'))->onChange($this, 'onAcl');
-        ;
+         
         $this->editpan->editform->add(new CheckBox('editonlymy'));
+        $this->editpan->editform->add(new CheckBox('editactive',true));
 
 
         $this->editpan->editform->add(new CheckBox('editwplanned'));
@@ -63,8 +64,10 @@ class Users extends \App\Pages\Base
         $this->editpan->setVisible(true);
         // Очищаем  форму
         $this->editpan->editform->clean();
-
         $this->user = new User();
+        $this->editpan->editform->editactive->setChecked($this->user->active);
+
+        
     }
 
     public function onEdit($sender) {
@@ -77,6 +80,7 @@ class Users extends \App\Pages\Base
         $this->editpan->editform->editlogin->setText($this->user->userlogin);
         $this->editpan->editform->editacl->setValue($this->user->acltype);
         $this->editpan->editform->editonlymy->setChecked($this->user->onlymy);
+         $this->editpan->editform->editactive->setChecked($this->user->active);
 
         $this->editpan->editform->metaaccess->setVisible($this->user->acltype == 2);
         $this->editpan->editform->metaaccess->metarow->Reload();
@@ -112,6 +116,7 @@ class Users extends \App\Pages\Base
         }
         $this->user->acltype = $this->editpan->editform->editacl->getValue();
         $this->user->onlymy = $this->editpan->editform->editonlymy->isChecked() ? 1 : 0;
+         $this->user->active = $this->editpan->editform->editactive->isChecked() ? 1 : 0;
 
         $pass = $this->editpan->editform->editpass->getText();
         if (strlen($pass) > 0) {
@@ -173,6 +178,7 @@ class Users extends \App\Pages\Base
     public function OnAddUserRow($datarow) {
         $item = $datarow->getDataItem();
         $datarow->add(new \Zippy\Html\Label("userlogin", $item->userlogin));
+        $datarow->setAttribute('style', $item->active != 1 ? 'color: #aaa' : null);
 
         $datarow->add(new \Zippy\Html\Label("created", date('d.m.Y', $item->createdon)));
         $datarow->add(new \Zippy\Html\Label("email", $item->email));

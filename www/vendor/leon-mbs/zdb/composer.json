@@ -1,0 +1,25 @@
+{
+    "name": "leon-mbs/zdb",
+    "description": "Библиотека для работы  с БД",
+    "keywords": [  "database", "php" ],
+     
+
+    "license": "MIT",
+   "minimum-stability" : "dev",
+   "prefer-stable" : true,
+    "type": "library",
+    "require": {
+         "php": ">=5.4.0",
+         "adodb/adodb-php": "v5.20.12"
+    },
+
+     "authors": [
+        {
+            "name": "Леонид Мартынюк",
+            "email": "leon.mbs@gmail.com"
+        }
+    ],
+    "autoload" : {
+        "files" : ["entity.php","db.php"]
+    }
+}

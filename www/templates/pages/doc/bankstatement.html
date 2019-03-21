@@ -1,0 +1,127 @@
+<html>
+    <body>
+
+
+        <form zippy="docform">
+            <h3>Банковская выписка</h3>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="document_number" >Номер документа</label>
+                        <input class="form-control" type="text" zippy="document_number" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="document_date" > Дата</label>
+                        <input class="form-control" type="text" zippy="document_date" required="required">
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-8">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Тип</th>
+                            <th width="60" class="text-right">Сумма</th>
+                            <th>Документ</th>
+                            <th>Контрагент</th>
+                            <th>Коментарий</th>
+
+                        </tr>
+                        <tr zippy="detail">
+                            <td zippy="optype"></td>
+                            <td zippy="amount" class="text-right"></td>
+                            <td zippy="document"></td>
+                            <td zippy="customer"></td>
+                            <td zippy="comment"></td>
+                            <td><a zippy="delete"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                    </table>
+                    <a zippy="addrow">Добавить строку</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <input type="button" value="Отменить" zippy="backtolist" class="btn btn-light ">&nbsp;
+                    <input zippy="savedoc" type="submit" value="Сохранить" class="btn btn-outline-info ">&nbsp;
+                    <input zippy="execdoc" type="submit" value="Выполнить" class="btn btn-outline-info ">
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+    <form zippy="editdetail">
+        <h4>Новая строка</h4>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="document_date" > Тип операции</label>
+                    <select class="form-control" zippy="editoptype"> </select>                               </select>
+                </div>
+                <div class="form-group">
+                    <label data-label="editcustomer" for="editcustomer" >Контрагент</label>
+                    <select class="form-control select2" type="text" zippy="editcustomer" >
+                        <option value="0">Не выбран</option>
+                    </select>
+                </div>                <div class="form-group">
+                    <label data-label="editstore" for="editstore" >Магазин</label>
+                    <select class="form-control  " type="text" zippy="editstore" >
+                        <option value="0">Не выбран</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" zippy="editprepayment"> <span
+                                data-label="editprepayment">Предоплата</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-label="editdoc" for="editdoc" >Документ</label>
+                    <input class="form-control" type="text" zippy="editdoc">
+                </div>
+                <div class="form-group">
+                    <label data-label="editpayment" for="editdoc" >Тип платежа</label>
+                    <select class="form-control" zippy="editpayment">
+                        <option value="0">Выбрать</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editamount" >Сумма</label>
+                    <input class="form-control" type="text" zippy="editamount" required="required" pattern="[0-9\.]+"
+                           style="width: 100px;"></input>
+                </div>
+                <div class="form-group">
+                    <label data-label="editnds" for="editnds" >НДС</label>
+                    <input class="form-control" type="text" zippy="editnds" required="required" pattern="[0-9\.]+"
+                           style="width: 100px;"></input>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="editcomment" > Коментарий</label>
+                    <input class="form-control" type="text" zippy="editcomment">
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" zippy="editnoentry"> <span data-label="editnoentry">Не выполнять  проводки</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="button" zippy="cancelrow" value="Отменить" class="btn btn-light ">&nbsp;<input
+                        type="submit" zippy="submitrow" value="Сохранить" class="btn btn btn-outline-info  ">
+                </div>
+            </div>
+        </div>
+    </form>
+
+</body>
+</html>

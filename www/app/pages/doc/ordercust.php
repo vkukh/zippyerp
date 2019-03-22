@@ -132,7 +132,7 @@ class OrderCust extends \App\Pages\Base
         $row->add(new Label('price', H::famt($item->price)));
         $row->add(new Label('msr', $item->msr));
 
-        $row->add(new Label('amount', round($item->quantity * $item->price)));
+        $row->add(new Label('amount', H::famt($item->quantity * $item->price)));
         $row->add(new ClickLink('edit'))->onClick($this, 'editOnClick');
         $row->edit->setVisible($item->old != true);
 

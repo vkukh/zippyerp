@@ -1,4 +1,4 @@
-﻿
+
 SET NAMES 'utf8';
 
 

@@ -110,7 +110,7 @@ class Base extends \Zippy\Html\WebPage
         return strlen(System::getErrorMsg()) > 0;
     }
 
-    public  function beforeRender(){
+    protected  function beforeRender(){
         $user = System::getUser();
         $cntn = \App\Entity\Notify::isNotify($user->user_id);
        

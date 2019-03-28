@@ -132,7 +132,7 @@ class Helper
         $textmenu = "";
 
         foreach ($menu as $item) {
-            $textmenu .= "<li><a class=\"dropdown-item\" href=\"/?p=App/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+            $textmenu .= "<li><a class=\"dropdown-item\" href=\"/index.php?p=App/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
         }
         foreach ($groups as $gname => $group) {
             $textmenu .= "<li  ><a class=\"dropdown-item  dropdown-toggle\"     href=\"#\">$gname 
@@ -141,7 +141,7 @@ class Helper
             <ul class=\"dropdown-menu\">";
 
             foreach ($group as $item) {
-                $textmenu .= "<li ><a class=\"dropdown-item\"   href=\"/?p=App/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
+                $textmenu .= "<li ><a class=\"dropdown-item\"   href=\"/index.php?p=App/{$dir}/{$item['meta_name']}\">{$item['description']}</a></li>";
             }
             $textmenu .= "</ul></li>";
         }
@@ -180,7 +180,7 @@ class Helper
                     break;
             }
 
-            $textmenu .= " <a class=\"btn btn-sm btn-outline-primary mr-2\" href=\"/?p=App/{$dir}/{$item['meta_name']}\">{$item['description']}</a> ";
+            $textmenu .= " <a class=\"btn btn-sm btn-outline-primary mr-2\" href=\"/index.php?p=App/{$dir}/{$item['meta_name']}\">{$item['description']}</a> ";
         }
 
         return $textmenu;

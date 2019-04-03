@@ -60,33 +60,41 @@
 
                             <ul id="tmenu" class="navbar-nav  ">
 
-                                <li  class="nav-item dropdown">
+                    <li  class="nav-item dropdown">
                                     <a href="/ " class="nav-link dropdown-toggle" data-toggle="dropdown">Документы    </a>
-                                    <ul class="dropdown-menu  " zippy="docmenu"> </ul>
+                                    <ul class="dropdown-menu  "  >{{{docmenu}}} </ul>
 
                                 </li> 
 
                                 <li  class="nav-item dropdown">
                                     <a href="/ " class="nav-link dropdown-toggle" data-toggle="dropdown">Отчеты    </a>
-                                    <ul class="dropdown-menu  " zippy="repmenu"> </ul>
+                                    <ul class="dropdown-menu  "  > {{{repmenu}}}</ul>
 
                                 </li>
                                 <li  class="nav-item dropdown">
                                     <a href="/ " class="nav-link dropdown-toggle" data-toggle="dropdown">Журналы    </a>
-                                    <ul class="dropdown-menu  " zippy="regmenu"> </ul>
+                                    <ul class="dropdown-menu  "  >{{{regmenu}}} </ul>
 
                                 </li> 
                                 <li  class="nav-item dropdown">
                                     <a href="/ " class="nav-link dropdown-toggle" data-toggle="dropdown">Справочники    </a>
-                                    <ul class="dropdown-menu  " zippy="refmenu"> </ul>
+                                    <ul class="dropdown-menu  "  >{{{refmenu}}} </ul>
 
-
-
+                                </li> 
 
                                     {{#shop}}
                                 <li  class="nav-item dropdown">
                                     <a href="/ " class="nav-link dropdown-toggle" data-toggle="dropdown">Онлайн каталог    </a>
-                                    <ul class="dropdown-menu  " zippy="shopmenu"> </ul>
+                                    <ul class="dropdown-menu  " >
+                                {{{shopmenu}}}
+                                     
+                                        <li class="dropdown-divider"></li> 
+                                        <li>
+                                            <a class="dropdown-item  " href="/index.php?p=App/Shop/Pages/Options">Настройки</a>  
+                                        </li>                                      
+                                     
+                                    </ul>                                    
+                                     </ul>
 
                                 </li> 
                                 {{/shop}}

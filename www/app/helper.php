@@ -221,15 +221,14 @@ class Helper
         return $conn->GetOne($sql);
     }
 
-    public static function sendLetter($template, $email, $subject = "") {
-
-
-        $_config = parse_ini_file(_ROOT . 'config/config.ini', true);
-
+    public static function sendLetter($template, $emailfrom,$emailto, $subject = "") {
+ 
+   
+  
 
         $mail = new \PHPMailer();
-        $mail->setFrom($_config['common']['emailfrom'], 'Биржа jobber');
-        $mail->addAddress($email);
+        $mail->setFrom($emailfrom, 'Онлайн каталог');
+        $mail->addAddress($emailto);
         $mail->Subject = $subject;
         $mail->msgHTML($template);
         $mail->CharSet = "UTF-8";
@@ -237,9 +236,9 @@ class Helper
 
 
         $mail->send();
-        /*
-
-          $from_name = '=?utf-8?B?' . base64_encode("Биржа jobber") . '?=';
+      
+          /*
+          $from_name = '=?utf-8?B?' . base64_encode("Онлайн каталог") . '?=';
           $subject = '=?utf-8?B?' . base64_encode($subject) . '?=';
           mail(
           $email,
@@ -248,7 +247,7 @@ class Helper
           "From: " . $from_name." <{$_config['common']['emailfrom']}>\r\n".
           "Content-type: text/html; charset=\"utf-8\""
           );
-         */
+          */
     }
 
     /**

@@ -20,7 +20,7 @@ CREATE TABLE `account_entry` (
   `document_id` int(11) NOT NULL,
   PRIMARY KEY (`entry_id`),
   KEY `document_id` (`document_id`)
-) ENGINE=innodb AUTO_INCREMENT=367 DEFAULT CHARSET=utf8;
+) ENGINE=innodb AUTO_INCREMENT=374 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `account_entry_view`;
 /*!50001 DROP VIEW IF EXISTS `account_entry_view`*/;
@@ -88,7 +88,7 @@ CREATE TABLE `customers` (
   `email` varchar(64) DEFAULT NULL,
   `phone` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`customer_id`)
-) ENGINE=innodb AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=innodb AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `customers_view`;
 /*!50001 DROP VIEW IF EXISTS `customers_view`*/;
@@ -130,7 +130,7 @@ CREATE TABLE `documents` (
   KEY `document_date` (`document_date`),
   KEY `customer_id` (`customer_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=innodb AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
+) ENGINE=innodb AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `documents_view`;
 /*!50001 DROP VIEW IF EXISTS `documents_view`*/;
@@ -183,7 +183,7 @@ CREATE TABLE `entrylist` (
   KEY `document_id` (`document_id`),
   KEY `stock_id` (`stock_id`),
   KEY `acc_code` (`acc_code`)
-) ENGINE=innodb AUTO_INCREMENT=398 DEFAULT CHARSET=utf8;
+) ENGINE=innodb AUTO_INCREMENT=410 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -194,16 +194,26 @@ CREATE TABLE `entrylist` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017  */ /*!50003 TRIGGER `entrylist_after_ins_tr` AFTER INSERT ON `entrylist`
-  FOR EACH ROW
-BEGIN
+/*!50003 CREATE*/ /*!50017  */ /*!50003 TRIGGER `entrylist_after_ins_tr` AFTER INSERT ON `entrylist`
 
+  FOR EACH ROW
 
+BEGIN
 
- IF new.stock_id >0 then
+
 
-  update store_stock set qty=(select  coalesce(sum(quantity),0) from entrylist where stock_id=new.stock_id) where store_stock.stock_id = new.stock_id;
- END IF;
+
+
+
+
+ IF new.stock_id >0 then
+
+
+
+  update store_stock set qty=(select  coalesce(sum(quantity),0) from entrylist where stock_id=new.stock_id) where store_stock.stock_id = new.stock_id;
+
+ END IF;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -219,15 +229,24 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017  */ /*!50003 TRIGGER `entrylist_after_del_tr` AFTER DELETE ON `entrylist`
-  FOR EACH ROW
-BEGIN
+/*!50003 CREATE*/ /*!50017  */ /*!50003 TRIGGER `entrylist_after_del_tr` AFTER DELETE ON `entrylist`
 
+  FOR EACH ROW
 
- IF old.stock_id >0 then
+BEGIN
 
-  update store_stock set qty=(select  coalesce(sum(quantity),0) from entrylist where stock_id=old.stock_id) where store_stock.stock_id = old.stock_id;
- END IF;
+
+
+
+
+ IF old.stock_id >0 then
+
+
+
+  update store_stock set qty=(select  coalesce(sum(quantity),0) from entrylist where stock_id=old.stock_id) where store_stock.stock_id = old.stock_id;
+
+ END IF;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -372,7 +391,7 @@ CREATE TABLE `items` (
   KEY `item_code` (`item_code`),
   KEY `itemname` (`itemname`),
   KEY `cat_id` (`cat_id`)
-) ENGINE=innodb AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=innodb AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `items_view`;
 /*!50001 DROP VIEW IF EXISTS `items_view`*/;
@@ -629,7 +648,7 @@ CREATE TABLE `store_stock` (
   `acc_code` char(4) DEFAULT NULL,
   PRIMARY KEY (`stock_id`),
   KEY `item_id` (`item_id`)
-) ENGINE=innodb AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
+) ENGINE=innodb AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `store_stock_view`;
 /*!50001 DROP VIEW IF EXISTS `store_stock_view`*/;
@@ -662,7 +681,7 @@ CREATE TABLE `stores` (
   `storename` varchar(64) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`store_id`)
-) ENGINE=innodb AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='????? ????????';
+) ENGINE=innodb AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='????? ????????';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -678,7 +697,7 @@ CREATE TABLE `users` (
   `smartmenu` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `userlogin` (`userlogin`)
-) ENGINE=innodb AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=innodb AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users_view`;
 /*!50001 DROP VIEW IF EXISTS `users_view`*/;

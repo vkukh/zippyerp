@@ -31,24 +31,13 @@ try {
      
     $app = new \App\Application(); 
   
-    if($_config['common']['shop'] == 1){
-        $app->Run('\App\Shop\Pages\Main');  
-    } else { 
-        $app->Run('\App\Pages\Main');
-    }  
+ 
+ $app->Run('\App\Pages\Main');
+      
     
 
 
-    /* } catch (\ZippyERP\System\Exception $e) {
-      Logger::getLogger("main")->error($e->getMessage(), e);
-      \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
-      } catch (\Zippy\Exception $e) {
-      Logger::getLogger("main")->error($e->getMessage(), e);
-      \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
-      } catch (ADODB_Exception $e) {
-
-      \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
-     */
+  
 } 
 catch (Throwable $e) {
     if($e  instanceof ADODB_Exception){

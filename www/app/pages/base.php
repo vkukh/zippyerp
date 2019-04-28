@@ -38,7 +38,7 @@ class Base extends \Zippy\Html\WebPage
         $this->_tvars["repmenu"]  = Helper::generateMenu(2);
         $this->_tvars["regmenu"]  = Helper::generateMenu(3);
         $this->_tvars["refmenu"]  = Helper::generateMenu(4);
-        $this->_tvars["shopmenu"]  = Helper::generateMenu(5);
+       
 
         $this->_tvars["islogined"] = $user->user_id > 0;
         $this->_tvars["isadmin"] = $user->userlogin == 'admin';
@@ -53,7 +53,7 @@ class Base extends \Zippy\Html\WebPage
 
         $this->_tvars["smart"] = Helper::generateSmartMenu();
         $this->_tvars["picontent"] = $pi;
-        $this->_tvars["shop"] = $_config['common']['shop'] == 1;
+        
 
         if (Helper::usends()) {
             $this->_tvars["usends"] = true;

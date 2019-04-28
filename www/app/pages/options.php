@@ -48,12 +48,7 @@ class Options extends \App\Pages\Base
         $this->common->add(new TextInput('price5'));
         //  $this->common->add(new Date('closeddate'));
 
-
-        $this->add(new Form('shop'))->onSubmit($this, 'saveShopOnClick');
-        $this->shop->add(new DropDownChoice('shopdefstore', \App\Entity\Store::getList()));
-        $this->shop->add(new DropDownChoice('shopdefcust', \App\Entity\Customer::getList()));
-        $this->shop->add(new DropDownChoice('shopdefpricetype', \App\Entity\Item::getPriceTypeList()));
-
+ 
         $this->add(new Form('detail'));
         $this->detail->add(new TextInput('firmname'));
         $this->detail->add(new TextInput('edrpou'));
@@ -116,13 +111,7 @@ class Options extends \App\Pages\Base
 
 
 
-        $shop = System::getOptions("shop");
-        if (!is_array($shop))
-            $shop = array();
-        $this->shop->shopdefstore->setValue($shop['defstore']);
-        $this->shop->shopdefcust->setValue($shop['defcust']);
-        $this->shop->shopdefpricetype->setValue($shop['defpricetype']);
-
+ 
         $detail = System::getOptions("firmdetail");
 
         if (!is_array($detail))
@@ -180,23 +169,11 @@ class Options extends \App\Pages\Base
 
         System::setOptions("common", $common);
 
-        System::setOptions("shop", $shop);
+       
         $this->setSuccess('Сохранено');
     }
 
-    public function saveShopOnClick($sender) {
-        $shop = array();
-
-        //todo контрагент магазина, кому  нотификацию
-
-        $shop['defcust'] = $this->shop->shopdefcust->getValue();
-        $shop['defstore'] = $this->shop->shopdefstore->getValue();
-        $shop['defpricetype'] = $this->shop->shopdefpricetype->getValue();
-
-
-        System::setOptions("shop", $shop);
-        $this->setSuccess('Сохранено');
-    }
+  
 
     public function saveDetailOnClick($sender) {
 

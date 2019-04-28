@@ -126,9 +126,7 @@ class Helper
             case 4 :
                 $dir = "Pages/Reference";
                 break;
-            case 5 :
-                $dir = "Shop/Pages";
-                break;
+            
         }
         $textmenu = "";
 

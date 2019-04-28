@@ -29,27 +29,15 @@ try {
         }
    
      
-    if($_config['common']['shop'] == 1){
-       $app = new \App\Application('\App\Shop\Pages\Main');    
-    } else {
-       $app = new \App\Application('\App\Pages\Main');      
-    }
-    
-    
-    $app->Run();
+    $app = new \App\Application(); 
+  
+ 
+ $app->Run('\App\Pages\Main');
+      
     
 
 
-    /* } catch (\ZippyERP\System\Exception $e) {
-      Logger::getLogger("main")->error($e->getMessage(), e);
-      \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
-      } catch (\Zippy\Exception $e) {
-      Logger::getLogger("main")->error($e->getMessage(), e);
-      \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
-      } catch (ADODB_Exception $e) {
-
-      \ZippyERP\System\Application::Redirect('\\ZippyERP\\System\\Pages\\Error', $e->getMessage());
-     */
+  
 } 
 catch (Throwable $e) {
     if($e  instanceof ADODB_Exception){

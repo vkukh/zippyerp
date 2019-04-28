@@ -34,14 +34,11 @@ class Base extends \Zippy\Html\WebPage
         $this->add(new ClickLink("pageinfo"));
 
 
-
-        $this->add(new Label("docmenu", Helper::generateMenu(1), true));
-        $this->add(new Label("repmenu", Helper::generateMenu(2), true));
-        $this->add(new Label("regmenu", Helper::generateMenu(3), true));
-        $this->add(new Label("refmenu", Helper::generateMenu(4), true));
-        $this->add(new Label("shopmenu", Helper::generateMenu(5), true));
-
-
+        $this->_tvars["docmenu"]  = Helper::generateMenu(1);
+        $this->_tvars["repmenu"]  = Helper::generateMenu(2);
+        $this->_tvars["regmenu"]  = Helper::generateMenu(3);
+        $this->_tvars["refmenu"]  = Helper::generateMenu(4);
+       
 
         $this->_tvars["islogined"] = $user->user_id > 0;
         $this->_tvars["isadmin"] = $user->userlogin == 'admin';
@@ -56,7 +53,7 @@ class Base extends \Zippy\Html\WebPage
 
         $this->_tvars["smart"] = Helper::generateSmartMenu();
         $this->_tvars["picontent"] = $pi;
-        $this->_tvars["shop"] = $_config['common']['shop'] == 1;
+        
 
         if (Helper::usends()) {
             $this->_tvars["usends"] = true;
@@ -110,7 +107,7 @@ class Base extends \Zippy\Html\WebPage
         return strlen(System::getErrorMsg()) > 0;
     }
 
-    public  function beforeRender(){
+    protected  function beforeRender(){
         $user = System::getUser();
         $cntn = \App\Entity\Notify::isNotify($user->user_id);
        

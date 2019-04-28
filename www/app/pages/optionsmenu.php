@@ -40,7 +40,7 @@ class OptionsMenu extends \App\Pages\Base
         $this->listpan->filter->add(new CheckBox('fdic'))->setChecked(true);
         $this->listpan->filter->add(new CheckBox('frep'))->setChecked(true);
         $this->listpan->filter->add(new CheckBox('freg'))->setChecked(true);
-        $this->listpan->filter->add(new CheckBox('fshop'))->setChecked(true);
+        
         $this->listpan->add(new ClickLink('addnew'))->onClick($this, 'addnewOnClick');
         $this->listpan->add(new DataView('metarow', $this->metadatads, $this, 'metarowOnRow'))->Reload();
 
@@ -73,9 +73,7 @@ class OptionsMenu extends \App\Pages\Base
         if ($this->listpan->filter->freg->isChecked()) {
             $where .= " or meta_type = 3";
         }
-        if ($this->listpan->filter->fshop->isChecked()) {
-            $where .= " or meta_type = 5";
-        }
+        
 
 
         $this->metadatads->setWhere($where);

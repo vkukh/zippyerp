@@ -32,7 +32,7 @@ try {
     $app = new \App\Application(); 
   
  
- $app->Run('\App\Pages\Main');
+    $app->Run('\App\Pages\Main');
       
     
 

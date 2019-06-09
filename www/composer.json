@@ -11,7 +11,7 @@
 
        "roave/security-advisories":"dev-master",
 
-    "leon-mbs/zippy": "dev-master"
+       "leon-mbs/zippy": "2.1.7"
 
   }
 }

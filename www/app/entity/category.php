@@ -15,4 +15,11 @@ class Category extends \ZCL\DB\Entity
         $this->cat_id = 0;
     }
 
+    protected function beforeDelete() {
+
+        $conn = \ZDB\DB::getConnect();
+        $sql = "  select count(*)  from  items where   cat_id = {$this->cat_id}";
+        $cnt = $conn->GetOne($sql);
+        return ($cnt > 0) ? "Категория используется в  товарах" : ""; 
+    }    
 }

@@ -18,11 +18,11 @@ class Employee extends \ZCL\DB\Entity
     protected function beforeDelete() {
         $cnt = Entry::findCnt('employee_id=' . $this->employee_id);
         if ($cnt > 0)
-            return false;
+            return "Сотрудник уже  используется в документах или проводках";
 //        $cnt=CAsset::findCnt("detail like '%<emp_id>{$this->employee_id}</emp_id>%'");
 //        if($cnt>0)return false;
 
-        return true;
+        return "";
     }
 
     protected function beforeSave() {

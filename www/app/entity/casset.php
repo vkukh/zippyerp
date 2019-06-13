@@ -65,7 +65,13 @@ class CAsset extends \ZCL\DB\Entity
         parent::afterLoad();
     }
 
-    
+    protected function beforeDelete() {
+
+        $conn = \ZDB\DB::getConnect();
+        $sql = "  select count(*)  from  entrylist where   ca_id = {$this->ca_id}";
+        $cnt = $conn->GetOne($sql);
+        return ($cnt > 0) ? "Нельзя удалять используемый ТМЦ" : "";
+    }    
 
     /**
      * найти  по инвентарному  номеру

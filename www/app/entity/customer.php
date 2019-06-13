@@ -53,21 +53,24 @@ class Customer extends \ZCL\DB\Entity
         parent::afterLoad();
     }
 
+    
+    
     public function beforeDelete() {
 
         $conn = \ZDB\DB::getConnect();
         $sql = "  select count(*)  from  entrylist where   customer_id = {$this->customer_id}";
         $cnt = $conn->GetOne($sql);
         if ($cnt > 0)
-            return false;
+            return "На  контрагента есть  ссылки  в  документах";
         $sql = "  select count(*)  from  documents where   customer_id = {$this->customer_id}  ";
         $cnt = $conn->GetOne($sql);
         if ($cnt > 0)
-            return false;
-        return true;
-        ;
+            return "На  контрагента есть  ссылки  в  документах";
+        return "";
+         
     }
-
+    
+    
     /**
      * список   для комбо
      * 

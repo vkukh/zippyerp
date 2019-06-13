@@ -47,12 +47,13 @@ class MeasureList extends \App\Pages\Base
 
 
         $msr_id = $sender->owner->getDataItem()->measure_id;
-        $cnt = \App\Entity\Item::findCnt("msr_id=" . $msr_id);
-        if ($cnt > 0) {
-            $this->setError('Нельзя удалить единицу с ТМЦ');
+        $del= Measure::delete($msr_id)  ;
+        if(strlen($del) > 0){
+            $this->setError($del);
             return;
-        }
-        Measure::delete($msr_id);
+        }        
+        
+       
         $this->msrtable->msrlist->Reload();
     }
 

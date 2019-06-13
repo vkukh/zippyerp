@@ -88,15 +88,12 @@ class CAssetList extends \App\Pages\Base
             return;
 
         $item = $sender->owner->getDataItem();
-        //проверка на партии
-        if ($item->checkDelete()) {
-            CAsset::delete($item->ca_id);
-        } else {
-            $this->setError("Нельзя удалить   ");
+     
+        $del = CAsset::delete($item->ca_id);
+        if(strlen($del) > 0){
+            $this->setError($del);
             return;
         }
-
-
 
         $this->itemtable->eqlist->Reload();
     }

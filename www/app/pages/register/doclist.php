@@ -195,12 +195,13 @@ class DocList extends \App\Pages\Base
         if (false == \App\ACL::checkEditDoc($doc, true))
             return;
 
-        $doc = $doc->cast();
-        if ($doc->canDeleted() == false) {
-
+    
+       
+        $del=Document::delete($doc->document_id);
+        if(strlen($del) > 0){
+            $this->setError($del);
             return;
         }
-        Document::delete($doc->document_id);
         $this->doclist->Reload(true);
         $this->resetURL();
     }

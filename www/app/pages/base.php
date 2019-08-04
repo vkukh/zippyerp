@@ -32,6 +32,8 @@ class Base extends \Zippy\Html\WebPage
 
  
         $this->add(new ClickLink("pageinfo"));
+      
+        $options = System::getOptions('common');
 
 
         $this->_tvars["docmenu"]  = Helper::generateMenu(1);
@@ -49,6 +51,7 @@ class Base extends \Zippy\Html\WebPage
         }
 
 
+        $this->_tvars["defoptions"] = ($options['defstore'] > 0  )  == false;
 
 
         $this->_tvars["smart"] = Helper::generateSmartMenu();
@@ -107,14 +110,14 @@ class Base extends \Zippy\Html\WebPage
         return strlen(System::getErrorMsg()) > 0;
     }
 
-    protected  function beforeRender(){
+  
+    public function beforeRender() {
         $user = System::getUser();
-        $cntn = \App\Entity\Notify::isNotify($user->user_id);
-       
-        $this->_tvars['bell']  = '<i class="fa fa-bell "></i>';
-        if($cntn>0) $this->_tvars['bell']  = '<i class="fa fa-bell text-danger"></i>';
+        $this->_tvars['notcnt'] = \App\Entity\Notify::isNotify($user->user_id);
         
-    }
+  
+    }      
+   
 
     protected function afterRender() {
         if (strlen(System::getErrorMsg()) > 0)

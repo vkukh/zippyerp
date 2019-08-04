@@ -66,11 +66,11 @@ class EmployeeList extends \App\Pages\Base
         if (false == \App\ACL::checkEditRef('EmployeeList'))
             return;
 
-        $b = Employee::delete($sender->owner->getDataItem()->employee_id);
-        if ($b == false) {
-            $this->setWarn('Сотрудник уже  используется в системе');
-        }
-
+        $del = Employee::delete($sender->owner->getDataItem()->employee_id);
+        if(strlen($del) > 0){
+            $this->setError($del);
+            return;
+        }   
 
         $this->employeetable->employeelist->Reload();
     }

@@ -67,13 +67,11 @@ class CAsset extends \ZCL\DB\Entity
 
     protected function beforeDelete() {
 
-        return $this->checkDelete();
-    }
-
-    public function checkDelete() {
-
-        return true;
-    }
+        $conn = \ZDB\DB::getConnect();
+        $sql = "  select count(*)  from  entrylist where   ca_id = {$this->ca_id}";
+        $cnt = $conn->GetOne($sql);
+        return ($cnt > 0) ? "Нельзя удалять используемый ТМЦ" : "";
+    }    
 
     /**
      * найти  по инвентарному  номеру

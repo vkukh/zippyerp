@@ -51,9 +51,11 @@ class ServiceList extends \App\Pages\Base
             return;
 
         $service_id = $sender->owner->getDataItem()->service_id;
-
-
-        Service::delete($service_id);
+        $del=Service::delete($service_id);
+        if(strlen($del) > 0){
+            $this->setError($del);
+            return;
+        }    
         $this->servicetable->servicelist->Reload();
     }
 

@@ -272,12 +272,50 @@ class Document extends \ZCL\DB\Entity
         return $doc;
     }
 
+    /**
+    * @see \ZDB\Entity
+    * 
+    */   
     protected function beforeDelete() {
 
+        $conn = \ZDB\DB::getConnect();
+
+        $cnt = $conn->GetOne("select  count(*) from entrylist where  document_id = {$this->document_id}  ");
+        if ($cnt > 0) {
+         
+            return "У документа  есть записи в аналитике";
+        }
+ 
 
 
-        return true;
+        $cnt = $conn->GetOne("select  count(*) from docrel where  doc1 = {$this->document_id}  or  doc2 = {$this->document_id}");
+        if ($cnt > 0) {
+           
+            return "Есть связаные документы, удалите связи";
+        }
+
+        $f = $this->checkStates(array(Document::STATE_PAYED, Document::STATE_PART_PAYED, Document::STATE_INSHIPMENT, Document::STATE_DELIVERED));
+        if ($f) {
+  
+            return "У документа были оплаты или доставки";
+        }
+
+        
+        
+        
+        return "";
     }
+    /**
+    * @see \ZDB\Entity
+    * 
+    */
+    protected function afterDelete() {
+
+      //  $conn = \ZDB\DB::getConnect();
+       //$conn->Execute("delete from docstatelog where document_id=".$this->document_id);
+       // $conn->Execute("delete from paylist where document_id=".$this->document_id);
+         
+    } 
 
     protected function afterSave($update) {
 
@@ -490,35 +528,7 @@ class Document extends \ZCL\DB\Entity
         return Document::find($where);
     }
 
-    /**
-     * может быть удален
-     * 
-     */
-    public function canDeleted() {
-        $conn = \ZDB\DB::getConnect();
-
-        $cnt = $conn->GetOne("select  count(*) from entrylist where  document_id = {$this->document_id}  ");
-        if ($cnt > 0) {
-            System::setErrorMsg("У докуинта  есть записи в аналитике");
-            return false;
-        }
-
-
-        $cnt = $conn->GetOne("select  count(*) from docrel where  doc1 = {$this->document_id}  or  doc2 = {$this->document_id}");
-        if ($cnt > 0) {
-            System::setErrorMsg("Есть связаные документы");
-            return false;
-        }
-
-
-        $f = $this->checkStates(array(Document::STATE_PAYED, Document::STATE_PART_PAYED, Document::STATE_INSHIPMENT, Document::STATE_DELIVERED));
-        if ($f) {
-            System::setErrorMsg("У документа были оплаты или доставки");
-            return false;
-        }
-
-        return true;
-    }
+  
 
     /**
      * может быть отменен
